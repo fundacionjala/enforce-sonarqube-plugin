@@ -47,18 +47,18 @@ public class ApexGrammarLookahead {
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
 
-        b.rule(PUBLIC).is("public");
-        b.rule(STATIC).is("static");
-        b.rule(PROTECTED).is("protected");
-        b.rule(PRIVATE).is("private");
-        b.rule(FINAL).is("final");
-        b.rule(ABSTRACT).is("abstract");
-        b.rule(SYNCHRONIZED).is("synchronized");
-        b.rule(NATIVE).is("native");
-        b.rule(TRANSIENT).is("transient");
-        b.rule(VOLATILE).is("volatile");
-        b.rule(STRICTFP).is("strictfp");
-        b.rule(ANOTATION).is("anotation");
+        b.rule(PUBLIC).is(PUBLIC.getValue());
+        b.rule(STATIC).is(STATIC.getValue());
+        b.rule(PROTECTED).is(PROTECTED.getValue());
+        b.rule(PRIVATE).is(PRIVATE.getValue());
+        b.rule(FINAL).is(FINAL.getValue());
+        b.rule(ABSTRACT).is(ABSTRACT.getValue());
+        b.rule(SYNCHRONIZED).is(SYNCHRONIZED.getValue());
+        b.rule(NATIVE).is(NATIVE.getValue());
+        b.rule(TRANSIENT).is(TRANSIENT.getValue());
+        b.rule(VOLATILE).is(VOLATILE.getValue());
+        b.rule(STRICTFP).is(STRICTFP.getValue());
+        b.rule(ANOTATION).is(ANOTATION.getValue());
 
         b.rule(LOOKAHEAD).is(b.firstOf(
                 PUBLIC,

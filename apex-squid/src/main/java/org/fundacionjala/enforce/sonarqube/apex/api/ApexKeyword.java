@@ -44,7 +44,7 @@ public enum ApexKeyword implements TokenType, GrammarRuleKey {
     SHARING("sharing"),
     STATIC("static"),
     STRICTFP("strictfp"),
-    SYNCHRONIZED("sinchronized"),
+    SYNCHRONIZED("synchronized"),
     TRANSIENT("transient"),
     VOLATILE("volatile"),
     WITH("with"),

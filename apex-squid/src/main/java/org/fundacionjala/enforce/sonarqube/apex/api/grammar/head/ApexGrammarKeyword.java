@@ -40,9 +40,9 @@ public class ApexGrammarKeyword {
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
 
-        b.rule(WITH).is("with");
-        b.rule(WITHOUT).is("without");
-        b.rule(SHARING).is("sharing");
+        b.rule(WITH).is(WITH.getValue());
+        b.rule(WITHOUT).is(WITHOUT.getValue());
+        b.rule(SHARING).is(SHARING.getValue());
         b.rule(WITH_SHARING).is(WITH, SHARING);
         b.rule(WITHOUT_SHARING).is(WITHOUT, SHARING);
 

@@ -31,12 +31,12 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 /**
  * The class creates the rules for class and interface words.
  */
-public class ApexGrammarTypeClass {    
+public class ApexGrammarTypeClass {
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
-        b.rule(CLASS).is("class");
-        b.rule(INTERFACE).is("interface");
+        b.rule(CLASS).is(CLASS.getValue());
+        b.rule(INTERFACE).is(INTERFACE.getValue());
 
         b.rule(TYPE_CLASS).is(b.firstOf(CLASS, INTERFACE));
 

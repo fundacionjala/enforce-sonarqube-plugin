@@ -33,14 +33,17 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  * The class creates the rule for a class can implement another class.
  */
 public class ApexGrammarImplementsList {
-    
+
+    private final static String RULE_IMPLEMENTS = "implements";
+    private final static String RULE_EMPTY = "";
+
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
-        b.rule(IMPLEMENTS).is("implements");
+        b.rule(IMPLEMENTS).is(RULE_IMPLEMENTS);
         b.rule(MERGE_TYPE_IMPLEMENTS).is(IMPLEMENTS,
                 ApexGrammarIdentifier.createGrammarBuilder().build()
                 .rule(IDENTIFIER));
-        b.rule(IMPLEMENTS_LIST).is(b.firstOf(MERGE_TYPE_IMPLEMENTS, ""));
+        b.rule(IMPLEMENTS_LIST).is(b.firstOf(MERGE_TYPE_IMPLEMENTS, RULE_EMPTY));
 
         return b;
     }

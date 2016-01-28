@@ -37,7 +37,7 @@ public class ApexGrammarTypeDeclaration {
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
 
-        b.rule(LBRACE).is("{");
+        b.rule(LBRACE).is(LBRACE.getValue());
         b.rule(TYPE_DECLARATION).is(
                 ApexGrammarModifier.createGrammarBuilder().build().rule(MODIFIER),
                 ApexGrammarClassOrInterfaceDeclaration.createGrammarBuilder().build()
