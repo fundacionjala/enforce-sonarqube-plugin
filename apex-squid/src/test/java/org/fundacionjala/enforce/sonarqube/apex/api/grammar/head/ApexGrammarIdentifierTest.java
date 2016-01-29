@@ -32,11 +32,11 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IDENT
 
 public class ApexGrammarIdentifierTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarIdentifier.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarIdentifier.createGrammarBuilder();
 
     @Test
     public void buildIdentifierInitIdentifier() {
-        assertThat(b.build().rule(INIT_IDENTIFIER))
+        assertThat(grammarBuilder.build().rule(INIT_IDENTIFIER))
                 .matches("M")
                 .matches("A")
                 .matches("Z")
@@ -46,14 +46,14 @@ public class ApexGrammarIdentifierTest {
 
     @Test
     public void buildIdentifierWithOneCharacterUnderscore() {
-        assertThat(b.build().rule(INIT_IDENTIFIER))
+        assertThat(grammarBuilder.build().rule(INIT_IDENTIFIER))
                 .matches("_")
                 .notMatches("__");
     }
 
     @Test
     public void buildBodyIdentifier() {
-        assertThat(b.build().rule(BODY_IDENTIFIER))
+        assertThat(grammarBuilder.build().rule(BODY_IDENTIFIER))
                 .matches("A")
                 .matches("_")
                 .matches("a")
@@ -68,7 +68,7 @@ public class ApexGrammarIdentifierTest {
 
     @Test
     public void buidIdentifierCorrectCases() {
-        assertThat(b.build().rule(IDENTIFIER))
+        assertThat(grammarBuilder.build().rule(IDENTIFIER))
                 .matches("A")
                 .matches("_")
                 .matches("a")
@@ -80,7 +80,7 @@ public class ApexGrammarIdentifierTest {
 
     @Test
     public void buidIdentifierIncorrectCases() {
-        assertThat(b.build().rule(IDENTIFIER))
+        assertThat(grammarBuilder.build().rule(IDENTIFIER))
                 .notMatches("1A")
                 .notMatches("2_")
                 .notMatches("a-")

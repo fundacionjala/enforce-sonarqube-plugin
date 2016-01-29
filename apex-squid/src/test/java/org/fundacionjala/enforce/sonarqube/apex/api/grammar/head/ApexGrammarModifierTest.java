@@ -31,12 +31,12 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarModifierTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarModifier.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarModifier.createGrammarBuilder();
 
 
     @Test
     public void buildingModifierDifferentCorrectCasesLookaheadKeyword() {
-        assertThat(b.build().rule(LOOKAHEAD_KEYWORD))
+        assertThat(grammarBuilder.build().rule(LOOKAHEAD_KEYWORD))
                 .matches("publicwithsharing")
                 .matches("finalwithoutsharing")
                 .matches("abstractwithsharing")
@@ -47,7 +47,7 @@ public class ApexGrammarModifierTest {
     
     @Test
     public void buildingModifierWithOnlyCasesLookahead() {
-        assertThat(b.build().rule(MODIFIER))
+        assertThat(grammarBuilder.build().rule(MODIFIER))
                 .matches("static")
                 .matches("public")
                 .matches("final")
@@ -62,7 +62,7 @@ public class ApexGrammarModifierTest {
     
     @Test
     public void buildingModifierDifferentCorrectCases() {
-        assertThat(b.build().rule(MODIFIER))
+        assertThat(grammarBuilder.build().rule(MODIFIER))
                 .matches("static")
                 .matches("publicwithsharing")
                 .matches("finalwithoutsharing")
@@ -74,7 +74,7 @@ public class ApexGrammarModifierTest {
 
     @Test
     public void buildingModifierDifferentIncorrectCases() {
-        assertThat(b.build().rule(MODIFIER))
+        assertThat(grammarBuilder.build().rule(MODIFIER))
                 .notMatches("_")
                 .notMatches("static _")
                 .notMatches("public With sharing")

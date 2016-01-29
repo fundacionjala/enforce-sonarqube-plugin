@@ -23,6 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import com.sonar.sslr.api.Grammar;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
@@ -37,7 +38,7 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammar {
 
-    public static LexerlessGrammarBuilder createGrammarBuilder() {
+    public static Grammar createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
 
         grammarBuilder.rule(END_CLASS).is(RBRACE.getValue());
@@ -47,6 +48,6 @@ public class ApexGrammar {
                 .build().rule(CLASS_OR_INTERDACE_BODY_DECLARATION),
                 END_CLASS
         );
-        return grammarBuilder;
+        return grammarBuilder.build();
     }
 }

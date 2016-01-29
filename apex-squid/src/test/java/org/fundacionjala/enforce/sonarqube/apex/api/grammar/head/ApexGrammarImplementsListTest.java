@@ -31,18 +31,18 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarImplementsListTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarImplementsList.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarImplementsList.createGrammarBuilder();
 
     @Test
     public void positiveRulesMergeType() {
-        assertThat(b.build().rule(MERGE_TYPE_IMPLEMENTS))
+        assertThat(grammarBuilder.build().rule(MERGE_TYPE_IMPLEMENTS))
                 .matches("implementsMyClass")
                 .matches("implements_MyClass1");
     }
 
     @Test
     public void negativeRulesMegeType() {
-        assertThat(b.build().rule(MERGE_TYPE_IMPLEMENTS))
+        assertThat(grammarBuilder.build().rule(MERGE_TYPE_IMPLEMENTS))
                 .notMatches("_implementsMyClass")
                 .notMatches(" Implements_MyClass1")
                 .notMatches("=implements_MyClass1");
@@ -50,7 +50,7 @@ public class ApexGrammarImplementsListTest {
 
     @Test
     public void positiveRules() {
-        assertThat(b.build().rule(IMPLEMENTS_LIST))
+        assertThat(grammarBuilder.build().rule(IMPLEMENTS_LIST))
                 .matches("implementsMyClass")
                 .matches("implements_MyClass1")
                 .matches("");

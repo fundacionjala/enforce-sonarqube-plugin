@@ -30,11 +30,11 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarLookaheadTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarLookahead.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarLookahead.createGrammarBuilder();
 
     @Test
     public void positiveBasicRules() {
-        assertThat(b.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
                 .matches("static")
                 .matches("public")
                 .matches("final")
@@ -49,7 +49,7 @@ public class ApexGrammarLookaheadTest {
 
     @Test
     public void negativeBasicRulesSpaceAtTheInitAndEndLoockhead() {
-        assertThat(b.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
                 .notMatches("    ")
                 .notMatches(" static ")
                 .notMatches(" public ")
@@ -65,7 +65,7 @@ public class ApexGrammarLookaheadTest {
 
     @Test
     public void negativeRules() {
-        assertThat(b.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
                 .notMatches(" _ ")
                 .notMatches("P static")
                 .notMatches(" public_")

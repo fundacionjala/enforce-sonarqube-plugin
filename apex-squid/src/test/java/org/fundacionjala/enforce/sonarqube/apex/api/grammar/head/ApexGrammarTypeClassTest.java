@@ -30,11 +30,11 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarTypeClassTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarTypeClass.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarTypeClass.createGrammarBuilder();
 
     @Test
     public void checkingRules() {
-        assertThat(b.build().rule(TYPE_CLASS))
+        assertThat(grammarBuilder.build().rule(TYPE_CLASS))
                 .matches("class")
                 .matches("interface")
                 .notMatches(" class")

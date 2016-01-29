@@ -31,18 +31,18 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE
 
 public class ApexGrammarExtendsListTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarExtendsList.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarExtendsList.createGrammarBuilder();
 
     @Test
     public void positiveRulesMergeType() {
-        assertThat(b.build().rule(MERGE_TYPE_EXTENDS))
+        assertThat(grammarBuilder.build().rule(MERGE_TYPE_EXTENDS))
                 .matches("extendsMyClass")
                 .matches("extends_MyClass1");
     }
 
     @Test
     public void negativeRulesMergeType() {
-        assertThat(b.build().rule(MERGE_TYPE_EXTENDS))
+        assertThat(grammarBuilder.build().rule(MERGE_TYPE_EXTENDS))
                 .notMatches("extendMyClass")
                 .notMatches("Extends _MyClass1")
                 .notMatches("_extends_MyClass1");
@@ -50,7 +50,7 @@ public class ApexGrammarExtendsListTest {
 
     @Test
     public void positiveRules() {
-        assertThat(b.build().rule(EXTENDS_LIST))
+        assertThat(grammarBuilder.build().rule(EXTENDS_LIST))
                 .matches("extendsMyClass")
                 .matches("extends_MyClass1")
                 .matches("");

@@ -31,39 +31,39 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarClassOrInterfaceDeclarationTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarClassOrInterfaceDeclaration.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarClassOrInterfaceDeclaration.createGrammarBuilder();
 
     @Test
     public void positiveRulesExtends() {
-        assertThat(b.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
                 .matches("extendsYourClass")
                 .matches("extends_YourClass");
     }
 
     @Test
     public void negativeRulesExtends() {
-        assertThat(b.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
                 .notMatches("_extendsYourClass")
                 .notMatches(" Extends _YourClass ");
     }
 
     @Test
     public void positiveRulesImplements() {
-        assertThat(b.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
                 .matches("implementsYourClass")
                 .matches("implements_YourClass");
     }
 
     @Test
     public void negativeRulesImplements() {
-        assertThat(b.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
                 .notMatches("ImplementsYourClass")
                 .notMatches("_implements_YourClass");
     }
 
     @Test
     public void positiveRulesExtendsOrImplements() {
-        assertThat(b.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
                 .matches("")
                 .matches("implementsYourClass")
                 .matches("implements_MyClass")
@@ -73,7 +73,7 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
 
     @Test
     public void negativeRulesExtendsOrImplements() {
-        assertThat(b.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
                 .notMatches("_")
                 .notMatches("Implements YourClass")
                 .notMatches("_implements MyClass")
@@ -83,7 +83,7 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
 
     @Test
     public void positiveRules() {
-        assertThat(b.build().rule(CLASS_OR_INTERFACE_DECLARATION))
+        assertThat(grammarBuilder.build().rule(CLASS_OR_INTERFACE_DECLARATION))
                 .matches("classMyClass")
                 .matches("interfaceMyClass")
                 .matches("classMyClassextendsYourClass")
@@ -94,7 +94,7 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
 
     @Test
     public void negativeRules() {
-        assertThat(b.build().rule(CLASS_OR_INTERFACE_DECLARATION))
+        assertThat(grammarBuilder.build().rule(CLASS_OR_INTERFACE_DECLARATION))
                 .notMatches("class1MyClass")
                 .notMatches("InterfaceMyClass")
                 .notMatches("_classMyClassextendsYourClass")

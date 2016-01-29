@@ -30,11 +30,11 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarTypeDeclarationTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarTypeDeclaration.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarTypeDeclaration.createGrammarBuilder();
 
     @Test
     public void positiveRulesForClass() {
-        assertThat(b.build().rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.build().rule(TYPE_DECLARATION))
                 .matches("publicclassMyClass{")
                 .matches("publicwithsharingclassMyClass{")
                 .matches("privatewithoutsharingclassMyClass{")
@@ -48,7 +48,7 @@ public class ApexGrammarTypeDeclarationTest {
 
     @Test
     public void negativeRulesForClass() {
-        assertThat(b.build().rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.build().rule(TYPE_DECLARATION))
                 .notMatches("Class MyClass {")
                 .notMatches("publicstaticclassMyClass{")
                 .notMatches("public_classwithsharingclassMyClass{")
@@ -63,7 +63,7 @@ public class ApexGrammarTypeDeclarationTest {
 
     @Test
     public void positiveRulesForInterface() {
-        assertThat(b.build().rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.build().rule(TYPE_DECLARATION))
                 .matches("publicinterfaceMyClass{")
                 .matches("publicwithsharinginterfaceMyClass{")
                 .matches("privatewithoutsharinginterfaceMyClass{")
@@ -77,7 +77,7 @@ public class ApexGrammarTypeDeclarationTest {
 
     @Test
     public void negativeRulesForInterface() {
-        assertThat(b.build().rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.build().rule(TYPE_DECLARATION))
                 .notMatches("Interface MyClass {")
                 .notMatches("publicstatic interface MyClass {")
                 .notMatches("public  interface  with sharing class MyClass {")

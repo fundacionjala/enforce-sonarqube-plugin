@@ -23,24 +23,24 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import com.sonar.sslr.api.Grammar;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammar.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.createGrammarBuilder();
 
     @Test
     public void correctRuleBasic() {
-        assertThat(b.build().rule(APEX_GRAMMAR))
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicclassMyClass{}");
     }
 
     @Test
     public void correctRuleMoreImplements() {
-        assertThat(b.build().rule(APEX_GRAMMAR))
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1implementsYourClass{"
                         + ""
                         + "}");
@@ -48,7 +48,7 @@ public class ApexGrammarTest {
 
     @Test
     public void correctRuleMoreExtends() {
-        assertThat(b.build().rule(APEX_GRAMMAR))
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1extendsYourClass{"
                         + ""
                         + "}");

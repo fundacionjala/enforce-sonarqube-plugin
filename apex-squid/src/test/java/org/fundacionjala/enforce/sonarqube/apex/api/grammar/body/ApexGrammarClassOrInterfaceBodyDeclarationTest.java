@@ -24,18 +24,17 @@
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.head.ApexGrammarTypeDeclaration;
 import org.junit.Test;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarClassOrInterfaceBodyDeclarationTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarClassOrInterfaceBodyDeclaration.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarClassOrInterfaceBodyDeclaration.createGrammarBuilder();
 
     @Test
     public void positiveRulesForClass() {
-        assertThat(b.build().rule(CLASS_OR_INTERDACE_BODY_DECLARATION))
+        assertThat(grammarBuilder.build().rule(CLASS_OR_INTERDACE_BODY_DECLARATION))
                 .matches("")
                 .notMatches("_");
     }

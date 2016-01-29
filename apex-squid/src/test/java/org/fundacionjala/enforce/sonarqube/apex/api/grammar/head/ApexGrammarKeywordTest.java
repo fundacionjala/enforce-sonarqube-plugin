@@ -33,45 +33,45 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarKeywordTest {
 
-    private final LexerlessGrammarBuilder b = ApexGrammarKeyword.createGrammarBuilder();
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarKeyword.createGrammarBuilder();
 
     @Test
     public void positiveBasicRulesWith() {
-        assertThat(b.build().rule(WITH))
+        assertThat(grammarBuilder.build().rule(WITH))
                 .matches("with")
                 .notMatches("without");
     }
 
     @Test
     public void positiveBasicRulesWithout() {
-        assertThat(b.build().rule(WITHOUT))
+        assertThat(grammarBuilder.build().rule(WITHOUT))
                 .matches("without")
                 .notMatches("with");
     }
 
     @Test
     public void positiveBasicRulesSharing() {
-        assertThat(b.build().rule(WITHOUT))
+        assertThat(grammarBuilder.build().rule(WITHOUT))
                 .matches("without")
                 .notMatches("with");
     }
 
     @Test
     public void positiveBasicRulesWithoutSharing() {
-        assertThat(b.build().rule(WITHOUT_SHARING))
+        assertThat(grammarBuilder.build().rule(WITHOUT_SHARING))
                 .matches("withoutsharing");
     }
 
     @Test
     public void positiveBasicRules() {
-        assertThat(b.build().rule(KEYWORD))
+        assertThat(grammarBuilder.build().rule(KEYWORD))
                 .matches("withsharing")
                 .matches("withoutsharing");
     }
 
     @Test
     public void negativeRules() {
-        assertThat(b.build().rule(KEYWORD))
+        assertThat(grammarBuilder.build().rule(KEYWORD))
                 .notMatches(" ? ")
                 .notMatches("_with sharing ")
                 .notMatches("_with_sharing ")
