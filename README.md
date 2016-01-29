@@ -1,22 +1,23 @@
-# enforce-sonarqube-plugin
+# Enforce Sonarqube Plugin
 ## Description
 
 The plug-in enables analysis of Apex source code with SonarQube.
 
-## ~~Steps to Analyze a Apex Project~~
+## Steps to Analyze a Apex Project
 
-1. ~~Install SonarQube Server (see [Setup and Upgrade](http://docs.sonarqube.org/display/SONAR/Setup+and+Upgrade) for more details).~~
+    Note: It's recommended to compile apex plug-in from a stable release
 
-2. ~~Install [SonarQube Runner](http://docs.sonarqube.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) and be sure your can call sonar-runner from the directory where you have your source code.~~
+1. Install SonarQube Server (see [Setup and Upgrade](http://docs.sonarqube.org/display/SONAR/Setup+and+Upgrade) for more details).
 
-3. ~~Install Apex Plug-in (see [Installing a Plugin](http://docs.sonarqube.org/display/SONAR/Installing+a+Plugin) for more details)~~
+2. Install [SonarQube Runner](http://docs.sonarqube.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) and be sure your can call sonar-runner from the directory where you have your source code.
 
-4. ~~Create a sonar-project.properties file at the root of your project (a sample project, available on GitHub)~~
+3. Install Apex Plug-in (see [Installing a Plugin](http://docs.sonarqube.org/display/SONAR/Installing+a+Plugin) for more details).
 
-5. ~~Run sonar-runner command from the project root dir
-Follow the link provided at the end of the analysis to browse your project's quality in SonarQube UI (see: [Browsing SonarQube](http://docs.sonarqube.org/display/SONAR/Browsing+SonarQube))~~
+4. Create a sonar-project.properties file at the root of your project (a sample project, available on GitHub).
 
-> **Note:** It's recommended to compile apex plug-in from a stable release
+5. Run sonar-runner command from the project root dir.
+
+6. Follow the link provided at the end of the analysis to browse your project's quality in SonarQube UI (see: [Browsing SonarQube](http://docs.sonarqube.org/display/SONAR/Browsing+SonarQube)).
 
 ---
 # Enforce plug-in for developers.
@@ -31,7 +32,7 @@ enforce-sonarqube-plugin
   | - sonar-checks
   | - sonar-squid
   | - sonar-plugins
-  \
+  /
 ```
 ***sonar-checks:*** Represents all sonarqube rules for analyze Apex language.
 
