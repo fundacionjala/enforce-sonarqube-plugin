@@ -21,23 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.parser;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.impl.Parser;
-import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexGrammar;
-import org.fundacionjala.enforce.sonarqube.apex.lexer.ApexLexer;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.TokenType;
 
-public class ApexParser {
+public enum ApexTokenType implements TokenType {
 
-    private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
+    STRING,
+    NEW_LINE;
 
-    public static Parser<Grammar> create(ApexConfiguration conf) {
-        if (conf == null) {
-            throw new IllegalArgumentException(ERROR_MESSAGE);
-        }
-        return Parser.builder(ApexGrammar.createGrammarBuilder())
-                .withLexer(ApexLexer.create(conf)).build();
+    @Override
+    public String getName() {
+        return name();
+    }
+
+    @Override
+    public String getValue() {
+        return name();
+    }
+
+    @Override
+    public boolean hasToBeSkippedFromAst(AstNode an) {
+        return Boolean.FALSE;
     }
 }
