@@ -38,18 +38,18 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 public class ApexGrammarKeyword {
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
 
-        b.rule(WITH).is(WITH.getValue());
-        b.rule(WITHOUT).is(WITHOUT.getValue());
-        b.rule(SHARING).is(SHARING.getValue());
-        b.rule(WITH_SHARING).is(WITH, SHARING);
-        b.rule(WITHOUT_SHARING).is(WITHOUT, SHARING);
+        grammarBuilder.rule(WITH).is(WITH.getValue());
+        grammarBuilder.rule(WITHOUT).is(WITHOUT.getValue());
+        grammarBuilder.rule(SHARING).is(SHARING.getValue());
+        grammarBuilder.rule(WITH_SHARING).is(WITH, SHARING);
+        grammarBuilder.rule(WITHOUT_SHARING).is(WITHOUT, SHARING);
 
-        b.rule(KEYWORD).is(b.firstOf(
+        grammarBuilder.rule(KEYWORD).is(grammarBuilder.firstOf(
                 WITHOUT_SHARING,
                 WITH_SHARING));
 
-        return b;
+        return grammarBuilder;
     }
 }

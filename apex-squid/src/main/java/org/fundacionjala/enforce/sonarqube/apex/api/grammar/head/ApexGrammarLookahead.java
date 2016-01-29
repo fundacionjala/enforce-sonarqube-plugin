@@ -45,22 +45,22 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 public class ApexGrammarLookahead {
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
 
-        b.rule(PUBLIC).is(PUBLIC.getValue());
-        b.rule(STATIC).is(STATIC.getValue());
-        b.rule(PROTECTED).is(PROTECTED.getValue());
-        b.rule(PRIVATE).is(PRIVATE.getValue());
-        b.rule(FINAL).is(FINAL.getValue());
-        b.rule(ABSTRACT).is(ABSTRACT.getValue());
-        b.rule(SYNCHRONIZED).is(SYNCHRONIZED.getValue());
-        b.rule(NATIVE).is(NATIVE.getValue());
-        b.rule(TRANSIENT).is(TRANSIENT.getValue());
-        b.rule(VOLATILE).is(VOLATILE.getValue());
-        b.rule(STRICTFP).is(STRICTFP.getValue());
-        b.rule(ANOTATION).is(ANOTATION.getValue());
+        grammarBuilder.rule(PUBLIC).is(PUBLIC.getValue());
+        grammarBuilder.rule(STATIC).is(STATIC.getValue());
+        grammarBuilder.rule(PROTECTED).is(PROTECTED.getValue());
+        grammarBuilder.rule(PRIVATE).is(PRIVATE.getValue());
+        grammarBuilder.rule(FINAL).is(FINAL.getValue());
+        grammarBuilder.rule(ABSTRACT).is(ABSTRACT.getValue());
+        grammarBuilder.rule(SYNCHRONIZED).is(SYNCHRONIZED.getValue());
+        grammarBuilder.rule(NATIVE).is(NATIVE.getValue());
+        grammarBuilder.rule(TRANSIENT).is(TRANSIENT.getValue());
+        grammarBuilder.rule(VOLATILE).is(VOLATILE.getValue());
+        grammarBuilder.rule(STRICTFP).is(STRICTFP.getValue());
+        grammarBuilder.rule(ANOTATION).is(ANOTATION.getValue());
 
-        b.rule(LOOKAHEAD).is(b.firstOf(
+        grammarBuilder.rule(LOOKAHEAD).is(grammarBuilder.firstOf(
                 PUBLIC,
                 STATIC,
                 PROTECTED,
@@ -74,6 +74,6 @@ public class ApexGrammarLookahead {
                 STRICTFP,
                 ANOTATION));
 
-        return b;
+        return grammarBuilder;
     }
 }

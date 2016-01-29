@@ -35,15 +35,15 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 public class ApexGrammarTypeDeclaration {
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
 
-        b.rule(LBRACE).is(LBRACE.getValue());
-        b.rule(TYPE_DECLARATION).is(
+        grammarBuilder.rule(LBRACE).is(LBRACE.getValue());
+        grammarBuilder.rule(TYPE_DECLARATION).is(
                 ApexGrammarModifier.createGrammarBuilder().build().rule(MODIFIER),
                 ApexGrammarClassOrInterfaceDeclaration.createGrammarBuilder().build()
                 .rule(CLASS_OR_INTERFACE_DECLARATION),
                 LBRACE
         );
-        return b;
+        return grammarBuilder;
     }
 }

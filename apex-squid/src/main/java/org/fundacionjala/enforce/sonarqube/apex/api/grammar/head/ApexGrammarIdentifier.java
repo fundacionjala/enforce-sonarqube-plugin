@@ -39,14 +39,14 @@ public class ApexGrammarIdentifier {
     private final static String RULE_BODY_IDENTIFIER = "[A-Za-z0-9_]*";
     
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
-        b.rule(CHAR).is(b.regexp(RULE_CHAR));
-        b.rule(UNDERSCORE).is(UNDERSCORE.getValue());
-        b.rule(INIT_IDENTIFIER).is(b.firstOf(
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
+        grammarBuilder.rule(CHAR).is(grammarBuilder.regexp(RULE_CHAR));
+        grammarBuilder.rule(UNDERSCORE).is(UNDERSCORE.getValue());
+        grammarBuilder.rule(INIT_IDENTIFIER).is(grammarBuilder.firstOf(
                 CHAR,
                 UNDERSCORE));
-        b.rule(BODY_IDENTIFIER).is(b.regexp(RULE_BODY_IDENTIFIER));
-        b.rule(IDENTIFIER).is(INIT_IDENTIFIER, BODY_IDENTIFIER);
-        return b;
+        grammarBuilder.rule(BODY_IDENTIFIER).is(grammarBuilder.regexp(RULE_BODY_IDENTIFIER));
+        grammarBuilder.rule(IDENTIFIER).is(INIT_IDENTIFIER, BODY_IDENTIFIER);
+        return grammarBuilder;
     }
 }

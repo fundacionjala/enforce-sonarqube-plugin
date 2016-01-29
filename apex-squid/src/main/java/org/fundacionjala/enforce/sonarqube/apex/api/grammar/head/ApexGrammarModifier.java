@@ -35,14 +35,14 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 public class ApexGrammarModifier {
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
 
-        b.rule(LOOKAHEAD_KEYWORD).is(ApexGrammarLookahead.createGrammarBuilder().build().rule(LOOKAHEAD),
+        grammarBuilder.rule(LOOKAHEAD_KEYWORD).is(ApexGrammarLookahead.createGrammarBuilder().build().rule(LOOKAHEAD),
                 ApexGrammarKeyword.createGrammarBuilder().build().rule(KEYWORD));
-        b.rule(MODIFIER).is(b.firstOf(
+        grammarBuilder.rule(MODIFIER).is(grammarBuilder.firstOf(
                 LOOKAHEAD_KEYWORD,
                 ApexGrammarLookahead.createGrammarBuilder().build().rule(LOOKAHEAD))
         );
-        return b;
+        return grammarBuilder;
     }
 }

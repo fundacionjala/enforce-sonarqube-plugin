@@ -32,9 +32,9 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 public class ApexGrammarClassOrInterfaceBodyDeclaration {
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
-        b.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is("");
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
+        grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is("");
 
-        return b;
+        return grammarBuilder;
     }
 }

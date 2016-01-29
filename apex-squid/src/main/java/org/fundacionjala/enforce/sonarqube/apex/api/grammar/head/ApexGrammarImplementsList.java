@@ -38,13 +38,13 @@ public class ApexGrammarImplementsList {
     private final static String RULE_EMPTY = "";
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
-        b.rule(IMPLEMENTS).is(RULE_IMPLEMENTS);
-        b.rule(MERGE_TYPE_IMPLEMENTS).is(IMPLEMENTS,
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
+        grammarBuilder.rule(IMPLEMENTS).is(RULE_IMPLEMENTS);
+        grammarBuilder.rule(MERGE_TYPE_IMPLEMENTS).is(IMPLEMENTS,
                 ApexGrammarIdentifier.createGrammarBuilder().build()
                 .rule(IDENTIFIER));
-        b.rule(IMPLEMENTS_LIST).is(b.firstOf(MERGE_TYPE_IMPLEMENTS, RULE_EMPTY));
+        grammarBuilder.rule(IMPLEMENTS_LIST).is(grammarBuilder.firstOf(MERGE_TYPE_IMPLEMENTS, RULE_EMPTY));
 
-        return b;
+        return grammarBuilder;
     }
 }

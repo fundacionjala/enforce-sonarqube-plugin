@@ -38,11 +38,11 @@ public class ApexGrammarExtendsList {
     private final static String RULE_EMPTY = "";
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
-        b.rule(EXTENDS).is(RULE_EXTENDS);
-        b.rule(MERGE_TYPE_EXTENDS).is(EXTENDS, ApexGrammarIdentifier.createGrammarBuilder().build()
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
+        grammarBuilder.rule(EXTENDS).is(RULE_EXTENDS);
+        grammarBuilder.rule(MERGE_TYPE_EXTENDS).is(EXTENDS, ApexGrammarIdentifier.createGrammarBuilder().build()
                 .rule(IDENTIFIER));
-        b.rule(EXTENDS_LIST).is(b.firstOf(MERGE_TYPE_EXTENDS, RULE_EMPTY));
-        return b;
+        grammarBuilder.rule(EXTENDS_LIST).is(grammarBuilder.firstOf(MERGE_TYPE_EXTENDS, RULE_EMPTY));
+        return grammarBuilder;
     }
 }

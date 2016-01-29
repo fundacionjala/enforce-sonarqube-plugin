@@ -48,7 +48,7 @@ public enum ApexKeyword implements TokenType, GrammarRuleKey {
     TRANSIENT("transient"),
     VOLATILE("volatile"),
     WITH("with"),
-    WITHOUT("without"),;
+    WITHOUT("without");
 
     private final String value;
 

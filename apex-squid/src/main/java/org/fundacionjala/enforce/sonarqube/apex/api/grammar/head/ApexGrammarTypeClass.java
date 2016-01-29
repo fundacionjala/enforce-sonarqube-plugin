@@ -34,12 +34,12 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 public class ApexGrammarTypeClass {
 
     public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
-        b.rule(CLASS).is(CLASS.getValue());
-        b.rule(INTERFACE).is(INTERFACE.getValue());
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
+        grammarBuilder.rule(CLASS).is(CLASS.getValue());
+        grammarBuilder.rule(INTERFACE).is(INTERFACE.getValue());
 
-        b.rule(TYPE_CLASS).is(b.firstOf(CLASS, INTERFACE));
+        grammarBuilder.rule(TYPE_CLASS).is(grammarBuilder.firstOf(CLASS, INTERFACE));
 
-        return b;
+        return grammarBuilder;
     }
 }
