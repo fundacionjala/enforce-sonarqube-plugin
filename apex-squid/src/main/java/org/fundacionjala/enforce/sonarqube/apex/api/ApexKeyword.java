@@ -25,6 +25,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CHAR;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 public enum ApexKeyword implements TokenType, GrammarRuleKey {
@@ -34,18 +35,29 @@ public enum ApexKeyword implements TokenType, GrammarRuleKey {
      */
     ABSTRACT("abstract"),
     ANOTATION("anotation"),
+    BOOLEAN("boolean"),
+    BYTE("byte"),
+    CHAR("char"),
     CLASS("class"),
+    DOUBLE("double"),
     FINAL("final"),
+    FLOAT("float"),
+    INT("int"),
     INTERFACE("interface"),
+    LONG("long"),
     NATIVE("native"),
+    NULL("null"),
     PRIVATE("private"),
     PROTECTED("protected"),
     PUBLIC("public"),
+    RETURN("return"),
     SHARING("sharing"),
+    SHORT("short"),
     STATIC("static"),
     STRICTFP("strictfp"),
     SYNCHRONIZED("synchronized"),
     TRANSIENT("transient"),
+    VOID("void"),
     VOLATILE("volatile"),
     WITH("with"),
     WITHOUT("without");

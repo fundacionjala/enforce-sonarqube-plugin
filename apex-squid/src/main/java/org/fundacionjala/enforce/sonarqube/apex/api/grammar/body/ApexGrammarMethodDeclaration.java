@@ -21,42 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_PATAMETERS;
+import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
-public enum ApexPunctuator implements TokenType, GrammarRuleKey {
+/**
+ * The class creates the rules for the body of a method.
+ */
+public class ApexGrammarMethodDeclaration {
 
-    /**
-     * SEPARATORS.
-     */
-    LBRACE("{"),
-    RBRACE("}"),
-    LPAREN("("),
-    RPAREN(")"),
-    SEMICOLON(";"),
-    UNDERSCORE("_");
-
-    private final String value;
-
-    private ApexPunctuator(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getName() {
-        return name();
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
+    public static LexerlessGrammarBuilder createGrammarBuilder() {
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
+        grammarBuilder.rule(RBRACE).is(RBRACE.getValue());
+        grammarBuilder.rule(METHOD_DECLARATION).is(
+                ApexGrammarTypeParameters.createGrammarBuilder().build().rule(TYPE_PATAMETERS),
+                ApexGrammarResultType.createGrammarBuilder().build().rule(RESULT_TYPE),
+                RBRACE
+        );
+        return grammarBuilder;
     }
 }

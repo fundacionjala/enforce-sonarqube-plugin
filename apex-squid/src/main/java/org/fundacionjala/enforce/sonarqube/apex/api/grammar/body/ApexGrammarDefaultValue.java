@@ -21,42 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DEFAULT_VALUE;
+import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
-public enum ApexPunctuator implements TokenType, GrammarRuleKey {
+/**
+ * The class creates the rules for receiving a method parameters.
+ */
+public class ApexGrammarDefaultValue {
 
-    /**
-     * SEPARATORS.
-     */
-    LBRACE("{"),
-    RBRACE("}"),
-    LPAREN("("),
-    RPAREN(")"),
-    SEMICOLON(";"),
-    UNDERSCORE("_");
+    private final static String RULE_DEFAULT_VALUE = "";
 
-    private final String value;
+    public static LexerlessGrammarBuilder createGrammarBuilder() {
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
 
-    private ApexPunctuator(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getName() {
-        return name();
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
+        grammarBuilder.rule(DEFAULT_VALUE).is(RULE_DEFAULT_VALUE);
+        return grammarBuilder;
     }
 }

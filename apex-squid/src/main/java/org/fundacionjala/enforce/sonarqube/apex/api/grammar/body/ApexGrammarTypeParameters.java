@@ -21,42 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_PATAMETERS;
+import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
-public enum ApexPunctuator implements TokenType, GrammarRuleKey {
+/**
+ * The class creates the rules for the parameters of a method..
+ */
+public class ApexGrammarTypeParameters {
 
-    /**
-     * SEPARATORS.
-     */
-    LBRACE("{"),
-    RBRACE("}"),
-    LPAREN("("),
-    RPAREN(")"),
-    SEMICOLON(";"),
-    UNDERSCORE("_");
-
-    private final String value;
-
-    private ApexPunctuator(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getName() {
-        return name();
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
+    public static LexerlessGrammarBuilder createGrammarBuilder() {
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
+        grammarBuilder.rule(TYPE_PATAMETERS).is("");
+        return grammarBuilder;
     }
 }

@@ -21,42 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE;
+import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
-public enum ApexPunctuator implements TokenType, GrammarRuleKey {
+/**
+ * The class creates rules for different data types for a method.
+ */
+public class ApexGrammarType {
 
-    /**
-     * SEPARATORS.
-     */
-    LBRACE("{"),
-    RBRACE("}"),
-    LPAREN("("),
-    RPAREN(")"),
-    SEMICOLON(";"),
-    UNDERSCORE("_");
+    public static LexerlessGrammarBuilder createGrammarBuilder() {
+        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
 
-    private final String value;
-
-    private ApexPunctuator(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getName() {
-        return name();
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
+        grammarBuilder.rule(TYPE).is(
+                ApexGrammarPrimitiveType.createGrammarBuilder().build().rule(PRIMITIVE_TYPE)
+        );
+        return grammarBuilder;
     }
 }

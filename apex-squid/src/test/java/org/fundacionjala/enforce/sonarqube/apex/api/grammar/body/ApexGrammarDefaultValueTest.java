@@ -21,42 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DEFAULT_VALUE;
+import org.junit.Test;
+import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public enum ApexPunctuator implements TokenType, GrammarRuleKey {
+public class ApexGrammarDefaultValueTest {
 
-    /**
-     * SEPARATORS.
-     */
-    LBRACE("{"),
-    RBRACE("}"),
-    LPAREN("("),
-    RPAREN(")"),
-    SEMICOLON(";"),
-    UNDERSCORE("_");
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarDefaultValue.createGrammarBuilder();
 
-    private final String value;
-
-    private ApexPunctuator(String value) {
-        this.value = value;
+    @Test
+    public void positiveRulesMergeType() {
+        assertThat(grammarBuilder.build().rule(DEFAULT_VALUE))
+                .matches("")
+                .notMatches("_");
     }
 
-    @Override
-    public String getName() {
-        return name();
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
-    }
 }
