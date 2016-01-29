@@ -25,6 +25,9 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
 
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
+/**
+ * Contains enum all the rules used in the grammar.
+ */
 public enum RuleKey implements GrammarRuleKey {
 
     APEX_GRAMMAR,

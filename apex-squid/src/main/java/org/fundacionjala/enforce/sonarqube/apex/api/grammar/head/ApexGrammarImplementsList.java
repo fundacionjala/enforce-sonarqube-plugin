@@ -34,16 +34,21 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarImplementsList {
 
-    private final static String RULE_IMPLEMENTS = "implements";
-    private final static String RULE_EMPTY = "";
+    private final static String RULE_IMPLEMENTS_KEYWORD = "implements";
+    private final static String RULE_EMPTY_KEYWORD = "";
 
+    /**
+     * Grammar is created to implement another class or not.
+     *
+     * @return The grammar to implement otherwise.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(IMPLEMENTS).is(RULE_IMPLEMENTS);
+        grammarBuilder.rule(IMPLEMENTS).is(RULE_IMPLEMENTS_KEYWORD);
         grammarBuilder.rule(MERGE_TYPE_IMPLEMENTS).is(IMPLEMENTS,
                 ApexGrammarIdentifier.createGrammarBuilder().build()
                 .rule(IDENTIFIER));
-        grammarBuilder.rule(IMPLEMENTS_LIST).is(grammarBuilder.firstOf(MERGE_TYPE_IMPLEMENTS, RULE_EMPTY));
+        grammarBuilder.rule(IMPLEMENTS_LIST).is(grammarBuilder.firstOf(MERGE_TYPE_IMPLEMENTS, RULE_EMPTY_KEYWORD));
 
         return grammarBuilder;
     }

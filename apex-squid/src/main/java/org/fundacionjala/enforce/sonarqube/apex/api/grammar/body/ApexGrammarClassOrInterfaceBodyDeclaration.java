@@ -31,6 +31,11 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarClassOrInterfaceBodyDeclaration {
 
+    /**
+     * The grammar of the empty body of a class is built.
+     * 
+     * @return Grammar built the body of a class.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
         grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is("");

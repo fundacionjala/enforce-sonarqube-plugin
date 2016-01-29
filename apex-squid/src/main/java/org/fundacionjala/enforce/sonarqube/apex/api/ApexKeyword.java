@@ -27,6 +27,9 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
+/**
+ * Enum save the keywords that are used throughout the squid module.
+ */
 public enum ApexKeyword implements TokenType, GrammarRuleKey {
 
     /**
@@ -50,6 +53,9 @@ public enum ApexKeyword implements TokenType, GrammarRuleKey {
     WITH("with"),
     WITHOUT("without");
 
+    /**
+     * Save the value with enums.
+     */
     private final String value;
 
     private ApexKeyword(String value) {

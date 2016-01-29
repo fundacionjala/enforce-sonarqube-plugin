@@ -34,9 +34,14 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarTypeDeclaration {
 
+    /**
+     * Grammar is created for the head of a class with the switch and whether it
+     * will extend or implement otherwise.
+     *
+     * @return The grammar for the type of class declaration.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-
         grammarBuilder.rule(LBRACE).is(LBRACE.getValue());
         grammarBuilder.rule(TYPE_DECLARATION).is(
                 ApexGrammarModifier.createGrammarBuilder().build().rule(MODIFIER),

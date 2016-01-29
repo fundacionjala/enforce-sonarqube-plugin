@@ -37,9 +37,13 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarKeyword {
 
+    /**
+     * The grammar for the use of rules with/without sharing.
+     *
+     * @return The grammar for a keyword.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-
         grammarBuilder.rule(WITH).is(WITH.getValue());
         grammarBuilder.rule(WITHOUT).is(WITHOUT.getValue());
         grammarBuilder.rule(SHARING).is(SHARING.getValue());

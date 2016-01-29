@@ -34,9 +34,13 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarModifier {
 
+    /**
+     * Grammar is created for a class modifier (lookahead or keyword).
+     *
+     * @return The grammar for the modifier.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-
         grammarBuilder.rule(LOOKAHEAD_KEYWORD).is(ApexGrammarLookahead.createGrammarBuilder().build().rule(LOOKAHEAD),
                 ApexGrammarKeyword.createGrammarBuilder().build().rule(KEYWORD));
         grammarBuilder.rule(MODIFIER).is(grammarBuilder.firstOf(

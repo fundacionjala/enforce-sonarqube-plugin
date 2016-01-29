@@ -38,9 +38,14 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammar {
 
+    /**
+     * It is the main method of grammar. Here all other grammars are
+     * constructed.
+     *
+     * @return The grammar of a class.
+     */
     public static Grammar createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-
         grammarBuilder.rule(END_CLASS).is(RBRACE.getValue());
         grammarBuilder.rule(APEX_GRAMMAR).is(
                 ApexGrammarTypeDeclaration.createGrammarBuilder().build().rule(TYPE_DECLARATION),
