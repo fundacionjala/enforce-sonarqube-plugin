@@ -23,28 +23,31 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_PATAMETERS;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
 /**
- * The class creates the rules of the body of an interface/class.
+ * The class creates the rules for the body of a method.
  */
-public class ApexGrammarClassOrInterfaceBodyDeclaration {
+public class ApexGrammarMethodDeclaration {
 
     /**
-     * The grammar of the empty body of a class is built.
-     * 
-     * @return Grammar built the body of a class.
+     * Create rules to the last line of the method and the completion of the
+     * method.
+     *
+     * @return The grammar of the method declaration.
      */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is(
-                ApexGrammarModifiers.createGrammarBuilder().build().rule(MODIFIERS),
-                ApexGrammarMethodDeclaration.createGrammarBuilder().build().rule(METHOD_DECLARATION)
+        grammarBuilder.rule(RBRACE).is(RBRACE.getValue());
+        grammarBuilder.rule(METHOD_DECLARATION).is(
+                ApexGrammarTypeParameters.createGrammarBuilder().build().rule(TYPE_PATAMETERS),
+                ApexGrammarResultType.createGrammarBuilder().build().rule(RESULT_TYPE),
+                RBRACE
         );
-        
         return grammarBuilder;
     }
 }

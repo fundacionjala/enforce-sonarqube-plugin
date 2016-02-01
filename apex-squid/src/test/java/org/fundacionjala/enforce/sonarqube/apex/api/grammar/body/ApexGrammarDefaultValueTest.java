@@ -23,28 +23,20 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DEFAULT_VALUE;
+import org.junit.Test;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- * The class creates the rules of the body of an interface/class.
- */
-public class ApexGrammarClassOrInterfaceBodyDeclaration {
+public class ApexGrammarDefaultValueTest {
 
-    /**
-     * The grammar of the empty body of a class is built.
-     * 
-     * @return Grammar built the body of a class.
-     */
-    public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is(
-                ApexGrammarModifiers.createGrammarBuilder().build().rule(MODIFIERS),
-                ApexGrammarMethodDeclaration.createGrammarBuilder().build().rule(METHOD_DECLARATION)
-        );
-        
-        return grammarBuilder;
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarDefaultValue.createGrammarBuilder();
+
+    @Test
+    public void positiveRulesMergeType() {
+        assertThat(grammarBuilder.build().rule(DEFAULT_VALUE))
+                .matches("")
+                .notMatches("_");
     }
+
 }

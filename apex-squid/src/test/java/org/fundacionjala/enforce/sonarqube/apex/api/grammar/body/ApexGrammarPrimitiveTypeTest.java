@@ -23,28 +23,27 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
+import org.junit.Test;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- * The class creates the rules of the body of an interface/class.
- */
-public class ApexGrammarClassOrInterfaceBodyDeclaration {
+public class ApexGrammarPrimitiveTypeTest {
 
-    /**
-     * The grammar of the empty body of a class is built.
-     * 
-     * @return Grammar built the body of a class.
-     */
-    public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is(
-                ApexGrammarModifiers.createGrammarBuilder().build().rule(MODIFIERS),
-                ApexGrammarMethodDeclaration.createGrammarBuilder().build().rule(METHOD_DECLARATION)
-        );
-        
-        return grammarBuilder;
+    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarPrimitiveType.createGrammarBuilder();
+
+    @Test
+    public void positiveRules() {
+        assertThat(grammarBuilder.build().rule(PRIMITIVE_TYPE))
+                .matches("boolean")
+                .matches("int")
+                .matches("short")
+                .matches("long")
+                .matches("char")
+                .matches("float")
+                .matches("byte")
+                .notMatches("Boolean")
+                .notMatches("Byte");
     }
+
 }

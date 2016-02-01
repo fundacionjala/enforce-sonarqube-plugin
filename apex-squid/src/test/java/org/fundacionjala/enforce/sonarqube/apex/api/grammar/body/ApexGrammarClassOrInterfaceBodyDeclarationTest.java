@@ -33,10 +33,11 @@ public class ApexGrammarClassOrInterfaceBodyDeclarationTest {
     private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarClassOrInterfaceBodyDeclaration.createGrammarBuilder();
 
     @Test
-    public void positiveRulesForClass() {
+    public void positiveRules() {
         assertThat(grammarBuilder.build().rule(CLASS_OR_INTERDACE_BODY_DECLARATION))
-                .matches("")
-                .notMatches("_");
+                .matches("publicbooleanMyMethod(){"
+                        + "returnboolean;"
+                        + "}");
     }
 
 }

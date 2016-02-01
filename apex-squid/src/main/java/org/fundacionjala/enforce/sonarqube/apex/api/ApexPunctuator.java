@@ -38,6 +38,9 @@ public enum ApexPunctuator implements TokenType, GrammarRuleKey {
      */
     LBRACE("{"),
     RBRACE("}"),
+    LPAREN("("),
+    RPAREN(")"),
+    SEMICOLON(";"),
     UNDERSCORE("_");
 
     /**

@@ -23,28 +23,22 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_PATAMETERS;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
 /**
- * The class creates the rules of the body of an interface/class.
+ * The class creates the rules for the parameters of a method..
  */
-public class ApexGrammarClassOrInterfaceBodyDeclaration {
+public class ApexGrammarTypeParameters {
 
     /**
-     * The grammar of the empty body of a class is built.
-     * 
-     * @return Grammar built the body of a class.
+     * It is responsible for building the rules for the body of a method.
+     *
+     * @return The grammar of the body of a method.
      */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is(
-                ApexGrammarModifiers.createGrammarBuilder().build().rule(MODIFIERS),
-                ApexGrammarMethodDeclaration.createGrammarBuilder().build().rule(METHOD_DECLARATION)
-        );
-        
+        grammarBuilder.rule(TYPE_PATAMETERS).is("");
         return grammarBuilder;
     }
 }
