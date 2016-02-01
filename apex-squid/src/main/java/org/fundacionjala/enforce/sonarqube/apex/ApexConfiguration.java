@@ -21,61 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import java.nio.charset.Charset;
+import org.sonar.squidbridge.api.SquidConfiguration;
 
 /**
- * Enum save the keywords that are used throughout the squid module.
+ * This class contains the configuration to create an AST.
  */
-public enum ApexKeyword implements TokenType, GrammarRuleKey {
+public class ApexConfiguration extends SquidConfiguration {
 
     /**
-     * RESERVED WORDS AND LITERALS.
+     * Represents a value to ignore header comments
      */
-    ABSTRACT("abstract"),
-    ANOTATION("anotation"),
-    CLASS("class"),
-    FINAL("final"),
-    INTERFACE("interface"),
-    NATIVE("native"),
-    NEW("new"),
-    PRIVATE("private"),
-    PROTECTED("protected"),
-    PUBLIC("public"),
-    SHARING("sharing"),
-    STATIC("static"),
-    STRICTFP("strictfp"),
-    SYNCHRONIZED("synchronized"),
-    TRANSIENT("transient"),
-    VOLATILE("volatile"),
-    WITH("with"),
-    WITHOUT("without");
+    private boolean ignoreHeaderComments;
 
     /**
-     * Save the value with enums.
+     * Default constructor that requires charset.
+     *
+     * @param charset
      */
-    private final String value;
-
-    private ApexKeyword(String value) {
-        this.value = value;
+    public ApexConfiguration(Charset charset) {
+        super(charset);
     }
 
-    @Override
-    public String getName() {
-        return name();
+    /**
+     * Returns ignore header comments.
+     *
+     * @return
+     */
+    public boolean getIgnoreHeaderComments() {
+        return ignoreHeaderComments;
     }
 
-    @Override
-    public String getValue() {
-        return value;
+    /**
+     * Sets ignore header comments.
+     *
+     * @param ignoreHeaderComments to be set.
+     */
+    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
+        this.ignoreHeaderComments = ignoreHeaderComments;
     }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
-    }
-
 }

@@ -24,14 +24,15 @@
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.body.ApexGrammarClassOrInterfaceBodyDeclaration;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.head.ApexGrammarTypeDeclaration;
+import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.END_CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.body.ApexGrammarClassOrInterfaceBodyDeclaration;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.head.ApexGrammarTypeDeclaration;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
 /**
  * This class unites all the rules you need a class.
@@ -45,7 +46,7 @@ public class ApexGrammar {
      * @return The grammar of a class.
      */
     public static Grammar createGrammarBuilder() {
-        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
+        LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
         grammarBuilder.rule(END_CLASS).is(RBRACE.getValue());
         grammarBuilder.rule(APEX_GRAMMAR).is(
                 ApexGrammarTypeDeclaration.createGrammarBuilder().build().rule(TYPE_DECLARATION),
@@ -53,6 +54,7 @@ public class ApexGrammar {
                 .build().rule(CLASS_OR_INTERDACE_BODY_DECLARATION),
                 END_CLASS
         );
+        grammarBuilder.setRootRule(APEX_GRAMMAR);
         return grammarBuilder.build();
     }
 }

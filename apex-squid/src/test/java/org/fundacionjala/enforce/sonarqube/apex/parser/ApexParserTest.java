@@ -39,7 +39,7 @@ import org.sonar.sslr.tests.ParsingResultComparisonFailure;
 public class ApexParserTest {
 
     private static final String NEW_LINE = "\n";
-    private String ArticleControllerTestSource;
+    private String articleControllerTestSource;
     private String draftArticleSource;
     private String articleSource;
     private Parser parser;
@@ -47,7 +47,7 @@ public class ApexParserTest {
     @Before
     public void setup() throws IOException {
         parser = ApexParser.create(new ApexConfiguration(Charsets.UTF_8));
-        ArticleControllerTestSource = readSource("src/test/resources/parser/ArticleControllerTest.cls");
+        articleControllerTestSource = readSource("src/test/resources/parser/ArticleControllerTest.cls");
         draftArticleSource = readSource("src/test/resources/parser/DraftArticle.cls");
         articleSource = readSource("src/test/resources/parser/Article.cls");
     }
@@ -62,13 +62,13 @@ public class ApexParserTest {
         new ParserAssert(parser)
                 .matches(articleSource)
                 .matches(draftArticleSource)
-                .notMatches(ArticleControllerTestSource);
+                .notMatches(articleControllerTestSource);
     }
 
     @Test(expected = ParsingResultComparisonFailure.class)
     public void testThrowingAnExceptionWhenParsesAnIlegibleClass() {
         new ParserAssert(parser)
-                .matches(ArticleControllerTestSource);
+                .matches(articleControllerTestSource);
     }
 
     private String readSource(String path) throws IOException {
