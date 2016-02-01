@@ -39,6 +39,11 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarPrimitiveType {
 
+    /**
+     * Create rules for the primitive values of a class.
+     *
+     * @return The grammar of the primitive data types of a class.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
         grammarBuilder.rule(BOOLEAN).is(BOOLEAN.getValue());

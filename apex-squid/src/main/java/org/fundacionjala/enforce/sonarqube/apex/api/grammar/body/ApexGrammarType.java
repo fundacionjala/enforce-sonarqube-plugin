@@ -32,9 +32,14 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarType {
 
+    /**
+     * It is responsible for building the rules for the different types of
+     * return of a method.
+     *
+     * @return The grammar of the return type of a method.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-
         grammarBuilder.rule(TYPE).is(
                 ApexGrammarPrimitiveType.createGrammarBuilder().build().rule(PRIMITIVE_TYPE)
         );

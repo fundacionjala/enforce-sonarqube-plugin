@@ -33,13 +33,16 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarTypeClass {
 
+    /**
+     * Grammar is created to identify if a class or interface.
+     *
+     * @return Grammar class type..
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
         grammarBuilder.rule(CLASS).is(CLASS.getValue());
         grammarBuilder.rule(INTERFACE).is(INTERFACE.getValue());
-
         grammarBuilder.rule(TYPE_CLASS).is(grammarBuilder.firstOf(CLASS, INTERFACE));
-
         return grammarBuilder;
     }
 }

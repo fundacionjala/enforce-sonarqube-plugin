@@ -31,6 +31,11 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarTypeParameters {
 
+    /**
+     * It is responsible for building the rules for the body of a method.
+     *
+     * @return The grammar of the body of a method.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
         grammarBuilder.rule(TYPE_PATAMETERS).is("");

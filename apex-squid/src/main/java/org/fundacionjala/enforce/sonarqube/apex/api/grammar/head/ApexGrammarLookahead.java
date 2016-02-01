@@ -44,9 +44,13 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarLookahead {
 
+    /**
+     * Grammar for different access modifiers of a class is created..
+     *
+     * @return The grammar for a lookahead.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-
         grammarBuilder.rule(PUBLIC).is(PUBLIC.getValue());
         grammarBuilder.rule(STATIC).is(STATIC.getValue());
         grammarBuilder.rule(PROTECTED).is(PROTECTED.getValue());
@@ -59,7 +63,6 @@ public class ApexGrammarLookahead {
         grammarBuilder.rule(VOLATILE).is(VOLATILE.getValue());
         grammarBuilder.rule(STRICTFP).is(STRICTFP.getValue());
         grammarBuilder.rule(ANOTATION).is(ANOTATION.getValue());
-
         grammarBuilder.rule(LOOKAHEAD).is(grammarBuilder.firstOf(
                 PUBLIC,
                 STATIC,
@@ -73,7 +76,6 @@ public class ApexGrammarLookahead {
                 VOLATILE,
                 STRICTFP,
                 ANOTATION));
-
         return grammarBuilder;
     }
 }

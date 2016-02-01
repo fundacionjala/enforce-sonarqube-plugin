@@ -34,6 +34,12 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarMethodDeclaration {
 
+    /**
+     * Create rules to the last line of the method and the completion of the
+     * method.
+     *
+     * @return The grammar of the method declaration.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
         grammarBuilder.rule(RBRACE).is(RBRACE.getValue());

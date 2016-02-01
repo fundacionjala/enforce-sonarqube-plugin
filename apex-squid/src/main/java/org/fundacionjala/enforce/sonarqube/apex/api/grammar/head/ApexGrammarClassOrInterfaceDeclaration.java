@@ -38,6 +38,13 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarClassOrInterfaceDeclaration {
 
+    /**
+     * Grammar for the declaration of a class or interface is constructed.
+     * Composed of the rules of a class type, its identified, extends, and
+     * implements.
+     *
+     * @return grammar built for the declaration of an interface or class.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
         grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS).is(grammarBuilder.optional(

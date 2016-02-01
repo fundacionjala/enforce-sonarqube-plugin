@@ -33,9 +33,13 @@ public class ApexGrammarDefaultValue {
 
     private final static String RULE_DEFAULT_VALUE = "";
 
+    /**
+     * Create rules for securities that receives a method.
+     *
+     * @return The grammar of the default value.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-
         grammarBuilder.rule(DEFAULT_VALUE).is(RULE_DEFAULT_VALUE);
         return grammarBuilder;
     }

@@ -34,15 +34,20 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IDENT
  */
 public class ApexGrammarExtendsList {
 
-    private final static String RULE_EXTENDS = "extends";
-    private final static String RULE_EMPTY = "";
+    private final static String RULE_EXTENDS_KEYWORD = "extends";
+    private final static String RULE_EMPTY_KEYWORD = "";
 
+    /**
+     * Grammar is created to extend another class or just skip.
+     *
+     * @return The grammar to extend a class.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(EXTENDS).is(RULE_EXTENDS);
+        grammarBuilder.rule(EXTENDS).is(RULE_EXTENDS_KEYWORD);
         grammarBuilder.rule(MERGE_TYPE_EXTENDS).is(EXTENDS, ApexGrammarIdentifier.createGrammarBuilder().build()
                 .rule(IDENTIFIER));
-        grammarBuilder.rule(EXTENDS_LIST).is(grammarBuilder.firstOf(MERGE_TYPE_EXTENDS, RULE_EMPTY));
+        grammarBuilder.rule(EXTENDS_LIST).is(grammarBuilder.firstOf(MERGE_TYPE_EXTENDS, RULE_EMPTY_KEYWORD));
         return grammarBuilder;
     }
 }

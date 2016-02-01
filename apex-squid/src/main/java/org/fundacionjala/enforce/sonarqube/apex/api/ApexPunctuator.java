@@ -27,6 +27,10 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
+/**
+ * The enum tokens and GrammarRuleKey handles of punctuation for the Squid
+ * module.
+ */
 public enum ApexPunctuator implements TokenType, GrammarRuleKey {
 
     /**
@@ -39,6 +43,9 @@ public enum ApexPunctuator implements TokenType, GrammarRuleKey {
     SEMICOLON(";"),
     UNDERSCORE("_");
 
+    /**
+     * Save the value of each enum.
+     */
     private final String value;
 
     private ApexPunctuator(String value) {
@@ -56,7 +63,7 @@ public enum ApexPunctuator implements TokenType, GrammarRuleKey {
     }
 
     @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
+    public boolean hasToBeSkippedFromAst(AstNode node) {
         return Boolean.FALSE;
     }
 }

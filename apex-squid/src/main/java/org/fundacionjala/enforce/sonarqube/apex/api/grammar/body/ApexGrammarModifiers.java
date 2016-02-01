@@ -41,9 +41,13 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_
  */
 public class ApexGrammarModifiers {
 
+    /**
+     * Create rules for the header of a method.
+     *
+     * @return The grammar of modifiers.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-
         grammarBuilder.rule(LPAREN).is(LPAREN.getValue());
         grammarBuilder.rule(RPAREN).is(RPAREN.getValue());
         grammarBuilder.rule(LBRACE).is(LBRACE.getValue());

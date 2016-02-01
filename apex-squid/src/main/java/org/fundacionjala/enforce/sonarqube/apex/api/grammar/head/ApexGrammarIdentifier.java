@@ -35,17 +35,22 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IDENT
  */
 public class ApexGrammarIdentifier {
 
-    private final static String RULE_CHAR = "[A-Za-z]";
-    private final static String RULE_BODY_IDENTIFIER = "[A-Za-z0-9_]*";
-    
+    private final static String RULE_CHAR_PATTERN_KEYWORD = "[A-Za-z]";
+    private final static String RULE_BODY_IDENTIFIER_PATTERN_KEYWORD = "[A-Za-z0-9_]*";
+
+    /**
+     * Grammar for a class identifier (name) is created.
+     *
+     * @return The grammar for the identifier.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(CHAR).is(grammarBuilder.regexp(RULE_CHAR));
+        grammarBuilder.rule(CHAR).is(grammarBuilder.regexp(RULE_CHAR_PATTERN_KEYWORD));
         grammarBuilder.rule(UNDERSCORE).is(UNDERSCORE.getValue());
         grammarBuilder.rule(INIT_IDENTIFIER).is(grammarBuilder.firstOf(
                 CHAR,
                 UNDERSCORE));
-        grammarBuilder.rule(BODY_IDENTIFIER).is(grammarBuilder.regexp(RULE_BODY_IDENTIFIER));
+        grammarBuilder.rule(BODY_IDENTIFIER).is(grammarBuilder.regexp(RULE_BODY_IDENTIFIER_PATTERN_KEYWORD));
         grammarBuilder.rule(IDENTIFIER).is(INIT_IDENTIFIER, BODY_IDENTIFIER);
         return grammarBuilder;
     }

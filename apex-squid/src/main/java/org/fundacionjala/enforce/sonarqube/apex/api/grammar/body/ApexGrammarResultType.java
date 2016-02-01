@@ -38,6 +38,11 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
  */
 public class ApexGrammarResultType {
 
+    /**
+     * Create rules for the return of a method and its value.
+     *
+     * @return The return of the result grammar.
+     */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
         grammarBuilder.rule(VOID).is(VOID.getValue());
