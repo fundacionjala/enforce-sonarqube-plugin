@@ -1,19 +1,10 @@
 public       with
-    sharing         class DraftArticle {
+    sharing         
+
+
+            class DraftArticle extends AbstractArticle {
 
 
 
-  public DraftArticle(        )
-
-  {
-    Account      a=         new Account();
-    a.price__c          = 
-                'value';
-
-
-
-
-
-            }
     
 }

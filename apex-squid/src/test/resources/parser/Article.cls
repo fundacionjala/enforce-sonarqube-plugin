@@ -1,9 +1,4 @@
-public with sharing class Article {
+public with sharing class Article implements IArticle {
 
-  public Article()
-  {
-    Account a = new Account();
-    a.price__c = 'value';
-  }
 
 }

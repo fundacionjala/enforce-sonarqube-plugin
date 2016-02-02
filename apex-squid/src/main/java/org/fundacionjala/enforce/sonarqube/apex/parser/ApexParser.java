@@ -37,7 +37,7 @@ public class ApexParser {
         if (conf == null) {
             throw new IllegalArgumentException(ERROR_MESSAGE);
         }
-        return Parser.builder(ApexGrammar.createGrammarBuilder())
+        return Parser.builder(ApexGrammar.create())
                 .withLexer(ApexLexer.create(conf)).build();
     }
 }
