@@ -24,37 +24,24 @@
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarTest {
+public class ApexGrammarResultTypeTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create();
-
-    @Test
-    public void correctRuleBasic() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicclassMyClass{publicbooleanMyMethod(){returnboolean;}}");
-    }
+    private final Grammar grammarBuilder = ApexGrammar.createGrammarBuilder();
 
     @Test
-    public void correctRuleMoreImplements() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicwithsharingclassClass1implementsYourClass{"
-                        + "publicintMyMethod(){"
-                        + "returnint;"
-                        + "}"
-                        + "}");
+    public void positiveRules() {
+        assertThat(grammarBuilder.rule(RESULT_TYPE))
+                .matches("returnnull;")
+                .matches("returnint;")
+                .matches("returnvoid;")
+                .matches("returnboolean;")
+                .notMatches("retur nnull;")
+                .notMatches("Returnnull;")
+                .notMatches("returnNull;");
     }
 
-    @Test
-    public void correctRuleMoreExtends() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicwithsharingclassClass1extendsYourClass{"
-                        + "publiccharMyMethod(){"
-                        + "returnnull;"
-                        + "}"
-                        + "}");
-    }
 }
