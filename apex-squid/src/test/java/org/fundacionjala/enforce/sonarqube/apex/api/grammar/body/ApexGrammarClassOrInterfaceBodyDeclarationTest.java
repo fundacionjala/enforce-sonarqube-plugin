@@ -23,10 +23,10 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
 import org.junit.Test;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
 
 public class ApexGrammarClassOrInterfaceBodyDeclarationTest {
 
@@ -34,7 +34,7 @@ public class ApexGrammarClassOrInterfaceBodyDeclarationTest {
 
     @Test
     public void positiveRulesForClass() {
-        assertThat(grammarBuilder.build().rule(CLASS_OR_INTERDACE_BODY_DECLARATION))
+        assertThat(grammarBuilder.build().rule(CLASS_OR_INTERFACE_BODY_DECLARATION))
                 .matches("")
                 .notMatches("_");
     }

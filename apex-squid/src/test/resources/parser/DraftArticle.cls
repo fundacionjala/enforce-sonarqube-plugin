@@ -5,6 +5,8 @@ public       with
             class DraftArticle extends AbstractArticle {
 
 
-
+    public      int     MyMethod() {
+        return                          int;
+                        }
     
 }

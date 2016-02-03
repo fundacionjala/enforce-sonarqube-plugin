@@ -23,8 +23,8 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
 
 /**
  * The class creates the rules of the body of an interface/class.
@@ -38,7 +38,7 @@ public class ApexGrammarClassOrInterfaceBodyDeclaration {
      */
     public static LexerlessGrammarBuilder createGrammarBuilder() {
         LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is("");
+        grammarBuilder.rule(CLASS_OR_INTERFACE_BODY_DECLARATION).is("");
 
         return grammarBuilder;
     }

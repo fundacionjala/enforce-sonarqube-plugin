@@ -23,7 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_EXTENDS;
