@@ -30,7 +30,7 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void correctRuleBasic() {

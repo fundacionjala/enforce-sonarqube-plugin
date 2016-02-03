@@ -24,17 +24,17 @@
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
 
 public class ApexGrammarClassOrInterfaceBodyDeclarationTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION))
+        assertThat(grammarBuilder.rule(CLASS_OR_INTERFACE_BODY_DECLARATION))
                 .matches("publicbooleanMyMethod(){"
                         + "returnboolean;"
                         + "}");
