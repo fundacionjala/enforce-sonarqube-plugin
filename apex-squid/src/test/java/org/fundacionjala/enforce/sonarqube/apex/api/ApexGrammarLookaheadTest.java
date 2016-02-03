@@ -21,20 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import com.sonar.sslr.api.Grammar;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD;
 import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarLookaheadTest {
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarLookahead.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveBasicRules() {
-        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.rule(LOOKAHEAD))
                 .matches("static")
                 .matches("public")
                 .matches("final")
@@ -49,7 +49,7 @@ public class ApexGrammarLookaheadTest {
 
     @Test
     public void negativeBasicRulesSpaceAtTheInitAndEndLoockhead() {
-        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.rule(LOOKAHEAD))
                 .notMatches("    ")
                 .notMatches(" static ")
                 .notMatches(" public ")
@@ -65,7 +65,7 @@ public class ApexGrammarLookaheadTest {
 
     @Test
     public void negativeRules() {
-        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.rule(LOOKAHEAD))
                 .notMatches(" _ ")
                 .notMatches("P static")
                 .notMatches(" public_")

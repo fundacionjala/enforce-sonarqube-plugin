@@ -21,59 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import com.sonar.sslr.api.Grammar;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDES_OR_IMPLEMENTS;
 import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarClassOrInterfaceDeclarationTest {
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarClassOrInterfaceDeclaration.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRulesExtends() {
-        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
                 .matches("extendsYourClass")
-                .matches("extends_YourClass");
+                .matches("extendsYourClass");
     }
 
     @Test
     public void negativeRulesExtends() {
-        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
                 .notMatches("_extendsYourClass")
                 .notMatches(" Extends _YourClass ");
     }
 
     @Test
     public void positiveRulesImplements() {
-        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
                 .matches("implementsYourClass")
-                .matches("implements_YourClass");
+                .matches("implementsYourClass");
     }
 
     @Test
     public void negativeRulesImplements() {
-        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
                 .notMatches("ImplementsYourClass")
                 .notMatches("_implements_YourClass");
     }
 
     @Test
     public void positiveRulesExtendsOrImplements() {
-        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
                 .matches("")
                 .matches("implementsYourClass")
-                .matches("implements_MyClass")
+                .matches("implementsMyClass")
                 .matches("extendsYourClass")
-                .matches("extends_MyClass");
+                .matches("extendsMyClass");
     }
 
     @Test
     public void negativeRulesExtendsOrImplements() {
-        assertThat(grammarBuilder.build().rule(EXTENDES_OR_IMPLEMENTS))
+        assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
                 .notMatches("_")
                 .notMatches("Implements YourClass")
                 .notMatches("_implements MyClass")
@@ -83,7 +83,7 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.build().rule(CLASS_OR_INTERFACE_DECLARATION))
+        assertThat(grammarBuilder.rule(CLASS_OR_INTERFACE_DECLARATION))
                 .matches("classMyClass")
                 .matches("interfaceMyClass")
                 .matches("classMyClassextendsYourClass")
@@ -94,7 +94,7 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
 
     @Test
     public void negativeRules() {
-        assertThat(grammarBuilder.build().rule(CLASS_OR_INTERFACE_DECLARATION))
+        assertThat(grammarBuilder.rule(CLASS_OR_INTERFACE_DECLARATION))
                 .notMatches("class1MyClass")
                 .notMatches("InterfaceMyClass")
                 .notMatches("_classMyClassextendsYourClass")

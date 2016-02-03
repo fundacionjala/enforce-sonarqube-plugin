@@ -21,57 +21,57 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import com.sonar.sslr.api.Grammar;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITHOUT_SHARING;
 import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarKeywordTest {
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarKeyword.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveBasicRulesWith() {
-        assertThat(grammarBuilder.build().rule(WITH))
+        assertThat(grammarBuilder.rule(WITH))
                 .matches("with")
                 .notMatches("without");
     }
 
     @Test
     public void positiveBasicRulesWithout() {
-        assertThat(grammarBuilder.build().rule(WITHOUT))
+        assertThat(grammarBuilder.rule(WITHOUT))
                 .matches("without")
                 .notMatches("with");
     }
 
     @Test
     public void positiveBasicRulesSharing() {
-        assertThat(grammarBuilder.build().rule(WITHOUT))
+        assertThat(grammarBuilder.rule(WITHOUT))
                 .matches("without")
                 .notMatches("with");
     }
 
     @Test
     public void positiveBasicRulesWithoutSharing() {
-        assertThat(grammarBuilder.build().rule(WITHOUT_SHARING))
+        assertThat(grammarBuilder.rule(WITHOUT_SHARING))
                 .matches("withoutsharing");
     }
 
     @Test
     public void positiveBasicRules() {
-        assertThat(grammarBuilder.build().rule(KEYWORD))
+        assertThat(grammarBuilder.rule(KEYWORD))
                 .matches("withsharing")
                 .matches("withoutsharing");
     }
 
     @Test
     public void negativeRules() {
-        assertThat(grammarBuilder.build().rule(KEYWORD))
+        assertThat(grammarBuilder.rule(KEYWORD))
                 .notMatches(" ? ")
                 .notMatches("_with sharing ")
                 .notMatches("_with_sharing ")

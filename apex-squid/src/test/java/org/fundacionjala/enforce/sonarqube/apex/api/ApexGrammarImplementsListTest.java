@@ -21,30 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
+import com.sonar.sslr.api.Grammar;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_IMPLEMENTS;
 import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarTypeClassTest {
+public class ApexGrammarImplementsListTest {
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarTypeClass.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
-    public void checkingRules() {
-        assertThat(grammarBuilder.build().rule(TYPE_CLASS))
-                .matches("class")
-                .matches("interface")
-                .notMatches(" class")
-                .notMatches("class ")
-                .notMatches(" class ")
-                .notMatches(" interface")
-                .notMatches("interface ")
-                .notMatches(" interface ")
-                .notMatches("Class")
-                .notMatches("Interface");
+    public void positiveRulesMergeType() {
+        assertThat(grammarBuilder.rule(MERGE_TYPE_IMPLEMENTS))
+                .matches("implementsMyClass")
+                .matches("implementsMyClass1");
+    }
+
+    @Test
+    public void negativeRulesMegeType() {
+        assertThat(grammarBuilder.rule(MERGE_TYPE_IMPLEMENTS))
+                .notMatches("_implementsMyClass")
+                .notMatches(" Implements_MyClass1")
+                .notMatches("=implements_MyClass1");
+    }
+
+    @Test
+    public void positiveRules() {
+        assertThat(grammarBuilder.rule(IMPLEMENTS_LIST))
+                .matches("implementsMyClass")
+                .matches("implementsMyClass1");
     }
 
 }

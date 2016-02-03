@@ -21,20 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import com.sonar.sslr.api.Grammar;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
 import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarTypeDeclarationTest {
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarTypeDeclaration.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRulesForClass() {
-        assertThat(grammarBuilder.build().rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.rule(TYPE_DECLARATION))
                 .matches("publicclassMyClass{")
                 .matches("publicwithsharingclassMyClass{")
                 .matches("privatewithoutsharingclassMyClass{")
@@ -48,7 +48,7 @@ public class ApexGrammarTypeDeclarationTest {
 
     @Test
     public void negativeRulesForClass() {
-        assertThat(grammarBuilder.build().rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.rule(TYPE_DECLARATION))
                 .notMatches("Class MyClass {")
                 .notMatches("publicstaticclassMyClass{")
                 .notMatches("public_classwithsharingclassMyClass{")
@@ -63,7 +63,7 @@ public class ApexGrammarTypeDeclarationTest {
 
     @Test
     public void positiveRulesForInterface() {
-        assertThat(grammarBuilder.build().rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.rule(TYPE_DECLARATION))
                 .matches("publicinterfaceMyClass{")
                 .matches("publicwithsharinginterfaceMyClass{")
                 .matches("privatewithoutsharinginterfaceMyClass{")
@@ -77,7 +77,7 @@ public class ApexGrammarTypeDeclarationTest {
 
     @Test
     public void negativeRulesForInterface() {
-        assertThat(grammarBuilder.build().rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.rule(TYPE_DECLARATION))
                 .notMatches("Interface MyClass {")
                 .notMatches("publicstatic interface MyClass {")
                 .notMatches("public  interface  with sharing class MyClass {")

@@ -21,39 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_IMPLEMENTS;
+import com.sonar.sslr.api.Grammar;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
 import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_EXTENDS;
 
-public class ApexGrammarImplementsListTest {
+public class ApexGrammarExtendsListTest {
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarImplementsList.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRulesMergeType() {
-        assertThat(grammarBuilder.build().rule(MERGE_TYPE_IMPLEMENTS))
-                .matches("implementsMyClass")
-                .matches("implements_MyClass1");
+        assertThat(grammarBuilder.rule(MERGE_TYPE_EXTENDS))
+                .matches("extendsMyClass")
+                .matches("extendsMyClass1");
     }
 
     @Test
-    public void negativeRulesMegeType() {
-        assertThat(grammarBuilder.build().rule(MERGE_TYPE_IMPLEMENTS))
-                .notMatches("_implementsMyClass")
-                .notMatches(" Implements_MyClass1")
-                .notMatches("=implements_MyClass1");
+    public void negativeRulesMergeType() {
+        assertThat(grammarBuilder.rule(MERGE_TYPE_EXTENDS))
+                .notMatches("extendMyClass")
+                .notMatches("Extends _MyClass1")
+                .notMatches("_extends_MyClass1");
     }
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.build().rule(IMPLEMENTS_LIST))
-                .matches("implementsMyClass")
-                .matches("implements_MyClass1")
-                .matches("");
+        assertThat(grammarBuilder.rule(EXTENDS_LIST))
+                .matches("extendsMyClass")
+                .matches("extendsMyClass1");
     }
 
 }
