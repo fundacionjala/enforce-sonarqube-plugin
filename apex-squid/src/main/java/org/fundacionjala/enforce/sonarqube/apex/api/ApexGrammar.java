@@ -27,26 +27,42 @@ import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import com.sonar.sslr.api.Grammar;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ANOTATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BOOLEAN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BYTE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CHAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DOUBLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FLOAT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LONG;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NATIVE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PROTECTED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PUBLIC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHORT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STRICTFP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SYNCHRONIZED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DEFAULT_VALUE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.END_CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDES_OR_IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS;
@@ -58,9 +74,16 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKA
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_IMPLEMENTS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_METHOD;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_PATAMETERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITHOUT_SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITH_SHARING;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.body.ApexGrammarClassOrInterfaceBodyDeclaration;
@@ -92,6 +115,14 @@ public class ApexGrammar {
                 END_CLASS
         );
 
+        typeParameters(grammarBuilder);
+        type(grammarBuilder);
+        resultType(grammarBuilder);
+        primitiveType(grammarBuilder);
+        modifiers(grammarBuilder);
+        methodDeclaration(grammarBuilder);
+        defaultValue(grammarBuilder);
+        classOrInterfaceBodyDeclaration(grammarBuilder);
         typeClass(grammarBuilder);
         extendsList(grammarBuilder);
         implementsList(grammarBuilder);
@@ -255,5 +286,128 @@ public class ApexGrammar {
                 grammarBuilder.firstOf(CLASS,
                         INTERFACE)
         );
+    }
+
+    //BODY CLASS
+    /**
+     * The grammar of the empty body of a class is built.
+     *
+     * @param grammarBuilder lexerfullGrammarBuilder parameter.
+     */
+    public static void classOrInterfaceBodyDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is(
+                MODIFIERS,
+                METHOD_DECLARATION
+        );
+    }
+
+    /**
+     * The grammar of the empty body of a class is built.
+     *
+     * @param grammarBuilder lexerfullGrammarBuilder parameter.
+     */
+    public static void defaultValue(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DEFAULT_VALUE).is(RULE_EMPTY_KEYWORD);
+    }
+
+    /**
+     * Creates rules to the last line of the method and the completion of the
+     * method.
+     *
+     * @param grammarBuilder lexerfullGrammarBuilder parameter.
+     */
+    public static void methodDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RBRACE).is(RBRACE.getValue());
+        grammarBuilder.rule(METHOD_DECLARATION).is(
+                TYPE_PATAMETERS,
+                RESULT_TYPE,
+                RBRACE
+        );
+    }
+
+    /**
+     * Creates rules for the header of a method.
+     *
+     * @param grammarBuilder lexerfullGrammarBuilder parameter.
+     */
+    public static void modifiers(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(LPAREN).is(LPAREN.getValue());
+        grammarBuilder.rule(RPAREN).is(RPAREN.getValue());
+        grammarBuilder.rule(LBRACE).is(LBRACE.getValue());
+        grammarBuilder.rule(TYPE_METHOD).is(TYPE);
+        grammarBuilder.rule(MODIFIERS).is(
+                LOOKAHEAD,
+                TYPE_METHOD,
+                IDENTIFIER,
+                LPAREN,
+                DEFAULT_VALUE,
+                RPAREN,
+                LBRACE
+        );
+    }
+
+    /**
+     * Creates rules for the primitive values of a class.
+     *
+     * @param grammarBuilder lexerfullGrammarBuilder parameter.
+     */
+    public static void primitiveType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(BOOLEAN).is(BOOLEAN.getValue());
+        grammarBuilder.rule(CHAR).is(CHAR.getValue());
+        grammarBuilder.rule(BYTE).is(BYTE.getValue());
+        grammarBuilder.rule(SHORT).is(SHORT.getValue());
+        grammarBuilder.rule(INT).is(INT.getValue());
+        grammarBuilder.rule(LONG).is(LONG.getValue());
+        grammarBuilder.rule(FLOAT).is(FLOAT.getValue());
+        grammarBuilder.rule(DOUBLE).is(DOUBLE.getValue());
+        grammarBuilder.rule(PRIMITIVE_TYPE).is(grammarBuilder.firstOf(BOOLEAN,
+                CHAR,
+                BYTE,
+                SHORT,
+                INT,
+                LONG,
+                FLOAT,
+                DOUBLE)
+        );
+    }
+
+    /**
+     * Creates rules for the return of a method and its value.
+     *
+     * @param grammarBuilder lexerfullGrammarBuilder parameter.
+     */
+    public static void resultType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(VOID).is(VOID.getValue());
+        grammarBuilder.rule(NULL).is(NULL.getValue());
+        grammarBuilder.rule(RETURN).is(RETURN.getValue());
+        grammarBuilder.rule(SEMICOLON).is(SEMICOLON.getValue());
+        grammarBuilder.rule(TYPE_METHOD).is(TYPE);
+        grammarBuilder.rule(RESULT_TYPE).is(
+                RETURN,
+                grammarBuilder.firstOf(
+                        VOID,
+                        TYPE_METHOD,
+                        NULL),
+                SEMICOLON
+        );
+    }
+
+    /**
+     * It is responsible for building the rules for the different types of
+     * return of a method.
+     *
+     * @param grammarBuilder lexerfullGrammarBuilder parameter.
+     */
+    public static void type(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(TYPE).is(PRIMITIVE_TYPE);
+    }
+
+    /**
+     * It is responsible for building the rules for the body of a method.
+     *
+     * @param grammarBuilder lexerfullGrammarBuilder parameter.
+     */
+    public static void typeParameters(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(TYPE_PATAMETERS).is(RULE_EMPTY_KEYWORD);
     }
 }

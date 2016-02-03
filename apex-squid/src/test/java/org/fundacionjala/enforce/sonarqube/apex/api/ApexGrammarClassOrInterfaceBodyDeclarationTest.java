@@ -21,44 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import com.sonar.sslr.api.Grammar;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
+import org.junit.Test;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- * Contains enum all the rules used in the grammar.
- */
-public enum RuleKey implements GrammarRuleKey {
+public class ApexGrammarClassOrInterfaceBodyDeclarationTest {
 
-    APEX_GRAMMAR,
-    BODY_IDENTIFIER,
-    CHAR,
-    CLASS_OR_INTERDACE_BODY_DECLARATION,
-    CLASS_OR_INTERFACE_DECLARATION,
-    DEFAULT_VALUE,
-    END_CLASS,
-    EXTENDS,
-    EXTENDS_LIST,
-    EXTENDES_OR_IMPLEMENTS,
-    IDENTIFIER,
-    IMPLEMENTS,
-    IMPLEMENTS_LIST,
-    INIT_IDENTIFIER,
-    KEYWORD,
-    LOOKAHEAD,
-    LOOKAHEAD_KEYWORD,
-    MERGE_TYPE_EXTENDS,
-    MERGE_TYPE_IMPLEMENTS,
-    METHOD_DECLARATION,
-    MODIFIER,
-    MODIFIERS,
-    PRIMITIVE_TYPE,
-    TYPE,
-    TYPE_CLASS,
-    TYPE_DECLARATION,
-    TYPE_METHOD,
-    TYPE_PATAMETERS,
-    RESULT_TYPE,
-    WITH_SHARING,
-    WITHOUT_SHARING;
+    private final Grammar grammarBuilder = ApexGrammar.createGrammarBuilder();
+
+    @Test
+    public void positiveRules() {
+        assertThat(grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION))
+                .matches("publicbooleanMyMethod(){"
+                        + "returnboolean;"
+                        + "}");
+    }
+
 }
