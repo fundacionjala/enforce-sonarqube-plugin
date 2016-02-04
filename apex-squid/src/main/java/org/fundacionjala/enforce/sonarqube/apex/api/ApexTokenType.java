@@ -26,6 +26,9 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
 
+/**
+ * Enum save a custom type of Apex.
+ */
 public enum ApexTokenType implements TokenType {
 
     STRING,

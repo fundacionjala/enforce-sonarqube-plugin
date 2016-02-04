@@ -48,12 +48,12 @@ import org.sonar.sslr.internal.vm.lexerful.TokenValueExpression;
 public class ApexGrammarBuilder {
 
     /**
-     * Error message when failing parser.
+     * Stores a error message when failing parser.
      */
     private static final String PARSING_ERROR_MESSAGE = "Incorrect type of parsing expression: %s";
 
     /**
-     * Error message when rule is null.
+     * Stores a error message when rule is null.
      */
     private static final String RULE_ERROR_MESSAGE = "Rules can't be null";
 
@@ -63,10 +63,9 @@ public class ApexGrammarBuilder {
     private final Map<GrammarRuleKey, ParsingExpression> mapRules;
 
     /**
-     * Represents a state of grammar required. true -> LexerfulGrammarBuilder. false ->
-     * LexerlessGrammarBuilder.
+     * Defines the current grammar type which is being used.
      */
-    private final boolean fulGrammar;
+    private final boolean isFulGrammar;
 
     /**
      * Represents a current rule.
@@ -79,23 +78,22 @@ public class ApexGrammarBuilder {
     private GrammarRuleKey rootRule;
 
     /**
-     * Static method when built a ApexGrammar.
+     * Create a apex grammar builder.
      *
-     * @param fulGrammar represents the type of grammar builder required.
-     *
+     * @param isFulGrammar represents the type of grammar builder required.
      * @return a ApexGramamrBuilder.
      */
-    public static ApexGrammarBuilder create(boolean fulGrammar) {
-        return new ApexGrammarBuilder(fulGrammar);
+    public static ApexGrammarBuilder create(boolean isFulGrammar) {
+        return new ApexGrammarBuilder(isFulGrammar);
     }
 
     /**
      * Default constructor that initialize variables.
      *
-     * @param fulGrammar represents the type of grammar builder required.
+     * @param isFulGrammar represents the type of grammar builder required.
      */
-    private ApexGrammarBuilder(boolean fulGrammar) {
-        this.fulGrammar = fulGrammar;
+    private ApexGrammarBuilder(boolean isFulGrammar) {
+        this.isFulGrammar = isFulGrammar;
         mapRules = new HashMap<>();
     }
 
@@ -113,10 +111,7 @@ public class ApexGrammarBuilder {
      * in it, i.e. you should not save reference on it.
      *
      * @param ruleKey role to be set.
-     *
      * @return an ApexGrammarBuilder instance.
-     *
-     * @throws IllegalArgumentException when ruleKey is null.
      */
     public ApexGrammarBuilder rule(GrammarRuleKey ruleKey) {
         validateRule(ruleKey);
@@ -128,10 +123,7 @@ public class ApexGrammarBuilder {
      * Creates and stores and parsing expression "single".
      *
      * @param object expression.
-     *
      * @return an ApexGrammarBuilder instance.
-     *
-     * @throws IllegalArgumentException when currentRule is null.
      */
     public ApexGrammarBuilder is(Object object) {
         return addExpression(convertToExpression(object));
@@ -142,10 +134,7 @@ public class ApexGrammarBuilder {
      *
      * @param object first expression.
      * @param rest rest of expressions.
-     *
      * @return an ApexGrammarBuilder instance.
-     *
-     * @throws IllegalArgumentException when currentRule is null.
      */
     public ApexGrammarBuilder is(Object object, Object... rest) {
         return addExpression(new SequenceExpression(convertToExpressions(Lists.asList(object, rest))));
@@ -156,7 +145,6 @@ public class ApexGrammarBuilder {
      *
      * @param first first expression.
      * @param second second expression.
-     *
      * @return an Expression.
      */
     public ParsingExpression firstOf(Object first, Object second) {
@@ -169,7 +157,6 @@ public class ApexGrammarBuilder {
      * @param first first expression.
      * @param second second expression.
      * @param rest rest of expressions.
-     *
      * @return an Expression
      */
     public ParsingExpression firstOf(Object first, Object second, Object... rest) {
@@ -180,7 +167,6 @@ public class ApexGrammarBuilder {
      * Creates parsing expression "optional".
      *
      * @param object expression.
-     *
      * @return an Expression.
      */
     public ParsingExpression optional(Object object) {
@@ -188,13 +174,13 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Returns a grammar instance, built on a specific grammar builder.
+     * Builds and returns a grammar instance, built on a specific grammar builder.
      *
      * @return a Grammar
      */
     public Grammar build() {
         Grammar result;
-        if (fulGrammar) {
+        if (isFulGrammar) {
             LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
             mapRules.forEach((rule, expression) -> {
                 grammarBuilder.rule(rule).is(expression);
@@ -231,10 +217,9 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Verify that a rule is not null.
+     * Verifies that a rule is not null.
      *
      * @param ruleKey grammar rule
-     *
      * @throws IllegalArgumentException when rule is null.
      */
     private void validateRule(GrammarRuleKey ruleKey) {
@@ -247,10 +232,7 @@ public class ApexGrammarBuilder {
      * Stores a rule and expression.
      *
      * @param expression parsing expression.
-     *
      * @return an ApexGrammarBuilder instance.
-     *
-     * @throws IllegalArgumentException when currentRule is null.
      */
     private ApexGrammarBuilder addExpression(ParsingExpression expression) {
         validateRule(currentRule);
@@ -260,12 +242,10 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Convert an object in parser expression.
+     * Converts an object in parser expression.
      *
      * @param expression object.
-     *
      * @return an expression.
-     *
      * @throws IllegalArgumentException when it can't do.
      */
     private ParsingExpression convertToExpression(Object expression) {
@@ -276,10 +256,10 @@ public class ApexGrammarBuilder {
             GrammarRuleKey ruleKey = (GrammarRuleKey) expression;
             result = mapRules.get(ruleKey);
         } else if (expression instanceof TokenType) {
-            result = (fulGrammar) ? new TokenTypeExpression((TokenType) expression)
+            result = (isFulGrammar) ? new TokenTypeExpression((TokenType) expression)
                     : new PatternExpression("[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+");
         } else if (expression instanceof String) {
-            result = (fulGrammar) ? new TokenValueExpression((String) expression)
+            result = (isFulGrammar) ? new TokenValueExpression((String) expression)
                     : new StringExpression((String) expression);
         } else {
             throw new IllegalArgumentException(String.format(PARSING_ERROR_MESSAGE,
@@ -289,13 +269,10 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Convert a list of the object in parser expression.
+     * Converts a list of the object in parser expression.
      *
      * @param expression list of the objects.
-     *
      * @return an expression.
-     *
-     * @throws IllegalArgumentException when it can't do.
      */
     private ParsingExpression[] convertToExpressions(List<Object> expressions) {
         ParsingExpression[] result = new ParsingExpression[expressions.size()];

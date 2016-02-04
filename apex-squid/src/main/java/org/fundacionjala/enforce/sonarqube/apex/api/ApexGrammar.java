@@ -103,12 +103,11 @@ public class ApexGrammar {
      * Creates a grammar from {@link ApexGrammarBuilder}. It's required a boolean to indicate the
      * type of grammar builder. Only available for unit test.
      *
-     * @param fulGrammar represents the type of grammar builder required.
-     *
+     * @param isFulGrammar represents the type of grammar builder required.
      * @return the grammar
      */
-    static Grammar create(boolean fulGrammar) {
-        ApexGrammarBuilder grammarBuilder = ApexGrammarBuilder.create(fulGrammar);
+    static Grammar create(boolean isFulGrammar) {
+        ApexGrammarBuilder grammarBuilder = ApexGrammarBuilder.create(isFulGrammar);
         tokenDeclaration(grammarBuilder);
         primitiveType(grammarBuilder);
         type(grammarBuilder);
@@ -187,7 +186,7 @@ public class ApexGrammar {
     }
 
     /**
-     * The grammar for the use of rules with/without sharing.
+     * Grammar to identify a sharing rule keyword.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */

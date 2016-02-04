@@ -30,22 +30,20 @@ import org.fundacionjala.enforce.sonarqube.apex.api.ApexGrammar;
 import org.fundacionjala.enforce.sonarqube.apex.lexer.ApexLexer;
 
 /**
- * Built a {@link Parser} instance for Apex. Required an configuration.
+ * Builds a {@link Parser} instance for Apex. Required an configuration.
  */
 public class ApexParser {
 
     /**
-     * Error message when configuration is null.
+     * Stores a error message when configuration is null.
      */
     private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
 
     /**
-     * This method to create a Parser integrating with Grammar and Lexer.
+     * This method to creates a Parser integrating with Grammar and Lexer.
      *
      * @param conf apex configuration.
-     *
      * @return a parser
-     *
      * @throws IllegalArgumentException when configuration is null.
      */
     public static Parser<Grammar> create(ApexConfiguration conf) {

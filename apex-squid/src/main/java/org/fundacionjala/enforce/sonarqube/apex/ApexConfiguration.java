@@ -27,7 +27,7 @@ import java.nio.charset.Charset;
 import org.sonar.squidbridge.api.SquidConfiguration;
 
 /**
- * This class contains the configuration to create an AST.
+ * This class contains the configuration to create an Abstract syntax tree.
  */
 public class ApexConfiguration extends SquidConfiguration {
 
@@ -39,7 +39,7 @@ public class ApexConfiguration extends SquidConfiguration {
     /**
      * Default constructor that requires charset.
      *
-     * @param charset
+     * @param charset to be set.
      */
     public ApexConfiguration(Charset charset) {
         super(charset);
@@ -48,7 +48,7 @@ public class ApexConfiguration extends SquidConfiguration {
     /**
      * Returns ignore header comments.
      *
-     * @return
+     * @return the ignore header value.
      */
     public boolean getIgnoreHeaderComments() {
         return ignoreHeaderComments;

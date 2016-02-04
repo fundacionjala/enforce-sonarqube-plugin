@@ -35,30 +35,29 @@ import org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType;
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.regexp;
 
 /**
- * Built a {@link Lexer} instance for Apex. Required an configuration.
+ * Builds a {@link Lexer} instance for Apex. Required an configuration.
  */
 public class ApexLexer {
 
     /**
-     * Pattern to identify a keyword.
+     * Stores a pattern to identify a keyword.
      */
     private static final String KEYWORD = "[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+";
 
     /**
-     * Patter to identify a String.
+     * Stores a patter to identify a String.
      */
     private static final String STRING = "\'([^\'\\\\]*+(\\\\[\\s\\S])?+)*+\'";
 
     /**
-     * Pattern to identify a black hole.
+     * Stores a pattern to identify a black hole.
      */
     private static final String BLACK_HOLE = "[ \t\r\n]+";
 
     /**
-     * This method to create a Lexer, contains all channels to analyze apex language.
+     * Creates a Lexer, contains all channels to analyze apex language.
      *
      * @param conf apex configuration.
-     *
      * @return a lexer instance.
      */
     public static Lexer create(ApexConfiguration conf) {
