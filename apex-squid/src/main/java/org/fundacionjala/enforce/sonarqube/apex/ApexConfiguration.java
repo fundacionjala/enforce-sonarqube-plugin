@@ -24,6 +24,7 @@
 package org.fundacionjala.enforce.sonarqube.apex;
 
 import java.nio.charset.Charset;
+
 import org.sonar.squidbridge.api.SquidConfiguration;
 
 /**

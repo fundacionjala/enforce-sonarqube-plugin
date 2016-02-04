@@ -25,6 +25,7 @@ package org.fundacionjala.enforce.sonarqube.apex.parser;
 
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
+
 import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexGrammar;
 import org.fundacionjala.enforce.sonarqube.apex.lexer.ApexLexer;
@@ -40,7 +41,7 @@ public class ApexParser {
     private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
 
     /**
-     * This method to creates a Parser integrating with Grammar and Lexer.
+     * Creates a Parser integrating with Grammar and Lexer.
      *
      * @param conf apex configuration.
      * @return a parser

@@ -23,10 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
 import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
 
 public class ApexGrammarTypeClassTest {
 
@@ -46,5 +49,4 @@ public class ApexGrammarTypeClassTest {
                 .notMatches("Class")
                 .notMatches("Interface");
     }
-
 }

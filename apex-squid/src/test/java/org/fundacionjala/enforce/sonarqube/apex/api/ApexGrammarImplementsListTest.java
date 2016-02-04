@@ -23,11 +23,14 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import org.junit.Test;
+
 import com.sonar.sslr.api.Grammar;
+
+import static org.sonar.sslr.tests.Assertions.assertThat;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_IMPLEMENTS;
-import org.junit.Test;
-import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarImplementsListTest {
 
@@ -54,5 +57,4 @@ public class ApexGrammarImplementsListTest {
                 .matches("implementsMyClass")
                 .matches("implementsMyClass1");
     }
-
 }

@@ -23,13 +23,16 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import org.junit.Test;
+
 import com.sonar.sslr.api.Grammar;
+
+import static org.sonar.sslr.tests.Assertions.assertThat;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITHOUT_SHARING;
-import org.junit.Test;
-import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarKeywordTest {
 

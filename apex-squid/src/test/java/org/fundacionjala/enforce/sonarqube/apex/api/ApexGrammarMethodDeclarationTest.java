@@ -23,10 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
 import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
 
 public class ApexGrammarMethodDeclarationTest {
 
@@ -37,5 +40,4 @@ public class ApexGrammarMethodDeclarationTest {
         assertThat(grammarBuilder.rule(METHOD_DECLARATION))
                 .matches("returnint;}");
     }
-
 }

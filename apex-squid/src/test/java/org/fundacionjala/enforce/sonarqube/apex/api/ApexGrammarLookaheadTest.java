@@ -23,10 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD;
 import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD;
 
 public class ApexGrammarLookaheadTest {
 
@@ -78,5 +81,4 @@ public class ApexGrammarLookaheadTest {
                 .notMatches("strictfp__")
                 .notMatches("anotation native");
     }
-
 }

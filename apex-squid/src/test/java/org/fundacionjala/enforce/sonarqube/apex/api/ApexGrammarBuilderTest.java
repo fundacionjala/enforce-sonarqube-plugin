@@ -24,19 +24,23 @@
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import java.util.Map;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.internal.vm.FirstOfExpression;
 import org.sonar.sslr.internal.vm.OptionalExpression;
 import org.sonar.sslr.internal.vm.ParsingExpression;
 import org.sonar.sslr.internal.vm.SequenceExpression;
 import org.sonar.sslr.internal.vm.StringExpression;
+
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 
 public class ApexGrammarBuilderTest {
 

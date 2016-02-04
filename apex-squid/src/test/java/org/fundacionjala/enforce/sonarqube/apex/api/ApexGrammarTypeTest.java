@@ -23,10 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE;
 import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE;
 
 public class ApexGrammarTypeTest {
 
@@ -45,5 +48,4 @@ public class ApexGrammarTypeTest {
                 .notMatches("Boolean")
                 .notMatches("Byte");
     }
-
 }

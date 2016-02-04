@@ -23,11 +23,14 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import org.junit.Test;
+
 import com.sonar.sslr.api.Grammar;
+
+import static org.sonar.sslr.tests.Assertions.assertThat;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDES_OR_IMPLEMENTS;
-import org.junit.Test;
-import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarClassOrInterfaceDeclarationTest {
 
@@ -102,5 +105,4 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
                 .notMatches("interface1 MyClass extends YourClass")
                 .notMatches("interface MyClass_implements YourClass");
     }
-
 }

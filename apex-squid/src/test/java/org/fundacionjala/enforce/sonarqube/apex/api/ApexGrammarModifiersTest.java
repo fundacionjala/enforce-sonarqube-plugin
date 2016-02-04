@@ -23,10 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
 import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
 
 public class ApexGrammarModifiersTest {
 
@@ -39,5 +42,4 @@ public class ApexGrammarModifiersTest {
                 .matches("privatebooleanIsTheMethod(){")
                 .notMatches("PublicIntMethods");
     }
-
 }

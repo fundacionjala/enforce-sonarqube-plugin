@@ -25,6 +25,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
+
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 /**

@@ -23,21 +23,25 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.lexer;
 
+import java.io.File;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.google.common.base.Charsets;
 import com.sonar.sslr.api.GenericTokenType;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.impl.Lexer;
-import java.io.File;
-import java.util.List;
+
 import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.junit.Assert.assertThat;
 
 import static com.sonar.sslr.test.lexer.LexerMatchers.hasToken;
-import static org.junit.Assert.assertThat;
 
 public class ApexLexerTest {
 

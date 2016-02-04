@@ -23,13 +23,15 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.TokenType;
 import com.sonar.sslr.api.typed.GrammarBuilder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
@@ -51,6 +53,11 @@ public class ApexGrammarBuilder {
      * Stores a error message when failing parser.
      */
     private static final String PARSING_ERROR_MESSAGE = "Incorrect type of parsing expression: %s";
+
+    /**
+     * Stores a identifier pattern.
+     */
+    private static final String IDENTIFIER_PATTERN = "[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+";
 
     /**
      * Stores a error message when rule is null.
@@ -107,8 +114,8 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Allows to describe rule. Result of this method should be used only for execution of methods
-     * in it, i.e. you should not save reference on it.
+     * Allows to describe rule. Result of this method should be used only for
+     * execution of methods in it, i.e. you should not save reference on it.
      *
      * @param ruleKey role to be set.
      * @return an ApexGrammarBuilder instance.
@@ -174,7 +181,8 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Builds and returns a grammar instance, built on a specific grammar builder.
+     * Builds and returns a grammar instance, built on a specific grammar
+     * builder.
      *
      * @return a Grammar
      */
@@ -257,7 +265,7 @@ public class ApexGrammarBuilder {
             result = mapRules.get(ruleKey);
         } else if (expression instanceof TokenType) {
             result = (isFulGrammar) ? new TokenTypeExpression((TokenType) expression)
-                    : new PatternExpression("[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+");
+                    : new PatternExpression(IDENTIFIER_PATTERN);
         } else if (expression instanceof String) {
             result = (isFulGrammar) ? new TokenValueExpression((String) expression)
                     : new StringExpression((String) expression);

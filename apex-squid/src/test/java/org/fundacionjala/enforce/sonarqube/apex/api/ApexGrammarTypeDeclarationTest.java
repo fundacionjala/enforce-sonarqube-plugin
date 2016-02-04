@@ -23,10 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
 import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
 
 public class ApexGrammarTypeDeclarationTest {
 
@@ -89,5 +92,4 @@ public class ApexGrammarTypeDeclarationTest {
                 .notMatches("public with sharing interface 9MyClass extends YourClass {")
                 .notMatches("static without sharing interface MyClass enum extends YourClass {");
     }
-
 }

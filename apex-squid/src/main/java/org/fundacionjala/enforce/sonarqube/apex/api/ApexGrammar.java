@@ -26,6 +26,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 import com.sonar.sslr.api.Grammar;
 
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ANOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BOOLEAN;

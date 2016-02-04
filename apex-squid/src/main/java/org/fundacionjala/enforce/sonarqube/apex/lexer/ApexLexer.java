@@ -27,6 +27,7 @@ import com.sonar.sslr.impl.Lexer;
 import com.sonar.sslr.impl.channel.BlackHoleChannel;
 import com.sonar.sslr.impl.channel.IdentifierAndKeywordChannel;
 import com.sonar.sslr.impl.channel.PunctuatorChannel;
+
 import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator;
@@ -35,7 +36,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType;
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.regexp;
 
 /**
- * Builds a {@link Lexer} instance for Apex. Required an configuration.
+ * Builds a {@link Lexer} instance for Apex.
  */
 public class ApexLexer {
 

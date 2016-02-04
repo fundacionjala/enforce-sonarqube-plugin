@@ -23,18 +23,20 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser;
 
-import com.google.common.base.Charsets;
-import com.sonar.sslr.impl.Parser;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.stream.Stream;
-import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
+
+import com.google.common.base.Charsets;
+import com.sonar.sslr.impl.Parser;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.sslr.tests.ParserAssert;
 import org.sonar.sslr.tests.ParsingResultComparisonFailure;
+
+import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
 
 public class ApexParserTest {
 
