@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,15 +29,34 @@ import org.sonar.squidbridge.AstScanner;
 import org.sonar.squidbridge.SquidAstVisitor;
 import org.sonar.squidbridge.api.SourceFile;
 
+/**
+ * Utility class for scans a file and generate {@link SourceFile}
+ */
 public class ApexAstScanner {
 
+    /**
+     * Default constructor.
+     */
     private ApexAstScanner() {
     }
 
+    /**
+     * Returns a scanner from configuration and visitors.
+     *
+     * @param conf apex configuration.
+     * @param visitors list of visitors.
+     * @return a scanner.
+     */
     public static AstScanner<Grammar> create(ApexConfiguration conf, SquidAstVisitor<Grammar>... visitors) {
         return null;
     }
 
+    /**
+     * Returns a source file from file and visitors.
+     * @param file
+     * @param visitors
+     * @return a source.
+     */
     public static SourceFile scanFile(File file, SquidAstVisitor<Grammar>... visitors) {
         return null;
     }

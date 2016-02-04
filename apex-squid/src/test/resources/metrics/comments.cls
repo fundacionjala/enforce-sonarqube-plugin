@@ -1,4 +1,0 @@
-/* This comment can wrap over multiple
-   lines without getting interpreted by the
-   parser.
-*/

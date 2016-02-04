@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,9 @@ import org.sonar.squidbridge.measures.MetricDef;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
+/**
+ * Define the type of metrics.
+ */
 public enum ApexMetric implements MetricDef {
     FILES,
     LINES,
@@ -39,26 +42,51 @@ public enum ApexMetric implements MetricDef {
     COMPLEXITY,
     COMMENT_LINES;
 
+    /**
+     * Returns the name of metric.
+     *
+     * @return the name.
+     */
     @Override
     public String getName() {
         return name();
     }
 
+    /**
+     * Indicates if is calculated metric.
+     *
+     * @return false by default.
+     */
     @Override
     public boolean isCalculatedMetric() {
         return FALSE;
     }
 
+    /**
+     * Indicates if can aggregate a value.
+     *
+     * @return true by default.
+     */
     @Override
     public boolean aggregateIfThereIsAlreadyAValue() {
         return TRUE;
     }
 
+    /**
+     * Indicates if can aggregate a formula.
+     *
+     * @return true by default.
+     */
     @Override
     public boolean isThereAggregationFormula() {
         return TRUE;
     }
 
+    /**
+     * Returns a calculated metric formula.
+     *
+     * @return null by default.
+     */
     @Override
     public CalculatedMetricFormula getCalculatedMetricFormula() {
         return null;

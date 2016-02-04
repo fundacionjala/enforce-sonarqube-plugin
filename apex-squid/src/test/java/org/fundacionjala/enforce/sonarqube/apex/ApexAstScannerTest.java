@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,6 @@ public class ApexAstScannerTest {
         AstScanner<Grammar> scanner = ApexAstScanner.create(apexConfiguration);
         scanner.scanFiles(ImmutableList.of(
                 new File("src/test/resources/metrics/functions.cls"),
-                new File("src/test/resources/metrics/comments.cls"),
                 new File("src/test/resources/metrics/lines.cls")));
         SourceProject project = buildProject(scanner);
         assertThat(project.getInt(ApexMetric.FILES)).isEqualTo(3);
@@ -62,12 +61,6 @@ public class ApexAstScannerTest {
     public void testTheLineNumbersOfAClass() {
         sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/lines.cls"));
         assertThat(sourceFile.getInt(ApexMetric.LINES)).isEqualTo(10);
-    }
-
-    @Test
-    public void testTheCommentedLineNumbersOfAClass() {
-        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/comments.cls"));
-        assertThat(sourceFile.getInt(ApexMetric.COMMENT_LINES)).isEqualTo(4);
     }
 
     @Test
