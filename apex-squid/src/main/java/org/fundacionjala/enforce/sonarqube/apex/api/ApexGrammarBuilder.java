@@ -45,7 +45,7 @@ import org.sonar.sslr.internal.vm.lexerful.TokenTypeExpression;
 import org.sonar.sslr.internal.vm.lexerful.TokenValueExpression;
 
 /**
- * Utility class for create a {@link GrammarBuilder} implementation.
+ * Utility class to create a {@link GrammarBuilder} implementation.
  */
 public class ApexGrammarBuilder {
 
@@ -55,12 +55,12 @@ public class ApexGrammarBuilder {
     private static final String PARSING_ERROR_MESSAGE = "Incorrect type of parsing expression: %s";
 
     /**
-     * Stores a identifier pattern.
+     * Stores an identifier pattern.
      */
     private static final String IDENTIFIER_PATTERN = "[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+";
 
     /**
-     * Stores a error message when rule is null.
+     * Stores an error message when rule is null.
      */
     private static final String RULE_ERROR_MESSAGE = "Rules can't be null";
 
@@ -85,17 +85,17 @@ public class ApexGrammarBuilder {
     private GrammarRuleKey rootRule;
 
     /**
-     * Create a apex grammar builder.
+     * Creates an apex grammar builder.
      *
      * @param isFulGrammar represents the type of grammar builder required.
-     * @return a ApexGramamrBuilder.
+     * @return an ApexGramamrBuilder.
      */
     public static ApexGrammarBuilder create(boolean isFulGrammar) {
         return new ApexGrammarBuilder(isFulGrammar);
     }
 
     /**
-     * Default constructor that initialize variables.
+     * Default constructor that initializes variables.
      *
      * @param isFulGrammar represents the type of grammar builder required.
      */
@@ -114,7 +114,7 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Allows to describe rule. Result of this method should be used only for
+     * Allows to describe rule. The result of this method should be used only for
      * execution of methods in it, i.e. you should not save reference on it.
      *
      * @param ruleKey role to be set.
@@ -127,7 +127,7 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Creates and stores and parsing expression "single".
+     * Creates, stores and parsers expression "single".
      *
      * @param object expression.
      * @return an ApexGrammarBuilder instance.
@@ -137,7 +137,7 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Creates and stores and parsing expression "sequence".
+     * Creates, stores and parsers expression "sequence".
      *
      * @param object first expression.
      * @param rest rest of expressions.
@@ -148,10 +148,10 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Creates parsing expression "first of".
+     * Creates a parsing expression "first of".
      *
-     * @param first first expression.
-     * @param second second expression.
+     * @param first is the first expression.
+     * @param second is the second expression.
      * @return an Expression.
      */
     public ParsingExpression firstOf(Object first, Object second) {
@@ -159,7 +159,7 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Creates parsing expression "first of" by a sequence.
+     * Creates a parsing expression "first of" by a sequence.
      *
      * @param first first expression.
      * @param second second expression.

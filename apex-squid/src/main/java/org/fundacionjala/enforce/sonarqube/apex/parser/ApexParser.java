@@ -36,7 +36,7 @@ import org.fundacionjala.enforce.sonarqube.apex.lexer.ApexLexer;
 public class ApexParser {
 
     /**
-     * Stores a error message when configuration is null.
+     * Stores an error message when configuration is null.
      */
     private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
 
