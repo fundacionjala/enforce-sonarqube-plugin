@@ -171,7 +171,7 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Creates parsing expression "optional".
+     * Creates a parsing expression "optional".
      *
      * @param object expression.
      * @return an Expression.

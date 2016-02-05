@@ -46,7 +46,7 @@ public class ApexLexer {
     private static final String KEYWORD = "[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+";
 
     /**
-     * Stores a patter to identify a String.
+     * Stores a pattern to identify a String.
      */
     private static final String STRING = "\'([^\'\\\\]*+(\\\\[\\s\\S])?+)*+\'";
 
@@ -58,12 +58,12 @@ public class ApexLexer {
     /**
      * Creates a Lexer, contains all channels to analyze apex language.
      *
-     * @param conf apex configuration.
+     * @param config apex configuration.
      * @return a lexer instance.
      */
-    public static Lexer create(ApexConfiguration conf) {
+    public static Lexer create(ApexConfiguration config) {
         return Lexer.builder()
-                .withCharset(conf.getCharset())
+                .withCharset(config.getCharset())
                 .withFailIfNoChannelToConsumeOneCharacter(Boolean.TRUE)
                 .withChannel(regexp(ApexTokenType.STRING, STRING))
                 .withChannel(new IdentifierAndKeywordChannel(KEYWORD,

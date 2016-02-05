@@ -41,17 +41,17 @@ public class ApexParser {
     private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
 
     /**
-     * Creates a Parser integrating with Grammar and Lexer.
+     * Creates a Parser integrated with Grammar and Lexer.
      *
-     * @param conf apex configuration.
+     * @param config apex configuration.
      * @return a parser
      * @throws IllegalArgumentException when configuration is null.
      */
-    public static Parser<Grammar> create(ApexConfiguration conf) {
-        if (conf == null) {
+    public static Parser<Grammar> create(ApexConfiguration config) {
+        if (config == null) {
             throw new IllegalArgumentException(ERROR_MESSAGE);
         }
         return Parser.builder(ApexGrammar.create())
-                .withLexer(ApexLexer.create(conf)).build();
+                .withLexer(ApexLexer.create(config)).build();
     }
 }
