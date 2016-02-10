@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,19 +25,29 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
+
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 /**
- * The enum tokens and GrammarRuleKey handles of punctuation for the Squid
- * module.
+ * The enum tokens and GrammarRuleKey handles of punctuation for the Squid module.
  */
 public enum ApexPunctuator implements TokenType, GrammarRuleKey {
 
     /**
      * SEPARATORS.
      */
+    LPAREN("("),
+    RPAREN(")"),
     LBRACE("{"),
     RBRACE("}"),
+    SEMICOLON(";"),
+    COMMA(","),
+    DOT("."),
+
+    /**
+     * OPERATORS.
+     */
+    ASSIGN("="),
     UNDERSCORE("_");
 
     /**

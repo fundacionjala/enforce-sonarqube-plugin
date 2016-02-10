@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
+import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
+import static org.sonar.sslr.tests.Assertions.assertThat;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
-/**
- * The class creates the rules for class and interface words.
- */
-public class ApexGrammarTypeClass {
+public class ApexGrammarTypeClassTest {
 
-    /**
-     * Grammar is created to identify if a class or interface.
-     *
-     * @return Grammar class type..
-     */
-    public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(CLASS).is(CLASS.getValue());
-        grammarBuilder.rule(INTERFACE).is(INTERFACE.getValue());
-        grammarBuilder.rule(TYPE_CLASS).is(grammarBuilder.firstOf(CLASS, INTERFACE));
-        return grammarBuilder;
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+
+    @Test
+    public void checkingRules() {
+        assertThat(grammarBuilder.rule(TYPE_CLASS))
+                .matches("class")
+                .matches("interface")
+                .notMatches(" class")
+                .notMatches("class ")
+                .notMatches(" class ")
+                .notMatches(" interface")
+                .notMatches("interface ")
+                .notMatches(" interface ")
+                .notMatches("Class")
+                .notMatches("Interface");
     }
 }

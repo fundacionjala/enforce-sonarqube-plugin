@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,30 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
 import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
+
+import com.sonar.sslr.api.Grammar;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarTypeClassTest {
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarTypeClass.createGrammarBuilder();
+public class ApexGrammarResultTypeTest {
+
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
-    public void checkingRules() {
-        assertThat(grammarBuilder.build().rule(TYPE_CLASS))
-                .matches("class")
-                .matches("interface")
-                .notMatches(" class")
-                .notMatches("class ")
-                .notMatches(" class ")
-                .notMatches(" interface")
-                .notMatches("interface ")
-                .notMatches(" interface ")
-                .notMatches("Class")
-                .notMatches("Interface");
+    public void positiveRules() {
+        assertThat(grammarBuilder.rule(RESULT_TYPE))
+                .matches("returnnull;")
+                .matches("returnint;")
+                .matches("returnvoid;")
+                .matches("returnboolean;")
+                .notMatches("retur nnull;")
+                .notMatches("Returnnull;")
+                .notMatches("returnNull;");
     }
-
 }

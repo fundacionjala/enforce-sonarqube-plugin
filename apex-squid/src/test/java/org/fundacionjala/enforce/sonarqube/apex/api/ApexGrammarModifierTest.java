@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
+
+import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
-import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
-import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarModifierTest {
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarModifier.createGrammarBuilder();
-
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void buildingModifierDifferentCorrectCasesLookaheadKeyword() {
-        assertThat(grammarBuilder.build().rule(LOOKAHEAD_KEYWORD))
+        assertThat(grammarBuilder.rule(LOOKAHEAD_KEYWORD))
                 .matches("publicwithsharing")
                 .matches("finalwithoutsharing")
                 .matches("abstractwithsharing")
@@ -44,10 +46,10 @@ public class ApexGrammarModifierTest {
                 .matches("nativewithsharing")
                 .matches("transientwithsharing");
     }
-    
+
     @Test
     public void buildingModifierWithOnlyCasesLookahead() {
-        assertThat(grammarBuilder.build().rule(MODIFIER))
+        assertThat(grammarBuilder.rule(MODIFIER))
                 .matches("static")
                 .matches("public")
                 .matches("final")
@@ -59,10 +61,10 @@ public class ApexGrammarModifierTest {
                 .matches("strictfp")
                 .matches("anotation");
     }
-    
+
     @Test
     public void buildingModifierDifferentCorrectCases() {
-        assertThat(grammarBuilder.build().rule(MODIFIER))
+        assertThat(grammarBuilder.rule(MODIFIER))
                 .matches("static")
                 .matches("publicwithsharing")
                 .matches("finalwithoutsharing")
@@ -74,7 +76,7 @@ public class ApexGrammarModifierTest {
 
     @Test
     public void buildingModifierDifferentIncorrectCases() {
-        assertThat(grammarBuilder.build().rule(MODIFIER))
+        assertThat(grammarBuilder.rule(MODIFIER))
                 .notMatches("_")
                 .notMatches("static _")
                 .notMatches("public With sharing")
@@ -83,5 +85,4 @@ public class ApexGrammarModifierTest {
                 .notMatches("synchronized_with sharing")
                 .notMatches("  transient with sharing_  ");
     }
-
 }

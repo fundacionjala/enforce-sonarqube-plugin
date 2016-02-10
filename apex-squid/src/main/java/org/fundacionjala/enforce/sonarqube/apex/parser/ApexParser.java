@@ -21,40 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
+package org.fundacionjala.enforce.sonarqube.apex.parser;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import com.sonar.sslr.api.Grammar;
+import com.sonar.sslr.impl.Parser;
+
+import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
+import org.fundacionjala.enforce.sonarqube.apex.api.ApexGrammar;
+import org.fundacionjala.enforce.sonarqube.apex.lexer.ApexLexer;
 
 /**
- * Contains enum all the rules used in the grammar.
+ * Builds a {@link Parser} instance for Apex. Required an configuration.
  */
-public enum RuleKey implements GrammarRuleKey {
+public class ApexParser {
 
-    APEX_GRAMMAR,
-    BODY_IDENTIFIER,
-    CHAR,
-    CLASS_OR_INTERFACE_BODY_DECLARATION,
-    CLASS_OR_INTERFACE_DECLARATION,
-    END_CLASS,
-    EXTENDS_LIST,
-    EXTENDES_OR_IMPLEMENTS,
-    IDENTIFIER,
-    IMPLEMENTS_LIST,
-    INIT_IDENTIFIER,
-    KEYWORD,
-    LOOKAHEAD,
-    LOOKAHEAD_KEYWORD,
-    MERGE_TYPE_EXTENDS,
-    MERGE_TYPE_IMPLEMENTS,
-    METHOD_DECLARATION,
-    MODIFIER,
-    MODIFIERS,
-    PRIMITIVE_TYPE,
-    TYPE,
-    TYPE_CLASS,
-    TYPE_DECLARATION,
-    TYPE_METHOD,
-    RESULT_TYPE,
-    WITH_SHARING,
-    WITHOUT_SHARING;
+    /**
+     * Stores an error message when configuration is null.
+     */
+    private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
+
+    /**
+     * Creates a Parser integrated with Grammar and Lexer.
+     *
+     * @param config apex configuration.
+     * @return a parser
+     * @throws IllegalArgumentException when configuration is null.
+     */
+    public static Parser<Grammar> create(ApexConfiguration config) {
+        if (config == null) {
+            throw new IllegalArgumentException(ERROR_MESSAGE);
+        }
+        return Parser.builder(ApexGrammar.create())
+                .withLexer(ApexLexer.create(config)).build();
+    }
 }

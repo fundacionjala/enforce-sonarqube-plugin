@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,33 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS;
+import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
+import static org.sonar.sslr.tests.Assertions.assertThat;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_EXTENDS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IDENTIFIER;
 
-/**
- * The class creates the rule for a class can extend another class.
- */
-public class ApexGrammarExtendsList {
+public class ApexGrammarExtendsListTest {
 
-    private final static String RULE_EXTENDS_KEYWORD = "extends";
-    private final static String RULE_EMPTY_KEYWORD = "";
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
-    /**
-     * Grammar is created to extend another class or just skip.
-     *
-     * @return The grammar to extend a class.
-     */
-    public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(EXTENDS).is(RULE_EXTENDS_KEYWORD);
-        grammarBuilder.rule(MERGE_TYPE_EXTENDS).is(EXTENDS, ApexGrammarIdentifier.createGrammarBuilder().build()
-                .rule(IDENTIFIER));
-        grammarBuilder.rule(EXTENDS_LIST).is(grammarBuilder.firstOf(MERGE_TYPE_EXTENDS, RULE_EMPTY_KEYWORD));
-        return grammarBuilder;
+    @Test
+    public void positiveRulesMergeType() {
+        assertThat(grammarBuilder.rule(MERGE_TYPE_EXTENDS))
+                .matches("extendsMyClass")
+                .matches("extendsMyClass1");
+    }
+
+    @Test
+    public void negativeRulesMergeType() {
+        assertThat(grammarBuilder.rule(MERGE_TYPE_EXTENDS))
+                .notMatches("extendMyClass")
+                .notMatches("Extends _MyClass1")
+                .notMatches("_extends_MyClass1");
+    }
+
+    @Test
+    public void positiveRules() {
+        assertThat(grammarBuilder.rule(EXTENDS_LIST))
+                .matches("extendsMyClass")
+                .matches("extendsMyClass1");
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.head;
+package org.fundacionjala.enforce.sonarqube.apex.api;
+
+import org.junit.Test;
+
+import com.sonar.sslr.api.Grammar;
+
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD;
-import org.junit.Test;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
-import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarLookaheadTest {
 
-    private final LexerlessGrammarBuilder grammarBuilder = ApexGrammarLookahead.createGrammarBuilder();
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveBasicRules() {
-        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.rule(LOOKAHEAD))
                 .matches("static")
                 .matches("public")
                 .matches("final")
@@ -49,7 +52,7 @@ public class ApexGrammarLookaheadTest {
 
     @Test
     public void negativeBasicRulesSpaceAtTheInitAndEndLoockhead() {
-        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.rule(LOOKAHEAD))
                 .notMatches("    ")
                 .notMatches(" static ")
                 .notMatches(" public ")
@@ -65,7 +68,7 @@ public class ApexGrammarLookaheadTest {
 
     @Test
     public void negativeRules() {
-        assertThat(grammarBuilder.build().rule(LOOKAHEAD))
+        assertThat(grammarBuilder.rule(LOOKAHEAD))
                 .notMatches(" _ ")
                 .notMatches("P static")
                 .notMatches(" public_")
@@ -78,5 +81,4 @@ public class ApexGrammarLookaheadTest {
                 .notMatches("strictfp__")
                 .notMatches("anotation native");
     }
-
 }

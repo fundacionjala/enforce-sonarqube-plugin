@@ -21,40 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import org.junit.Test;
 
-/**
- * Contains enum all the rules used in the grammar.
- */
-public enum RuleKey implements GrammarRuleKey {
+import com.sonar.sslr.api.Grammar;
 
-    APEX_GRAMMAR,
-    BODY_IDENTIFIER,
-    CHAR,
-    CLASS_OR_INTERFACE_BODY_DECLARATION,
-    CLASS_OR_INTERFACE_DECLARATION,
-    END_CLASS,
-    EXTENDS_LIST,
-    EXTENDES_OR_IMPLEMENTS,
-    IDENTIFIER,
-    IMPLEMENTS_LIST,
-    INIT_IDENTIFIER,
-    KEYWORD,
-    LOOKAHEAD,
-    LOOKAHEAD_KEYWORD,
-    MERGE_TYPE_EXTENDS,
-    MERGE_TYPE_IMPLEMENTS,
-    METHOD_DECLARATION,
-    MODIFIER,
-    MODIFIERS,
-    PRIMITIVE_TYPE,
-    TYPE,
-    TYPE_CLASS,
-    TYPE_DECLARATION,
-    TYPE_METHOD,
-    RESULT_TYPE,
-    WITH_SHARING,
-    WITHOUT_SHARING;
+import static org.sonar.sslr.tests.Assertions.assertThat;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE;
+
+public class ApexGrammarTypeTest {
+
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+
+    @Test
+    public void positiveRules() {
+        assertThat(grammarBuilder.rule(TYPE))
+                .matches("boolean")
+                .matches("int")
+                .matches("short")
+                .matches("long")
+                .matches("char")
+                .matches("float")
+                .matches("byte")
+                .notMatches("Boolean")
+                .notMatches("Byte");
+    }
 }

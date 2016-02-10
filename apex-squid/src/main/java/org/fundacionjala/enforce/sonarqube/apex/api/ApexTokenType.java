@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.body;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERDACE_BODY_DECLARATION;
-import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.TokenType;
 
 /**
- * The class creates the rules of the body of an interface/class.
+ * Enum save a custom type of Apex.
  */
-public class ApexGrammarClassOrInterfaceBodyDeclaration {
+public enum ApexTokenType implements TokenType {
 
-    /**
-     * The grammar of the empty body of a class is built.
-     * 
-     * @return Grammar built the body of a class.
-     */
-    public static LexerlessGrammarBuilder createGrammarBuilder() {
-        LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-        grammarBuilder.rule(CLASS_OR_INTERDACE_BODY_DECLARATION).is("");
+    STRING,
+    NEW_LINE;
 
-        return grammarBuilder;
+    @Override
+    public String getName() {
+        return name();
+    }
+
+    @Override
+    public String getValue() {
+        return name();
+    }
+
+    @Override
+    public boolean hasToBeSkippedFromAst(AstNode an) {
+        return Boolean.FALSE;
     }
 }

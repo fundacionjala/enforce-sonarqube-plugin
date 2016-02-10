@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Jalasoft.
+ * Copyright 2016 Fundacion Jala.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
+
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 /**
@@ -37,18 +38,32 @@ public enum ApexKeyword implements TokenType, GrammarRuleKey {
      */
     ABSTRACT("abstract"),
     ANOTATION("anotation"),
+    BOOLEAN("boolean"),
+    BYTE("byte"),
+    CHAR("char"),
     CLASS("class"),
+    DOUBLE("double"),
+    EXTENDS("extends"),
     FINAL("final"),
+    FLOAT("float"),
+    INT("int"),
     INTERFACE("interface"),
+    IMPLEMENTS("implements"),
+    LONG("long"),
     NATIVE("native"),
+    NEW("new"),
+    NULL("null"),
     PRIVATE("private"),
     PROTECTED("protected"),
     PUBLIC("public"),
+    RETURN("return"),
     SHARING("sharing"),
+    SHORT("short"),
     STATIC("static"),
     STRICTFP("strictfp"),
     SYNCHRONIZED("synchronized"),
     TRANSIENT("transient"),
+    VOID("void"),
     VOLATILE("volatile"),
     WITH("with"),
     WITHOUT("without");
