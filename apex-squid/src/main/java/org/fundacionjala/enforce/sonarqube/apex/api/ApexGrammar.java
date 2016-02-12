@@ -63,9 +63,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.END_CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDES_OR_IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
@@ -75,6 +75,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKA
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
@@ -109,7 +110,6 @@ public class ApexGrammar {
      */
     static Grammar create(boolean isFulGrammar) {
         ApexGrammarBuilder grammarBuilder = ApexGrammarBuilder.create(isFulGrammar);
-        tokenDeclaration(grammarBuilder);
         primitiveType(grammarBuilder);
         type(grammarBuilder);
         resultType(grammarBuilder);
@@ -127,10 +127,11 @@ public class ApexGrammar {
 
         grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION,
                 grammarBuilder.optional(CLASS_OR_INTERFACE_BODY_DECLARATION),
-                END_CLASS
+                RBRACE
         );
         grammarBuilder.setRootRule(APEX_GRAMMAR);
-        return grammarBuilder.build();
+        Grammar grammar = grammarBuilder.build();
+        return grammar;
     }
 
     /**
@@ -212,9 +213,10 @@ public class ApexGrammar {
                 grammarBuilder.optional(IMPLEMENTS_LIST),
                 grammarBuilder.optional(EXTENDS_LIST)
         );
+        grammarBuilder.rule(CLASS_NAME).is(IDENTIFIER);
         grammarBuilder.rule(CLASS_OR_INTERFACE_DECLARATION).is(
                 TYPE_CLASS,
-                IDENTIFIER,
+                CLASS_NAME,
                 EXTENDES_OR_IMPLEMENTS);
     }
 
@@ -290,11 +292,11 @@ public class ApexGrammar {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void modifiers(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TYPE_METHOD).is(TYPE);
+        grammarBuilder.rule(METHOD_NAME).is(IDENTIFIER);
         grammarBuilder.rule(MODIFIERS).is(
                 LOOKAHEAD,
                 TYPE_METHOD,
-                IDENTIFIER,
+                METHOD_NAME,
                 LPAREN,
                 RPAREN,
                 LBRACE
@@ -342,58 +344,5 @@ public class ApexGrammar {
      */
     private static void type(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE).is(PRIMITIVE_TYPE);
-    }
-
-    /**
-     * Declares all requested tokens to create a grammar builder.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void tokenDeclaration(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(END_CLASS).is(RBRACE.getValue());
-        grammarBuilder.rule(CLASS).is(CLASS.getValue());
-        grammarBuilder.rule(INTERFACE).is(INTERFACE.getValue());
-
-        grammarBuilder.rule(CLASS).is(CLASS.getValue());
-        grammarBuilder.rule(INTERFACE).is(INTERFACE.getValue());
-
-        grammarBuilder.rule(WITH).is(WITH.getValue());
-        grammarBuilder.rule(WITHOUT).is(WITHOUT.getValue());
-        grammarBuilder.rule(SHARING).is(SHARING.getValue());
-
-        grammarBuilder.rule(IMPLEMENTS).is(IMPLEMENTS.getValue());
-        grammarBuilder.rule(EXTENDS).is(EXTENDS.getValue());
-
-        grammarBuilder.rule(PUBLIC).is(PUBLIC.getValue());
-        grammarBuilder.rule(STATIC).is(STATIC.getValue());
-        grammarBuilder.rule(PROTECTED).is(PROTECTED.getValue());
-        grammarBuilder.rule(PRIVATE).is(PRIVATE.getValue());
-        grammarBuilder.rule(FINAL).is(FINAL.getValue());
-        grammarBuilder.rule(ABSTRACT).is(ABSTRACT.getValue());
-        grammarBuilder.rule(SYNCHRONIZED).is(SYNCHRONIZED.getValue());
-        grammarBuilder.rule(NATIVE).is(NATIVE.getValue());
-        grammarBuilder.rule(TRANSIENT).is(TRANSIENT.getValue());
-        grammarBuilder.rule(VOLATILE).is(VOLATILE.getValue());
-        grammarBuilder.rule(STRICTFP).is(STRICTFP.getValue());
-        grammarBuilder.rule(ANOTATION).is(ANOTATION.getValue());
-
-        grammarBuilder.rule(VOID).is(VOID.getValue());
-        grammarBuilder.rule(NULL).is(NULL.getValue());
-        grammarBuilder.rule(RETURN).is(RETURN.getValue());
-        grammarBuilder.rule(SEMICOLON).is(SEMICOLON.getValue());
-
-        grammarBuilder.rule(BOOLEAN).is(BOOLEAN.getValue());
-        grammarBuilder.rule(CHAR).is(CHAR.getValue());
-        grammarBuilder.rule(BYTE).is(BYTE.getValue());
-        grammarBuilder.rule(SHORT).is(SHORT.getValue());
-        grammarBuilder.rule(INT).is(INT.getValue());
-        grammarBuilder.rule(LONG).is(LONG.getValue());
-        grammarBuilder.rule(FLOAT).is(FLOAT.getValue());
-        grammarBuilder.rule(DOUBLE).is(DOUBLE.getValue());
-
-        grammarBuilder.rule(LPAREN).is(LPAREN.getValue());
-        grammarBuilder.rule(RPAREN).is(RPAREN.getValue());
-        grammarBuilder.rule(LBRACE).is(LBRACE.getValue());
-        grammarBuilder.rule(RBRACE).is(RBRACE.getValue());
     }
 }

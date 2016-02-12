@@ -54,13 +54,13 @@ public class ApexAstScannerTest {
                 new File("src/test/resources/metrics/functions.cls"),
                 new File("src/test/resources/metrics/lines.cls")));
         SourceProject project = buildProject(scanner);
-        assertThat(project.getInt(ApexMetric.FILES)).isEqualTo(3);
+        assertThat(project.getInt(ApexMetric.FILES)).isEqualTo(2);
     }
 
     @Test
     public void testTheLineNumbersOfAClass() {
         sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/lines.cls"));
-        assertThat(sourceFile.getInt(ApexMetric.LINES)).isEqualTo(10);
+        assertThat(sourceFile.getInt(ApexMetric.LINES_OF_CODE)).isEqualTo(9);
     }
 
     @Test
