@@ -30,7 +30,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 /**
- * Define the type of metrics.
+ * This class defines the type of metrics.
  */
 public enum ApexMetric implements MetricDef {
     FILES,

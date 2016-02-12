@@ -24,7 +24,7 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 /**
- * This class define tags constants.
+ * This class defines tags constants.
  */
 public class Tags {
 

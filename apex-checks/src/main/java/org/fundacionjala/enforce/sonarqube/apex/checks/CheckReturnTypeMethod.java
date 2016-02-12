@@ -36,7 +36,7 @@ import org.sonar.squidbridge.checks.SquidCheck;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check the return type of the method is equal to the header method type
+ * Checks the return type of the method is equal to the header method type
  */
 @Rule(
         key = ClassNameCheck.CHECK_KEY,
@@ -50,7 +50,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 public class CheckReturnTypeMethod extends SquidCheck<Grammar> {
 
     /**
-     * Patron to show the message.
+     * Stores a message template.
      */
     public static final String MESSAGE = "The type of the return value \"%s\", does not match the header \"%s\"";
 
@@ -60,7 +60,7 @@ public class CheckReturnTypeMethod extends SquidCheck<Grammar> {
     public static final String CHECK_KEY = "S1003";
 
     /**
-     * Is an axillary node, which help verify the next node.
+     * Stores an AstNode instance which hepls verify the next node.
      */
     private AstNode firstNode;
 
@@ -84,7 +84,7 @@ public class CheckReturnTypeMethod extends SquidCheck<Grammar> {
     }
 
     /**
-     * Check if the new node is different from the first node. If it is true a
+     * Checks if the new node is different from the first node. If it is true a
      * message is created.
      *
      * @param node used to compare.
@@ -96,6 +96,5 @@ public class CheckReturnTypeMethod extends SquidCheck<Grammar> {
             getContext().createLineViolation(this,
                     String.format(MESSAGE, node.getToken().getValue(), firstNode.getToken().getValue()), node);
         }
-
     }
 }
