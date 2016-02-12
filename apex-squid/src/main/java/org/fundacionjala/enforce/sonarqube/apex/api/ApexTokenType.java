@@ -21,46 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import java.nio.charset.Charset;
-
-import org.sonar.squidbridge.api.SquidConfiguration;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.TokenType;
 
 /**
- * This class contains the configuration to create an Abstract syntax tree.
+ * Enum save a custom type of Apex.
  */
-public class ApexConfiguration extends SquidConfiguration {
+public enum ApexTokenType implements TokenType {
 
-    /**
-     * Represents a value to ignore header comments.
-     */
-    private boolean ignoreHeaderComments;
+    STRING,
+    NEW_LINE;
 
-    /**
-     * Default constructor that requires charset.
-     *
-     * @param charset to be set.
-     */
-    public ApexConfiguration(Charset charset) {
-        super(charset);
+    @Override
+    public String getName() {
+        return name();
     }
 
-    /**
-     * Returns ignore header comments.
-     *
-     * @return the ignore header value.
-     */
-    public boolean getIgnoreHeaderComments() {
-        return ignoreHeaderComments;
+    @Override
+    public String getValue() {
+        return name();
     }
 
-    /**
-     * Sets ignore header comments.
-     *
-     * @param ignoreHeaderComments to be set.
-     */
-    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-        this.ignoreHeaderComments = ignoreHeaderComments;
+    @Override
+    public boolean hasToBeSkippedFromAst(AstNode an) {
+        return Boolean.FALSE;
     }
 }

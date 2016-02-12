@@ -21,46 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
 
-import java.nio.charset.Charset;
-
-import org.sonar.squidbridge.api.SquidConfiguration;
+import org.sonar.sslr.grammar.GrammarRuleKey;
 
 /**
- * This class contains the configuration to create an Abstract syntax tree.
+ * Contains enum all the rules used in the grammar.
  */
-public class ApexConfiguration extends SquidConfiguration {
+public enum RuleKey implements GrammarRuleKey {
 
-    /**
-     * Represents a value to ignore header comments.
-     */
-    private boolean ignoreHeaderComments;
-
-    /**
-     * Default constructor that requires charset.
-     *
-     * @param charset to be set.
-     */
-    public ApexConfiguration(Charset charset) {
-        super(charset);
-    }
-
-    /**
-     * Returns ignore header comments.
-     *
-     * @return the ignore header value.
-     */
-    public boolean getIgnoreHeaderComments() {
-        return ignoreHeaderComments;
-    }
-
-    /**
-     * Sets ignore header comments.
-     *
-     * @param ignoreHeaderComments to be set.
-     */
-    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-        this.ignoreHeaderComments = ignoreHeaderComments;
-    }
+    APEX_GRAMMAR,
+    BODY_IDENTIFIER,
+    CHAR,
+    CLASS_OR_INTERFACE_BODY_DECLARATION,
+    CLASS_OR_INTERFACE_DECLARATION,
+    END_CLASS,
+    EXTENDS_LIST,
+    EXTENDES_OR_IMPLEMENTS,
+    IDENTIFIER,
+    IMPLEMENTS_LIST,
+    INIT_IDENTIFIER,
+    KEYWORD,
+    LOOKAHEAD,
+    LOOKAHEAD_KEYWORD,
+    MERGE_TYPE_EXTENDS,
+    MERGE_TYPE_IMPLEMENTS,
+    METHOD_DECLARATION,
+    MODIFIER,
+    MODIFIERS,
+    PRIMITIVE_TYPE,
+    TYPE,
+    TYPE_CLASS,
+    TYPE_DECLARATION,
+    TYPE_METHOD,
+    RESULT_TYPE,
+    WITH_SHARING,
+    WITHOUT_SHARING;
 }

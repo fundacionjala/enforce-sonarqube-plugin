@@ -21,46 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import java.nio.charset.Charset;
+import org.junit.Test;
 
-import org.sonar.squidbridge.api.SquidConfiguration;
+import com.sonar.sslr.api.Grammar;
 
-/**
- * This class contains the configuration to create an Abstract syntax tree.
- */
-public class ApexConfiguration extends SquidConfiguration {
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-    /**
-     * Represents a value to ignore header comments.
-     */
-    private boolean ignoreHeaderComments;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
 
-    /**
-     * Default constructor that requires charset.
-     *
-     * @param charset to be set.
-     */
-    public ApexConfiguration(Charset charset) {
-        super(charset);
-    }
+public class ApexGrammarResultTypeTest {
 
-    /**
-     * Returns ignore header comments.
-     *
-     * @return the ignore header value.
-     */
-    public boolean getIgnoreHeaderComments() {
-        return ignoreHeaderComments;
-    }
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
-    /**
-     * Sets ignore header comments.
-     *
-     * @param ignoreHeaderComments to be set.
-     */
-    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-        this.ignoreHeaderComments = ignoreHeaderComments;
+    @Test
+    public void positiveRules() {
+        assertThat(grammarBuilder.rule(RESULT_TYPE))
+                .matches("returnnull;")
+                .matches("returnint;")
+                .matches("returnvoid;")
+                .matches("returnboolean;")
+                .notMatches("retur nnull;")
+                .notMatches("Returnnull;")
+                .notMatches("returnNull;");
     }
 }

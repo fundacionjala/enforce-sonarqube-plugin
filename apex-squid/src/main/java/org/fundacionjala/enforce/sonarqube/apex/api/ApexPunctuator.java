@@ -21,46 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import java.nio.charset.Charset;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.TokenType;
 
-import org.sonar.squidbridge.api.SquidConfiguration;
+import org.sonar.sslr.grammar.GrammarRuleKey;
 
 /**
- * This class contains the configuration to create an Abstract syntax tree.
+ * The enum tokens and GrammarRuleKey handles of punctuation for the Squid module.
  */
-public class ApexConfiguration extends SquidConfiguration {
+public enum ApexPunctuator implements TokenType, GrammarRuleKey {
 
     /**
-     * Represents a value to ignore header comments.
+     * SEPARATORS.
      */
-    private boolean ignoreHeaderComments;
+    LPAREN("("),
+    RPAREN(")"),
+    LBRACE("{"),
+    RBRACE("}"),
+    SEMICOLON(";"),
+    COMMA(","),
+    DOT("."),
 
     /**
-     * Default constructor that requires charset.
-     *
-     * @param charset to be set.
+     * OPERATORS.
      */
-    public ApexConfiguration(Charset charset) {
-        super(charset);
+    ASSIGN("="),
+    UNDERSCORE("_");
+
+    /**
+     * Save the value of each enum.
+     */
+    private final String value;
+
+    private ApexPunctuator(String value) {
+        this.value = value;
     }
 
-    /**
-     * Returns ignore header comments.
-     *
-     * @return the ignore header value.
-     */
-    public boolean getIgnoreHeaderComments() {
-        return ignoreHeaderComments;
+    @Override
+    public String getName() {
+        return name();
     }
 
-    /**
-     * Sets ignore header comments.
-     *
-     * @param ignoreHeaderComments to be set.
-     */
-    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-        this.ignoreHeaderComments = ignoreHeaderComments;
+    @Override
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public boolean hasToBeSkippedFromAst(AstNode node) {
+        return Boolean.FALSE;
     }
 }

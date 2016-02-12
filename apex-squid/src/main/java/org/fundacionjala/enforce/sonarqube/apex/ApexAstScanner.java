@@ -29,6 +29,7 @@ import com.google.common.base.Charsets;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexMetric;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexParser;
 import org.sonar.squidbridge.AstScanner;
 import org.sonar.squidbridge.SquidAstVisitor;
 import org.sonar.squidbridge.SquidAstVisitorContextImpl;

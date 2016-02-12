@@ -21,46 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.parser;
 
-import java.nio.charset.Charset;
+import com.sonar.sslr.api.Grammar;
+import com.sonar.sslr.impl.Parser;
 
-import org.sonar.squidbridge.api.SquidConfiguration;
+import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
+import org.fundacionjala.enforce.sonarqube.apex.api.ApexGrammar;
+import org.fundacionjala.enforce.sonarqube.apex.lexer.ApexLexer;
 
 /**
- * This class contains the configuration to create an Abstract syntax tree.
+ * Builds a {@link Parser} instance for Apex. Required an configuration.
  */
-public class ApexConfiguration extends SquidConfiguration {
+public class ApexParser {
 
     /**
-     * Represents a value to ignore header comments.
+     * Stores an error message when configuration is null.
      */
-    private boolean ignoreHeaderComments;
+    private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
 
     /**
-     * Default constructor that requires charset.
+     * Creates a Parser integrated with Grammar and Lexer.
      *
-     * @param charset to be set.
+     * @param config apex configuration.
+     * @return a parser
+     * @throws IllegalArgumentException when configuration is null.
      */
-    public ApexConfiguration(Charset charset) {
-        super(charset);
-    }
-
-    /**
-     * Returns ignore header comments.
-     *
-     * @return the ignore header value.
-     */
-    public boolean getIgnoreHeaderComments() {
-        return ignoreHeaderComments;
-    }
-
-    /**
-     * Sets ignore header comments.
-     *
-     * @param ignoreHeaderComments to be set.
-     */
-    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-        this.ignoreHeaderComments = ignoreHeaderComments;
+    public static Parser<Grammar> create(ApexConfiguration config) {
+        if (config == null) {
+            throw new IllegalArgumentException(ERROR_MESSAGE);
+        }
+        return Parser.builder(ApexGrammar.create())
+                .withLexer(ApexLexer.create(config)).build();
     }
 }
