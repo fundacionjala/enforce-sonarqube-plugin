@@ -26,12 +26,10 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
-
 /**
  * The enum tokens and GrammarRuleKey handles of punctuation for the Squid module.
  */
-public enum ApexPunctuator implements TokenType, GrammarRuleKey {
+public enum ApexPunctuator implements TokenType {
 
     /**
      * SEPARATORS.
