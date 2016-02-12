@@ -40,7 +40,7 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
     public void positiveRulesExtends() {
         assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
                 .matches("extendsYourClass")
-                .matches("extendsYourClass");
+                .matches("extends_YourClass");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
     public void positiveRulesImplements() {
         assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
                 .matches("implementsYourClass")
-                .matches("implementsYourClass");
+                .matches("implements_YourClass");
     }
 
     @Test
@@ -67,11 +67,10 @@ public class ApexGrammarClassOrInterfaceDeclarationTest {
     @Test
     public void positiveRulesExtendsOrImplements() {
         assertThat(grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS))
-                .matches("")
                 .matches("implementsYourClass")
-                .matches("implementsMyClass")
+                .matches("implements_MyClass")
                 .matches("extendsYourClass")
-                .matches("extendsMyClass");
+                .matches("extends_MyClass");
     }
 
     @Test

@@ -29,35 +29,12 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITHOUT_SHARING;
 
 public class ApexGrammarKeywordTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void positiveBasicRulesWith() {
-        assertThat(grammarBuilder.rule(WITH))
-                .matches("with")
-                .notMatches("without");
-    }
-
-    @Test
-    public void positiveBasicRulesWithout() {
-        assertThat(grammarBuilder.rule(WITHOUT))
-                .matches("without")
-                .notMatches("with");
-    }
-
-    @Test
-    public void positiveBasicRulesSharing() {
-        assertThat(grammarBuilder.rule(WITHOUT))
-                .matches("without")
-                .notMatches("with");
-    }
 
     @Test
     public void positiveBasicRulesWithoutSharing() {
