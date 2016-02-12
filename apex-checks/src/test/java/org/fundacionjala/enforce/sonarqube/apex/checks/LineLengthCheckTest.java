@@ -45,7 +45,8 @@ public class LineLengthCheckTest {
     @Test
     public void testEmptyFile() {
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .next().atLine(5).withMessage("The line length is greater than 80 authorized.")
+                .next().atLine(1).withMessage("The line length is greater than 80 authorized.")
+                .next().atLine(4).withMessage("The line length is greater than 80 authorized.")
                 .noMore();
     }
 }
