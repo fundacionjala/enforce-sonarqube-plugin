@@ -26,7 +26,6 @@ package org.fundacionjala.enforce.sonarqube.apex;
 import java.util.Arrays;
 import java.util.List;
 import org.fundacionjala.enforce.sonarqube.apex.cpd.ApexCpdMapping;
-import org.fundacionjala.enforce.sonarqube.ui.ApexFooter;
 import org.fundacionjala.enforce.sonarqube.ui.ApexWidget;
 import org.sonar.api.SonarPlugin;
 import org.sonar.api.config.PropertyDefinition;
@@ -44,10 +43,9 @@ public class ApexPlugin extends SonarPlugin {
                 definitions(),
                 Apex.class,
                 ApexCpdMapping.class,
-                ApexMetric.class,
+                ApexMetrics.class,
                 ApexSquidSensor.class,
-                ApexWidget.class,
-                ApexFooter.class);
+                ApexWidget.class);
     }
 
     public static List<PropertyDefinition> definitions() {
