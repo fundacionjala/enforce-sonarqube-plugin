@@ -21,41 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
+package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import java.io.File;
+import org.junit.Before;
+import org.junit.Test;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
-/**
- * Contains enum all the rules used in the grammar.
- */
-public enum RuleKey implements GrammarRuleKey {
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
-    APEX_GRAMMAR,
-    BODY_IDENTIFIER,
-    CHAR,
-    CLASS_OR_INTERFACE_BODY_DECLARATION,
-    CLASS_OR_INTERFACE_DECLARATION,
-    CLASS_NAME,
-    EXTENDS_LIST,
-    EXTENDES_OR_IMPLEMENTS,
-    IDENTIFIER,
-    IMPLEMENTS_LIST,
-    INIT_IDENTIFIER,
-    KEYWORD,
-    LOOKAHEAD,
-    LOOKAHEAD_KEYWORD,
-    MERGE_TYPE_EXTENDS,
-    MERGE_TYPE_IMPLEMENTS,
-    METHOD_DECLARATION,
-    METHOD_NAME,
-    MODIFIER,
-    MODIFIERS,
-    PRIMITIVE_TYPE,
-    TYPE,
-    TYPE_CLASS,
-    TYPE_DECLARATION,
-    TYPE_METHOD,
-    RESULT_TYPE,
-    WITH_SHARING,
-    WITHOUT_SHARING;
+public class LineLengthCheckTest {
+
+    private LineLengthCheck lineLengthCheck;
+    private SourceFile sourceFile;
+
+    @Before
+    public void setup() {
+        lineLengthCheck = new LineLengthCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/lineLength.cls"), lineLengthCheck);
+    }
+
+    @Test
+    public void testEmptyFile() {
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .next().atLine(1).withMessage("The line length is greater than 80 authorized.")
+                .next().atLine(4).withMessage("The line length is greater than 80 authorized.")
+                .noMore();
+    }
 }

@@ -23,42 +23,37 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.stream.Stream;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import static org.fest.assertions.Assertions.assertThat;
 
-import static org.sonar.sslr.tests.Assertions.assertThat;
+public class ApexMetricTest {
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITHOUT_SHARING;
+    private Set<ApexMetric> metrics;
 
-public class ApexGrammarKeywordTest {
-
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void positiveBasicRulesWithoutSharing() {
-        assertThat(grammarBuilder.rule(WITHOUT_SHARING))
-                .matches("withoutsharing");
+    @Before
+    public void setup() {
+        metrics = EnumSet.allOf(ApexMetric.class);
     }
 
     @Test
-    public void positiveBasicRules() {
-        assertThat(grammarBuilder.rule(KEYWORD))
-                .matches("withsharing")
-                .matches("withoutsharing");
+    public void testNumberOfApexMetricTypes() {
+        assertThat(metrics).hasSize(8);
     }
 
     @Test
-    public void negativeRules() {
-        assertThat(grammarBuilder.rule(KEYWORD))
-                .notMatches(" ? ")
-                .notMatches("_with sharing ")
-                .notMatches("_with_sharing ")
-                .notMatches("_withSharing")
-                .notMatches("with sharinG ")
-                .notMatches(" without_sharing ")
-                .notMatches("withoutSharing")
-                .notMatches(" Without Sharing ");
+    public void testDefaultValuesOfApexMetrics() {
+        Stream<ApexMetric> stream = metrics.stream();
+        stream.forEach(metric -> {
+            assertThat(metric.getName()).isEqualTo(metric.name());
+            assertThat(metric.isCalculatedMetric()).isFalse();
+            assertThat(metric.aggregateIfThereIsAlreadyAValue()).isTrue();
+            assertThat(metric.isThereAggregationFormula()).isTrue();
+            assertThat(metric.getCalculatedMetricFormula()).isNull();
+        });
     }
 }

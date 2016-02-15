@@ -21,41 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
-
-import org.sonar.sslr.grammar.GrammarRuleKey;
+package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 /**
- * Contains enum all the rules used in the grammar.
+ * This class defines tags constants.
  */
-public enum RuleKey implements GrammarRuleKey {
+public class Tags {
 
-    APEX_GRAMMAR,
-    BODY_IDENTIFIER,
-    CHAR,
-    CLASS_OR_INTERFACE_BODY_DECLARATION,
-    CLASS_OR_INTERFACE_DECLARATION,
-    CLASS_NAME,
-    EXTENDS_LIST,
-    EXTENDES_OR_IMPLEMENTS,
-    IDENTIFIER,
-    IMPLEMENTS_LIST,
-    INIT_IDENTIFIER,
-    KEYWORD,
-    LOOKAHEAD,
-    LOOKAHEAD_KEYWORD,
-    MERGE_TYPE_EXTENDS,
-    MERGE_TYPE_IMPLEMENTS,
-    METHOD_DECLARATION,
-    METHOD_NAME,
-    MODIFIER,
-    MODIFIERS,
-    PRIMITIVE_TYPE,
-    TYPE,
-    TYPE_CLASS,
-    TYPE_DECLARATION,
-    TYPE_METHOD,
-    RESULT_TYPE,
-    WITH_SHARING,
-    WITHOUT_SHARING;
+    public static final String BRAIN_OVERLOAD = "brain-overload";
+    public static final String BUG = "bug";
+    public static final String CONVENTION = "convention";
+    public static final String OBSOLETE = "obsolete";
+    public static final String SECURITY = "security";
+    public static final String UNUSED = "unused";
+    public static final String CERT = "cert";
+    public static final String PITFALL = "pitfall";
+    public static final String MISRA = "misra";
+    public static final String CONFUSING = "confusing";
+    public static final String PERFORMANCE = "performance";
+
+    /**
+     * Default constructor.
+     */
+    private Tags() {
+    }
 }

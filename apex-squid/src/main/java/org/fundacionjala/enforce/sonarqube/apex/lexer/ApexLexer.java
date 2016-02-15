@@ -43,7 +43,7 @@ public class ApexLexer {
     /**
      * Stores a pattern to identify a keyword.
      */
-    private static final String KEYWORD = "[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+";
+    private static final String KEYWORD = "(_{0,2}[a-zA-Z][a-zA-Z0-9]*)+";
 
     /**
      * Stores a pattern to identify a String.

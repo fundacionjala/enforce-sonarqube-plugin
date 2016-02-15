@@ -21,54 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
+import java.io.File;
 
-/**
- * The enum tokens and GrammarRuleKey handles of punctuation for the Squid module.
- */
-public enum ApexPunctuator implements TokenType {
+import org.junit.Test;
 
-    /**
-     * SEPARATORS.
-     */
-    LPAREN("("),
-    RPAREN(")"),
-    LBRACE("{"),
-    RBRACE("}"),
-    SEMICOLON(";"),
-    COMMA(","),
-    DOT("."),
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
-    /**
-     * OPERATORS.
-     */
-    ASSIGN("="),
-    UNDERSCORE("_");
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
-    /**
-     * Save the value of each enum.
-     */
-    private final String value;
+public class MethodNameCheckTest {
 
-    private ApexPunctuator(String value) {
-        this.value = value;
+    private MethodNameCheck methodNameCheck;
+    private SourceFile sourceFile;
+
+    @Test
+    public void testCorrectMethodName() throws Exception {
+        methodNameCheck = new MethodNameCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), methodNameCheck);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .noMore();
     }
 
-    @Override
-    public String getName() {
-        return name();
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode node) {
-        return Boolean.FALSE;
+    @Test
+    public void testErrorMethodName() throws Exception {
+        methodNameCheck = new MethodNameCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), methodNameCheck);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .next().atLine(3).withMessage(
+                "Rename method \"MyMethod\" to match the regular expression ^[a-z][a-zA-Z0-9]+$.");
     }
 }
