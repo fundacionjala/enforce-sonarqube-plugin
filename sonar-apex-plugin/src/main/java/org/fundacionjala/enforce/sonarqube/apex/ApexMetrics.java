@@ -32,7 +32,7 @@ import org.sonar.api.measures.Metrics;
 /**
  *
  */
-public class ApexMetric implements Metrics {
+public class ApexMetrics implements Metrics {
 
     public static final Metric<String> MESSAGE = new Metric.Builder("message_key", "Message", Metric.ValueType.STRING)
             .setDescription("Apex :: This is a metric to store a well known message")
