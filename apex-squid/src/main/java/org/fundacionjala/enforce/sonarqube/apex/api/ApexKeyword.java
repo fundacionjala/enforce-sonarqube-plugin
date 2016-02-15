@@ -26,12 +26,10 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
-
 /**
  * Enum save the keywords that are used throughout the squid module.
  */
-public enum ApexKeyword implements TokenType, GrammarRuleKey {
+public enum ApexKeyword implements TokenType {
 
     /**
      * RESERVED WORDS AND LITERALS.

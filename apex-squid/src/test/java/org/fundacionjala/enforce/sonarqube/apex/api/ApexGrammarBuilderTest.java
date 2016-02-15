@@ -23,29 +23,24 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import java.util.Map;
+import com.sonar.sslr.api.Grammar;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import org.sonar.sslr.internal.grammar.MutableGrammar;
 import org.sonar.sslr.internal.vm.FirstOfExpression;
 import org.sonar.sslr.internal.vm.OptionalExpression;
-import org.sonar.sslr.internal.vm.ParsingExpression;
-import org.sonar.sslr.internal.vm.SequenceExpression;
-import org.sonar.sslr.internal.vm.StringExpression;
 
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 public class ApexGrammarBuilderTest {
 
     private static final boolean FUL_GRAMMAR = Boolean.FALSE;
-    private Map<GrammarRuleKey, ParsingExpression> rules;
     private ApexGrammarBuilder grammarBuilder;
 
     @Before
@@ -53,54 +48,40 @@ public class ApexGrammarBuilderTest {
         grammarBuilder = ApexGrammarBuilder.create(FUL_GRAMMAR);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testThrowingAnExceptionWhenAddedANullRule() {
-        grammarBuilder.rule(null);
+    @Test
+    public void testVerifiesTypeOfGrammarWhenUsingFulGrammarBuilder() {
+        Grammar grammar = grammarBuilder.build();
+        assertThat(grammar, instanceOf(MutableGrammar.class));
     }
 
     @Test
-    public void testUpdateCurrentRuleWhenRuleIsAdded() {
+    public void testVerifiesTypeOfGrammarWhenUsingLessGrammarBuilder() {
+        final boolean lessGrammar = !FUL_GRAMMAR;
+        grammarBuilder = ApexGrammarBuilder.create(lessGrammar);
+        Grammar grammar = grammarBuilder.build();
+        assertThat(grammar, instanceOf(MutableGrammar.class));
+    }
+
+    @Test
+    public void testUpdateRuleBuilderWhenRuleIsAdded() {
+        assertThat(grammarBuilder.getRuleBuilder(), nullValue());
+
         grammarBuilder.rule(APEX_GRAMMAR);
-        assertThat(grammarBuilder.getCurrentRule(), is(APEX_GRAMMAR));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testThrowingAnExceptionWhenAddedAExpressionWithoutRule() {
-        grammarBuilder.is("error");
-    }
-
-    @Test
-    public void testVerifiesThatStoresARule() {
-        grammarBuilder.rule(APEX_GRAMMAR).is("expression");
-        rules = grammarBuilder.getMapRules();
-        assertThat(rules, hasKey(APEX_GRAMMAR));
-    }
-
-    @Test
-    public void testVerifiesTypeOfTheSimpleExpression() {
-        grammarBuilder.rule(APEX_GRAMMAR).is("expression");
-        rules = grammarBuilder.getMapRules();
-        ParsingExpression expresion = rules.get(APEX_GRAMMAR);
-        assertThat(expresion, instanceOf(StringExpression.class));
-    }
-
-    @Test
-    public void testVerifiesTypeOfTheSecuenceExpression() {
-        grammarBuilder.rule(APEX_GRAMMAR).is("start", "sequence", "end");
-        rules = grammarBuilder.getMapRules();
-        ParsingExpression expresion = rules.get(APEX_GRAMMAR);
-        assertThat(expresion, instanceOf(SequenceExpression.class));
+        assertThat(grammarBuilder.getRuleBuilder(), notNullValue());
     }
 
     @Test
     public void testVerifiesTypeOfTheOptionalExpression() {
-        ParsingExpression expresion = grammarBuilder.optional("option");
+        Object expresion = grammarBuilder.optional("option");
         assertThat(expresion, instanceOf(OptionalExpression.class));
     }
 
     @Test
     public void testVerifiesTypeOfTheFirstOfExpression() {
-        ParsingExpression expresion = grammarBuilder.firstOf("First", "second", "final");
+        Object expresion = grammarBuilder.firstOf("first", "second");
+        assertThat(expresion, instanceOf(FirstOfExpression.class));
+
+        expresion = grammarBuilder.firstOf("first", "second", "third", "fourth");
         assertThat(expresion, instanceOf(FirstOfExpression.class));
     }
 }

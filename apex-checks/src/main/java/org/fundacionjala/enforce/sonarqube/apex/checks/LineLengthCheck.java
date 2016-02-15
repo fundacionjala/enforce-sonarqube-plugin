@@ -21,46 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import java.nio.charset.Charset;
-
-import org.sonar.squidbridge.api.SquidConfiguration;
+import com.sonar.sslr.api.Grammar;
+import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.check.Priority;
+import org.sonar.check.Rule;
+import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
+import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
+import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
 
 /**
- * This class contains the configuration to create an Abstract syntax tree.
+ * This class defines the maximum number of the lines.
  */
-public class ApexConfiguration extends SquidConfiguration {
+@Rule(
+        key = LineLengthCheck.CHECK_KEY,
+        priority = Priority.MINOR,
+        name = "Lines should not be too long",
+        tags = Tags.CONVENTION
+)
+@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
+@SqaleConstantRemediation("1min")
+public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
 
     /**
-     * Represents a value to ignore header comments.
+     * Identifier key of the class.
      */
-    private boolean ignoreHeaderComments;
+    public static final String CHECK_KEY = "LineLength";
 
     /**
-     * Default constructor that requires charset.
+     * Maximum number of line length.
+     */
+    public static final int MAXIMAL_LINE_LENGTH = 80;
+
+    /**
+     * Returns the default number line length.
      *
-     * @param charset to be set.
+     * @return the line number.
      */
-    public ApexConfiguration(Charset charset) {
-        super(charset);
-    }
-
-    /**
-     * Returns ignore header comments.
-     *
-     * @return the ignore header value.
-     */
-    public boolean getIgnoreHeaderComments() {
-        return ignoreHeaderComments;
-    }
-
-    /**
-     * Sets ignore header comments.
-     *
-     * @param ignoreHeaderComments to be set.
-     */
-    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
-        this.ignoreHeaderComments = ignoreHeaderComments;
+    @Override
+    public int getMaximumLineLength() {
+        return MAXIMAL_LINE_LENGTH;
     }
 }

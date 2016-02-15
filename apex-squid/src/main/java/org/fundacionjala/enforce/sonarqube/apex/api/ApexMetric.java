@@ -23,52 +23,72 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
+import org.sonar.squidbridge.measures.CalculatedMetricFormula;
+import org.sonar.squidbridge.measures.MetricDef;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 /**
- * The enum tokens and GrammarRuleKey handles of punctuation for the Squid module.
+ * This class defines the type of metrics.
  */
-public enum ApexPunctuator implements TokenType {
+public enum ApexMetric implements MetricDef {
+    FILES,
+    LINES,
+    LINES_OF_CODE,
+    STATEMENTS,
+    FUNCTIONS,
+    CLASSES,
+    COMPLEXITY,
+    COMMENT_LINES;
 
     /**
-     * SEPARATORS.
+     * Returns the name of metric.
+     *
+     * @return the name.
      */
-    LPAREN("("),
-    RPAREN(")"),
-    LBRACE("{"),
-    RBRACE("}"),
-    SEMICOLON(";"),
-    COMMA(","),
-    DOT("."),
-
-    /**
-     * OPERATORS.
-     */
-    ASSIGN("="),
-    UNDERSCORE("_");
-
-    /**
-     * Save the value of each enum.
-     */
-    private final String value;
-
-    private ApexPunctuator(String value) {
-        this.value = value;
-    }
-
     @Override
     public String getName() {
         return name();
     }
 
+    /**
+     * Indicates if is calculated metric.
+     *
+     * @return false by default.
+     */
     @Override
-    public String getValue() {
-        return value;
+    public boolean isCalculatedMetric() {
+        return FALSE;
     }
 
+    /**
+     * Indicates if can aggregate a value.
+     *
+     * @return true by default.
+     */
     @Override
-    public boolean hasToBeSkippedFromAst(AstNode node) {
-        return Boolean.FALSE;
+    public boolean aggregateIfThereIsAlreadyAValue() {
+        return TRUE;
+    }
+
+    /**
+     * Indicates if can aggregate a formula.
+     *
+     * @return true by default.
+     */
+    @Override
+    public boolean isThereAggregationFormula() {
+        return TRUE;
+    }
+
+    /**
+     * Returns a calculated metric formula.
+     *
+     * @return null by default.
+     */
+    @Override
+    public CalculatedMetricFormula getCalculatedMetricFormula() {
+        return null;
     }
 }

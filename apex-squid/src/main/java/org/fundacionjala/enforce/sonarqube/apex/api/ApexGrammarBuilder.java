@@ -23,26 +23,22 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.google.common.collect.Lists;
+import com.sonar.sslr.api.GenericTokenType;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.TokenType;
 import com.sonar.sslr.api.typed.GrammarBuilder;
-
+import org.sonar.sslr.grammar.GrammarRuleBuilder;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
-import org.sonar.sslr.internal.vm.FirstOfExpression;
-import org.sonar.sslr.internal.vm.OptionalExpression;
 import org.sonar.sslr.internal.vm.ParsingExpression;
 import org.sonar.sslr.internal.vm.PatternExpression;
-import org.sonar.sslr.internal.vm.SequenceExpression;
 import org.sonar.sslr.internal.vm.StringExpression;
-import org.sonar.sslr.internal.vm.lexerful.TokenTypeExpression;
-import org.sonar.sslr.internal.vm.lexerful.TokenValueExpression;
 
 /**
  * Utility class to create a {@link GrammarBuilder} implementation.
@@ -50,24 +46,34 @@ import org.sonar.sslr.internal.vm.lexerful.TokenValueExpression;
 public class ApexGrammarBuilder {
 
     /**
-     * Stores a error message when failing parser.
-     */
-    private static final String PARSING_ERROR_MESSAGE = "Incorrect type of parsing expression: %s";
-
-    /**
      * Stores an identifier pattern.
      */
-    private static final String IDENTIFIER_PATTERN = "[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+";
+    private static final String IDENTIFIER_PATTERN = "(_{0,2}[a-zA-Z][a-zA-Z0-9]*)+";
 
     /**
-     * Stores an error message when rule is null.
+     * Stores a 'setRootRule' method name.
      */
-    private static final String RULE_ERROR_MESSAGE = "Rules can't be null";
+    private static final String SET_ROOT_RULE = "setRootRule";
 
     /**
-     * Represents a map of the rules and expression.
+     * Stores a 'fisrtOf' method name.
      */
-    private final Map<GrammarRuleKey, ParsingExpression> mapRules;
+    private static final String FIRST_OF = "firstOf";
+
+    /**
+     * Stores a 'optional' method name.
+     */
+    private static final String OPTIONAL = "optional";
+
+    /**
+     * Stores a 'build' method name.
+     */
+    private static final String BUILD = "build";
+
+    /**
+     * Stores a 'rule' method name.
+     */
+    private static final String RULE = "rule";
 
     /**
      * Defines the current grammar type which is being used.
@@ -75,14 +81,19 @@ public class ApexGrammarBuilder {
     private final boolean isFulGrammar;
 
     /**
-     * Represents a current rule.
+     * Stores the class type of the grammar builder.
      */
-    private GrammarRuleKey currentRule;
+    private final Class<?> grammarBuilder;
 
     /**
-     * Represents a root rule.
+     * Stores the grammar builder.
      */
-    private GrammarRuleKey rootRule;
+    private final Object baseBuilder;
+
+    /**
+     * Stores the grammar rule builder.
+     */
+    private GrammarRuleBuilder ruleBuilder;
 
     /**
      * Creates an apex grammar builder.
@@ -100,8 +111,9 @@ public class ApexGrammarBuilder {
      * @param isFulGrammar represents the type of grammar builder required.
      */
     private ApexGrammarBuilder(boolean isFulGrammar) {
+        baseBuilder = isFulGrammar ? LexerfulGrammarBuilder.create() : LexerlessGrammarBuilder.create();
+        grammarBuilder = baseBuilder.getClass();
         this.isFulGrammar = isFulGrammar;
-        mapRules = new HashMap<>();
     }
 
     /**
@@ -110,19 +122,25 @@ public class ApexGrammarBuilder {
      * @param rootRule rule to be set.
      */
     public void setRootRule(GrammarRuleKey rootRule) {
-        this.rootRule = rootRule;
+        invoke(SET_ROOT_RULE,
+                checkTypeArguments(GrammarRuleKey.class),
+                checkArguments(rootRule));
     }
 
     /**
-     * Allows to describe rule. The result of this method should be used only for
-     * execution of methods in it, i.e. you should not save reference on it.
+     * Allows to describe rule. The result of this method should be used only for execution of
+     * methods in it, i.e. you should not save reference on it.
      *
      * @param ruleKey role to be set.
      * @return an ApexGrammarBuilder instance.
      */
     public ApexGrammarBuilder rule(GrammarRuleKey ruleKey) {
-        validateRule(ruleKey);
-        currentRule = ruleKey;
+        Object result = invoke(RULE,
+                checkTypeArguments(GrammarRuleKey.class),
+                checkArguments(ruleKey));
+        if (result != null) {
+            ruleBuilder = (GrammarRuleBuilder) result;
+        }
         return this;
     }
 
@@ -133,7 +151,8 @@ public class ApexGrammarBuilder {
      * @return an ApexGrammarBuilder instance.
      */
     public ApexGrammarBuilder is(Object object) {
-        return addExpression(convertToExpression(object));
+        ruleBuilder.is(checkArgument(object));
+        return this;
     }
 
     /**
@@ -144,7 +163,8 @@ public class ApexGrammarBuilder {
      * @return an ApexGrammarBuilder instance.
      */
     public ApexGrammarBuilder is(Object object, Object... rest) {
-        return addExpression(new SequenceExpression(convertToExpressions(Lists.asList(object, rest))));
+        ruleBuilder.is(checkArgument(object), checkArguments(rest));
+        return this;
     }
 
     /**
@@ -154,8 +174,10 @@ public class ApexGrammarBuilder {
      * @param second is the second expression.
      * @return an Expression.
      */
-    public ParsingExpression firstOf(Object first, Object second) {
-        return new FirstOfExpression(convertToExpression(first), convertToExpression(second));
+    public Object firstOf(Object first, Object second) {
+        return invoke(FIRST_OF,
+                checkTypeArguments(Object.class, Object.class),
+                checkArguments(first, second));
     }
 
     /**
@@ -166,8 +188,10 @@ public class ApexGrammarBuilder {
      * @param rest rest of expressions.
      * @return an Expression
      */
-    public ParsingExpression firstOf(Object first, Object second, Object... rest) {
-        return new FirstOfExpression(convertToExpressions(Lists.asList(first, second, rest)));
+    public Object firstOf(Object first, Object second, Object... rest) {
+        return invoke(FIRST_OF,
+                checkTypeArguments(Object.class, Object.class, Object[].class),
+                checkArguments(first, second, rest));
     }
 
     /**
@@ -176,117 +200,113 @@ public class ApexGrammarBuilder {
      * @param object expression.
      * @return an Expression.
      */
-    public ParsingExpression optional(Object object) {
-        return new OptionalExpression(convertToExpression(object));
+    public Object optional(Object object) {
+        return invoke(OPTIONAL,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
     }
 
     /**
-     * Builds and returns a grammar instance, built on a specific grammar
-     * builder.
+     * Builds and returns a grammar instance, built on a specific grammar builder.
      *
      * @return a Grammar
      */
     public Grammar build() {
-        Grammar result;
-        if (isFulGrammar) {
-            LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
-            mapRules.forEach((rule, expression) -> {
-                grammarBuilder.rule(rule).is(expression);
-            });
-            grammarBuilder.setRootRule(rootRule);
-            result = grammarBuilder.build();
-        } else {
-            LexerlessGrammarBuilder grammarBuilder = LexerlessGrammarBuilder.create();
-            mapRules.forEach((rule, expression) -> {
-                grammarBuilder.rule(rule).is(expression);
-            });
-            grammarBuilder.setRootRule(rootRule);
-            result = grammarBuilder.build();
+        Grammar result = null;
+        Object exec = invoke(BUILD,
+                checkTypeArguments(),
+                checkArguments());
+        if (exec != null) {
+            result = (Grammar) exec;
         }
         return result;
     }
 
     /**
-     * Gets a map rules. Only available for unit test.
+     * Gets the grammar rule builder.
      *
-     * @return a map rules.
+     * @return the rule builder.
      */
-    Map<GrammarRuleKey, ParsingExpression> getMapRules() {
-        return mapRules;
+    GrammarRuleBuilder getRuleBuilder() {
+        return ruleBuilder;
     }
 
-    /**
-     * Gets a current rule. Only available for unit test.
-     *
-     * @return a rule.
-     */
-    GrammarRuleKey getCurrentRule() {
-        return currentRule;
-    }
-
-    /**
-     * Verifies that a rule is not null.
-     *
-     * @param ruleKey grammar rule
-     * @throws IllegalArgumentException when rule is null.
-     */
-    private void validateRule(GrammarRuleKey ruleKey) {
-        if (ruleKey == null) {
-            throw new IllegalArgumentException(RULE_ERROR_MESSAGE);
-        }
-    }
-
-    /**
-     * Stores a rule and expression.
-     *
-     * @param expression parsing expression.
-     * @return an ApexGrammarBuilder instance.
-     */
-    private ApexGrammarBuilder addExpression(ParsingExpression expression) {
-        validateRule(currentRule);
-        mapRules.put(currentRule, expression);
-        currentRule = null;
-        return this;
-    }
-
-    /**
-     * Converts an object in parser expression.
-     *
-     * @param expression object.
-     * @return an expression.
-     * @throws IllegalArgumentException when it can't do.
-     */
-    private ParsingExpression convertToExpression(Object expression) {
-        final ParsingExpression result;
-        if (expression instanceof ParsingExpression) {
-            result = (ParsingExpression) expression;
-        } else if (expression instanceof GrammarRuleKey) {
-            GrammarRuleKey ruleKey = (GrammarRuleKey) expression;
-            result = mapRules.get(ruleKey);
-        } else if (expression instanceof TokenType) {
-            result = (isFulGrammar) ? new TokenTypeExpression((TokenType) expression)
-                    : new PatternExpression(IDENTIFIER_PATTERN);
-        } else if (expression instanceof String) {
-            result = (isFulGrammar) ? new TokenValueExpression((String) expression)
-                    : new StringExpression((String) expression);
-        } else {
-            throw new IllegalArgumentException(String.format(PARSING_ERROR_MESSAGE,
-                    expression.getClass().toString()));
+    private Object invoke(String name, Class<?>[] typeArguments, Object[] arguments) {
+        Object result = null;
+        try {
+            Method method = grammarBuilder.getMethod(name, typeArguments);
+            method.setAccessible(Boolean.TRUE);
+            result = method.invoke(baseBuilder, arguments);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException |
+                IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(ApexGrammarBuilder.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
 
     /**
-     * Converts a list of the object in parser expression.
+     * Returns the array with the class type of the arguments.
      *
-     * @param expression list of the objects.
-     * @return an expression.
+     * @param types array of the class type.
+     * @return an array.
      */
-    private ParsingExpression[] convertToExpressions(List<Object> expressions) {
-        ParsingExpression[] result = new ParsingExpression[expressions.size()];
-        for (int i = 0; i < expressions.size(); i++) {
-            result[i] = convertToExpression(expressions.get(i));
+    private Class<?>[] checkTypeArguments(Class<?>... types) {
+        return types;
+    }
+
+    /**
+     * Analyzes and returns the array of the arguments.
+     *
+     * @param arguments array of the arguments.
+     * @return an array
+     */
+    private Object[] checkArguments(Object... arguments) {
+        Object argument;
+        if (!isFulGrammar) {
+            for (int index = 0; index < arguments.length; index++) {
+                argument = arguments[index];
+                arguments[index] = isArray(argument) ? checkArguments((Object[]) argument)
+                        : checkArgument(argument);
+            }
         }
-        return result;
+        return arguments;
+    }
+
+    /**
+     * Analyzes and returns the argument. Replaces {@link TokenType} by {@link ParsingExpression} if
+     * lessGrammarBuilder is required.
+     *
+     * @param argument to be analyzed.
+     * @return the argument.
+     */
+    private Object checkArgument(Object argument) {
+        if (!isFulGrammar) {
+            if (argument instanceof TokenType) {
+                TokenType token = (TokenType) argument;
+                argument = isIdentifier(token) ? new PatternExpression(IDENTIFIER_PATTERN)
+                        : new StringExpression(token.getValue());
+            }
+        }
+        return argument;
+    }
+
+    /**
+     * Determines if a {@link TokenType} represents an identifier.
+     *
+     * @param token to be analyzed.
+     * @return a boolean.
+     */
+    private boolean isIdentifier(TokenType token) {
+        return token.equals(GenericTokenType.IDENTIFIER);
+    }
+
+    /**
+     * Determines if a object represents an array class.
+     *
+     * @param object to be analyzed.
+     * @return a boolean.
+     */
+    private boolean isArray(Object object) {
+        return object.getClass().isArray();
     }
 }
