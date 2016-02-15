@@ -21,35 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
-import org.sonar.api.profiles.ProfileDefinition;
-import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.rules.RuleFinder;
-import org.sonar.api.utils.ValidationMessages;
-import org.sonar.squidbridge.annotations.AnnotationBasedProfileBuilder;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
  */
-public class ApexProfile extends ProfileDefinition {
+public class CheckList {
 
-    private final RuleFinder ruleFinder;
+    public static final String REPOSITORY_KEY = "apex";
 
-    public ApexProfile(RuleFinder ruleFinder) {
-        this.ruleFinder = ruleFinder;
+    public static final String SONAR_WAY_PROFILE = "Sonar way";
+
+    private CheckList() {
     }
 
-    @Override
-    public RulesProfile createProfile(ValidationMessages validation) {
-        AnnotationBasedProfileBuilder annotationBasedProfileBuilder = new AnnotationBasedProfileBuilder(ruleFinder);
-        RulesProfile rules = annotationBasedProfileBuilder.build(
-                CheckList.REPOSITORY_KEY,
-                CheckList.SONAR_WAY_PROFILE,
-                Apex.KEY,
-                CheckList.getChecks(),
-                validation);
-        return rules;
+    public static List<Class> getChecks() {
+        return Arrays.asList(
+                CheckReturnTypeMethod.class,
+                ClassNameCheck.class,
+                LineLengthCheck.class,
+                MethodNameCheck.class);
     }
 }
