@@ -29,7 +29,6 @@ import org.fundacionjala.enforce.sonarqube.apex.cpd.ApexCpdMapping;
 import org.fundacionjala.enforce.sonarqube.ui.ApexWidget;
 import org.sonar.api.SonarPlugin;
 import org.sonar.api.config.PropertyDefinition;
-import org.sonar.api.internal.google.common.collect.ImmutableList;
 import org.sonar.api.resources.Qualifiers;
 
 /**
@@ -39,10 +38,11 @@ public class ApexPlugin extends SonarPlugin {
 
     @Override
     public List getExtensions() {
-        return ImmutableList.of(
+        return Arrays.asList(
                 definitions(),
                 Apex.class,
                 ApexCpdMapping.class,
+                ApexProfile.class,
                 ApexMetrics.class,
                 ApexSquidSensor.class,
                 ApexWidget.class);
