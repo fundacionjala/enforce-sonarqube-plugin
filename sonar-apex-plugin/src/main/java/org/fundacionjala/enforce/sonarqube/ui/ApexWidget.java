@@ -24,33 +24,32 @@
 package org.fundacionjala.enforce.sonarqube.ui;
 
 import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.Description;
 import org.sonar.api.web.RubyRailsWidget;
-import org.sonar.api.web.WidgetCategory;
-import org.sonar.api.web.WidgetProperties;
-import org.sonar.api.web.WidgetProperty;
-import org.sonar.api.web.WidgetPropertyType;
+import org.sonar.api.web.UserRole;
 
 /**
  *
  */
-@WidgetCategory("Labs")
-@WidgetProperties({
-    @WidgetProperty(key = "max", type = WidgetPropertyType.INTEGER, defaultValue = "80")
-})
+@Description("Display metadata of Apex")
+@UserRole(UserRole.USER)
 public class ApexWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+
+    String title = "Apex Widget";
+    String id = "org.fundacionjala.enforce.sonarqube.apex.ApexPlugin";
+
+    @Override
+    public String getTemplatePath() {
+        return "/Files/widget.html.erb";
+    }
 
     @Override
     public String getId() {
-        return "apex_widget";
+        return id;
     }
 
     @Override
     public String getTitle() {
-        return "Apex Widget";
-    }
-
-    @Override
-    protected String getTemplatePath() {
-        return "/example/example_widget.html.erb";
+        return title;
     }
 }

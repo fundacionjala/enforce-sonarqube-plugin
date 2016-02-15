@@ -1,0 +1,49 @@
+<div class="dashbox">
+   <h1>Clojure Project Dashboard</h1>
+   <h4>Project name: <%= @project.name %></h4>
+   <%
+   if (measure('clojure-issues-line'))
+
+      issues_file = measure('clojure-issues-file')
+      issues_line = measure('clojure-issues-line')
+      issues_error = measure('clojure-issues-error')
+      issues_count = measure('clojure-issues-count')
+      all_files = measure('html-file-link')
+      files=measure('files')
+      issues_line_arr  = issues_line.data.split(";")
+      issues_file_arr  = issues_file.data.split(";")
+      issues_error_arr  = issues_error.data.split(";")
+    %>
+
+   <h3><%= format_measure(files, :prefix => "Click to access the " , :url => url_for_drilldown(files)) -%> Scanned files</h3>
+   <h3>Number of issues:<%= format_measure(issues_count) -%> </h3>
+   <h5>Following issues were found </h5>
+   <table border="1">
+      <tr>
+         <th>Line</th>
+         <th>File</th>
+         <th>Error</th>
+      </tr>
+      <%
+         x = 0
+         issues_line_arr.each do |line_issues|
+         line_issues_array = line_issues.split(/\d+=/)
+         %>
+      <tr>
+         <td><%= line_issues.split(/\d+=/) -%></td>
+         <td>
+            <span class="small"><%= issues_file_arr[x].split(/\d+=/)[1]  -%>></span>
+         </td>
+         <td><%= issues_error_arr[x].split(/\d+=/)[1] -%></td>
+         <% x += 1 %>
+      </tr>
+      <%
+         end
+         %>
+   </table>
+   <% else %>
+   <h2>Can't display results. No clojure issue found.</h2>
+   <%
+   end
+   %>
+</div>
