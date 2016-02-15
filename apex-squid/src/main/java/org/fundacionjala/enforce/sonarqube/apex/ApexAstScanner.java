@@ -59,7 +59,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHO
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
 
 /**
- * Utility class for scans a file and generate {@link SourceFile}
+ * Utility class in order to scan a file and generate {@link SourceFile}
  */
 public class ApexAstScanner {
 
