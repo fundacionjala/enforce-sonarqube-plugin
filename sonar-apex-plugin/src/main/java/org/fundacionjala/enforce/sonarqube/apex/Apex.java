@@ -37,7 +37,7 @@ public class Apex extends AbstractLanguage {
     public static final String FILE_SUFFIXES_KEY = "sonar.apex.file.suffixes";
     public static final String[] DEFAULT_FILE_SUFFIXES = {"cls"};
     public static final String NAME = "Apex";
-    public static final String KEY = "apex";
+    public static final String KEY = "cls";
     
     private final Settings settings;
 

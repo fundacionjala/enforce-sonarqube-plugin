@@ -26,7 +26,8 @@ package org.fundacionjala.enforce.sonarqube.apex;
 import java.util.Arrays;
 import java.util.List;
 import org.fundacionjala.enforce.sonarqube.apex.cpd.ApexCpdMapping;
-import org.fundacionjala.enforce.sonarqube.ui.ApexWidget;
+import org.fundacionjala.enforce.sonarqube.apex.rules.ApexRulesDefinition;
+import org.fundacionjala.enforce.sonarqube.apex.rules.ApexlintRulesDefinition;
 import org.sonar.api.SonarPlugin;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.Qualifiers;
@@ -38,19 +39,19 @@ public class ApexPlugin extends SonarPlugin {
 
     @Override
     public List getExtensions() {
-        return Arrays.asList(
-                definitions(),
+        return Arrays.asList(definitions(),
                 Apex.class,
                 ApexCpdMapping.class,
-                ApexProfile.class,
-                ApexMetrics.class,
                 ApexSquidSensor.class,
-                ApexWidget.class);
+                ApexRulesDefinition.class,
+                ApexProfile.class,
+                ApexlintRulesDefinition.class,
+                ApexSquidSensor.class);
     }
 
     public static List<PropertyDefinition> definitions() {
         return Arrays.asList(
-                PropertyDefinition.builder("org.sonar.fundacionjala.property")
+                PropertyDefinition.builder("org.apex.enforce")
                 .name("Property")
                 .description("Description of my property")
                 .defaultValue("Apex is here!!")
