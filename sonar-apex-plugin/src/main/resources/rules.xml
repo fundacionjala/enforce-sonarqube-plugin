@@ -1,0 +1,37 @@
+<rules>
+	<rule>
+		<key>ExampleRule1</key>
+		<name>Example Rule 1</name>
+		<internalKey>ExampleRule1</internalKey>
+		<description>This is an example of rule defined thru the XML.
+		</description>
+		<severity>BLOCKER</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>READY</status>
+		<tag>example</tag>
+		<tag>bug</tag>
+	</rule>
+	<rule>
+		<key>ExampleRule2</key>
+		<name>Example Rule 2</name>
+		<internalKey>ExampleRule2</internalKey>
+		<description>This is a other example of rule defined thru the XML.
+		</description>
+		<severity>MAJOR</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>BETA</status>
+		<tag>example</tag>
+		<tag>convention</tag>
+	</rule>
+	<rule>
+		<key>ExampleRule3</key>
+		<name>Example Rule 3</name> <!-- max size is 200 -->
+		<internalKey>ExampleRule3</internalKey>
+		<description>This is a other example of rule defined thru the XML.
+		</description>
+		<severity>CRITICAL</severity>
+		<cardinality>SINGLE</cardinality>
+		<status>DEPRECATED</status>
+		<tag>example</tag>
+	</rule>
+</rules>
