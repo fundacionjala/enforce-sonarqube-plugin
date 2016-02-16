@@ -10,26 +10,26 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>plugin</artifactId>
+    <artifactId>apex-plugin</artifactId>
     <packaging>sonar-plugin</packaging>
 
     <name>Apex :: Plugin</name>
 
     <dependencies>
         <dependency>
-            <groupId>org.sonarsource.sonarqube</groupId>
+            <groupId>org.codehaus.sonar</groupId>
             <artifactId>sonar-plugin-api</artifactId>
             <scope>provided</scope>
-            <version>5.3</version>
+            <version>4.5.6</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>squid</artifactId>
+            <artifactId>apex-squid</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>check</artifactId>
+            <artifactId>apex-check</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
