@@ -38,6 +38,8 @@ public enum ApexPunctuator implements TokenType {
     RPAREN(")"),
     LBRACE("{"),
     RBRACE("}"),
+    LBRACKET("["),
+    RBRACKET("]"),
     SEMICOLON(";"),
     COMMA(","),
     DOT("."),

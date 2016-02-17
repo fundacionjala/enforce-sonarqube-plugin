@@ -58,11 +58,14 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_DECLARATION;
@@ -84,6 +87,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_METHOD;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITHOUT_SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITH_SHARING;
 
@@ -93,7 +97,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITH_
 public class ApexGrammar {
 
     /**
-     * It is the main method of grammar. Here all other grammars are constructed.
+     * It is the main method of grammar. Here all other grammars are
+     * constructed.
      *
      * @return The grammar of a class.
      */
@@ -102,14 +107,17 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a boolean to indicate the
-     * type of grammar builder. Only available for unit test.
+     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a
+     * boolean to indicate the type of grammar builder. Only available for unit
+     * test.
      *
      * @param isFulGrammar represents the type of grammar builder required.
      * @return the grammar
      */
     static Grammar create(boolean isFulGrammar) {
         ApexGrammarBuilder grammarBuilder = ApexGrammarBuilder.create(isFulGrammar);
+        brackets(grammarBuilder);
+        variableDeclaratorId(grammarBuilder);
         primitiveType(grammarBuilder);
         type(grammarBuilder);
         resultType(grammarBuilder);
@@ -135,8 +143,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar is created for the head of a class with the switch and whether it will extend or
-     * implement otherwise.
+     * Grammar is created for the head of a class with the switch and whether it
+     * will extend or implement otherwise.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -203,8 +211,9 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar for the declaration of a class or interface is constructed. Composed of the rules of
-     * a class type, its identified, extends, and implements.
+     * Grammar for the declaration of a class or interface is constructed.
+     * Composed of the rules of a class type, its identified, extends, and
+     * implements.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -275,7 +284,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates rules to the last line of the method and the completion of the method.
+     * Creates rules to the last line of the method and the completion of the
+     * method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -337,8 +347,29 @@ public class ApexGrammar {
         );
     }
 
+    /* It is responsible for creating the rule for identifying a variable.
+     *
+     * @param grammarBuilder
+     */
+    private static void variableDeclaratorId(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(VARIABLE_DECLARATOR_ID).is(
+                IDENTIFIER,
+                grammarBuilder.optional(BRACKETS)
+        );
+    }
+
     /**
-     * It is responsible for building the rules for the different types of return of a method.
+     * It is responsible for creating the rule for the brackets.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void brackets(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(BRACKETS).is(LBRACKET, RBRACKET);
+    }
+
+    /**
+     * It is responsible for building the rules for the different types of
+     * return of a method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
