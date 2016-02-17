@@ -23,49 +23,23 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import org.fundacionjala.enforce.sonarqube.apex.Apex;
+import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
 import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
+import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
 
 /**
  *
  */
 public class ApexRulesDefinition implements RulesDefinition {
 
-    protected static final String KEY = "apexlint";
-    protected static final String NAME = "apexLint";
-
-    protected String rulesDefinitionFilePath() {
-        return "/rules.xml";
-    }
-
-    private void defineRulesForLanguage(Context context, String repositoryKey, String repositoryName, String languageKey) {
-        NewRepository repository = context.createRepository(repositoryKey, languageKey).setName(repositoryName);
-
-        InputStream rulesXml = this.getClass().getResourceAsStream(rulesDefinitionFilePath());
-        if (rulesXml != null) {
-            RulesDefinitionXmlLoader rulesLoader = new RulesDefinitionXmlLoader();
-            rulesLoader.load(repository, rulesXml, StandardCharsets.UTF_8.name());
-        }
-
-        repository.done();
-    }
-
     @Override
     public void define(Context context) {
-        String repositoryKey = getRepositoryKeyForLanguage(Apex.KEY);
-        String repositoryName = getRepositoryNameForLanguage(Apex.KEY);
-        defineRulesForLanguage(context, repositoryKey, repositoryName, Apex.KEY);
-    }
+        NewRepository repository = context
+                .createRepository(CheckList.REPOSITORY_KEY, Apex.KEY)
+                .setName(CheckList.REPOSITORY_NAME);
 
-    public static String getRepositoryKeyForLanguage(String languageKey) {
-        return languageKey.toLowerCase() + "-" + KEY;
+        AnnotationBasedRulesDefinition.load(repository, Apex.KEY, CheckList.getChecks());
+        repository.done();
     }
-
-    public static String getRepositoryNameForLanguage(String languageKey) {
-        return languageKey.toUpperCase() + " " + NAME;
-    }
-
 }
