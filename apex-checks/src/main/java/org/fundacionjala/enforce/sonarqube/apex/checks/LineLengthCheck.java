@@ -27,6 +27,7 @@ import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
+import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
@@ -42,6 +43,7 @@ import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("1min")
+@ActivatedByDefault
 public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
 
     /**

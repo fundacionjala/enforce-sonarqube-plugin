@@ -23,7 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import java.util.Arrays;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
@@ -31,15 +31,17 @@ import java.util.List;
  */
 public class CheckList {
 
-    public static final String REPOSITORY_KEY = "apex";
-
     public static final String SONAR_WAY_PROFILE = "Sonar way";
+
+    public static final String REPOSITORY_NAME = "SonarQube";
+
+    public static final String REPOSITORY_KEY = "apex";
 
     private CheckList() {
     }
 
     public static List<Class> getChecks() {
-        return Arrays.asList(
+        return ImmutableList.<Class>of(
                 CheckReturnTypeMethod.class,
                 ClassNameCheck.class,
                 LineLengthCheck.class,

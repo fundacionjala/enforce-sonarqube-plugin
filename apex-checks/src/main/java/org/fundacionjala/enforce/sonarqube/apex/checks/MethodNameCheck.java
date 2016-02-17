@@ -42,9 +42,10 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
  * Verification of the name of the method in a class.
  */
 @Rule(
-        key = ClassNameCheck.CHECK_KEY,
+        key = MethodNameCheck.CHECK_KEY,
         priority = Priority.MAJOR,
         name = "Method names should comply with a naming convention",
+        description = "Method names",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
@@ -55,7 +56,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "1002";
+    public static final String CHECK_KEY = "A1002";
 
     /**
      * The structure must have the name of the method.

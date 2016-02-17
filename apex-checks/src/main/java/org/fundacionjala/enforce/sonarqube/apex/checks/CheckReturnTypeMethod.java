@@ -39,7 +39,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
  * Checks the return type of the method is equal to the header method type
  */
 @Rule(
-        key = ClassNameCheck.CHECK_KEY,
+        key = CheckReturnTypeMethod.CHECK_KEY,
         priority = Priority.MAJOR,
         name = "Checking the return type of the method",
         tags = Tags.CONVENTION
@@ -57,7 +57,7 @@ public class CheckReturnTypeMethod extends SquidCheck<Grammar> {
     /**
      * Id code for the plugin.
      */
-    public static final String CHECK_KEY = "S1003";
+    public static final String CHECK_KEY = "A1003";
 
     /**
      * Stores an AstNode instance which hepls verify the next node.
