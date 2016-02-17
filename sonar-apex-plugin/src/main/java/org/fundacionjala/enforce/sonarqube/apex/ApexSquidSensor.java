@@ -41,7 +41,6 @@ import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.issue.Issuable;
 import org.sonar.api.issue.Issue;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
@@ -64,18 +63,16 @@ public class ApexSquidSensor implements Sensor {
     private static final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
 
     private final Checks<SquidAstVisitor<Grammar>> checks;
-    private final FileLinesContextFactory fileLinesContextFactory;
 
-    private SensorContext context;
+    private final ResourcePerspectives resourcePerspectives;
+    private final FileSystem fileSystem;
     private AstScanner<Grammar> scanner;
-    private FileSystem fileSystem;
-    private ResourcePerspectives resourcePerspectives;
+    private SensorContext context;
 
-    public ApexSquidSensor(FileLinesContextFactory fileLinesContextFactory, FileSystem fileSystem, ResourcePerspectives perspectives, CheckFactory checkFactory) {
+    public ApexSquidSensor(FileSystem fileSystem, ResourcePerspectives perspectives, CheckFactory checkFactory) {
         this.checks = checkFactory
                 .<SquidAstVisitor<Grammar>>create(CheckList.REPOSITORY_KEY)
                 .addAnnotatedChecks(CheckList.getChecks());
-        this.fileLinesContextFactory = fileLinesContextFactory;
         this.fileSystem = fileSystem;
         this.resourcePerspectives = perspectives;
     }

@@ -23,11 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
 import org.fundacionjala.enforce.sonarqube.apex.cpd.ApexCpdMapping;
+import org.fundacionjala.enforce.sonarqube.apex.rules.ApexCommonRulesDecorator;
+import org.fundacionjala.enforce.sonarqube.apex.rules.ApexCommonRulesEngine;
 import org.fundacionjala.enforce.sonarqube.apex.rules.ApexRulesDefinition;
-import org.fundacionjala.enforce.sonarqube.apex.rules.ApexlintRulesDefinition;
 import org.sonar.api.SonarPlugin;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.Qualifiers;
@@ -39,14 +41,17 @@ public class ApexPlugin extends SonarPlugin {
 
     @Override
     public List getExtensions() {
-        return Arrays.asList(definitions(),
+        return ImmutableList.of(
+                definitions(),
                 Apex.class,
                 ApexCpdMapping.class,
+
                 ApexSquidSensor.class,
                 ApexRulesDefinition.class,
                 ApexProfile.class,
-                ApexlintRulesDefinition.class,
-                ApexSquidSensor.class);
+
+                ApexCommonRulesDecorator.class,
+                ApexCommonRulesEngine.class);
     }
 
     public static List<PropertyDefinition> definitions() {
