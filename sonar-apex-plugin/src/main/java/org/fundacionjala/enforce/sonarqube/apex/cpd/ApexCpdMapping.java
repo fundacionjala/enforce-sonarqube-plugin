@@ -32,16 +32,15 @@ import org.sonar.api.resources.Language;
 
 /**
  *
- * @author dan_canqui
  */
 public class ApexCpdMapping extends AbstractCpdMapping {
 
     private final Apex language;
     private final Charset charset;
 
-    public ApexCpdMapping(Apex language, FileSystem fs) {
+    public ApexCpdMapping(Apex language, FileSystem fileSystem) {
         this.language = language;
-        this.charset = fs.encoding();
+        this.charset = fileSystem.encoding();
     }
 
     @Override
