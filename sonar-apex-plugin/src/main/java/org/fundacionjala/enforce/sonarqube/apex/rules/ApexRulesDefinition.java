@@ -23,16 +23,22 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-import org.fundacionjala.enforce.sonarqube.apex.Apex;
-import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
 
+import org.fundacionjala.enforce.sonarqube.apex.Apex;
+import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
+
 /**
- *
+ * Defines some coding rules of the same repository.
  */
 public class ApexRulesDefinition implements RulesDefinition {
 
+    /**
+     * Loads apex custom rules in the repository.
+     *
+     * @param context builder.
+     */
     @Override
     public void define(Context context) {
         NewRepository repository = context

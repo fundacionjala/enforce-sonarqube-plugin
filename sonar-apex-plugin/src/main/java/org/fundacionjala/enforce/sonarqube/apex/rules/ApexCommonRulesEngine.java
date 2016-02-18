@@ -23,25 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-import org.fundacionjala.enforce.sonarqube.apex.Apex;
 import org.sonar.squidbridge.commonrules.api.CommonRulesEngine;
 import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 
+import org.fundacionjala.enforce.sonarqube.apex.Apex;
+
 /**
- *
+ * Enables the use of common rules.
  */
 public class ApexCommonRulesEngine extends CommonRulesEngine {
 
-  public ApexCommonRulesEngine() {
-    super(Apex.KEY);
-  }
+    /**
+     * Default constructor to define the Apex's key.
+     */
+    public ApexCommonRulesEngine() {
+        super(Apex.KEY);
+    }
 
-  @Override
-  protected void doEnableRules(CommonRulesRepository repository) {
-    repository
-      .enableDuplicatedBlocksRule()
-      .enableInsufficientCommentDensityRule(null)
-      .enableInsufficientLineCoverageRule(null)
-      .enableInsufficientBranchCoverageRule(null);
-  }  
+    /**
+     * Enables rules in the repository.
+     *
+     * @param repository rule repository.
+     */
+    @Override
+    protected void doEnableRules(CommonRulesRepository repository) {
+        repository
+                .enableDuplicatedBlocksRule()
+                .enableInsufficientCommentDensityRule(null)
+                .enableInsufficientLineCoverageRule(null)
+                .enableInsufficientBranchCoverageRule(null);
+    }
 }

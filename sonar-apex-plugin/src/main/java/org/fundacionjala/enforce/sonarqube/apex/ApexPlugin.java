@@ -23,26 +23,29 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex;
 
-import com.google.common.collect.ImmutableList;
-import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
+import org.sonar.api.SonarPlugin;
+
 import org.fundacionjala.enforce.sonarqube.apex.cpd.ApexCpdMapping;
 import org.fundacionjala.enforce.sonarqube.apex.rules.ApexCommonRulesDecorator;
 import org.fundacionjala.enforce.sonarqube.apex.rules.ApexCommonRulesEngine;
 import org.fundacionjala.enforce.sonarqube.apex.rules.ApexRulesDefinition;
-import org.sonar.api.SonarPlugin;
-import org.sonar.api.config.PropertyDefinition;
-import org.sonar.api.resources.Qualifiers;
 
 /**
- *
+ * It's an entry-point to declare its extensions.
  */
 public class ApexPlugin extends SonarPlugin {
 
+    /**
+     * Classes of the implemented extensions.
+     *
+     * @return a list of the extensions.
+     */
     @Override
     public List getExtensions() {
         return ImmutableList.of(
-                definitions(),
                 Apex.class,
                 ApexCpdMapping.class,
 
@@ -52,21 +55,5 @@ public class ApexPlugin extends SonarPlugin {
 
                 ApexCommonRulesDecorator.class,
                 ApexCommonRulesEngine.class);
-    }
-
-    public static List<PropertyDefinition> definitions() {
-        return Arrays.asList(
-                PropertyDefinition.builder("org.apex.enforce")
-                .name("Property")
-                .description("Description of my property")
-                .defaultValue("Apex is here!!")
-                .build(),
-                PropertyDefinition.builder(Apex.FILE_SUFFIXES_KEY)
-                .name("File Suffixes")
-                .description("Apex :: Comma-separated list of suffixes for files to analyze.")
-                .onQualifiers(Qualifiers.PROJECT)
-                .defaultValue("cls")
-                .build()
-        );
     }
 }

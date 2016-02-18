@@ -23,35 +23,70 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex;
 
-import com.google.common.collect.Lists;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.AbstractLanguage;
 
 /**
- *
+ * Defines a Apex language.
  */
 public class Apex extends AbstractLanguage {
 
+    /**
+     * Stores a default suffix.
+     */
     public static final String FILE_SUFFIXES_KEY = "sonar.apex.file.suffixes";
+
+    /**
+     * Stores an array of the Apex's suffixes.
+     */
     public static final String[] DEFAULT_FILE_SUFFIXES = {"cls"};
+
+    /**
+     * Stores the Apex name.
+     */
     public static final String NAME = "Apex";
+
+    /**
+     * Stores the Apex suffix.
+     */
     public static final String KEY = "cls";
-    
+
+    /**
+     * Stores the settings of the project.
+     */
     private final Settings settings;
 
+    /**
+     * Default constructor to build an Apex language.
+     *
+     * @param settings settings of the project.
+     */
     public Apex(Settings settings) {
         super(KEY, NAME);
         this.settings = settings;
     }
 
+    /**
+     * Returns an array with the key and name of the language. For example ["cls", "apex"].
+     *
+     * @return tha string array.
+     */
     @Override
     public String[] getFileSuffixes() {
         String[] suffixes = filterEmptyStrings(settings.getStringArray(FILE_SUFFIXES_KEY));
         return suffixes.length == 0 ? DEFAULT_FILE_SUFFIXES : suffixes;
     }
 
+    /**
+     * Returns an array that filtering the empty string.
+     *
+     * @param stringArray string array to be filtered.
+     * @return the string array.
+     */
     private String[] filterEmptyStrings(String[] stringArray) {
         List<String> nonEmptyStrings = Lists.newArrayList();
         for (String string : stringArray) {

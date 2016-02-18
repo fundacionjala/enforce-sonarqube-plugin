@@ -23,17 +23,25 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-import org.fundacionjala.enforce.sonarqube.apex.Apex;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.squidbridge.commonrules.api.CommonRulesDecorator;
 
+import org.fundacionjala.enforce.sonarqube.apex.Apex;
+
 /**
- *
+ * Enables that decoration of the language.
  */
 public class ApexCommonRulesDecorator extends CommonRulesDecorator {
 
+    /**
+     * Registers the Apex's key for decoration.
+     *
+     * @param fileSystem file system.
+     * @param checkFactory check factory.
+     * @param perspectives  resource perspective.
+     */
     public ApexCommonRulesDecorator(FileSystem fileSystem, CheckFactory checkFactory, ResourcePerspectives perspectives) {
         super(Apex.KEY, fileSystem, checkFactory, perspectives);
     }

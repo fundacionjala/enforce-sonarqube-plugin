@@ -23,13 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex;
 
-import com.google.common.collect.Lists;
-import com.sonar.sslr.api.Grammar;
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexMetric;
+
+import com.google.common.collect.Lists;
+import com.sonar.sslr.api.Grammar;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FilePredicates;
@@ -41,6 +41,8 @@ import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.issue.Issuable;
 import org.sonar.api.issue.Issue;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.MeasureBuilder;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
@@ -54,21 +56,56 @@ import org.sonar.squidbridge.api.SourceFunction;
 import org.sonar.squidbridge.indexer.QueryByParent;
 import org.sonar.squidbridge.indexer.QueryByType;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
+import org.fundacionjala.enforce.sonarqube.apex.api.ApexMetric;
+
 /**
- *
+ * Parses a flat file, connect to a web server and save measures on the whole tree of resources.
  */
 public class ApexSquidSensor implements Sensor {
 
+    /**
+     * Stores an array with a limits of the function.
+     */
     private static final Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = {1, 2, 4, 6, 8, 10, 12, 20, 30};
+
+    /**
+     * Stores and array with a limits of the file.
+     */
     private static final Number[] FILES_DISTRIB_BOTTOM_LIMITS = {0, 5, 10, 20, 30, 60, 90};
 
+    /**
+     * Stores a {@link Checks} of the visitors.
+     */
     private final Checks<SquidAstVisitor<Grammar>> checks;
 
+    /**
+     * Stores a perspective from resources.
+     */
     private final ResourcePerspectives resourcePerspectives;
+
+    /**
+     * Stores the all source files to be analyzed.
+     */
     private final FileSystem fileSystem;
+
+    /**
+     * Stores an abstract static tree scanner.
+     */
     private AstScanner<Grammar> scanner;
+
+    /**
+     * Stores a sensor context.
+     */
     private SensorContext context;
 
+    /**
+     * Default construct to initialize the variables.
+     *
+     * @param fileSystem source files.
+     * @param perspectives perspective from resources.
+     * @param checkFactory factory to create a check.
+     */
     public ApexSquidSensor(FileSystem fileSystem, ResourcePerspectives perspectives, CheckFactory checkFactory) {
         this.checks = checkFactory
                 .<SquidAstVisitor<Grammar>>create(CheckList.REPOSITORY_KEY)
@@ -77,12 +114,26 @@ public class ApexSquidSensor implements Sensor {
         this.resourcePerspectives = perspectives;
     }
 
+    /**
+     * Analyzes if can execute in the project.
+     *
+     * @param project current project.
+     * @return test result.
+     */
     @Override
     public boolean shouldExecuteOnProject(Project project) {
-        FilePredicates p = fileSystem.predicates();
-        return fileSystem.hasFiles(p.and(p.hasType(InputFile.Type.MAIN), p.hasLanguage(Apex.KEY)));
+        FilePredicates predicates = fileSystem.predicates();
+        return fileSystem.hasFiles(predicates.and(
+                predicates.hasType(InputFile.Type.MAIN),
+                predicates.hasLanguage(Apex.KEY)));
     }
 
+    /**
+     * Analyze files for a given project.
+     *
+     * @param project current project.
+     * @param context sensor context.
+     */
     @Override
     public void analyse(Project project, SensorContext context) {
         this.context = context;
@@ -96,23 +147,50 @@ public class ApexSquidSensor implements Sensor {
         save(squidSourceFiles);
     }
 
+    /**
+     * Return the simple name of the scanner.
+     *
+     * @return the name.
+     */
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
+    /**
+     * Returns the apex configuration.
+     *
+     * @return the configuration.
+     */
     private ApexConfiguration createConfiguration() {
         return new ApexConfiguration(fileSystem.encoding());
     }
 
+    /**
+     * Saves an issues form collection of the source code.
+     *
+     * @param squidSourceFiles collection of the source code.
+     */
     private void save(Collection<SourceCode> squidSourceFiles) {
-        for (SourceCode squidSourceFile : squidSourceFiles) {
+        squidSourceFiles.forEach(squidSourceFile -> {
             SourceFile squidFile = (SourceFile) squidSourceFile;
 
-            InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().is(new java.io.File(squidFile.getKey())));
+            File file = new File(squidFile.getKey());
+            InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().is(file));
 
             saveFilesComplexityDistribution(inputFile, squidFile);
             saveFunctionsComplexityDistribution(inputFile, squidFile);
             saveMeasures(inputFile, squidFile);
             saveIssues(inputFile, squidFile);
-        }
+        });
     }
 
+    /**
+     * Saves a measures from an input file and source file.
+     *
+     * @param sonarFile input file.
+     * @param squidFile source file.
+     */
     private void saveMeasures(InputFile sonarFile, SourceFile squidFile) {
         context.saveMeasure(sonarFile, CoreMetrics.FILES, squidFile.getDouble(ApexMetric.FILES));
         context.saveMeasure(sonarFile, CoreMetrics.LINES, squidFile.getDouble(ApexMetric.LINES));
@@ -124,24 +202,48 @@ public class ApexSquidSensor implements Sensor {
         context.saveMeasure(sonarFile, CoreMetrics.COMMENT_LINES, squidFile.getDouble(ApexMetric.COMMENT_LINES));
     }
 
+    /**
+     * Saves a measure with the limits of the function.
+     *
+     * @param sonarFile input file.
+     * @param squidFile source file.
+     */
     private void saveFunctionsComplexityDistribution(InputFile sonarFile, SourceFile squidFile) {
-        Collection<SourceCode> squidFunctionsInFile = scanner.getIndex().search(new QueryByParent(squidFile), new QueryByType(SourceFunction.class));
-        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
-        for (SourceCode squidFunction : squidFunctionsInFile) {
+        Collection<SourceCode> squidFunctionsInFile = scanner.getIndex().search(
+                new QueryByParent(squidFile),
+                new QueryByType(SourceFunction.class));
+        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(
+                CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION,
+                FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
+        squidFunctionsInFile.forEach(squidFunction -> {
             complexityDistribution.add(squidFunction.getDouble(ApexMetric.COMPLEXITY));
-        }
-        context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
+        });
+        context.saveMeasure(sonarFile, buildMeasure(complexityDistribution));
     }
 
+    /**
+     * Saves a measure with the limits of the file.
+     *
+     * @param sonarFile input file.
+     * @param squidFile source file.
+     */
     private void saveFilesComplexityDistribution(InputFile sonarFile, SourceFile squidFile) {
-        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION, FILES_DISTRIB_BOTTOM_LIMITS);
+        RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(
+                CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION,
+                FILES_DISTRIB_BOTTOM_LIMITS);
         complexityDistribution.add(squidFile.getDouble(ApexMetric.COMPLEXITY));
-        context.saveMeasure(sonarFile, complexityDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
+        context.saveMeasure(sonarFile, buildMeasure(complexityDistribution));
     }
 
+    /**
+     * Saves an issues form input file and source file.
+     *
+     * @param sonarFile input file.
+     * @param squidFile source file.
+     */
     private void saveIssues(InputFile sonarFile, SourceFile squidFile) {
         Collection<CheckMessage> messages = squidFile.getCheckMessages();
-        for (CheckMessage message : messages) {
+        messages.forEach(message -> {
             RuleKey ruleKey = checks.ruleKey((SquidAstVisitor<Grammar>) message.getCheck());
             Issuable issuable = resourcePerspectives.as(Issuable.class, sonarFile);
 
@@ -153,11 +255,16 @@ public class ApexSquidSensor implements Sensor {
                         .build();
                 issuable.addIssue(issue);
             }
-        }
+        });
     }
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName();
+    /**
+     * Builds and return a measure.
+     *
+     * @param measueBuilder builder.
+     * @return the measure.
+     */
+    private Measure buildMeasure(MeasureBuilder measueBuilder) {
+        return measueBuilder.build().setPersistenceMode(PersistenceMode.MEMORY);
     }
 }
