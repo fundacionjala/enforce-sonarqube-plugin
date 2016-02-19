@@ -29,21 +29,15 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
 
-public class ApexGrammarResultTypeTest {
+public class ApexGrammarFieldDeclarationTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(RESULT_TYPE))
-                .matches("returnnull;")
-                .matches("returnint;")
-                .matches("returnvoid;")
-                .matches("returnboolean;")
-                .notMatches("retur nnull;")
-                .notMatches("Returnnull;")
-                .notMatches("returnNull;");
+        assertThat(grammarBuilder.rule(FIELD_DECLARATION))
+                .matches("publicbooleanMyMethod()");
     }
 }

@@ -42,18 +42,15 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LONG;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NATIVE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PROTECTED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PUBLIC;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHORT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STRICTFP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SYNCHRONIZED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
@@ -63,27 +60,23 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_METHOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
 
 /**
  * This class unites all the rules you need a class.
@@ -114,7 +107,7 @@ public class ApexGrammar {
         variableDeclaratorId(grammarBuilder);
         primitiveType(grammarBuilder);
         type(grammarBuilder);
-        resultType(grammarBuilder);
+        methodName(grammarBuilder);
         methodDeclaration(grammarBuilder);
         typeClass(grammarBuilder);
         extendsList(grammarBuilder);
@@ -123,8 +116,7 @@ public class ApexGrammar {
         classDeclaration(grammarBuilder);
         keyword(grammarBuilder);
         modifier(grammarBuilder);
-        modifiers(grammarBuilder);
-        classOrInterfaceBodyDeclaration(grammarBuilder);
+        fieldDeclaration(grammarBuilder);
         modifierKeyWord(grammarBuilder);
         typeDeclaration(grammarBuilder);
 
@@ -194,6 +186,11 @@ public class ApexGrammar {
         );
     }
 
+    /**
+     * It is responsible for managing the class name.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void className(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CLASS_NAME).is(IDENTIFIER);
     }
@@ -206,14 +203,13 @@ public class ApexGrammar {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void classDeclaration(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CLASS_DECLARATION).is(
-                MODIFIER_KEYWORD,
+        grammarBuilder.rule(CLASS_DECLARATION).is(MODIFIER_KEYWORD,
                 TYPE_CLASS,
                 CLASS_NAME,
                 grammarBuilder.optional(IMPLEMENTS_LIST),
                 grammarBuilder.optional(EXTENDS_LIST),
                 LBRACE,
-                grammarBuilder.optional(CLASS_OR_INTERFACE_BODY_DECLARATION),
+                grammarBuilder.optional(FIELD_DECLARATION),
                 RBRACE
         );
     }
@@ -259,11 +255,19 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void classOrInterfaceBodyDeclaration(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CLASS_OR_INTERFACE_BODY_DECLARATION).is(
-                MODIFIERS,
+    private static void fieldDeclaration(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FIELD_DECLARATION).is(
                 METHOD_DECLARATION
         );
+    }
+
+    /**
+     * It is responsible for managing the method name.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void methodName(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(METHOD_NAME).is(IDENTIFIER);
     }
 
     /**
@@ -274,24 +278,11 @@ public class ApexGrammar {
      */
     private static void methodDeclaration(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(METHOD_DECLARATION).is(
-                RESULT_TYPE,
-                RBRACE
-        );
-    }
-
-    /**
-     * Creates rules for the header of a method.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void modifiers(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(METHOD_NAME).is(IDENTIFIER);
-        grammarBuilder.rule(MODIFIERS).is(MODIFIER,
-                TYPE_METHOD,
+                MODIFIER,
+                TYPE,
                 METHOD_NAME,
                 LPAREN,
-                RPAREN,
-                LBRACE
+                RPAREN
         );
     }
 
@@ -309,23 +300,6 @@ public class ApexGrammar {
                 LONG,
                 FLOAT,
                 DOUBLE)
-        );
-    }
-
-    /**
-     * Creates rules for the return of a method and its value.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void resultType(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TYPE_METHOD).is(TYPE);
-        grammarBuilder.rule(RESULT_TYPE).is(
-                RETURN,
-                grammarBuilder.firstOf(
-                        VOID,
-                        TYPE_METHOD,
-                        NULL),
-                SEMICOLON
         );
     }
 

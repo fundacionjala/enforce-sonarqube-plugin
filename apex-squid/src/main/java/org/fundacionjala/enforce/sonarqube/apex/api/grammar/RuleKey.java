@@ -34,7 +34,7 @@ public enum RuleKey implements GrammarRuleKey {
     BODY_IDENTIFIER,
     BRACKETS,
     CHAR,
-    CLASS_OR_INTERFACE_BODY_DECLARATION,
+    FIELD_DECLARATION,
     CLASS_DECLARATION,
     CLASS_NAME,
     EXTENDS_LIST,
@@ -51,7 +51,5 @@ public enum RuleKey implements GrammarRuleKey {
     TYPE,
     TYPE_CLASS,
     TYPE_DECLARATION,
-    TYPE_METHOD,
-    RESULT_TYPE,
     VARIABLE_DECLARATOR_ID;
 }

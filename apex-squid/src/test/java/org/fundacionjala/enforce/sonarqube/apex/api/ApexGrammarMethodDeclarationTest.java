@@ -38,6 +38,8 @@ public class ApexGrammarMethodDeclarationTest {
     @Test
     public void positiveRules() {
         assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("returnint;}");
+                .matches("publicintisMethod()")
+                .matches("publicintmyMethod()")
+                .notMatches("publicint1MyMethod()");
     }
 }

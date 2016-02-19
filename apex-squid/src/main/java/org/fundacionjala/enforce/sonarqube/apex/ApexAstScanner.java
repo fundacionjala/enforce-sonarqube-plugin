@@ -54,9 +54,8 @@ import org.fundacionjala.enforce.sonarqube.apex.parser.ApexParser;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
 
 /**
  * Utility class in order to scan a file and generate {@link SourceFile}
@@ -144,8 +143,7 @@ public class ApexAstScanner {
         builder.withSquidAstVisitor(new LinesVisitor<>(ApexMetric.LINES));
         builder.withSquidAstVisitor(new LinesOfCodeVisitor<>(ApexMetric.LINES_OF_CODE));
         AstNodeType[] complexityAstNodeType = new AstNodeType[]{
-            CLASS_OR_INTERFACE_BODY_DECLARATION,
-            RESULT_TYPE
+            FIELD_DECLARATION
         };
         builder.withSquidAstVisitor(ComplexityVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.COMPLEXITY)
@@ -157,7 +155,7 @@ public class ApexAstScanner {
                 .build());
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.STATEMENTS)
-                .subscribeTo(CLASS_OR_INTERFACE_BODY_DECLARATION)
+                .subscribeTo(FIELD_DECLARATION)
                 .build());
     }
 
@@ -175,11 +173,11 @@ public class ApexAstScanner {
                 function.setStartAtLine(astNode.getTokenLine());
                 return function;
             }
-        }, CLASS_OR_INTERFACE_BODY_DECLARATION));
+        }, FIELD_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.FUNCTIONS)
-                .subscribeTo(CLASS_OR_INTERFACE_BODY_DECLARATION)
+                .subscribeTo(FIELD_DECLARATION)
                 .build());
     }
 
