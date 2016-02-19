@@ -30,22 +30,14 @@ import com.sonar.sslr.api.Grammar;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_EXTENDS;
 
 public class ApexGrammarExtendsListTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
-    public void positiveRulesMergeType() {
-        assertThat(grammarBuilder.rule(MERGE_TYPE_EXTENDS))
-                .matches("extendsMyClass")
-                .matches("extendsMyClass1");
-    }
-
-    @Test
     public void negativeRulesMergeType() {
-        assertThat(grammarBuilder.rule(MERGE_TYPE_EXTENDS))
+        assertThat(grammarBuilder.rule(EXTENDS_LIST))
                 .notMatches("extendMyClass")
                 .notMatches("Extends _MyClass1")
                 .notMatches("_extends_MyClass1");

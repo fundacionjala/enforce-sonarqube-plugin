@@ -29,15 +29,37 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_DECLARATION;
 
-public class ApexGrammarTypeDeclarationTest {
+public class ApexGrammarClassDeclarationTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
+    public void positiveRules() {
+        assertThat(grammarBuilder.rule(CLASS_DECLARATION))
+                .matches("classMyClass{}")
+                .matches("interfaceMyClass{}")
+                .matches("classMyClassextendsYourClass{}")
+                .matches("classMyClassimplementsYourClass{}")
+                .matches("interfaceMyClassextendsYourClass{}")
+                .matches("interfaceMyClassimplementsYourClass{}");
+    }
+
+    @Test
+    public void negativeRules() {
+        assertThat(grammarBuilder.rule(CLASS_DECLARATION))
+                .notMatches("class1MyClass{}")
+                .notMatches("InterfaceMyClass{}")
+                .notMatches("_classMyClassextendsYourClass{}")
+                .notMatches("class-MyClass implements YourClass{}")
+                .notMatches("interface1 MyClass extends YourClass{}")
+                .notMatches("interface MyClass_implements YourClass{}");
+    }
+
+    @Test
     public void positiveRulesForClass() {
-        assertThat(grammarBuilder.rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.rule(CLASS_DECLARATION))
                 .matches("publicclassMyClass{}")
                 .matches("publicwithsharingclassMyClass{}")
                 .matches("privatewithoutsharingclassMyClass{}")
@@ -51,22 +73,22 @@ public class ApexGrammarTypeDeclarationTest {
 
     @Test
     public void negativeRulesForClass() {
-        assertThat(grammarBuilder.rule(TYPE_DECLARATION))
-                .notMatches("Class MyClass {}")
-                .notMatches("publicstaticclassMyClass{}")
-                .notMatches("public_classwithsharingclassMyClass{}")
-                .notMatches("privateclasswithoutsharingclassMyClass {}")
-                .notMatches("public class MyClass implementS YourClass {}")
-                .notMatches("Public class MyClass extends YourClass {}")
-                .notMatches("public with_sharing class MyClass implements YourClass {}")
-                .notMatches("static without sharing 5class MyClass implements YourClass {}")
-                .notMatches("public with sharing class 9MyClass extends YourClass {}")
-                .notMatches("static without sharing class MyClass enum extends YourClass {}");
+        assertThat(grammarBuilder.rule(CLASS_DECLARATION))
+                .notMatches("Class MyClass {")
+                .notMatches("publicstaticclassMyClass{")
+                .notMatches("public_classwithsharingclassMyClass{")
+                .notMatches("privateclasswithoutsharingclassMyClass {")
+                .notMatches("public class MyClass implementS YourClass {")
+                .notMatches("Public class MyClass extends YourClass {")
+                .notMatches("public with_sharing class MyClass implements YourClass {")
+                .notMatches("static without sharing 5class MyClass implements YourClass {")
+                .notMatches("public with sharing class 9MyClass extends YourClass {")
+                .notMatches("static without sharing class MyClass enum extends YourClass {");
     }
 
     @Test
     public void positiveRulesForInterface() {
-        assertThat(grammarBuilder.rule(TYPE_DECLARATION))
+        assertThat(grammarBuilder.rule(CLASS_DECLARATION))
                 .matches("publicinterfaceMyClass{}")
                 .matches("publicwithsharinginterfaceMyClass{}")
                 .matches("privatewithoutsharinginterfaceMyClass{}")
@@ -80,16 +102,16 @@ public class ApexGrammarTypeDeclarationTest {
 
     @Test
     public void negativeRulesForInterface() {
-        assertThat(grammarBuilder.rule(TYPE_DECLARATION))
-                .notMatches("Interface MyClass {")
-                .notMatches("publicstatic interface MyClass {")
-                .notMatches("public  interface  with sharing class MyClass {")
-                .notMatches("private class without sharing interface MyClass {")
-                .notMatches("public interface MyClass implementS YourClass {")
-                .notMatches("PublicinterfaceMyClassextendsYourClass{")
-                .notMatches("public with_sharing interface MyClass implements YourClass {")
-                .notMatches("static without sharing 5interface MyClass implements YourClass {")
-                .notMatches("public with sharing interface 9MyClass extends YourClass {")
-                .notMatches("static without sharing interface MyClass enum extends YourClass {");
+        assertThat(grammarBuilder.rule(CLASS_DECLARATION))
+                .notMatches("Interface MyClass {}")
+                .notMatches("publicstatic interface MyClass {}")
+                .notMatches("public  interface  with sharing class MyClass {}")
+                .notMatches("private class without sharing interface MyClass {}")
+                .notMatches("public interface MyClass implementS YourClass {}")
+                .notMatches("PublicinterfaceMyClassextendsYourClass{}")
+                .notMatches("public with_sharing interface MyClass implements YourClass {}")
+                .notMatches("static without sharing 5interface MyClass implements YourClass {}")
+                .notMatches("public with sharing interface 9MyClass extends YourClass {}")
+                .notMatches("static without sharing interface MyClass enum extends YourClass {}");
     }
 }

@@ -30,22 +30,14 @@ import com.sonar.sslr.api.Grammar;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_IMPLEMENTS;
 
 public class ApexGrammarImplementsListTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
-    public void positiveRulesMergeType() {
-        assertThat(grammarBuilder.rule(MERGE_TYPE_IMPLEMENTS))
-                .matches("implementsMyClass")
-                .matches("implementsMyClass1");
-    }
-
-    @Test
     public void negativeRulesMegeType() {
-        assertThat(grammarBuilder.rule(MERGE_TYPE_IMPLEMENTS))
+        assertThat(grammarBuilder.rule(IMPLEMENTS_LIST))
                 .notMatches("_implementsMyClass")
                 .notMatches(" Implements_MyClass1")
                 .notMatches("=implements_MyClass1");

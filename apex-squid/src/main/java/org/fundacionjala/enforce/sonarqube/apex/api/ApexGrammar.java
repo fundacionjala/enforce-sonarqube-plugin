@@ -68,18 +68,11 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDES_OR_IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD_KEYWORD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_EXTENDS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_TYPE_IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RESULT_TYPE;
@@ -88,8 +81,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_METHOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATOR_ID;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITHOUT_SHARING;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITH_SHARING;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER_KEYWORD;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_DECLARATION;
 
 /**
  * This class unites all the rules you need a class.
@@ -125,18 +119,16 @@ public class ApexGrammar {
         typeClass(grammarBuilder);
         extendsList(grammarBuilder);
         implementsList(grammarBuilder);
-        classOrInterfaceDeclaration(grammarBuilder);
+        className(grammarBuilder);
+        classDeclaration(grammarBuilder);
         keyword(grammarBuilder);
-        lookahead(grammarBuilder);
+        modifier(grammarBuilder);
         modifiers(grammarBuilder);
         classOrInterfaceBodyDeclaration(grammarBuilder);
-        modifier(grammarBuilder);
+        modifierKeyWord(grammarBuilder);
         typeDeclaration(grammarBuilder);
 
-        grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION,
-                grammarBuilder.optional(CLASS_OR_INTERFACE_BODY_DECLARATION),
-                RBRACE
-        );
+        grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION);
         grammarBuilder.setRootRule(APEX_GRAMMAR);
         Grammar grammar = grammarBuilder.build();
         return grammar;
@@ -150,9 +142,7 @@ public class ApexGrammar {
      */
     private static void typeDeclaration(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE_DECLARATION).is(
-                MODIFIER,
-                CLASS_OR_INTERFACE_DECLARATION,
-                LBRACE
+                CLASS_DECLARATION
         );
     }
 
@@ -161,16 +151,10 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void modifier(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(LOOKAHEAD_KEYWORD).is(
-                LOOKAHEAD,
-                KEYWORD
-        );
-        grammarBuilder.rule(MODIFIER).is(
-                grammarBuilder.firstOf(
-                        LOOKAHEAD_KEYWORD,
-                        LOOKAHEAD
-                )
+    private static void modifierKeyWord(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(MODIFIER_KEYWORD).is(
+                grammarBuilder.optional(MODIFIER),
+                grammarBuilder.optional(KEYWORD)
         );
     }
 
@@ -179,8 +163,8 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void lookahead(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(LOOKAHEAD).is(grammarBuilder.firstOf(
+    private static void modifier(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(MODIFIER).is(grammarBuilder.firstOf(
                 PUBLIC,
                 STATIC,
                 PROTECTED,
@@ -192,7 +176,8 @@ public class ApexGrammar {
                 TRANSIENT,
                 VOLATILE,
                 STRICTFP,
-                ANOTATION));
+                ANOTATION)
+        );
     }
 
     /**
@@ -201,13 +186,16 @@ public class ApexGrammar {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void keyword(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(WITH_SHARING).is(WITH, SHARING);
-        grammarBuilder.rule(WITHOUT_SHARING).is(WITHOUT, SHARING);
         grammarBuilder.rule(KEYWORD).is(
                 grammarBuilder.firstOf(
-                        WITHOUT_SHARING,
-                        WITH_SHARING)
+                        WITHOUT,
+                        WITH),
+                SHARING
         );
+    }
+
+    private static void className(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CLASS_NAME).is(IDENTIFIER);
     }
 
     /**
@@ -217,16 +205,17 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void classOrInterfaceDeclaration(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(EXTENDES_OR_IMPLEMENTS).is(
-                grammarBuilder.optional(IMPLEMENTS_LIST),
-                grammarBuilder.optional(EXTENDS_LIST)
-        );
-        grammarBuilder.rule(CLASS_NAME).is(IDENTIFIER);
-        grammarBuilder.rule(CLASS_OR_INTERFACE_DECLARATION).is(
+    private static void classDeclaration(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CLASS_DECLARATION).is(
+                MODIFIER_KEYWORD,
                 TYPE_CLASS,
                 CLASS_NAME,
-                EXTENDES_OR_IMPLEMENTS);
+                grammarBuilder.optional(IMPLEMENTS_LIST),
+                grammarBuilder.optional(EXTENDS_LIST),
+                LBRACE,
+                grammarBuilder.optional(CLASS_OR_INTERFACE_BODY_DECLARATION),
+                RBRACE
+        );
     }
 
     /**
@@ -235,12 +224,9 @@ public class ApexGrammar {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void implementsList(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(MERGE_TYPE_IMPLEMENTS).is(
-                IMPLEMENTS,
-                IDENTIFIER
-        );
         grammarBuilder.rule(IMPLEMENTS_LIST).is(
-                MERGE_TYPE_IMPLEMENTS
+                IMPLEMENTS,
+                CLASS_NAME
         );
     }
 
@@ -250,12 +236,9 @@ public class ApexGrammar {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void extendsList(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(MERGE_TYPE_EXTENDS).is(
-                EXTENDS,
-                IDENTIFIER
-        );
         grammarBuilder.rule(EXTENDS_LIST).is(
-                MERGE_TYPE_EXTENDS
+                EXTENDS,
+                CLASS_NAME
         );
     }
 
@@ -303,8 +286,7 @@ public class ApexGrammar {
      */
     private static void modifiers(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(METHOD_NAME).is(IDENTIFIER);
-        grammarBuilder.rule(MODIFIERS).is(
-                LOOKAHEAD,
+        grammarBuilder.rule(MODIFIERS).is(MODIFIER,
                 TYPE_METHOD,
                 METHOD_NAME,
                 LPAREN,
