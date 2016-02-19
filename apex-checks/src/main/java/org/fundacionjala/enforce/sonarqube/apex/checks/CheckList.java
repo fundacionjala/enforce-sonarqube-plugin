@@ -56,7 +56,7 @@ public class CheckList {
     /**
      * Builds and returns the custom checks to create Apex's rules.
      *
-     * @return
+     * @return the list of the checks.
      */
     public static List<Class> getChecks() {
         return ImmutableList.<Class>of(

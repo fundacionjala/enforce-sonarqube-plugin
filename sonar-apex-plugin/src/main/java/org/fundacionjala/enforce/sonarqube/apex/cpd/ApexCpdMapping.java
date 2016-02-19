@@ -60,7 +60,7 @@ public class ApexCpdMapping extends AbstractCpdMapping {
     /**
      * Builds and returns an {@link ApexTokenizer}.
      *
-     * @return
+     * @return a tokenizer.
      */
     @Override
     public Tokenizer getTokenizer() {

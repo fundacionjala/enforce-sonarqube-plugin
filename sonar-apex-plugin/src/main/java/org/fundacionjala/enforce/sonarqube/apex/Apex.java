@@ -73,7 +73,7 @@ public class Apex extends AbstractLanguage {
     /**
      * Returns an array with the key and name of the language. For example ["cls", "apex"].
      *
-     * @return tha string array.
+     * @return the array of the file suffixes.
      */
     @Override
     public String[] getFileSuffixes() {
@@ -82,10 +82,10 @@ public class Apex extends AbstractLanguage {
     }
 
     /**
-     * Returns an array that filtering the empty string.
+     * Returns an array that exclude the empty strings.
      *
      * @param stringArray string array to be filtered.
-     * @return the string array.
+     * @return the array without empty strings.
      */
     private String[] filterEmptyStrings(String[] stringArray) {
         List<String> nonEmptyStrings = Lists.newArrayList();

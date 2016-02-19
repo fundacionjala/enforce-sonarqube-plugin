@@ -51,7 +51,7 @@ public class ApexTokenizer implements Tokenizer {
     /**
      * Default constructor to initialize the configuration.
      *
-     * @param charset 
+     * @param charset type of configuration.
      */
     public ApexTokenizer(Charset charset) {
         this.config = new ApexConfiguration(charset);
@@ -80,7 +80,7 @@ public class ApexTokenizer implements Tokenizer {
      * Returns the Token's value.
      *
      * @param token current token.
-     * @return the value
+     * @return the token's value
      */
     private String getTokenImage(Token token) {
         return token.getValue();
