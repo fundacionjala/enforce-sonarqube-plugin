@@ -21,48 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+package org.fundacionjala.enforce.sonarqube.apex.cpd;
 
-import com.sonar.sslr.api.Grammar;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
-import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
+import java.nio.charset.Charset;
+
+import net.sourceforge.pmd.cpd.Tokenizer;
+import org.fundacionjala.enforce.sonarqube.apex.Apex;
+import org.sonar.api.batch.AbstractCpdMapping;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.resources.Language;
 
 /**
- * This class defines the maximum number of the lines.
+ * Implements the CpdMapping extension point.
  */
-@Rule(
-        key = LineLengthCheck.CHECK_KEY,
-        priority = Priority.MINOR,
-        name = "Lines should not be too long",
-        tags = Tags.CONVENTION
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("1min")
-@ActivatedByDefault
-public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
+public class ApexCpdMapping extends AbstractCpdMapping {
 
     /**
-     * Identifier key of the class.
+     * Stores a charset.
      */
-    public static final String CHECK_KEY = "LineLength";
+    private final Charset charset;
 
     /**
-     * Maximum number of line length.
+     * Stores the Apex language.
      */
-    public static final int MAXIMAL_LINE_LENGTH = 80;
+    private final Apex language;
 
     /**
-     * Returns the default number line length.
+     * Default constructor to initialize the variables.
      *
-     * @return the line number.
+     * @param language
+     * @param fileSystem
+     */
+    public ApexCpdMapping(Apex language, FileSystem fileSystem) {
+        this.language = language;
+        this.charset = fileSystem.encoding();
+    }
+
+    /**
+     * Builds and returns an {@link ApexTokenizer}.
+     *
+     * @return a tokenizer.
      */
     @Override
-    public int getMaximumLineLength() {
-        return MAXIMAL_LINE_LENGTH;
+    public Tokenizer getTokenizer() {
+        return new ApexTokenizer(charset);
+    }
+
+    /**
+     * Returns the Apex language.
+     *
+     * @return the language.
+     */
+    @Override
+    public Language getLanguage() {
+        return language;
     }
 }

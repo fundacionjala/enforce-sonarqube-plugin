@@ -23,46 +23,46 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import com.sonar.sslr.api.Grammar;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
-import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
- * This class defines the maximum number of the lines.
+ * Builds a list of custom checks.
  */
-@Rule(
-        key = LineLengthCheck.CHECK_KEY,
-        priority = Priority.MINOR,
-        name = "Lines should not be too long",
-        tags = Tags.CONVENTION
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("1min")
-@ActivatedByDefault
-public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
+public class CheckList {
 
     /**
-     * Identifier key of the class.
+     * Stores the sonarqube profile name.
      */
-    public static final String CHECK_KEY = "LineLength";
+    public static final String SONAR_WAY_PROFILE = "Sonar way";
 
     /**
-     * Maximum number of line length.
+     * Stores the sonarqube repository name.
      */
-    public static final int MAXIMAL_LINE_LENGTH = 80;
+    public static final String REPOSITORY_NAME = "SonarQube";
 
     /**
-     * Returns the default number line length.
+     * Stores the Apex's repository key.
+     */
+    public static final String REPOSITORY_KEY = "apex";
+
+    /**
+     * Default constructor.
+     */
+    private CheckList() {
+    }
+
+    /**
+     * Builds and returns the custom checks to create Apex's rules.
      *
-     * @return the line number.
+     * @return the list of the checks.
      */
-    @Override
-    public int getMaximumLineLength() {
-        return MAXIMAL_LINE_LENGTH;
+    public static List<Class> getChecks() {
+        return ImmutableList.<Class>of(
+                CheckReturnTypeMethod.class,
+                ClassNameCheck.class,
+                LineLengthCheck.class,
+                MethodNameCheck.class);
     }
 }

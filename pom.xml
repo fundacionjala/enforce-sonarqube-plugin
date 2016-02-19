@@ -52,9 +52,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.sonarsource.sslr-squid-bridge</groupId>
+            <groupId>org.codehaus.sonar.sslr-squid-bridge</groupId>
             <artifactId>sslr-squid-bridge</artifactId>
-            <version>2.6.1</version>
+            <version>2.6</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

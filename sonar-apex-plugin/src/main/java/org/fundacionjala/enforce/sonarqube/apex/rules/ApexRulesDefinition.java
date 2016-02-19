@@ -21,48 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
-import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
+import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
+
+import org.fundacionjala.enforce.sonarqube.apex.Apex;
+import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
 
 /**
- * This class defines the maximum number of the lines.
+ * Defines some coding rules of the same repository.
  */
-@Rule(
-        key = LineLengthCheck.CHECK_KEY,
-        priority = Priority.MINOR,
-        name = "Lines should not be too long",
-        tags = Tags.CONVENTION
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("1min")
-@ActivatedByDefault
-public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
+public class ApexRulesDefinition implements RulesDefinition {
 
     /**
-     * Identifier key of the class.
-     */
-    public static final String CHECK_KEY = "LineLength";
-
-    /**
-     * Maximum number of line length.
-     */
-    public static final int MAXIMAL_LINE_LENGTH = 80;
-
-    /**
-     * Returns the default number line length.
+     * Loads apex custom rules in the repository.
      *
-     * @return the line number.
+     * @param context builder.
      */
     @Override
-    public int getMaximumLineLength() {
-        return MAXIMAL_LINE_LENGTH;
+    public void define(Context context) {
+        NewRepository repository = context
+                .createRepository(CheckList.REPOSITORY_KEY, Apex.KEY)
+                .setName(CheckList.REPOSITORY_NAME);
+
+        AnnotationBasedRulesDefinition.load(repository, Apex.KEY, CheckList.getChecks());
+        repository.done();
     }
 }

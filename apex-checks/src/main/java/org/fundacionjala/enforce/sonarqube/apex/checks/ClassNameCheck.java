@@ -55,7 +55,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "1001";
+    public static final String CHECK_KEY = "A1001";
 
     /**
      * The structure must have the name of the method.

@@ -1,0 +1,21 @@
+<p>
+  <code>yield</code> and <code>return</code> only make sense in the context of functions. Using them outside a function raises a <code>SyntaxError</code>.
+  To break out of a loop, use <code>break</code> instead.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<p>With default provided regular expression: ^[a-z][a-zA-Z0-9]+$</p>
+
+<pre>
+class MyClass:
+  private boolean 2myMethod:
+    return boolean #Noncompliant type return
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+class MyClass:
+  private boolean myMethod:
+    return boolean #Noncompliant type return
+</pre>
