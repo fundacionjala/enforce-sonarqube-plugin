@@ -77,7 +77,7 @@ public class ApexTokenizer implements Tokenizer {
     }
 
     /**
-     * Return the Token's value.
+     * Returns the Token's value.
      *
      * @param token current token.
      * @return the value

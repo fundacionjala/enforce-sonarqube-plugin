@@ -31,7 +31,7 @@ import org.sonar.squidbridge.commonrules.api.CommonRulesDecorator;
 import org.fundacionjala.enforce.sonarqube.apex.Apex;
 
 /**
- * Enables that decoration of the language.
+ * Enables the decoration of the language.
  */
 public class ApexCommonRulesDecorator extends CommonRulesDecorator {
 

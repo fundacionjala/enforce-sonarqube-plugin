@@ -32,7 +32,7 @@ import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.resources.Language;
 
 /**
- * Implements of the CpdMapping extension point.
+ * Implements the CpdMapping extension point.
  */
 public class ApexCpdMapping extends AbstractCpdMapping {
 

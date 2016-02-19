@@ -85,7 +85,7 @@ public class ApexSquidSensor implements Sensor {
     private final ResourcePerspectives resourcePerspectives;
 
     /**
-     * Stores the all source files to be analyzed.
+     * Stores all source files to be analyzed.
      */
     private final FileSystem fileSystem;
 
@@ -129,7 +129,7 @@ public class ApexSquidSensor implements Sensor {
     }
 
     /**
-     * Analyze files for a given project.
+     * Analyzes files for a given project.
      *
      * @param project current project.
      * @param context sensor context.
@@ -148,7 +148,7 @@ public class ApexSquidSensor implements Sensor {
     }
 
     /**
-     * Return the simple name of the scanner.
+     * Returns the simple name of the scanner.
      *
      * @return the name.
      */
@@ -167,7 +167,7 @@ public class ApexSquidSensor implements Sensor {
     }
 
     /**
-     * Saves an issues form collection of the source code.
+     * Saves issues form collection of the source code.
      *
      * @param squidSourceFiles collection of the source code.
      */
@@ -186,7 +186,7 @@ public class ApexSquidSensor implements Sensor {
     }
 
     /**
-     * Saves a measures from an input file and source file.
+     * Saves measures from an input file and source file.
      *
      * @param sonarFile input file.
      * @param squidFile source file.
@@ -236,7 +236,7 @@ public class ApexSquidSensor implements Sensor {
     }
 
     /**
-     * Saves an issues form input file and source file.
+     * Saves issues form input file and source file.
      *
      * @param sonarFile input file.
      * @param squidFile source file.
@@ -259,7 +259,7 @@ public class ApexSquidSensor implements Sensor {
     }
 
     /**
-     * Builds and return a measure.
+     * Builds and returns a measure.
      *
      * @param measueBuilder builder.
      * @return the measure.

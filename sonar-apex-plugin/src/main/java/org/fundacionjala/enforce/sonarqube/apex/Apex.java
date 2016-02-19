@@ -31,7 +31,7 @@ import org.sonar.api.config.Settings;
 import org.sonar.api.resources.AbstractLanguage;
 
 /**
- * Defines a Apex language.
+ * Defines an Apex language.
  */
 public class Apex extends AbstractLanguage {
 

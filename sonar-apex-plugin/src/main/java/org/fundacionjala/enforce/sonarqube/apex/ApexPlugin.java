@@ -39,7 +39,7 @@ import org.fundacionjala.enforce.sonarqube.apex.rules.ApexRulesDefinition;
 public class ApexPlugin extends SonarPlugin {
 
     /**
-     * Classes of the implemented extensions.
+     * Returns a list of the implemented extensions.
      *
      * @return a list of the extensions.
      */
