@@ -55,6 +55,11 @@ public class ApexGrammarBuilder {
     private static final String SET_ROOT_RULE = "setRootRule";
 
     /**
+     * Stores a 'zeroOrMore' method name.
+     */
+    private static final String ZERO_OR_MORE = "zeroOrMore";
+
+    /**
      * Stores a 'fisrtOf' method name.
      */
     private static final String FIRST_OF = "firstOf";
@@ -201,6 +206,44 @@ public class ApexGrammarBuilder {
      */
     public Object optional(Object object) {
         return invoke(OPTIONAL,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Creates a parsing expression "optional".
+     *
+     * @param object expression.
+     * @param rest rest of expressions.
+     * @return an Expression.
+     */
+    public Object optional(Object object, Object... rest) {
+        return invoke(OPTIONAL,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Creates a parsing expression "zeroOrMore".
+     *
+     * @param object expression.
+     * @return an Expression.
+     */
+    public Object zeroOrMore(Object object) {
+        return invoke(ZERO_OR_MORE,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Creates a parsing expression "zeroOrMore".
+     *
+     * @param object expression.
+     * @param rest rest of expressions.
+     * @return an Expression.
+     */
+    public Object zeroOrMore(Object object, Object... rest) {
+        return invoke(ZERO_OR_MORE,
                 checkTypeArguments(Object.class),
                 checkArguments(object));
     }
