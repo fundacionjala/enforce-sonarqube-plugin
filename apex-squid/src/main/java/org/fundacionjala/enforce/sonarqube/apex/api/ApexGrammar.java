@@ -68,7 +68,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLE
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_DECLARATION;
@@ -77,6 +76,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIF
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_SPECIFIER;
 
 /**
  * This class unites all the rules you need a class.
@@ -105,7 +105,7 @@ public class ApexGrammar {
         ApexGrammarBuilder grammarBuilder = ApexGrammarBuilder.create(isFulGrammar);
         brackets(grammarBuilder);
         variableDeclaratorId(grammarBuilder);
-        primitiveType(grammarBuilder);
+        typeSpecifier(grammarBuilder);
         type(grammarBuilder);
         methodName(grammarBuilder);
         methodDeclaration(grammarBuilder);
@@ -291,15 +291,19 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void primitiveType(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(PRIMITIVE_TYPE).is(grammarBuilder.firstOf(BOOLEAN,
-                CHAR,
-                BYTE,
-                SHORT,
-                INT,
-                LONG,
-                FLOAT,
-                DOUBLE)
+    private static void typeSpecifier(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(TYPE_SPECIFIER).is(
+                grammarBuilder.firstOf(BOOLEAN,
+                        BOOLEAN,
+                        CHAR,
+                        BYTE,
+                        SHORT,
+                        INT,
+                        LONG,
+                        FLOAT,
+                        DOUBLE,
+                        CLASS_NAME
+                )
         );
     }
 
@@ -330,6 +334,6 @@ public class ApexGrammar {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void type(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TYPE).is(PRIMITIVE_TYPE);
+        grammarBuilder.rule(TYPE).is(TYPE_SPECIFIER);
     }
 }

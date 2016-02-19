@@ -47,7 +47,7 @@ public enum RuleKey implements GrammarRuleKey {
     METHOD_NAME,
     MODIFIER_KEYWORD,
     MODIFIERS,
-    PRIMITIVE_TYPE,
+    TYPE_SPECIFIER,
     TYPE,
     TYPE_CLASS,
     TYPE_DECLARATION,

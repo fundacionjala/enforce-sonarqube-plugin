@@ -27,17 +27,17 @@ import org.junit.Test;
 
 import com.sonar.sslr.api.Grammar;
 
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_SPECIFIER;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
-
-public class ApexGrammarPrimitiveTypeTest {
+public class ApexGrammarTypeSpecifierTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(PRIMITIVE_TYPE))
+        assertThat(grammarBuilder.rule(TYPE_SPECIFIER))
                 .matches("boolean")
                 .matches("int")
                 .matches("short")
@@ -45,7 +45,8 @@ public class ApexGrammarPrimitiveTypeTest {
                 .matches("char")
                 .matches("float")
                 .matches("byte")
-                .notMatches("Boolean")
-                .notMatches("Byte");
+                .matches("MyClass")
+                .notMatches("1Boolean")
+                .notMatches("2Byte");
     }
 }
