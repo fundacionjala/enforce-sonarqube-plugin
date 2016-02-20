@@ -63,7 +63,6 @@ public class ApexGrammarVariableDeclaratorTest {
                 .matches("myVariable='A'")
                 .matches("myVariable[]='B'")
                 .matches("my_Variable[]='z'")
-                .notMatches("my_Variable[]=a")
                 .notMatches("myVariable_[]='5'")
                 .notMatches("1myVariable=a")
                 .notMatches("1myVariable[]=56");
@@ -75,9 +74,54 @@ public class ApexGrammarVariableDeclaratorTest {
                 .matches("myVariable=\"MiName\"")
                 .matches("myVariable[]=\"BASE\"")
                 .matches("my_Variable[]=\"zero\"")
-                .notMatches("my_Variable[]=a")
                 .notMatches("myVariable_[]='5'")
                 .notMatches("1myVariable=a")
                 .notMatches("1myVariable[]=56");
+    }
+    
+    @Test
+    public void positiveRulesAssingInitializerNull() {
+        assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR))
+                .matches("myVariable=null")
+                .matches("myVariable[]=null")
+                .matches("my_Variable[]=null")
+                .notMatches("myVariable_[]='null")
+                .notMatches("1myVariable=null")
+                .notMatches("1myVariable[]=null");
+    }
+    
+    @Test
+    public void positiveRulesAssingInitializerThis() {
+        assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR))
+                .matches("myVariable=this")
+                .matches("myVariable[]=this")
+                .matches("my_Variable[]=this")
+                .notMatches("myVariable_[]='this")
+                .notMatches("1myVariable=this")
+                .notMatches("1myVariable[]=this");
+    }
+    
+    @Test
+    public void positiveRulesAssingInitializerSuper() {
+        assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR))
+                .matches("myVariable=super")
+                .matches("myVariable[]=super")
+                .matches("my_Variable[]=super")
+                .notMatches("myVariable_[]='super")
+                .notMatches("1myVariable=super")
+                .notMatches("1myVariable[]=super");
+    }
+    
+    @Test
+    public void positiveRulesAssingInitializerNumericExpresion() {
+        assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR))
+                .matches("myVariable=2+2")
+                .matches("myVariable[]=10-3")
+                .matches("my_Variable[]=4*3")
+                .matches("my_Variable[]=10/5")
+                .matches("my_Variable[]=10%2")
+                .notMatches("myVariable_[]=10+3")
+                .notMatches("1myVariable=4*8")
+                .notMatches("1myVariable[]=3-9");
     }
 }

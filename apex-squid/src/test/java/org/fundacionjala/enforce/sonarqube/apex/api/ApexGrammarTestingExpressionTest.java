@@ -23,67 +23,21 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
+import org.junit.Test;
 
-/**
- * The enum tokens and GrammarRuleKey handles of punctuation for the Squid
- * module.
- */
-public enum ApexPunctuator implements TokenType {
+import com.sonar.sslr.api.Grammar;
 
-    /**
-     * SEPARATORS.
-     */
-    LPAREN("("),
-    RPAREN(")"),
-    LBRACE("{"),
-    RBRACE("}"),
-    LBRACKET("["),
-    RBRACKET("]"),
-    SEMICOLON(";"),
-    COMMA(","),
-    DOT("."),
-    QUOTE("'"),
-    QUOTES("\""),
-    /**
-     * OPERATORS.
-     */
-    ASSIGN("="),
-    DIV("/"),
-    DIVEQU("/="),
-    UNDERSCORE("_"),
-    MINUS("-"),
-    MINUSEQU("-="),
-    MOD("%"),
-    MODEQU("%="),
-    PLUS("+"),
-    PLUSEQU("+="),
-    STAR("*"),
-    STAREQU("*="),
-    GT(">");
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-    /**
-     * Save the value of each enum.
-     */
-    private final String value;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TESTING_EXPRESSION;
 
-    private ApexPunctuator(String value) {
-        this.value = value;
-    }
+public class ApexGrammarTestingExpressionTest {
 
-    @Override
-    public String getName() {
-        return name();
-    }
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode node) {
-        return Boolean.FALSE;
+    @Test
+    public void positiveRulesOperationsSimpleMinus() {
+        assertThat(grammarBuilder.rule(TESTING_EXPRESSION))
+                .matches("10>5");
     }
 }

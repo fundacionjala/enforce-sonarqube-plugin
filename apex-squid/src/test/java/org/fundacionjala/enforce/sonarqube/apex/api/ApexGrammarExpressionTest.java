@@ -40,9 +40,7 @@ public class ApexGrammarExpressionTest {
         assertThat(grammarBuilder.rule(EXPRESSION))
                 .matches("1")
                 .matches("12")
-                .matches("1009")
-                .notMatches("0")
-                .notMatches("01");
+                .matches("1009");
     }
 
     @Test
@@ -51,9 +49,7 @@ public class ApexGrammarExpressionTest {
                 .matches("'A'")
                 .matches("'B'")
                 .matches("'c'")
-                .matches("'z'")
-                .notMatches("'0'")
-                .notMatches("a");
+                .matches("'z'");
 
     }
 
@@ -63,9 +59,63 @@ public class ApexGrammarExpressionTest {
                 .matches("\"TIPE\"")
                 .matches("\"name\"")
                 .matches("\"myVariable\"")
-                .matches("\"zA\"")
-                .notMatches("0A")
-                .notMatches("01");
+                .matches("\"zA\"");
 
+    }
+    
+    @Test
+    public void positiveRulesNumeralExpresion() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("11-10")
+                .matches("22+22")
+                .matches("10*22")
+                .matches("100/20")
+                .matches("100%10");
+    }
+    
+    @Test
+    public void positiveRulesNumericExpresionOperationSimple() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("11++")
+                .matches("A++");
+    }
+    
+    @Test
+    public void positiveRulesTestingExpression() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("10>5")
+                .matches("8>15");
+    }
+    
+    @Test
+    public void positiveRulesIdentifier() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("MyVariable")
+                .matches("PATHERN");
+    }
+    
+    @Test
+    public void positiveRulesNull() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("null");
+    }
+    
+    @Test
+    public void positiveRulesSuper() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("super");
+    }
+    
+    @Test
+    public void positiveRulesThis() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("this");
+    }
+    
+    @Test
+    public void positiveRulesCastingExpression() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("(int)MyVariable")
+                .matches("(MyObjecto)MyVariable");
     }
 }

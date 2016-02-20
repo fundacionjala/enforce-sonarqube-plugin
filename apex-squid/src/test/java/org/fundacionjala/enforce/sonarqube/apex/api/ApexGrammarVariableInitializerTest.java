@@ -26,23 +26,23 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 import org.junit.Test;
 
 import com.sonar.sslr.api.Grammar;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMERIC_EXPRESSION;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_INITILIZER;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarVariableInitializerTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
+    
     @Test
     public void positiveRules_LiteralExpresion_IntegerExpresion() {
         assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
                 .matches("1")
                 .matches("12")
-                .matches("1009")
-                .notMatches("0")
-                .notMatches("01");
+                .matches("1009");
     }
 
     @Test
@@ -51,10 +51,7 @@ public class ApexGrammarVariableInitializerTest {
                 .matches("'A'")
                 .matches("'B'")
                 .matches("'c'")
-                .matches("'z'")
-                .notMatches("a")
-                .notMatches("01");
-
+                .matches("'z'");
     }
 
     @Test
@@ -63,9 +60,55 @@ public class ApexGrammarVariableInitializerTest {
                 .matches("\"TIPE\"")
                 .matches("\"name\"")
                 .matches("\"myVariable\"")
-                .matches("\"zA\"")
-                .notMatches("0A")
-                .notMatches("01");
-
+                .matches("\"zA\"");
+    }
+    
+    @Test
+    public void positiveRules_NumericExpresion() {
+        assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
+                .matches("11-10")
+                .matches("22+22")
+                .matches("10*22")
+                .matches("100/20")
+                .matches("100%10");
+    }
+    
+    @Test
+    public void positiveRules_NumericExpresionOperationSimple() {
+        assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
+                .matches("11++")
+                .matches("A++");
+    }
+    
+    @Test
+    public void positiveRules_Identifier() {
+        assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
+                .matches("MY")
+                .matches("myVariable");
+    }
+    
+    @Test
+    public void positiveRules_Null() {
+        assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
+                .matches("null");
+    }
+    
+    @Test
+    public void positiveRules_Super() {
+        assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
+                .matches("super");
+    }
+    
+    @Test
+    public void positiveRules_This() {
+        assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
+                .matches("this");
+    }
+    
+    @Test
+    public void positiveRules_CastingExpression() {
+        assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
+                .matches("(int)MyVariable")
+                .matches("(MyObjecto)MyVariable");
     }
 }
