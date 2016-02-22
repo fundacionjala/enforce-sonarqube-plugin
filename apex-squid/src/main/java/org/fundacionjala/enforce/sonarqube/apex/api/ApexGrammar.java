@@ -58,6 +58,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIV;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -108,6 +109,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMER
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DEC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EQUAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST_OPTIONAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TESTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATION;
@@ -159,6 +163,9 @@ public class ApexGrammar {
         variableDeclarator(grammarBuilder);
         typeSpecifier(grammarBuilder);
         type(grammarBuilder);
+        parameter(grammarBuilder);
+        parameterListOptional(grammarBuilder);
+        parameterList(grammarBuilder);
         methodName(grammarBuilder);
         methodDeclaration(grammarBuilder);
         typeClass(grammarBuilder);
@@ -311,6 +318,41 @@ public class ApexGrammar {
         grammarBuilder.rule(FIELD_DECLARATION).is(
                 grammarBuilder.optional(VARIABLE_DECLARATION),
                 grammarBuilder.optional(METHOD_DECLARATION)
+        );
+    }
+
+    /**
+     * It is responsible for setting the rules for parameters.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void parameter(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PARAMETER).is(
+                TYPE,
+                IDENTIFIER,
+                grammarBuilder.optional(BRACKETS)
+        );
+
+    }
+
+    /**
+     * It is responsible for setting the rules for the optional argument list.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void parameterListOptional(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PARAMETER_LIST_OPTIONAL).is(COMMA, PARAMETER);
+    }
+
+    /**
+     * It is responsible for setting the rules for the argument list.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void parameterList(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PARAMETER_LIST).is(
+                PARAMETER,
+                grammarBuilder.optional(PARAMETER_LIST_OPTIONAL)
         );
     }
 
