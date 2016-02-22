@@ -21,41 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.cpd;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
-import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
+import org.sonar.api.batch.fs.FileSystem;
 
-import static org.hamcrest.CoreMatchers.is;
+import org.fundacionjala.enforce.sonarqube.apex.Apex;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
-public class ApexTest {
-
-    private Apex apexLanguage;
-    
-    @Before
-    public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("cls"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
-    }
+public class ApexCpdMappingTest {
 
     @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
-
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    public void testApexCpdMappingProperties() {
+        Apex language = mock(Apex.class);
+        FileSystem fileSystem = mock(FileSystem.class);
+        ApexCpdMapping mapping = new ApexCpdMapping(language, fileSystem);
+        assertThat(mapping.getLanguage(), equalTo(language));
+        assertThat(mapping.getTokenizer(), instanceOf(ApexTokenizer.class));
     }
 }

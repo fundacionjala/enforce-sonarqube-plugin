@@ -21,41 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.rule.CheckFactory;
+import org.sonar.api.component.ResourcePerspectives;
 
-import static org.hamcrest.CoreMatchers.is;
+import org.fundacionjala.enforce.sonarqube.apex.Apex;
+
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
-public class ApexTest {
+public class ApexCommonRulesDecoratorTest {
 
-    private Apex apexLanguage;
-    
+    private ApexCommonRulesDecorator decorator;
+
     @Before
     public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("cls"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+        decorator = new ApexCommonRulesDecorator(mock(FileSystem.class),
+                mock(CheckFactory.class),
+                mock(ResourcePerspectives.class));
     }
 
     @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
-
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    public void testRulesDecoratorProperties() throws Exception {
+        assertThat(decorator.language(), equalTo(Apex.KEY));
     }
 }

@@ -23,39 +23,25 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
+import org.sonar.api.Extension;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ApexTest {
+public class ApexPluginTest {
 
-    private Apex apexLanguage;
+    private ApexPlugin apexPlugin;
     
     @Before
     public void setup() {
-        apexLanguage = new Apex(new Settings());
+        apexPlugin = new ApexPlugin();
     }
     @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("cls"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
-    }
-
-    @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
-
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    public void testNumberOfExtensions() {
+        List<Extension> extensions = apexPlugin.getExtensions();
+        assertThat(extensions.size(), is(7));
     }
 }

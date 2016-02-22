@@ -21,41 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
-import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
+import org.sonar.api.server.rule.RulesDefinition;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
+
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ApexTest {
-
-    private Apex apexLanguage;
-    
-    @Before
-    public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("cls"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
-    }
+public class ApexRulesDefinitionTest {
 
     @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
+    public void test() {
+        ApexRulesDefinition rulesDefinition = new ApexRulesDefinition();
+        RulesDefinition.Context context = new RulesDefinition.Context();
+        rulesDefinition.define(context);
+        RulesDefinition.Repository repository = context.repository("apex");
 
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+        assertThat(repository.name(), equalTo("SonarQube"));
+        assertThat(repository.language(), equalTo("cls"));
+        assertThat(repository.rules().size(), is(CheckList.getChecks().size()));
     }
 }

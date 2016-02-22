@@ -21,41 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
 
-import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
+import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ApexTest {
+public class ApexCommonRulesEngineTest {
 
-    private Apex apexLanguage;
-    
+    private ApexCommonRulesEngine engine;
+
     @Before
     public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("cls"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+        engine = new ApexCommonRulesEngine();
     }
 
     @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
+    public void testShouldProvideExpectedExtensions() {
+        List<CommonRulesRepository> repositories = engine.provide();
+        assertThat(repositories.size(), is(1));
+    }
 
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    @Test
+    public void testEnableCommonRules() {
+        CommonRulesRepository repository = engine.newRepository();
+        Set<String> ruleKeys = repository.enabledRuleKeys();
+        assertThat(ruleKeys.size(), is(4));
+        assertThat(ruleKeys, hasItem("InsufficientCommentDensity"));
     }
 }
