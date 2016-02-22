@@ -34,6 +34,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BYTE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CHAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DOUBLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
@@ -42,9 +43,11 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FLOAT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LONG;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NATIVE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
@@ -59,6 +62,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SYNCHRONI
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRY;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UNDELETE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPDATE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
@@ -114,10 +120,13 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMER
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMERIC_EXPRESSION_OPERATIONS_SIMPLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DEC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DELETE_STATEMENT_DML;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EQUAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXPRESSION_FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FOR_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FOR_STATEMENT_INITIALIZER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INSERT_STATEMENT_DML;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MERGE_STATEMENT_DML;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST_OPTIONAL;
@@ -128,6 +137,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATE
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TESTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TRY_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.UNDELETE_STATEMENT_DML;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.UPDATE_STATEMENT_DML;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.UPSERT_STATEMENT_DML;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WHILE_STATEMENT;
 
@@ -159,6 +171,13 @@ public class ApexGrammar {
         expression(grammarBuilder);
         expressionFinal(grammarBuilder);
         statement(grammarBuilder);
+        mergeStatementDML(grammarBuilder);
+        insertStatementDML(grammarBuilder);
+        updateStatementDML(grammarBuilder);
+        upsertStatementDML(grammarBuilder);
+        mergeStatementDML(grammarBuilder);
+        deleteStatementDML(grammarBuilder);
+        undeleteStatementDML(grammarBuilder);
         whileStatement(grammarBuilder);
         forStatementInitializer(grammarBuilder);
         tryStatement(grammarBuilder);
@@ -742,6 +761,91 @@ public class ApexGrammar {
     }
 
     /**
+     * It is responsible for creating the rules to insert into apex.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void insertStatementDML(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(INSERT_STATEMENT_DML).is(
+                STATEMENT,
+                INSERT,
+                STATEMENT
+        );
+
+    }
+
+    /**
+     * It is responsible for creating the rules to update in apex.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void updateStatementDML(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(UPDATE_STATEMENT_DML).is(
+                STATEMENT,
+                UPDATE,
+                STATEMENT
+        );
+
+    }
+
+    /**
+     * It is responsible for creating the rules to upsert in apex.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void upsertStatementDML(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(UPSERT_STATEMENT_DML).is(
+                STATEMENT,
+                UPSERT,
+                STATEMENT
+        );
+
+    }
+
+    /**
+     * It is responsible for creating the rules to delete in apex.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void deleteStatementDML(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DELETE_STATEMENT_DML).is(
+                STATEMENT,
+                DELETE,
+                STATEMENT
+        );
+
+    }
+
+    /**
+     * It is responsible for creating the rules to undelete in apex.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void undeleteStatementDML(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(UNDELETE_STATEMENT_DML).is(
+                STATEMENT,
+                UNDELETE,
+                STATEMENT
+        );
+
+    }
+
+    /**
+     * It is responsible for creating the rules to merge in apex.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void mergeStatementDML(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(MERGE_STATEMENT_DML).is(
+                STATEMENT,
+                MERGE,
+                EXPRESSION,
+                STATEMENT
+        );
+
+    }
+
+    /**
      * It is responsible for setting the rules for the all statements.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
@@ -754,7 +858,12 @@ public class ApexGrammar {
                 grammarBuilder.optional(VARIABLE_DECLARATION),
                 grammarBuilder.optional(WHILE_STATEMENT),
                 grammarBuilder.optional(FOR_STATEMENT),
-                grammarBuilder.optional(TRY_STATEMENT)
+                grammarBuilder.optional(INSERT_STATEMENT_DML),
+                grammarBuilder.optional(UPSERT_STATEMENT_DML),
+                grammarBuilder.optional(UPDATE_STATEMENT_DML),
+                grammarBuilder.optional(DELETE_STATEMENT_DML),
+                grammarBuilder.optional(UNDELETE_STATEMENT_DML),
+                grammarBuilder.optional(MERGE_STATEMENT_DML)
         );
     }
 
