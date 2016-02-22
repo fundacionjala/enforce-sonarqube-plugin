@@ -135,6 +135,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATE
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TERMINAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TESTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TRY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.UNDELETE_STATEMENT_DML;
@@ -149,8 +150,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WHILE
 public class ApexGrammar {
 
     /**
-     * It is the main method of grammar. Here all other grammars are
-     * constructed.
+     * It is the main method of grammar. Here all other grammars are constructed.
      *
      * @return The grammar of a class.
      */
@@ -159,9 +159,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a
-     * boolean to indicate the type of grammar builder. Only available for unit
-     * test.
+     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a boolean to indicate the
+     * type of grammar builder. Only available for unit test.
      *
      * @param isFulGrammar represents the type of grammar builder required.
      * @return the grammar
@@ -228,8 +227,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar is created for the head of a class with the switch and whether it
-     * will extend or implement otherwise.
+     * Grammar is created for the head of a class with the switch and whether it will extend or
+     * implement otherwise.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -297,9 +296,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar for the declaration of a class or interface is constructed.
-     * Composed of the rules of a class type, its identified, extends, and
-     * implements.
+     * Grammar for the declaration of a class or interface is constructed. Composed of the rules of
+     * a class type, its identified, extends, and implements.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -358,8 +356,8 @@ public class ApexGrammar {
      */
     private static void fieldDeclaration(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_DECLARATION).is(
-                grammarBuilder.optional(VARIABLE_DECLARATION),
-                grammarBuilder.optional(METHOD_DECLARATION)
+                grammarBuilder.optional(METHOD_DECLARATION),
+                grammarBuilder.optional(VARIABLE_DECLARATION)
         );
     }
 
@@ -408,8 +406,7 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates rules to the last line of the method and the completion of the
-     * method.
+     * Creates rules to the last line of the method and the completion of the method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -432,7 +429,7 @@ public class ApexGrammar {
      */
     private static void typeSpecifier(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE_SPECIFIER).is(
-                grammarBuilder.firstOf(BOOLEAN,
+                grammarBuilder.firstOf(
                         BOOLEAN,
                         CHAR,
                         BYTE,
@@ -447,8 +444,7 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rule for merge with symbol '=' and an
-     * expression.
+     * It is responsible for creating the rule for merge with symbol '=' and an expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -460,8 +456,7 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rule for initializing a variable
-     * worth.
+     * It is responsible for creating the rule for initializing a variable worth.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -495,7 +490,6 @@ public class ApexGrammar {
     private static void stringLiteral(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(STRING_LITERAL).is(
                 QUOTES,
-                CHARACTER,
                 grammarBuilder.zeroOrMore(CHARACTER),
                 QUOTES
         );
@@ -509,15 +503,14 @@ public class ApexGrammar {
     private static void literalExpression(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(LITERAL_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        INTEGER_LITERAL,
+                        STRING_LITERAL,
                         CHARACTER_LITERAL,
-                        STRING_LITERAL)
+                        INTEGER_LITERAL)
         );
     }
 
     /**
-     * It is responsible for creating the rules to make the casting of an
-     * expression.
+     * It is responsible for creating the rules to make the casting of an expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -526,7 +519,7 @@ public class ApexGrammar {
                 LPAREN,
                 TYPE,
                 RPAREN,
-                EXPRESSION
+                TERMINAL_EXPRESSION
         );
     }
 
@@ -540,28 +533,26 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make the testing of an
-     * expression.
+     * It is responsible for creating the rules to make the testing of an expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void testingExpression(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TESTING_EXPRESSION).is(
-                EXPRESSION,
+                TERMINAL_EXPRESSION,
                 grammarBuilder.firstOf(EQUAL, GT, LT),
-                EXPRESSION
+                TERMINAL_EXPRESSION
         );
     }
 
     /**
-     * It is responsible for setting the rules for simple mathematical
-     * operations.
+     * It is responsible for setting the rules for simple mathematical operations.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void numericExpressionOperations(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(NUMERIC_EXPRESSION_OPERATIONS).is(
-                EXPRESSION,
+                TERMINAL_EXPRESSION,
                 grammarBuilder.firstOf(
                         PLUS,
                         MINUS,
@@ -569,7 +560,7 @@ public class ApexGrammar {
                         DIV,
                         MOD
                 ),
-                EXPRESSION
+                TERMINAL_EXPRESSION
         );
     }
 
@@ -592,13 +583,13 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make one increment or
-     * decrement.
+     * It is responsible for creating the rules to make one increment or decrement.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void numericExpressionOperationsSimple(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(NUMERIC_EXPRESSION_OPERATIONS_SIMPLE).is(EXPRESSION,
+        grammarBuilder.rule(NUMERIC_EXPRESSION_OPERATIONS_SIMPLE).is(
+                TERMINAL_EXPRESSION,
                 grammarBuilder.firstOf(INC, DEC)
         );
     }
@@ -611,8 +602,8 @@ public class ApexGrammar {
     private static void numericExpression(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(NUMERIC_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        NUMERIC_EXPRESSION_OPERATIONS_SIMPLE,
-                        NUMERIC_EXPRESSION_OPERATIONS
+                        NUMERIC_EXPRESSION_OPERATIONS,
+                        NUMERIC_EXPRESSION_OPERATIONS_SIMPLE
                 )
         );
     }
@@ -632,17 +623,21 @@ public class ApexGrammar {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void expression(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(EXPRESSION).is(
+        grammarBuilder.rule(TERMINAL_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        IDENTIFIER,
                         LITERAL_EXPRESSION,
-                        CASTING_EXPRESSION,
-                        NUMERIC_EXPRESSION,
                         NULL,
                         SUPER,
                         THIS,
+                        IDENTIFIER
+                )
+        );
+        grammarBuilder.rule(EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        NUMERIC_EXPRESSION,
                         TESTING_EXPRESSION,
-                        STRING_EXPRESSION
+                        CASTING_EXPRESSION,
+                        TERMINAL_EXPRESSION
                 )
         );
     }
@@ -851,24 +846,24 @@ public class ApexGrammar {
      */
     private static void statement(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(STATEMENT).is(
-                grammarBuilder.optional(STATEMENT_IF),
-                grammarBuilder.optional(EXPRESSION_FINAL),
-                grammarBuilder.optional(STATEMENT_BLOCK),
-                grammarBuilder.optional(VARIABLE_DECLARATION),
-                grammarBuilder.optional(WHILE_STATEMENT),
-                grammarBuilder.optional(FOR_STATEMENT),
-                grammarBuilder.optional(INSERT_STATEMENT_DML),
-                grammarBuilder.optional(UPSERT_STATEMENT_DML),
-                grammarBuilder.optional(UPDATE_STATEMENT_DML),
-                grammarBuilder.optional(DELETE_STATEMENT_DML),
-                grammarBuilder.optional(UNDELETE_STATEMENT_DML),
-                grammarBuilder.optional(MERGE_STATEMENT_DML)
+                grammarBuilder.firstOf(
+                        EXPRESSION_FINAL,
+                        VARIABLE_DECLARATION,
+                        STATEMENT_IF,
+                        STATEMENT_BLOCK,
+                        WHILE_STATEMENT,
+                        FOR_STATEMENT,
+                        INSERT_STATEMENT_DML,
+                        UPSERT_STATEMENT_DML,
+                        UPDATE_STATEMENT_DML,
+                        DELETE_STATEMENT_DML,
+                        UNDELETE_STATEMENT_DML,
+                        MERGE_STATEMENT_DML)
         );
     }
 
     /**
-     * It is responsible for setting the rules for the declaration of a
-     * variable.
+     * It is responsible for setting the rules for the declaration of a variable.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -914,8 +909,7 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for building the rules for the different types of
-     * return of a method.
+     * It is responsible for building the rules for the different types of return of a method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */

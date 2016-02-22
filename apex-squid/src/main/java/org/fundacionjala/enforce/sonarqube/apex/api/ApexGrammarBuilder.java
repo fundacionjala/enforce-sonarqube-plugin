@@ -52,12 +52,12 @@ public class ApexGrammarBuilder {
     /**
      * Stores an numeric pattern.
      */
-    private static final String NUMERIC_PATTERN = "([1-9]\\d*)";
+    private static final String NUMERIC_PATTERN = "[1-9]\\d*";
 
     /**
      * Stores an CHARACTER pattern.
      */
-    private static final String CHARACTER_PATTERN = "([A-Za-z])";
+    private static final String CHARACTER_PATTERN = "[A-Za-z]";
 
     /**
      * Stores a 'setRootRule' method name.
@@ -216,6 +216,18 @@ public class ApexGrammarBuilder {
      */
     public Object optional(Object object) {
         return invoke(OPTIONAL,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Creates a parsing expression "optional".
+     *
+     * @param object expression.
+     * @return an Expression.
+     */
+    public Object next(Object object) {
+        return invoke("next",
                 checkTypeArguments(Object.class),
                 checkArguments(object));
     }

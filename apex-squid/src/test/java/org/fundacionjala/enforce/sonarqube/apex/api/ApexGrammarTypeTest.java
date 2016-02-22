@@ -45,7 +45,7 @@ public class ApexGrammarTypeTest {
                 .matches("char")
                 .matches("float")
                 .matches("byte")
-                .notMatches("Boolean")
-                .notMatches("Byte");
+                .matches("List")
+                .matches("Map");
     }
 }

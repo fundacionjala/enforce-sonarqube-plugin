@@ -75,6 +75,7 @@ public enum RuleKey implements GrammarRuleKey {
     PARAMETER_LIST,
     PARAMETER_LIST_OPTIONAL,
     TESTING_EXPRESSION,
+    TERMINAL_EXPRESSION,
     TRY_STATEMENT,
     TYPE_SPECIFIER,
     TYPE,
