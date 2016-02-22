@@ -402,7 +402,8 @@ public class ApexGrammar {
                 METHOD_NAME,
                 LPAREN,
                 grammarBuilder.optional(PARAMETER_LIST),
-                RPAREN
+                RPAREN,
+                STATEMENT_BLOCK
         );
     }
 
