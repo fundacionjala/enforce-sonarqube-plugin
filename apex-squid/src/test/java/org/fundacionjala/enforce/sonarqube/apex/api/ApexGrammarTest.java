@@ -38,16 +38,14 @@ public class ApexGrammarTest {
     @Test
     public void correctRuleBasic() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicclassMyClass{publicbooleanMyMethod(){returnboolean;}}");
+                .matches("publicclassMyClass{publicbooleanMyMethod()}");
     }
 
     @Test
     public void correctRuleMoreImplements() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1implementsYourClass{"
-                        + "publicintMyMethod(){"
-                        + "returnint;"
-                        + "}"
+                        + "publicbooleanMyMethod(intmyParameter)"
                         + "}");
     }
 
@@ -55,9 +53,31 @@ public class ApexGrammarTest {
     public void correctRuleMoreExtends() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1extendsYourClass{"
-                        + "publiccharMyMethod(){"
-                        + "returnnull;"
-                        + "}"
+                        + "publicbooleanMyMethod()"
+                        + "}");
+    }
+    
+    @Test
+    public void correctRuleBasicVariableAndMethod() {
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
+                .matches("publicclassMyClass{intmyVariable;publicbooleanMyMethod()}");
+    }
+
+    @Test
+    public void correctRuleMoreImplementsVariableAndMethod() {
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
+                .matches("publicwithsharingclassClass1implementsYourClass{"
+                        + "publicbooleanmy_Variable=true;"
+                        + "publicbooleanMyMethod()"
+                        + "}");
+    }
+
+    @Test
+    public void correctRuleMoreExtendsVariableAndMethod() {
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
+                .matches("publicwithsharingclassClass1extendsYourClass{"
+                        + "privateintmy_Variable=10;"
+                        + "publicbooleanMyMethod()"
                         + "}");
     }
 }

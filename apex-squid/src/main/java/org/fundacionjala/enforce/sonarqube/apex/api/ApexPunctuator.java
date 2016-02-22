@@ -27,7 +27,8 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.TokenType;
 
 /**
- * The enum tokens and GrammarRuleKey handles of punctuation for the Squid module.
+ * The enum tokens and GrammarRuleKey handles of punctuation for the Squid
+ * module.
  */
 public enum ApexPunctuator implements TokenType {
 
@@ -38,15 +39,30 @@ public enum ApexPunctuator implements TokenType {
     RPAREN(")"),
     LBRACE("{"),
     RBRACE("}"),
+    LBRACKET("["),
+    RBRACKET("]"),
     SEMICOLON(";"),
     COMMA(","),
     DOT("."),
-
+    QUOTE("'"),
+    QUOTES("\""),
     /**
      * OPERATORS.
      */
     ASSIGN("="),
-    UNDERSCORE("_");
+    DIV("/"),
+    DIVEQU("/="),
+    UNDERSCORE("_"),
+    MINUS("-"),
+    MINUSEQU("-="),
+    MOD("%"),
+    MODEQU("%="),
+    PLUS("+"),
+    PLUSEQU("+="),
+    STAR("*"),
+    STAREQU("*="),
+    GT(">"),
+    LT("<");
 
     /**
      * Save the value of each enum.

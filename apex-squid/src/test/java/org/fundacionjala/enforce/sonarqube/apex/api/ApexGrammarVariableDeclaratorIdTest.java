@@ -29,23 +29,20 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATOR_ID;
 
-public class ApexGrammarPrimitiveTypeTest {
+public class ApexGrammarVariableDeclaratorIdTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(PRIMITIVE_TYPE))
-                .matches("boolean")
-                .matches("int")
-                .matches("short")
-                .matches("long")
-                .matches("char")
-                .matches("float")
-                .matches("byte")
-                .notMatches("Boolean")
-                .notMatches("Byte");
+        assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR_ID))
+                .matches("myVariable")
+                .matches("myVariable[]")
+                .matches("my_Variable[]")
+                .notMatches("myVariable_[]")
+                .notMatches("1myVariable")
+                .notMatches("1myVariable[]");
     }
 }

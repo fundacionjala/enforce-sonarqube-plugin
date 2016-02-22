@@ -30,17 +30,10 @@ import com.sonar.sslr.api.Grammar;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WITHOUT_SHARING;
 
 public class ApexGrammarKeywordTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void positiveBasicRulesWithoutSharing() {
-        assertThat(grammarBuilder.rule(WITHOUT_SHARING))
-                .matches("withoutsharing");
-    }
 
     @Test
     public void positiveBasicRules() {

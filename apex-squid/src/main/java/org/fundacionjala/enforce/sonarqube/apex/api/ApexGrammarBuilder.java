@@ -50,9 +50,24 @@ public class ApexGrammarBuilder {
     private static final String IDENTIFIER_PATTERN = "(_{0,2}[a-zA-Z][a-zA-Z0-9]*)+";
 
     /**
+     * Stores an numeric pattern.
+     */
+    private static final String NUMERIC_PATTERN = "[1-9]\\d*";
+
+    /**
+     * Stores an CHARACTER pattern.
+     */
+    private static final String CHARACTER_PATTERN = "[A-Za-z]";
+
+    /**
      * Stores a 'setRootRule' method name.
      */
     private static final String SET_ROOT_RULE = "setRootRule";
+
+    /**
+     * Stores a 'zeroOrMore' method name.
+     */
+    private static final String ZERO_OR_MORE = "zeroOrMore";
 
     /**
      * Stores a 'fisrtOf' method name.
@@ -127,8 +142,8 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Allows to describe rule. The result of this method should be used only for execution of
-     * methods in it, i.e. you should not save reference on it.
+     * Allows to describe rule. The result of this method should be used only
+     * for execution of methods in it, i.e. you should not save reference on it.
      *
      * @param ruleKey role to be set.
      * @return an ApexGrammarBuilder instance.
@@ -206,7 +221,58 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Builds and returns a grammar instance, built on a specific grammar builder.
+     * Creates a parsing expression "optional".
+     *
+     * @param object expression.
+     * @return an Expression.
+     */
+    public Object next(Object object) {
+        return invoke("next",
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Creates a parsing expression "optional".
+     *
+     * @param object expression.
+     * @param rest rest of expressions.
+     * @return an Expression.
+     */
+    public Object optional(Object object, Object... rest) {
+        return invoke(OPTIONAL,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Creates a parsing expression "zeroOrMore".
+     *
+     * @param object expression.
+     * @return an Expression.
+     */
+    public Object zeroOrMore(Object object) {
+        return invoke(ZERO_OR_MORE,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Creates a parsing expression "zeroOrMore".
+     *
+     * @param object expression.
+     * @param rest rest of expressions.
+     * @return an Expression.
+     */
+    public Object zeroOrMore(Object object, Object... rest) {
+        return invoke(ZERO_OR_MORE,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Builds and returns a grammar instance, built on a specific grammar
+     * builder.
      *
      * @return a Grammar
      */
@@ -272,8 +338,8 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Analyzes and returns the argument. Replaces {@link TokenType} by {@link ParsingExpression} if
-     * lessGrammarBuilder is required.
+     * Analyzes and returns the argument. Replaces {@link TokenType} by
+     * {@link ParsingExpression} if lessGrammarBuilder is required.
      *
      * @param argument to be analyzed.
      * @return the argument.
@@ -282,8 +348,15 @@ public class ApexGrammarBuilder {
         if (!isFulGrammar) {
             if (argument instanceof TokenType) {
                 TokenType token = (TokenType) argument;
-                argument = isIdentifier(token) ? new PatternExpression(IDENTIFIER_PATTERN)
-                        : new StringExpression(token.getValue());
+                if (isIdentifier(token)) {
+                    argument = new PatternExpression(IDENTIFIER_PATTERN);
+                } else if (isNumeric(token)) {
+                    argument = new PatternExpression(NUMERIC_PATTERN);
+                } else if (isCharacter(token)) {
+                    argument = new PatternExpression(CHARACTER_PATTERN);
+                } else {
+                    argument = new StringExpression(token.getValue());
+                }
             }
         }
         return argument;
@@ -297,6 +370,26 @@ public class ApexGrammarBuilder {
      */
     private boolean isIdentifier(TokenType token) {
         return token.equals(GenericTokenType.IDENTIFIER);
+    }
+
+    /**
+     * Determines if a {@link TokenType} represents an numeric.
+     *
+     * @param token to be analyzed.
+     * @return a boolean.
+     */
+    private boolean isNumeric(TokenType token) {
+        return token.equals(ApexTokenType.NUMERIC);
+    }
+
+    /**
+     * Determines if a {@link TokenType} represents an character.
+     *
+     * @param token to be analyzed.
+     * @return a boolean.
+     */
+    private boolean isCharacter(TokenType token) {
+        return token.equals(ApexTokenType.CHARACTER);
     }
 
     /**

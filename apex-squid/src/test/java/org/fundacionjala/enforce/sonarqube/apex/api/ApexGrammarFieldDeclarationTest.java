@@ -29,17 +29,23 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
 
-public class ApexGrammarClassOrInterfaceBodyDeclarationTest {
+public class ApexGrammarFieldDeclarationTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(CLASS_OR_INTERFACE_BODY_DECLARATION))
-                .matches("publicbooleanMyMethod(){"
-                        + "returnboolean;"
-                        + "}");
+        assertThat(grammarBuilder.rule(FIELD_DECLARATION))
+                .matches("publicbooleanMyMethod(){returntrue;}")
+                .matches("intmyVariable;")
+                .matches("privatedoublemyVariable[];")
+                .matches("publicbooleanmy_Variable[];")
+                .matches("intmyVariable=1;")
+                .matches("publicdoublemyVariable[]=98;")
+                .matches("charmyVariable='A';")
+                .matches("publiccharmyVariable[]='B';")
+                .matches("privatecharmy_Variable[]='z';");
     }
 }

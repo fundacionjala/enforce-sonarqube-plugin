@@ -29,17 +29,16 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CASTING_EXPRESSION;
 
-public class ApexGrammarModifiersTest {
+public class ApexGrammarCastingExpressionTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(MODIFIERS))
-                .matches("publicintMyMethod(){")
-                .matches("privatebooleanIsTheMethod(){")
-                .notMatches("PublicIntMethods");
+        assertThat(grammarBuilder.rule(CASTING_EXPRESSION))
+                .matches("(int)MyVariable")
+                .matches("(MyObjecto)MyVariable");
     }
 }
