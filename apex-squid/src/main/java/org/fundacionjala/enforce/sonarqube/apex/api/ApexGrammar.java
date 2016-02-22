@@ -175,7 +175,6 @@ public class ApexGrammar {
         insertStatementDML(grammarBuilder);
         updateStatementDML(grammarBuilder);
         upsertStatementDML(grammarBuilder);
-        mergeStatementDML(grammarBuilder);
         deleteStatementDML(grammarBuilder);
         undeleteStatementDML(grammarBuilder);
         whileStatement(grammarBuilder);
