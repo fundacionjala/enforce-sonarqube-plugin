@@ -31,12 +31,16 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ANOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BOOLEAN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BYTE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CHAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DOUBLE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FLOAT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FOR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
@@ -54,7 +58,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SYNCHRONIZED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
@@ -109,12 +115,21 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMER
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DEC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EQUAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXPRESSION_FINAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FOR_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FOR_STATEMENT_INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST_OPTIONAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_BLOCK;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_ELSE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TESTING_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TRY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WHILE_STATEMENT;
 
 /**
  * This class unites all the rules you need a class.
@@ -142,6 +157,15 @@ public class ApexGrammar {
     static Grammar create(boolean isFulGrammar) {
         ApexGrammarBuilder grammarBuilder = ApexGrammarBuilder.create(isFulGrammar);
         expression(grammarBuilder);
+        expressionFinal(grammarBuilder);
+        statement(grammarBuilder);
+        whileStatement(grammarBuilder);
+        forStatementInitializer(grammarBuilder);
+        tryStatement(grammarBuilder);
+        forStatement(grammarBuilder);
+        statementBlock(grammarBuilder);
+        statementIf(grammarBuilder);
+        statamentElse(grammarBuilder);
         variableDeclaration(grammarBuilder);
         stringExpression(grammarBuilder);
         testingExpressionEqual(grammarBuilder);
@@ -601,6 +625,135 @@ public class ApexGrammar {
                         TESTING_EXPRESSION,
                         STRING_EXPRESSION
                 )
+        );
+    }
+
+    /**
+     * It is responsible for setting the rules for final expression.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void expressionFinal(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(EXPRESSION_FINAL).is(EXPRESSION, SEMICOLON);
+    }
+
+    /**
+     * It is responsible for setting the rules for the else.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void statamentElse(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(STATEMENT_ELSE).is(ELSE, STATEMENT);
+    }
+
+    /**
+     * It is responsible for setting the rules for the if else.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void statementIf(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(STATEMENT_IF).is(
+                IF,
+                LPAREN,
+                EXPRESSION,
+                RPAREN,
+                STATEMENT,
+                grammarBuilder.optional(STATEMENT_ELSE)
+        );
+    }
+
+    /**
+     * It is responsible for setting the rules for a block of statements.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void statementBlock(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(STATEMENT_BLOCK).is(
+                LBRACE,
+                grammarBuilder.zeroOrMore(STATEMENT),
+                RBRACE);
+    }
+
+    /**
+     * It is responsible for creating the rules for a while.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void whileStatement(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(WHILE_STATEMENT).is(
+                WHILE,
+                LPAREN,
+                EXPRESSION,
+                RPAREN,
+                STATEMENT
+        );
+    }
+
+    /**
+     * It is responsible for setting the rules for initializing a for.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void forStatementInitializer(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FOR_STATEMENT_INITIALIZER).is(
+                grammarBuilder.firstOf(
+                        VARIABLE_DECLARATION,
+                        EXPRESSION_FINAL,
+                        SEMICOLON
+                )
+        );
+    }
+
+    /**
+     * It is responsible for creating the rules for a while.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void forStatement(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FOR_STATEMENT).is(
+                FOR,
+                LPAREN,
+                FOR_STATEMENT_INITIALIZER,
+                grammarBuilder.optional(EXPRESSION),
+                SEMICOLON,
+                EXPRESSION,
+                SEMICOLON,
+                RPAREN,
+                STATEMENT
+        );
+    }
+
+    /**
+     * It is responsible for creating the rules for a try catch.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void tryStatement(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(TRY_STATEMENT).is(
+                TRY,
+                STATEMENT,
+                CATCH,
+                LPAREN,
+                PARAMETER_LIST,
+                RPAREN,
+                STATEMENT
+        );
+    }
+
+    /**
+     * It is responsible for setting the rules for the all statements.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void statement(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(STATEMENT).is(
+                grammarBuilder.optional(STATEMENT_IF),
+                grammarBuilder.optional(EXPRESSION_FINAL),
+                grammarBuilder.optional(STATEMENT_BLOCK),
+                grammarBuilder.optional(VARIABLE_DECLARATION),
+                grammarBuilder.optional(WHILE_STATEMENT),
+                grammarBuilder.optional(FOR_STATEMENT),
+                grammarBuilder.optional(TRY_STATEMENT)
         );
     }
 
