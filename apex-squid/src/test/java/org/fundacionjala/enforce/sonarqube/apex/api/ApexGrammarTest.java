@@ -56,4 +56,28 @@ public class ApexGrammarTest {
                         + "publicbooleanMyMethod()"
                         + "}");
     }
+    
+    @Test
+    public void correctRuleBasicVariableAndMethod() {
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
+                .matches("publicclassMyClass{intmyVariable;publicbooleanMyMethod()}");
+    }
+
+    @Test
+    public void correctRuleMoreImplementsVariableAndMethod() {
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
+                .matches("publicwithsharingclassClass1implementsYourClass{"
+                        + "publicbooleanmy_Variable=true;"
+                        + "publicbooleanMyMethod()"
+                        + "}");
+    }
+
+    @Test
+    public void correctRuleMoreExtendsVariableAndMethod() {
+        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
+                .matches("publicwithsharingclassClass1extendsYourClass{"
+                        + "privateintmy_Variable=10;"
+                        + "publicbooleanMyMethod()"
+                        + "}");
+    }
 }

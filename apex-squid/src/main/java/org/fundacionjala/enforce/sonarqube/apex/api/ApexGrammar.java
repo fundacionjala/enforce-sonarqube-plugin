@@ -309,7 +309,8 @@ public class ApexGrammar {
      */
     private static void fieldDeclaration(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_DECLARATION).is(
-                METHOD_DECLARATION
+                grammarBuilder.optional(VARIABLE_DECLARATION),
+                grammarBuilder.optional(METHOD_DECLARATION)
         );
     }
 

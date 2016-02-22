@@ -38,6 +38,14 @@ public class ApexGrammarFieldDeclarationTest {
     @Test
     public void positiveRules() {
         assertThat(grammarBuilder.rule(FIELD_DECLARATION))
-                .matches("publicbooleanMyMethod()");
+                .matches("publicbooleanMyMethod()")
+                .matches("intmyVariable;")
+                .matches("privatedoublemyVariable[];")
+                .matches("publicbooleanmy_Variable[];")
+                .matches("intmyVariable=1;")
+                .matches("publicdoublemyVariable[]=98;")
+                .matches("charmyVariable='A';")
+                .matches("publiccharmyVariable[]='B';")
+                .matches("privatecharmy_Variable[]='z';");
     }
 }
