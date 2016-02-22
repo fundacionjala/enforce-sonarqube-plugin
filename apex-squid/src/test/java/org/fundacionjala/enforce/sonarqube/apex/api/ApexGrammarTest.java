@@ -45,7 +45,7 @@ public class ApexGrammarTest {
     public void correctRuleMoreImplements() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1implementsYourClass{"
-                        + "publicbooleanMyMethod()"
+                        + "publicbooleanMyMethod(intmyParameter)"
                         + "}");
     }
 

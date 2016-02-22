@@ -377,6 +377,7 @@ public class ApexGrammar {
                 TYPE,
                 METHOD_NAME,
                 LPAREN,
+                grammarBuilder.optional(PARAMETER_LIST),
                 RPAREN
         );
     }

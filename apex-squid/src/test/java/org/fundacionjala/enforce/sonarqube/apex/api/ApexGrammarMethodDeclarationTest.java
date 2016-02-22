@@ -42,4 +42,12 @@ public class ApexGrammarMethodDeclarationTest {
                 .matches("publicintmyMethod()")
                 .notMatches("publicint1MyMethod()");
     }
+    
+    @Test
+    public void positiveRulesMethodWithParameter() {
+        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
+                .matches("publicintisMethod(intmyParameter)")
+                .matches("publicintmyMethod(intmyParameter[])")
+                .notMatches("publicint1MyMethod(intmyParameter,intmyParameter2)");
+    }
 }
