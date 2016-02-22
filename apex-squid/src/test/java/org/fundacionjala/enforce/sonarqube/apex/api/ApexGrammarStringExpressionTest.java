@@ -21,53 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
+package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import org.junit.Test;
 
-/**
- * Contains enum all the rules used in the grammar.
- */
-public enum RuleKey implements GrammarRuleKey {
+import com.sonar.sslr.api.Grammar;
 
-    APEX_GRAMMAR,
-    ASSIGN_VARIABLE_INITILIZER,
-    BODY_IDENTIFIER,
-    BRACKETS,
-    CASTING_EXPRESSION,
-    CHAR,
-    CHARACTER_LITERAL,
-    EQUAL,
-    FIELD_DECLARATION,
-    CLASS_DECLARATION,
-    CLASS_NAME,
-    EXPRESSION,
-    EXTENDS_LIST,
-    IDENTIFIER,
-    IMPLEMENTS_LIST,
-    INIT_IDENTIFIER,
-    INTEGER_LITERAL,
-    KEYWORD,
-    LITERAL_EXPRESSION,
-    DEC,
-    MODIFIER,
-    METHOD_DECLARATION,
-    METHOD_NAME,
-    MODIFIER_KEYWORD,
-    MODIFIERS,
-    NUMERIC_EXPRESSION,
-    NUMERIC_EXPRESSION_OPERATIONS,
-    NUMERIC_EXPRESSION_OPERATIONS_SIMPLE,
-    INC,
-    STRING_EXPRESSION,
-    STRING_LITERAL,
-    TESTING_EXPRESSION,
-    TYPE_SPECIFIER,
-    TYPE,
-    TYPE_CLASS,
-    TYPE_DECLARATION,
-    VARIABLE_DECLARATION,
-    VARIABLE_DECLARATOR,
-    VARIABLE_DECLARATOR_ID,
-    VARIABLE_INITILIZER;
+import static org.sonar.sslr.tests.Assertions.assertThat;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_EXPRESSION;
+
+public class ApexGrammarStringExpressionTest {
+
+    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+
+    @Test
+    public void positiveRulesStringExpression() {
+        assertThat(grammarBuilder.rule(STRING_EXPRESSION))
+                .matches("1")
+                .matches("MyVariable")
+                .matches("NAME");
+    }
 }

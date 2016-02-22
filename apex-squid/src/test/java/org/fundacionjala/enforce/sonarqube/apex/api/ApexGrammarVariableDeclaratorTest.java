@@ -124,4 +124,27 @@ public class ApexGrammarVariableDeclaratorTest {
                 .notMatches("1myVariable=4*8")
                 .notMatches("1myVariable[]=3-9");
     }
+    
+    @Test
+    public void positiveRulesOperationsSimpleMinus() {
+        assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR))
+                .matches("myVariable=2>2")
+                .matches("myVariable[]=10>3")
+                .matches("my_Variable[]=4*3")
+                .matches("my_Variable[]=10/5")
+                .matches("my_Variable[]=10%2")
+                .notMatches("myVariable_[]=10+3")
+                .notMatches("1myVariable=4*8")
+                .notMatches("1myVariable[]=3-9");
+    }
+    
+    @Test
+    public void positiveRulesStringExpression() {
+        assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR))
+                .matches("myVariable=MyName")
+                .matches("myVariable[]=MYVARIBLE")
+                .notMatches("myVariable_[]=10+3")
+                .notMatches("1myVariable=4*8")
+                .notMatches("1myVariable[]=3-9");
+    }
 }

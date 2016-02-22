@@ -63,6 +63,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUS;
@@ -71,6 +72,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.QUOTES
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.CHARACTER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
@@ -105,7 +107,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMER
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMERIC_EXPRESSION_OPERATIONS_SIMPLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DEC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EQUAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TESTING_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATION;
 
 /**
  * This class unites all the rules you need a class.
@@ -133,6 +138,9 @@ public class ApexGrammar {
     static Grammar create(boolean isFulGrammar) {
         ApexGrammarBuilder grammarBuilder = ApexGrammarBuilder.create(isFulGrammar);
         expression(grammarBuilder);
+        variableDeclaration(grammarBuilder);
+        stringExpression(grammarBuilder);
+        testingExpressionEqual(grammarBuilder);
         testingExpression(grammarBuilder);
         castingExpression(grammarBuilder);
         brackets(grammarBuilder);
@@ -436,6 +444,15 @@ public class ApexGrammar {
     }
 
     /**
+     * It is responsible for setting the rules for equal comparison.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    public static void testingExpressionEqual(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(EQUAL).is(ASSIGN, ASSIGN);
+    }
+
+    /**
      * It is responsible for creating the rules to make the testing of an
      * expression.
      *
@@ -444,11 +461,17 @@ public class ApexGrammar {
     private static void testingExpression(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TESTING_EXPRESSION).is(
                 EXPRESSION,
-                GT,
+                grammarBuilder.firstOf(EQUAL, GT, LT),
                 EXPRESSION
         );
     }
 
+    /**
+     * It is responsible for setting the rules for simple mathematical
+     * operations.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void numericExpressionOperations(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(NUMERIC_EXPRESSION_OPERATIONS).is(
                 EXPRESSION,
@@ -508,6 +531,15 @@ public class ApexGrammar {
     }
 
     /**
+     * It is responsible for setting the rules for strings.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void stringExpression(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(STRING_EXPRESSION).is(EXPRESSION);
+    }
+
+    /**
      * It is responsible for creating a rule expression language.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
@@ -522,8 +554,24 @@ public class ApexGrammar {
                         NULL,
                         SUPER,
                         THIS,
-                        TESTING_EXPRESSION
+                        TESTING_EXPRESSION,
+                        STRING_EXPRESSION
                 )
+        );
+    }
+
+    /**
+     * It is responsible for setting the rules for the declaration of a
+     * variable.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void variableDeclaration(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(VARIABLE_DECLARATION).is(
+                grammarBuilder.optional(MODIFIER),
+                TYPE,
+                VARIABLE_DECLARATOR,
+                SEMICOLON
         );
     }
 

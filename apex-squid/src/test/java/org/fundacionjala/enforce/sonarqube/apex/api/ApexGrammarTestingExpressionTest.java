@@ -38,6 +38,10 @@ public class ApexGrammarTestingExpressionTest {
     @Test
     public void positiveRulesOperationsSimpleMinus() {
         assertThat(grammarBuilder.rule(TESTING_EXPRESSION))
-                .matches("10>5");
+                .matches("10>5")
+                .matches("4>5")
+                .matches("4<5")
+                .matches("4==5")
+                .matches("a==b");
     }
 }

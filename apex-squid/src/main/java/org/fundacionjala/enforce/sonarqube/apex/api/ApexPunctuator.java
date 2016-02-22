@@ -61,7 +61,8 @@ public enum ApexPunctuator implements TokenType {
     PLUSEQU("+="),
     STAR("*"),
     STAREQU("*="),
-    GT(">");
+    GT(">"),
+    LT("<");
 
     /**
      * Save the value of each enum.
