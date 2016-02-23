@@ -70,6 +70,11 @@ public class ApexGrammarBuilder {
     private static final String ZERO_OR_MORE = "zeroOrMore";
 
     /**
+     * Stores a 'oneOrMore' method name.
+     */
+    private static final String ONE_OR_MORE = "oneOrMore";
+
+    /**
      * Stores a 'fisrtOf' method name.
      */
     private static final String FIRST_OF = "firstOf";
@@ -230,6 +235,31 @@ public class ApexGrammarBuilder {
      */
     public Object optional(Object object, Object... rest) {
         return invoke(OPTIONAL,
+                checkTypeArguments(Object.class, Object[].class),
+                checkArguments(object, rest));
+    }
+
+    /**
+     * Creates a parsing expression "oneOrMore".
+     *
+     * @param object expression.
+     * @return an Expression.
+     */
+    public Object oneOrMore(Object object) {
+        return invoke(ONE_OR_MORE,
+                checkTypeArguments(Object.class),
+                checkArguments(object));
+    }
+
+    /**
+     * Creates a parsing expression "oneOrMore".
+     *
+     * @param object expression.
+     * @param rest rest of expressions.
+     * @return an Expression.
+     */
+    public Object oneOrMore(Object object, Object... rest) {
+        return invoke(ONE_OR_MORE,
                 checkTypeArguments(Object.class, Object[].class),
                 checkArguments(object, rest));
     }

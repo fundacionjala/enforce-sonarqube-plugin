@@ -226,7 +226,7 @@ public class ApexGrammar {
      */
     private static void typeDeclaration(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE_DECLARATION).is(
-                CLASS_DECLARATION
+                grammarBuilder.oneOrMore(CLASS_DECLARATION)
         );
     }
 

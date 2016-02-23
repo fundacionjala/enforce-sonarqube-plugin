@@ -1,5 +1,13 @@
-public with sharing class DraftArticle extends AbstractArticle {
-    public void myMethod() {
-        int number = 0;
+public with sharing class DraftArticle {
+
+    public DraftArticle() {
+        String title = 'Article';
+    }
+
+    public int multiple(int number) {
+        return 10 * number;
+    }
+
+    public void clear() {
     }
 }
