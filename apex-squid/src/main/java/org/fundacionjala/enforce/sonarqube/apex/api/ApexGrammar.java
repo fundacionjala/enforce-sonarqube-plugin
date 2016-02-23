@@ -417,7 +417,7 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates rules to the last line of the method and the completion of the method.
+     * Creates rules for method's last line and completion.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */

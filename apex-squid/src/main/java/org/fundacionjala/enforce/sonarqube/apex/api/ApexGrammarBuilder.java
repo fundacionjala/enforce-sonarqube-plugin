@@ -50,12 +50,12 @@ public class ApexGrammarBuilder {
     private static final String IDENTIFIER_PATTERN = "(_{0,2}[a-zA-Z][a-zA-Z0-9]*)+";
 
     /**
-     * Stores an numeric pattern.
+     * Stores a numeric pattern.
      */
     private static final String NUMERIC_PATTERN = "(0|[1-9]\\d*)";
 
     /**
-     * Stores an CHARACTER pattern.
+     * Stores a string pattern.
      */
     private static final String STRING_PATTERN = "'([^'\\\\]*+(\\\\[\\s\\S])?+)*+'";
 
@@ -392,7 +392,7 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Determines if a {@link TokenType} represents an numeric.
+     * Determines if a {@link TokenType} represents a numeric.
      *
      * @param token to be analyzed.
      * @return a boolean.

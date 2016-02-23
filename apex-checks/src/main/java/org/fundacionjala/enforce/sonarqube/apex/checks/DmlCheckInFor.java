@@ -36,7 +36,7 @@ import org.sonar.squidbridge.checks.SquidCheck;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check for a DML is not within a "for"
+ * Check for a DML is not within a "for loop"
  */
 @Rule(
         key = DmlCheckInFor.CHECK_KEY,
