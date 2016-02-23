@@ -23,16 +23,14 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import com.google.common.base.Charsets;
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.impl.Parser;
 import java.io.File;
-import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
-import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexParser;
+
 import org.junit.Test;
+
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
+
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
 public class DmlCheckInWhileTest {
 
@@ -40,23 +38,19 @@ public class DmlCheckInWhileTest {
     private SourceFile sourceFile;
 
     @Test
-    public void testIncorrectDMLDeclaration() throws Exception {
+    public void testIncorrectDMLDeclarationCorrect() throws Exception {
         dmlCheckInWhile = new DmlCheckInWhile();
-        Parser p = ApexParser.create(new ApexConfiguration(Charsets.UTF_8));
-        AstNode a = p.parse(new File("src/test/resources/checks/clazzCorrect.cls"));
-        ajaja(a);
         sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInWhile);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .noMore();
+    }
+
+    @Test
+    public void testIncorrectDMLDeclarationIncorrectInsert() throws Exception {
+        dmlCheckInWhile = new DmlCheckInWhile();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInWhile);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
                 next().atLine(4).withMessage(
-                "The DML statement \"insert\",can not be inside a while loop");
+                "The DML statement \"insert\", can not be inside a while loop");
     }
-
-    private void ajaja(AstNode astNode) {
-        System.out.println("Entro");
-        System.out.println(astNode.getName());
-        for (AstNode n : astNode.getChildren()) {
-            ajaja(n);
-        }
-    }
-
 }

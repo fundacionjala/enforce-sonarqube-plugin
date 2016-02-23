@@ -24,10 +24,13 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import java.io.File;
-import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
+
 import org.junit.Test;
+
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
+
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
 public class DmlCheckInForTest {
 
@@ -35,11 +38,19 @@ public class DmlCheckInForTest {
     private SourceFile sourceFile;
 
     @Test
-    public void testIncorrectDMLDeclaration() throws Exception {
+    public void testCorrectDMLDeclaration() throws Exception {
         dmlCheckInFor = new DmlCheckInFor();
         sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInFor);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                next().atLine(4).withMessage(
-                "The DML statement \"insert\",can not be inside a for loop");
+                noMore();
+    }
+
+    @Test
+    public void testIncorrectDMLDeclaration() throws Exception {
+        dmlCheckInFor = new DmlCheckInFor();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInFor);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
+                next().atLine(8).withMessage(
+                "The DML statement \"merge\", can not be inside a for loop");
     }
 }

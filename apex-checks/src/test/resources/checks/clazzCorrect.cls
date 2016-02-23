@@ -1,8 +1,12 @@
 public with sharing class DraftArticle extends AbstractArticle {
 
-    public int myMethod () { 
+    public int MyMethod () { 
         while(true){
-            insert newAcct;
+           a++; 
+        }
+        
+        for(int i = 0 ; i < 10 ; i++){
+           a++; 
         }
     }
 }
