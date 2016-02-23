@@ -6,7 +6,7 @@ public       with
 
 
     public      int     MyMethod() {
-        return                          int;
+        int number = 0;
                         }
     
 }

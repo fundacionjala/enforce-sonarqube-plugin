@@ -39,7 +39,7 @@ public class ApexGrammarMethodDeclarationTest {
     public void positiveRules() {
         assertThat(grammarBuilder.rule(METHOD_DECLARATION))
                 .matches("publicintisMethod(){}")
-                .matches("publicintmyMethod(){}")
+                .matches("publicintmyMethod(){intmyVariable;}")
                 .notMatches("publicint1MyMethod()");
     }
     

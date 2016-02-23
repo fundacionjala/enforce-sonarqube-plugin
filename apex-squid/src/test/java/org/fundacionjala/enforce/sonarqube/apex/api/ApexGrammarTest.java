@@ -38,14 +38,16 @@ public class ApexGrammarTest {
     @Test
     public void correctRuleBasic() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicclassMyClass{publicbooleanMyMethod()}");
+                .matches("publicclassMyClass{publicbooleanMyMethod(){}}");
     }
 
     @Test
     public void correctRuleMoreImplements() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1implementsYourClass{"
-                        + "publicbooleanMyMethod(intmyParameter)"
+                        + "publicbooleanMyMethod(intmyParameter){"
+                        + "intnumber=myParameter;"
+                        + "}"
                         + "}");
     }
 
@@ -53,14 +55,14 @@ public class ApexGrammarTest {
     public void correctRuleMoreExtends() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1extendsYourClass{"
-                        + "publicbooleanMyMethod()"
+                        + "publicbooleanMyMethod(){}"
                         + "}");
     }
     
     @Test
-    public void correctRuleBasicVariableAndMethod() {
+    public void correctRuleBasicVariable() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicclassMyClass{intmyVariable;publicbooleanMyMethod()}");
+                .matches("publicclassMyClass{intmyVariable;}");
     }
 
     @Test
@@ -68,7 +70,7 @@ public class ApexGrammarTest {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1implementsYourClass{"
                         + "publicbooleanmy_Variable=true;"
-                        + "publicbooleanMyMethod()"
+                        + "publicbooleanMyMethod(){}"
                         + "}");
     }
 
@@ -77,7 +79,7 @@ public class ApexGrammarTest {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1extendsYourClass{"
                         + "privateintmy_Variable=10;"
-                        + "publicbooleanMyMethod()"
+                        + "publicbooleanMyMethod(){}"
                         + "}");
     }
 }

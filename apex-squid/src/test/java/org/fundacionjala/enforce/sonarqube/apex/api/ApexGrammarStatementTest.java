@@ -31,8 +31,6 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_BLOCK;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_IF;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WHILE_STATEMENT;
 
 public class ApexGrammarStatementTest {
 
@@ -64,49 +62,53 @@ public class ApexGrammarStatementTest {
 
     @Test
     public void positiveRulesIfElseStatement() {
-        assertThat(grammarBuilder.rule(STATEMENT_IF))
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';");
-
-    }
-
-    @Test
-    public void positiveRulesIfStatement() {
         assertThat(grammarBuilder.rule(STATEMENT))
+                .matches("if(NAME){}")
+                .matches("if(NAME){}else{}")
                 .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';");
-
+                .matches("if(NAME)12;else'a';")
+                .matches("if(NAME){intnumber;}")
+                .matches("if(NAME){intnumber=12;}else{'a';}");
     }
 
     @Test
     public void positiveRulesStatementBlock() {
         assertThat(grammarBuilder.rule(STATEMENT_BLOCK))
+                .matches("{}")
                 .matches("{intmyVariable;}")
-                .matches("{intmyVariable;if(NAME)12;");
-
-    }
-
-    @Test
-    public void positiveRules_StatementBlock() {
-        assertThat(grammarBuilder.rule(STATEMENT))
-                .matches("{intmyVariable;}")
-                .matches("{intmyVariable;if(NAME)12;");
-
+                .matches("{intmyVariable=23;if(NAME)12;}");
     }
 
     @Test
     public void positiveRulesWhileStament() {
-        assertThat(grammarBuilder.rule(WHILE_STATEMENT))
-                .matches("While(A)12;")
-                .matches("While(A){12;}");
-
-    }
-    
-     @Test
-    public void positiveRules_WhileStament() {
         assertThat(grammarBuilder.rule(STATEMENT))
-                .matches("While(A)12;")
-                .matches("While(A){12;}");
+                .matches("while(true){}")
+                .matches("while(A)12;")
+                .matches("while(A){intnumber=0;}");
+    }
 
+    @Test
+    public void positiveRulesForStament() {
+        assertThat(grammarBuilder.rule(STATEMENT))
+                .matches("for(;;){}")
+                .matches("for(inti=0;i<10;i++)intnumber;")
+                .matches("for(inti=0;i<10;i++){intnumber=i;}");
+    }
+
+    @Test
+    public void positiveRulesTryCatchStament() {
+        assertThat(grammarBuilder.rule(STATEMENT))
+                .matches("try{}catch(intex){}")
+                .matches("try{intnumber=0;}catch(charex){charmessage=ex.message;}");
+    }
+
+    @Test
+    public void positiveRulesDmlStament() {
+        assertThat(grammarBuilder.rule(STATEMENT))
+                .matches("insertnewAcct;")
+                .matches("updatemyAcct;")
+                .matches("upsertacctList;")
+                .matches("deletedoomedAccts;")
+                .matches("undeletesavedAccts;");
     }
 }

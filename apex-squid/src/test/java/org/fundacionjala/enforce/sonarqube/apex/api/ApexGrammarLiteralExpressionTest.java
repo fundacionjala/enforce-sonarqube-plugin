@@ -41,9 +41,8 @@ public class ApexGrammarLiteralExpressionTest {
                 .matches("1")
                 .matches("12")
                 .matches("1009")
-                .notMatches("0")
+                .matches("0")
                 .notMatches("01");
-
     }
     
     @Test
@@ -53,9 +52,8 @@ public class ApexGrammarLiteralExpressionTest {
                 .matches("'B'")
                 .matches("'c'")
                 .matches("'z'")
-                .notMatches("0")
+                .matches("0")
                 .notMatches("01");
-
     }
     
     @Test
@@ -67,6 +65,5 @@ public class ApexGrammarLiteralExpressionTest {
                 .matches("\"zA\"")
                 .notMatches("0A")
                 .notMatches("01");
-
     }
 }

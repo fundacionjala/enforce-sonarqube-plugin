@@ -52,7 +52,7 @@ public class ApexGrammarBuilder {
     /**
      * Stores an numeric pattern.
      */
-    private static final String NUMERIC_PATTERN = "[1-9]\\d*";
+    private static final String NUMERIC_PATTERN = "(0|[1-9]\\d*)";
 
     /**
      * Stores an CHARACTER pattern.
@@ -220,17 +220,6 @@ public class ApexGrammarBuilder {
                 checkArguments(object));
     }
 
-    /**
-     * Creates a parsing expression "optional".
-     *
-     * @param object expression.
-     * @return an Expression.
-     */
-    public Object next(Object object) {
-        return invoke("next",
-                checkTypeArguments(Object.class),
-                checkArguments(object));
-    }
 
     /**
      * Creates a parsing expression "optional".
@@ -241,8 +230,8 @@ public class ApexGrammarBuilder {
      */
     public Object optional(Object object, Object... rest) {
         return invoke(OPTIONAL,
-                checkTypeArguments(Object.class),
-                checkArguments(object));
+                checkTypeArguments(Object.class, Object[].class),
+                checkArguments(object, rest));
     }
 
     /**
@@ -266,8 +255,8 @@ public class ApexGrammarBuilder {
      */
     public Object zeroOrMore(Object object, Object... rest) {
         return invoke(ZERO_OR_MORE,
-                checkTypeArguments(Object.class),
-                checkArguments(object));
+                checkTypeArguments(Object.class, Object[].class),
+                checkArguments(object, rest));
     }
 
     /**

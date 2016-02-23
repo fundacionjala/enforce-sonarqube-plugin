@@ -124,6 +124,8 @@ public class ApexGrammarExpressionTest {
         assertThat(grammarBuilder.rule(EXPRESSION))
                 .matches("1")
                 .matches("MyVariable")
-                .matches("NAME");
+                .matches("NAME")
+                .matches("instance.name")
+                .notMatches(".name");
     }
 }
