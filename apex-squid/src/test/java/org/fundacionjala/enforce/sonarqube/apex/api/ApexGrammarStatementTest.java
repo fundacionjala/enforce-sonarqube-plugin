@@ -54,10 +54,10 @@ public class ApexGrammarStatementTest {
                 .matches("'B';")
                 .matches("'c';")
                 .matches("'z';")
-                .matches("\"TIPE\";")
-                .matches("\"name\";")
-                .matches("\"myVariable\";")
-                .matches("\"zA\";");
+                .matches("'TIPE';")
+                .matches("'name';")
+                .matches("'myVariable';")
+                .matches("'zA';");
     }
 
     @Test
@@ -100,6 +100,15 @@ public class ApexGrammarStatementTest {
         assertThat(grammarBuilder.rule(STATEMENT))
                 .matches("try{}catch(intex){}")
                 .matches("try{intnumber=0;}catch(charex){charmessage=ex.message;}");
+    }
+
+    @Test
+    public void positiveRulesReturnStament() {
+        assertThat(grammarBuilder.rule(STATEMENT))
+                .matches("return;")
+                .matches("returntrue;")
+                .matches("return0;")
+                .matches("returnnull;");
     }
 
     @Test

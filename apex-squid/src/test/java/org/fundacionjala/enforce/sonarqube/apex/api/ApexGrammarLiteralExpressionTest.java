@@ -49,21 +49,11 @@ public class ApexGrammarLiteralExpressionTest {
     public void positiveRules_CharacterLiteral() {
         assertThat(grammarBuilder.rule(LITERAL_EXPRESSION))
                 .matches("'A'")
-                .matches("'B'")
                 .matches("'c'")
-                .matches("'z'")
                 .matches("0")
-                .notMatches("01");
-    }
-    
-    @Test
-    public void positiveRules_StringLiteral() {
-        assertThat(grammarBuilder.rule(LITERAL_EXPRESSION))
-                .matches("\"TIPE\"")
-                .matches("\"name\"")
-                .matches("\"myVariable\"")
-                .matches("\"zA\"")
-                .notMatches("0A")
-                .notMatches("01");
+                .matches("'name'")
+                .matches("'myVariable'")
+                .notMatches("01")
+                .notMatches("0A");
     }
 }

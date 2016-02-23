@@ -80,6 +80,31 @@ public class ApexLexerTest {
     }
 
     @Test
+    public void testVerifiesTokensOfTheMethod() {
+        file = new File("src/test/resources/lexer/Method.cls");
+        tokens = lexer.lex(file);
+        assertThat(tokens, hasToken("public", ApexKeyword.PUBLIC));
+        assertThat(tokens, hasToken("void", ApexKeyword.VOID));
+        assertThat(tokens, hasToken("pow", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
+        assertThat(tokens, hasToken("int", ApexKeyword.INT));
+        assertThat(tokens, hasToken("number", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
+        assertThat(tokens, hasToken("{", ApexPunctuator.LBRACE));
+        assertThat(tokens, hasToken("return", ApexKeyword.RETURN));
+        assertThat(tokens, hasToken("Math", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasToken(".", ApexPunctuator.DOT));
+        assertThat(tokens, hasToken("pow", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
+        assertThat(tokens, hasToken("number", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasToken(",", ApexPunctuator.COMMA));
+        assertThat(tokens, hasToken("2", ApexTokenType.NUMERIC));
+        assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
+        assertThat(tokens, hasToken(";", ApexPunctuator.SEMICOLON));
+        assertThat(tokens, hasToken("}", ApexPunctuator.RBRACE));
+    }
+
+    @Test
     public void testVerifiesTokensWhenAVariableIsInstantiated() {
         file = new File("src/test/resources/lexer/InstanceVariable.cls");
         tokens = lexer.lex(file);

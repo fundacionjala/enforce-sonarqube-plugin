@@ -44,21 +44,16 @@ public class ApexGrammarVariableInitializerTest {
     }
 
     @Test
-    public void positiveRules_LiteralExpresion_CharacterLiteral() {
+    public void positiveRules_LiteralExpresion_StringLiteral() {
         assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
                 .matches("'A'")
                 .matches("'B'")
                 .matches("'c'")
-                .matches("'z'");
-    }
-
-    @Test
-    public void positiveRules_LiteralExpresion_StringLiteral() {
-        assertThat(grammarBuilder.rule(VARIABLE_INITILIZER))
-                .matches("\"TIPE\"")
-                .matches("\"name\"")
-                .matches("\"myVariable\"")
-                .matches("\"zA\"");
+                .matches("'z'")
+                .matches("'TIPE'")
+                .matches("'name'")
+                .matches("'myVariable'")
+                .matches("'zA'");
     }
 
     @Test

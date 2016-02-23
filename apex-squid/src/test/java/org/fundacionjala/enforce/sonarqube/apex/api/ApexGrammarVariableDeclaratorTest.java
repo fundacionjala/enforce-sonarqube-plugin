@@ -71,9 +71,9 @@ public class ApexGrammarVariableDeclaratorTest {
     @Test
     public void positiveRulesAssingInitializerString() {
         assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR))
-                .matches("myVariable=\"MiName\"")
-                .matches("myVariable[]=\"BASE\"")
-                .matches("my_Variable[]=\"zero\"")
+                .matches("myVariable='MiName'")
+                .matches("myVariable[]='BASE'")
+                .matches("my_Variable[]='zero'")
                 .notMatches("myVariable_[]='5'")
                 .notMatches("1myVariable=a")
                 .notMatches("1myVariable[]=56");
