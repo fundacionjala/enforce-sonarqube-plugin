@@ -44,22 +44,16 @@ public class ApexGrammarExpressionTest {
     }
 
     @Test
-    public void positiveRules_LiteralExpresion_CharacterLiteral() {
+    public void positiveRules_LiteralExpresion_StringLiteral() {
         assertThat(grammarBuilder.rule(EXPRESSION))
                 .matches("'A'")
                 .matches("'B'")
                 .matches("'c'")
-                .matches("'z'");
-
-    }
-
-    @Test
-    public void positiveRules_LiteralExpresion_StringLiteral() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
-                .matches("\"TIPE\"")
-                .matches("\"name\"")
-                .matches("\"myVariable\"")
-                .matches("\"zA\"");
+                .matches("'z'")
+                .matches("'TIPE'")
+                .matches("'name'")
+                .matches("'myVariable'")
+                .matches("'zA'");
 
     }
 
@@ -127,5 +121,13 @@ public class ApexGrammarExpressionTest {
                 .matches("NAME")
                 .matches("instance.name")
                 .notMatches(".name");
+    }
+
+    @Test
+    public void positiveRulesCreatingExpression() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("newMyClass()")
+                .matches("newMyClass(name)")
+                .matches("newMyClass(name,id,type)");
     }
 }

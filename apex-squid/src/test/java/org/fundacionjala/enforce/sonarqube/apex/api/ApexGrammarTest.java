@@ -38,14 +38,14 @@ public class ApexGrammarTest {
     @Test
     public void correctRuleBasic() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicclassMyClass{publicbooleanMyMethod(){}}");
+                .matches("publicclassMyClass{publicbooleanMyMethod(){intname=0;while(true){insertaccout;}}}");
     }
 
     @Test
     public void correctRuleMoreImplements() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1implementsYourClass{"
-                        + "publicbooleanMyMethod(intmyParameter){"
+                        + "publicvoidMyMethod(intmyParameter){"
                         + "intnumber=myParameter;"
                         + "}"
                         + "}");
@@ -55,7 +55,9 @@ public class ApexGrammarTest {
     public void correctRuleMoreExtends() {
         assertThat(grammarBuilder.rule(APEX_GRAMMAR))
                 .matches("publicwithsharingclassClass1extendsYourClass{"
-                        + "publicbooleanMyMethod(){}"
+                        + "publicintMyMethod(){"
+                        + "intnumber=0;"
+                        + "}"
                         + "}");
     }
     

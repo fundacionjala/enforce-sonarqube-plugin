@@ -57,7 +57,7 @@ public class ApexGrammarBuilder {
     /**
      * Stores an CHARACTER pattern.
      */
-    private static final String CHARACTER_PATTERN = "[A-Za-z]";
+    private static final String STRING_PATTERN = "'([^'\\\\]*+(\\\\[\\s\\S])?+)*+'";
 
     /**
      * Stores a 'setRootRule' method name.
@@ -341,8 +341,8 @@ public class ApexGrammarBuilder {
                     argument = new PatternExpression(IDENTIFIER_PATTERN);
                 } else if (isNumeric(token)) {
                     argument = new PatternExpression(NUMERIC_PATTERN);
-                } else if (isCharacter(token)) {
-                    argument = new PatternExpression(CHARACTER_PATTERN);
+                } else if (isString(token)) {
+                    argument = new PatternExpression(STRING_PATTERN);
                 } else {
                     argument = new StringExpression(token.getValue());
                 }
@@ -372,13 +372,13 @@ public class ApexGrammarBuilder {
     }
 
     /**
-     * Determines if a {@link TokenType} represents an character.
+     * Determines if a {@link TokenType} represents an string.
      *
      * @param token to be analyzed.
      * @return a boolean.
      */
-    private boolean isCharacter(TokenType token) {
-        return token.equals(ApexTokenType.CHARACTER);
+    private boolean isString(TokenType token) {
+        return token.equals(ApexTokenType.STRING);
     }
 
     /**

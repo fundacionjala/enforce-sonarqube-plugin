@@ -48,7 +48,12 @@ public class ApexLexer {
     /**
      * Stores a pattern to identify a String.
      */
-    private static final String STRING = "\'([^\'\\\\]*+(\\\\[\\s\\S])?+)*+\'";
+    private static final String STRING_PATTERN = "'([^'\\\\]*+(\\\\[\\s\\S])?+)*+'";
+
+    /**
+     * Stores an numeric pattern.
+     */
+    private static final String NUMERIC_PATTERN = "(0|[1-9]\\d*)";
 
     /**
      * Stores a pattern to identify a black hole.
@@ -65,7 +70,8 @@ public class ApexLexer {
         return Lexer.builder()
                 .withCharset(config.getCharset())
                 .withFailIfNoChannelToConsumeOneCharacter(Boolean.TRUE)
-                .withChannel(regexp(ApexTokenType.STRING, STRING))
+                .withChannel(regexp(ApexTokenType.NUMERIC, NUMERIC_PATTERN))
+                .withChannel(regexp(ApexTokenType.STRING, STRING_PATTERN))
                 .withChannel(new IdentifierAndKeywordChannel(KEYWORD,
                         Boolean.TRUE, ApexKeyword.values()))
                 .withChannel(new PunctuatorChannel(ApexPunctuator.values()))

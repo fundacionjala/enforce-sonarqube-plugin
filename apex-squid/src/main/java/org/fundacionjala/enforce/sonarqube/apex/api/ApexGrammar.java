@@ -49,10 +49,12 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LONG;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NATIVE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NEW;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PROTECTED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PUBLIC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHORT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
@@ -65,6 +67,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UNDELETE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPDATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPSERT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
@@ -81,21 +84,18 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.QUOTE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.QUOTES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAR;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.CHARACTER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.ASSIGN_VARIABLE_INITILIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CALL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CASTING_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CHARACTER_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
@@ -109,11 +109,11 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIA
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CONSTRUCTOR_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CREATING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INTEGER_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LITERAL_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_SPECIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_INITILIZER;
@@ -129,6 +129,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FOR_S
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST_OPTIONAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RETURN_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_ELSE;
@@ -147,8 +148,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WHILE
 public class ApexGrammar {
 
     /**
-     * It is the main method of grammar. Here all other grammars are
-     * constructed.
+     * It is the main method of grammar. Here all other grammars are constructed.
      *
      * @return The grammar of a class.
      */
@@ -157,9 +157,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a
-     * boolean to indicate the type of grammar builder. Only available for unit
-     * test.
+     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a boolean to indicate the
+     * type of grammar builder. Only available for unit test.
      *
      * @param isFulGrammar represents the type of grammar builder required.
      * @return the grammar
@@ -172,6 +171,7 @@ public class ApexGrammar {
         whileStatement(grammarBuilder);
         tryStatement(grammarBuilder);
         forStatement(grammarBuilder);
+        returnStatement(grammarBuilder);
         dmlStatement(grammarBuilder);
         statementBlock(grammarBuilder);
         statementIf(grammarBuilder);
@@ -180,11 +180,9 @@ public class ApexGrammar {
         stringExpression(grammarBuilder);
         testingExpressionEqual(grammarBuilder);
         testingExpression(grammarBuilder);
+        creatingExpression(grammarBuilder);
         castingExpression(grammarBuilder);
         brackets(grammarBuilder);
-        characterLiteral(grammarBuilder);
-        stringLiteral(grammarBuilder);
-        integerLiteral(grammarBuilder);
         literalExpression(grammarBuilder);
         numericExpressionOperationsSimpleInc(grammarBuilder);
         numericExpressionOperationsSimpleDec(grammarBuilder);
@@ -202,6 +200,7 @@ public class ApexGrammar {
         parameterList(grammarBuilder);
         methodName(grammarBuilder);
         methodDeclaration(grammarBuilder);
+        constructorDeclaration(grammarBuilder);
         typeClass(grammarBuilder);
         extendsList(grammarBuilder);
         implementsList(grammarBuilder);
@@ -220,8 +219,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar is created for the head of a class with the switch and whether it
-     * will extend or implement otherwise.
+     * Grammar is created for the head of a class with the switch and whether it will extend or
+     * implement otherwise.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -289,9 +288,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar for the declaration of a class or interface is constructed.
-     * Composed of the rules of a class type, its identified, extends, and
-     * implements.
+     * Grammar for the declaration of a class or interface is constructed. Composed of the rules of
+     * a class type, its identified, extends, and implements.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -352,6 +350,7 @@ public class ApexGrammar {
         grammarBuilder.rule(FIELD_DECLARATION).is(
                 grammarBuilder.firstOf(
                         METHOD_DECLARATION,
+                        CONSTRUCTOR_DECLARATION,
                         VARIABLE_DECLARATION)
         );
     }
@@ -401,8 +400,7 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates rules to the last line of the method and the completion of the
-     * method.
+     * Creates rules to the last line of the method and the completion of the method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -411,6 +409,22 @@ public class ApexGrammar {
                 MODIFIER,
                 TYPE,
                 METHOD_NAME,
+                LPAREN,
+                grammarBuilder.optional(PARAMETER_LIST),
+                RPAREN,
+                STATEMENT_BLOCK
+        );
+    }
+
+    /**
+     * Creates rules to the last line of the method and the completion of the method.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void constructorDeclaration(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CONSTRUCTOR_DECLARATION).is(
+                MODIFIER,
+                CLASS_NAME,
                 LPAREN,
                 grammarBuilder.optional(PARAMETER_LIST),
                 RPAREN,
@@ -433,6 +447,7 @@ public class ApexGrammar {
                         INT,
                         LONG,
                         FLOAT,
+                        VOID,
                         DOUBLE,
                         CLASS_NAME
                 )
@@ -440,8 +455,7 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rule for merge with symbol '=' and an
-     * expression.
+     * It is responsible for creating the rule for merge with symbol '=' and an expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -453,47 +467,12 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rule for initializing a variable
-     * worth.
+     * It is responsible for creating the rule for initializing a variable worth.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void variableInitializer(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(VARIABLE_INITILIZER).is(EXPRESSION);
-    }
-
-    /**
-     * It is responsible for managing the rule of integers.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void integerLiteral(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(INTEGER_LITERAL).is(NUMERIC);
-    }
-
-    /**
-     * It is responsible for managing the rule of characters.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void characterLiteral(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CHARACTER_LITERAL).is(
-                QUOTE,
-                grammarBuilder.zeroOrMore(CHARACTER),
-                QUOTE);
-    }
-
-    /**
-     * It is responsible for managing the rule of string.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void stringLiteral(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(STRING_LITERAL).is(
-                QUOTES,
-                grammarBuilder.zeroOrMore(CHARACTER),
-                QUOTES
-        );
     }
 
     /**
@@ -504,15 +483,13 @@ public class ApexGrammar {
     private static void literalExpression(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(LITERAL_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        STRING_LITERAL,
-                        CHARACTER_LITERAL,
-                        INTEGER_LITERAL)
+                        STRING,
+                        NUMERIC)
         );
     }
 
     /**
-     * It is responsible for creating the rules to make the casting of an
-     * expression.
+     * It is responsible for creating the rules to make the casting of an expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -535,8 +512,7 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make the testing of an
-     * expression.
+     * It is responsible for creating the rules to make the testing of an expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -549,8 +525,26 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for setting the rules for simple mathematical
-     * operations.
+     * It is responsible for creating the rules to make the creating of an expression.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void creatingExpression(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CREATING_EXPRESSION).is(
+                NEW,
+                CLASS_NAME,
+                LPAREN,
+                grammarBuilder.optional(
+                        IDENTIFIER,
+                        grammarBuilder.zeroOrMore(
+                                COMMA,
+                                IDENTIFIER)),
+                RPAREN
+        );
+    }
+
+    /**
+     * It is responsible for setting the rules for simple mathematical operations.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -587,8 +581,7 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make one increment or
-     * decrement.
+     * It is responsible for creating the rules to make one increment or decrement.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -631,8 +624,8 @@ public class ApexGrammar {
         grammarBuilder.rule(CALL_EXPRESSION).is(
                 IDENTIFIER,
                 grammarBuilder.optional(
-                                DOT,
-                                IDENTIFIER)
+                        DOT,
+                        IDENTIFIER)
         );
         grammarBuilder.rule(TERMINAL_EXPRESSION).is(
                 grammarBuilder.firstOf(
@@ -647,6 +640,7 @@ public class ApexGrammar {
                 grammarBuilder.firstOf(
                         NUMERIC_EXPRESSION,
                         TESTING_EXPRESSION,
+                        CREATING_EXPRESSION,
                         CASTING_EXPRESSION,
                         TERMINAL_EXPRESSION
                 )
@@ -781,7 +775,19 @@ public class ApexGrammar {
                         DELETE,
                         UNDELETE,
                         MERGE),
-                IDENTIFIER
+                EXPRESSION_FINAL
+        );
+    }
+
+    /**
+     * It is responsible for creating the rules for a return statement.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void returnStatement(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RETURN_STATEMENT).is(
+                RETURN,
+                EXPRESSION_FINAL
         );
     }
 
@@ -797,7 +803,8 @@ public class ApexGrammar {
                         STATEMENT_IF,
                         WHILE_STATEMENT,
                         FOR_STATEMENT,
-                        TRY_STATEMENT)
+                        TRY_STATEMENT,
+                        RETURN_STATEMENT)
         );
         grammarBuilder.rule(TERMINAL_STATEMENT).is(
                 grammarBuilder.firstOf(
@@ -808,8 +815,7 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for setting the rules for the declaration of a
-     * variable.
+     * It is responsible for setting the rules for the declaration of a variable.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -855,8 +861,7 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for building the rules for the different types of
-     * return of a method.
+     * It is responsible for building the rules for the different types of return of a method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */

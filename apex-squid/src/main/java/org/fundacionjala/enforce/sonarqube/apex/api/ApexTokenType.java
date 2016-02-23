@@ -31,7 +31,6 @@ import com.sonar.sslr.api.TokenType;
  */
 public enum ApexTokenType implements TokenType {
 
-    CHARACTER,
     NEW_LINE,
     STRING,
     NUMERIC;
