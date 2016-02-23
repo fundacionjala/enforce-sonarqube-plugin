@@ -61,6 +61,8 @@ public class CheckList {
     public static List<Class> getChecks() {
         return ImmutableList.<Class>of(
                 ClassNameCheck.class,
+                DmlCheckInFor.class,
+                DmlCheckInWhile.class,
                 LineLengthCheck.class,
                 MethodNameCheck.class);
     }

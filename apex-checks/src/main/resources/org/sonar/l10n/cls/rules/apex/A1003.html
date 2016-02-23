@@ -1,12 +1,20 @@
 <p>
-  <code>yield</code> and <code>return</code> only make sense in the context of functions. Using them outside a function raises a <code>SyntaxError</code>.
-  To break out of a loop, use <code>break</code> instead.
+    The DML statement, can not be inside a while loop
 </p>
 
 <h2>Noncompliant Code Example</h2>
 
 <pre>
-class MyClass:
-  private boolean:
-    return boolean #Noncompliant type return
+while(true) {
+    merge newAcct;
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+while(true) {
+    ...
+}
+merge newAcct; 
 </pre>
