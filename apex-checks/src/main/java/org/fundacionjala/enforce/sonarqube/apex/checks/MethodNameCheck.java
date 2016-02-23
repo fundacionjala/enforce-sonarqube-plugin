@@ -83,7 +83,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
     @Override
     public void init() {
         pattern = Pattern.compile(format);
-        subscribeTo(RuleKey.MODIFIERS);
+        subscribeTo(RuleKey.METHOD_DECLARATION);
     }
 
     /**

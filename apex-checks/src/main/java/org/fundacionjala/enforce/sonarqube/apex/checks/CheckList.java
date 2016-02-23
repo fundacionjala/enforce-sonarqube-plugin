@@ -60,7 +60,6 @@ public class CheckList {
      */
     public static List<Class> getChecks() {
         return ImmutableList.<Class>of(
-                CheckReturnTypeMethod.class,
                 ClassNameCheck.class,
                 LineLengthCheck.class,
                 MethodNameCheck.class);
