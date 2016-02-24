@@ -40,7 +40,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
  */
 @Rule(
         key = DmlCheckInWhile.CHECK_KEY,
-        priority = Priority.MAJOR,
+        priority = Priority.CRITICAL,
         name = "You can not be a DML statement in a 'while'",
         description = "DML statement in a while",
         tags = Tags.BUG

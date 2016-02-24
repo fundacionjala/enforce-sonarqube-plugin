@@ -40,7 +40,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
  */
 @Rule(
         key = DmlCheckInFor.CHECK_KEY,
-        priority = Priority.MAJOR,
+        priority = Priority.CRITICAL,
         name = "You can not be a DML statement in a 'for'",
         description = "DML statement in a for",
         tags = Tags.BUG

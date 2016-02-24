@@ -43,7 +43,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
  */
 @Rule(
         key = MethodNameCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
+        priority = Priority.MINOR,
         name = "Method names should comply with a naming convention",
         description = "Method names",
         tags = Tags.CONVENTION
