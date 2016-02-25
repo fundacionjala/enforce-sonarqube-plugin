@@ -149,7 +149,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WHILE
 public class ApexGrammar {
 
     /**
-     * It is the main method of grammar. Here all other grammars are constructed.
+     * It is the main method of grammar. Here all other grammars are
+     * constructed.
      *
      * @return The grammar of a class.
      */
@@ -158,8 +159,9 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a boolean to indicate the
-     * type of grammar builder. Only available for unit test.
+     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a
+     * boolean to indicate the type of grammar builder. Only available for unit
+     * test.
      *
      * @param isFulGrammar represents the type of grammar builder required.
      * @return the grammar
@@ -220,8 +222,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar is created for the head of a class with the switch and whether it will extend or
-     * implement otherwise.
+     * Grammar is created for the head of a class with the switch and whether it
+     * will extend or implement otherwise.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -289,8 +291,9 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar for the declaration of a class or interface is constructed. Composed of the rules of
-     * a class type, its identified, extends, and implements.
+     * Grammar for the declaration of a class or interface is constructed.
+     * Composed of the rules of a class type, its identified, extends, and
+     * implements.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -401,7 +404,8 @@ public class ApexGrammar {
     }
 
     /**
-     * Creates rules to the last line of the method and the completion of the method.
+     * Creates rules to the last line of the method and the completion of the
+     * method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -456,7 +460,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rule for merge with symbol '=' and an expression.
+     * It is responsible for creating the rule for merge with symbol '=' and an
+     * expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -468,7 +473,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rule for initializing a variable worth.
+     * It is responsible for creating the rule for initializing a variable
+     * worth.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -490,7 +496,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make the casting of an expression.
+     * It is responsible for creating the rules to make the casting of an
+     * expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -513,7 +520,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make the testing of an expression.
+     * It is responsible for creating the rules to make the testing of an
+     * expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -526,7 +534,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make the creating of an expression.
+     * It is responsible for creating the rules to make the creating of an
+     * expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -545,7 +554,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for setting the rules for simple mathematical operations.
+     * It is responsible for setting the rules for simple mathematical
+     * operations.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -582,7 +592,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make one increment or decrement.
+     * It is responsible for creating the rules to make one increment or
+     * decrement.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -813,7 +824,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for setting the rules for the declaration of a variable.
+     * It is responsible for setting the rules for the declaration of a
+     * variable.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -859,7 +871,8 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for building the rules for the different types of return of a method.
+     * It is responsible for building the rules for the different types of
+     * return of a method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
