@@ -30,11 +30,13 @@ import org.sonar.sslr.grammar.GrammarRuleKey;
  */
 public enum RuleKey implements GrammarRuleKey {
 
+    ARGUMENTS,
+    ANNOTATION,
     APEX_GRAMMAR,
     ASSIGN_VARIABLE_INITILIZER,
     BODY_IDENTIFIER,
     BRACKETS,
-    CALL_EXPRESSION,
+    INVOKE_EXPRESSION,
     CASTING_EXPRESSION,
     CREATING_EXPRESSION,
     DML_STATEMENT,
@@ -69,7 +71,6 @@ public enum RuleKey implements GrammarRuleKey {
     STRING_EXPRESSION,
     PARAMETER,
     PARAMETER_LIST,
-    PARAMETER_LIST_OPTIONAL,
     TESTING_EXPRESSION,
     TERMINAL_EXPRESSION,
     TERMINAL_STATEMENT,
@@ -81,6 +82,5 @@ public enum RuleKey implements GrammarRuleKey {
     VARIABLE_DECLARATION,
     VARIABLE_DECLARATOR,
     VARIABLE_DECLARATOR_ID,
-    VARIABLE_INITILIZER,
     WHILE_STATEMENT;
 }
