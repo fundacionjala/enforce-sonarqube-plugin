@@ -90,9 +90,9 @@ public class ApexGrammarStatementTest {
     @Test
     public void positiveRulesForStament() {
         assertThat(grammarBuilder.rule(STATEMENT))
-                .matches("for(;;){}")
-                .matches("for(inti=0;i<10;i++)intnumber;")
-                .matches("for(inti=0;i<10;i++){intnumber=i;}");
+                .matches("for(intMyObject:listIntegers){}")
+                .matches("for(doubleMyObject:listDoubles)intnumber;")
+                .matches("for(booleanMyObject:listBooleans){intnumber=i;}");
     }
 
     @Test
