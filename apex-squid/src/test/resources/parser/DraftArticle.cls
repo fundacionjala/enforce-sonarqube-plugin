@@ -7,7 +7,7 @@ public       with
 
     public      int     MyMethod() {
         Account a = new Account();
-        for(int i = 0; i < 10; i++) {
+        for(Accts newAcct : listAccts){
 	    if (badCon.Department == 'Finance') {
 	        Object description = 'New description';
 	    }

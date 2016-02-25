@@ -5,9 +5,13 @@ public with sharing class draftArticle extends AbstractArticle {
             insert newAcct;
         }
 
-        for(int i = 0 ; i < 10 ; i++){
+        for(Accts newAcct : listAccts){
            merge newAcct; 
         }
+    }
+
+    public DraftArticle(){
+            insert newAcct;
     }
 }
 

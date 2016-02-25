@@ -74,6 +74,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.AT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIV;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
@@ -736,13 +737,10 @@ public class ApexGrammar {
         grammarBuilder.rule(FOR_STATEMENT).is(
                 FOR,
                 LPAREN,
-                grammarBuilder.firstOf(
-                        VARIABLE_DECLARATION,
-                        EXPRESSION_FINAL,
-                        SEMICOLON),
-                grammarBuilder.optional(EXPRESSION),
-                SEMICOLON,
-                grammarBuilder.optional(EXPRESSION),
+                TYPE,
+                VARIABLE_DECLARATOR_ID,
+                COLON,
+                VARIABLE_DECLARATOR_ID,
                 RPAREN,
                 grammarBuilder.firstOf(
                         TERMINAL_STATEMENT,

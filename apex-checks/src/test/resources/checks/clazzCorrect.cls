@@ -5,9 +5,12 @@ public with sharing class DraftArticle extends AbstractArticle {
            a++; 
         }
         
-        for(int i = 0 ; i < 10 ; i++){
+        for(Accts newAcct : listAccts){
            a++; 
         }
+    }
+
+    public DraftArticle(){
     }
 }
 
