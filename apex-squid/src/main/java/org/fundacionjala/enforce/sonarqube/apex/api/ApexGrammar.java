@@ -29,23 +29,29 @@ import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ANOTATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AURA_ENABLED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BOOLEAN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BYTE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CHAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DEPRECATED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DOUBLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FLOAT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FOR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FUTURE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INVOCABLE_METHOD;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INVOCABLE_VARIABLE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IS_TEST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LONG;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NATIVE;
@@ -54,6 +60,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PROTECTED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PUBLIC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.READ_ONLY;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.REMOTE_ACTION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHORT;
@@ -61,6 +69,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STRICTFP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SYNCHRONIZED;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TEST_SETUP;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TEST_VISIBLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRY;
@@ -134,7 +144,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATE
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_IF;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TERMINAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TERMINAL_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TESTING_EXPRESSION;
@@ -179,7 +188,6 @@ public class ApexGrammar {
         statementIf(grammarBuilder);
         statamentElse(grammarBuilder);
         variableDeclaration(grammarBuilder);
-        stringExpression(grammarBuilder);
         testingExpressionEqual(grammarBuilder);
         testingExpression(grammarBuilder);
         creatingExpression(grammarBuilder);
@@ -191,12 +199,15 @@ public class ApexGrammar {
         numericExpressionOperations(grammarBuilder);
         numericExpressionOperationsSimple(grammarBuilder);
         numericExpression(grammarBuilder);
+        invokeExpression(grammarBuilder);
+        terminalExpression(grammarBuilder);
         assignVariableInitializer(grammarBuilder);
         variableDeclaratorId(grammarBuilder);
         variableDeclarator(grammarBuilder);
         typeSpecifier(grammarBuilder);
         type(grammarBuilder);
         annotation(grammarBuilder);
+        arguments(grammarBuilder);
         parameter(grammarBuilder);
         parameterList(grammarBuilder);
         methodName(grammarBuilder);
@@ -287,7 +298,18 @@ public class ApexGrammar {
     private static void annotation(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ANNOTATION).is(
                 AT,
-                TERMINAL_EXPRESSION
+                grammarBuilder.firstOf(
+                        AURA_ENABLED,
+                        DEPRECATED,
+                        FUTURE,
+                        INVOCABLE_METHOD,
+                        INVOCABLE_VARIABLE,
+                        IS_TEST,
+                        READ_ONLY,
+                        REMOTE_ACTION,
+                        TEST_SETUP,
+                        TEST_VISIBLE
+                )
         );
     }
 
@@ -368,6 +390,21 @@ public class ApexGrammar {
                         METHOD_DECLARATION,
                         CONSTRUCTOR_DECLARATION,
                         VARIABLE_DECLARATION)
+        );
+    }
+
+    /**
+     * It is responsible for setting the rules for arguments.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void arguments(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ARGUMENTS).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        COMMA,
+                        TERMINAL_EXPRESSION
+                )
         );
     }
 
@@ -606,37 +643,11 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for setting the rules for strings.
+     * It is responsible for setting the rules for invoke expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void stringExpression(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(STRING_EXPRESSION).is(EXPRESSION);
-    }
-
-    /**
-     * It is responsible for creating a rule expression language.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void expression(ApexGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TERMINAL_EXPRESSION).is(
-                grammarBuilder.firstOf(
-                        INVOKE_EXPRESSION,
-                        LITERAL_EXPRESSION,
-                        NULL,
-                        SUPER,
-                        THIS
-                )
-        );
-        grammarBuilder.rule(ARGUMENTS).is(
-                IDENTIFIER,
-                grammarBuilder.zeroOrMore(
-                        COMMA,
-                        IDENTIFIER
-                )
-        );
-
+    private static void invokeExpression(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INVOKE_EXPRESSION).is(
                 IDENTIFIER,
                 grammarBuilder.optional(
@@ -647,6 +658,31 @@ public class ApexGrammar {
                         DOT,
                         INVOKE_EXPRESSION)
         );
+    }
+
+    /**
+     * It is responsible for setting the rules for terminal expression.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void terminalExpression(ApexGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(TERMINAL_EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        INVOKE_EXPRESSION,
+                        LITERAL_EXPRESSION,
+                        NULL,
+                        SUPER,
+                        THIS
+                )
+        );
+    }
+
+    /**
+     * It is responsible for creating a rule expression language.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void expression(ApexGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXPRESSION).is(
                 grammarBuilder.firstOf(
                         NUMERIC_EXPRESSION,

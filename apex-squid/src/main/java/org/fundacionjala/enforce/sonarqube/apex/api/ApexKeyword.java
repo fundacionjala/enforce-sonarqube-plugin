@@ -78,7 +78,21 @@ public enum ApexKeyword implements TokenType {
     VOLATILE("volatile"),
     WHILE("while"),
     WITH("with"),
-    WITHOUT("without");
+    WITHOUT("without"),
+
+    /**
+     * APEX ANNOTATIONS.
+     */
+    AURA_ENABLED("AuraEnabled"),
+    DEPRECATED("deprecated"),
+    FUTURE("future"),
+    INVOCABLE_METHOD("InvocableMethod"),
+    INVOCABLE_VARIABLE("InvocableVariable"),
+    IS_TEST("isTest"),
+    READ_ONLY("ReadOnly"),
+    REMOTE_ACTION("RemoteAction"),
+    TEST_SETUP("testSetup"),
+    TEST_VISIBLE("TestVisible");
 
     /**
      * Save the value with enums.
