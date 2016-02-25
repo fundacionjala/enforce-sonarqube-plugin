@@ -130,4 +130,12 @@ public class ApexGrammarExpressionTest {
                 .matches("newMyClass(name)")
                 .matches("newMyClass(name,id,type)");
     }
+
+    @Test
+    public void positiveRulesInvokeExpression() {
+        assertThat(grammarBuilder.rule(EXPRESSION))
+                .matches("array.length")
+                .matches("list.size()")
+                .matches("map.put(23,'message').values().toString()");
+    }
 }

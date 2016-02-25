@@ -23,39 +23,46 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import org.junit.Test;
-
 import com.sonar.sslr.api.Grammar;
+import org.junit.Test;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INVOKE_EXPRESSION;
 
-public class ApexGrammarMethodDeclarationTest {
+public class ApexGrammarInvokeExpressionTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("publicintisMethod(){}")
-                .matches("publicintmyMethod(){intmyVariable;}")
-                .notMatches("publicint1MyMethod()");
-    }
-    
-    @Test
-    public void positiveRulesMethodWithParameter() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("publicintisMethod(intmyParameter){}")
-                .matches("publicintmyMethod(intmyParameter[]){}")
-                .notMatches("publicint1MyMethod(intmyParameter,intmyParameter2)");
+    public void testExpression() {
+        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+                .matches("account")
+                .notMatches("22")
+                .notMatches("'title'")
+                .notMatches("100%10");
     }
 
     @Test
-    public void positiveRulesMethodWithAnnotation() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("@isTestpublicintisMethod(intmyParameter){}")
-                .matches("@testSetuppublicintmyMethod(intmyParameter[]){}")
-                .notMatches("@ReadOnly@RemoteActionpublicint1MyMethod(intmyParameter,intmyParameter2)");
+    public void testExpressionWhenInvokeProperties() {
+        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+                .matches("account.name")
+                .notMatches("book.'title'")
+                .notMatches("calculator.100%10");
+    }
+
+    @Test
+    public void testExpressionWhenInvokeMethods() {
+        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+                .matches("account.update()")
+                .matches("book.getTitle().toString()");
+    }
+
+    @Test
+    public void testExpressionWhenInvokeMethodsWithArguments() {
+        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+                .matches("account.save(user)")
+                .matches("book.setTitle('Avergers')")
+                .matches("calculator.sum(11,digit).pow(3).toString()");
     }
 }
