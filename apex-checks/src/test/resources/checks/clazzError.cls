@@ -9,6 +9,10 @@ public with sharing class draftArticle extends AbstractArticle {
            merge newAcct; 
         }
     }
+
+    public DraftArticle(){
+            insert newAcct;
+    }
 }
 
 

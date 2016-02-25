@@ -9,6 +9,9 @@ public with sharing class DraftArticle extends AbstractArticle {
            a++; 
         }
     }
+
+    public DraftArticle(){
+    }
 }
 
 
