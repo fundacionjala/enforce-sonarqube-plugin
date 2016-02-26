@@ -23,39 +23,36 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import org.junit.Test;
-
 import com.sonar.sslr.api.Grammar;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CONSTRUCTOR_DECLARATION;
+import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
-
-public class ApexGrammarMethodDeclarationTest {
-
+public class ApexGrammarConstructorDeclaratorTest {
+    
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("publicintisMethod(){}")
-                .matches("publicintmyMethod(){intmyVariable;}")
-                .notMatches("publicint1MyMethod()");
+    public void testConstructor() {
+        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
+                .matches("publicintvoidBook(){}")
+                .matches("publicAccount(){intmyVariable;}")
+                .notMatches("publicTable()")
+                .notMatches("publicintsave(){");
     }
     
     @Test
-    public void positiveRulesMethodWithParameter() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("publicintisMethod(intmyParameter){}")
-                .matches("publicintmyMethod(intmyParameter[]){}")
-                .notMatches("publicint1MyMethod(intmyParameter,intmyParameter2)");
+    public void testConstructorWithParameter() {
+        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
+                .matches("publicBook(intid){}")
+                .matches("publicTable(intitems[]){}")
+                .notMatches("publicintupdate(intleft,intright)");
     }
 
     @Test
-    public void positiveRulesMethodWithAnnotation() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("@isTestpublicintisMethod(intmyParameter){}")
-                .matches("@testSetuppublicintmyMethod(intmyParameter[]){}")
-                .notMatches("@ReadOnly@RemoteActionpublicint1MyMethod(intmyParameter,intmyParameter2)");
+    public void testConstructorWithAnnotation() {
+        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
+                .matches("@ReadOnlypublicBook(intid){}")
+                .notMatches("@Rasjkads@Retionpublicint1MyMethod(intmyParameter,intmyParameter2)");
     }
 }

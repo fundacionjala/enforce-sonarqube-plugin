@@ -114,4 +114,13 @@ public class ApexGrammarClassDeclarationTest {
                 .notMatches("public with sharing interface 9MyClass extends YourClass {}")
                 .notMatches("static without sharing interface MyClass enum extends YourClass {}");
     }
+
+    @Test
+    public void positiveRulesForClassWithAnnotation() {
+        assertThat(grammarBuilder.rule(CLASS_DECLARATION))
+                .matches("@isTestpublicclassMyClassadasdasd{}")
+                .matches("@isTest@RemoteActionpublicwithsharingclassMyClass{}")
+                .notMatches("@lolpublicstaticclassMyClass{")
+                .notMatches("@jajajaja@public_classwithsharingclassMyClass{");
+    }
 }

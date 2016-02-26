@@ -23,23 +23,46 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
-import org.junit.Test;
-
 import com.sonar.sslr.api.Grammar;
+import org.junit.Test;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STRING_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INVOKE_EXPRESSION;
 
-public class ApexGrammarStringExpressionTest {
+public class ApexGrammarInvokeExpressionTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
-    public void positiveRulesStringExpression() {
-        assertThat(grammarBuilder.rule(STRING_EXPRESSION))
-                .matches("1")
-                .matches("MyVariable")
-                .matches("NAME");
+    public void testExpression() {
+        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+                .matches("account")
+                .notMatches("22")
+                .notMatches("'title'")
+                .notMatches("100%10");
+    }
+
+    @Test
+    public void testExpressionWhenInvokeProperties() {
+        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+                .matches("account.name")
+                .notMatches("book.'title'")
+                .notMatches("calculator.100%10");
+    }
+
+    @Test
+    public void testExpressionWhenInvokeMethods() {
+        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+                .matches("account.update()")
+                .matches("book.getTitle().toString()");
+    }
+
+    @Test
+    public void testExpressionWhenInvokeMethodsWithArguments() {
+        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+                .matches("account.save(user)")
+                .matches("book.setTitle('Avergers')")
+                .matches("calculator.sum(11,digit).pow(3).toString()");
     }
 }
