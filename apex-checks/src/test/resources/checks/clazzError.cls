@@ -13,6 +13,11 @@ public with sharing class draftArticle extends AbstractArticle {
     public DraftArticle(){
             insert newAcct;
     }
+
+    @deprecated    
+    public void myInit(){
+        int max = 10;
+    }
 }
 
 
