@@ -35,7 +35,7 @@ public class ApexGrammarConstructorDeclaratorTest {
     @Test
     public void testConstructor() {
         assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
-                .matches("publicintvoidBook(){}")
+                .matches("publicBook(){}")
                 .matches("publicAccount(){intmyVariable;}")
                 .notMatches("publicTable()")
                 .notMatches("publicintsave(){");
