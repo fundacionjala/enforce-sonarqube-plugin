@@ -36,36 +36,36 @@ import org.sonar.squidbridge.checks.SquidCheck;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check for a DML is not within a "while"
+ * Check for a DML is not within a "Constructor"
  */
 @Rule(
-        key = DmlCheckInWhile.CHECK_KEY,
+        key = DmlInConstructorCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "You can not be a DML statement in a 'while'",
-        description = "DML statement in a while",
+        name = "You can not be a DML statement in a 'constructor'",
+        description = "DML statement in a constructor",
         tags = Tags.BUG
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
-public class DmlCheckInWhile extends SquidCheck<Grammar> {
+public class DmlInConstructorCheck extends SquidCheck<Grammar> {
 
     /**
      * Stores a message template.
      */
-    public static final String MESSAGE = "The DML statement \"%s\", can not be inside a while loop";
+    public static final String MESSAGE = "The DML statement \"%s\", can not be inside a constructor";
 
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1003";
+    public static final String CHECK_KEY = "A1005";
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
-        subscribeTo(RuleKey.WHILE_STATEMENT);
+        subscribeTo(RuleKey.CONSTRUCTOR_DECLARATION);
     }
 
     /**

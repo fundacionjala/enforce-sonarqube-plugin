@@ -24,33 +24,30 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import java.io.File;
-
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 import org.junit.Test;
-
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
-import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
-
-public class DmlCheckInWhileTest {
-
-    private DmlCheckInWhile dmlCheckInWhile;
+public class DmlInConstructorCheckTest {
+    
+    private DmlInConstructorCheck dmlCheckInConstructor;
     private SourceFile sourceFile;
 
     @Test
     public void testIncorrectDMLDeclarationCorrect() throws Exception {
-        dmlCheckInWhile = new DmlCheckInWhile();
-        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInWhile);
+        dmlCheckInConstructor = new DmlInConstructorCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInConstructor);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .noMore();
     }
 
     @Test
     public void testIncorrectDMLDeclarationIncorrectInsert() throws Exception {
-        dmlCheckInWhile = new DmlCheckInWhile();
-        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInWhile);
+        dmlCheckInConstructor = new DmlInConstructorCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInConstructor);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                next().atLine(4).withMessage(
-                "The DML statement \"insert\", can not be inside a while loop");
+                next().atLine(13).withMessage(
+                "The DML statement \"insert\", can not be inside a constructor");
     }
 }

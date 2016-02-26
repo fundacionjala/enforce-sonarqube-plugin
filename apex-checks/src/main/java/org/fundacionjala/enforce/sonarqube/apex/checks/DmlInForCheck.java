@@ -36,36 +36,36 @@ import org.sonar.squidbridge.checks.SquidCheck;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check for a DML is not within a "Constructor"
+ * Check for a DML is not within a "for loop"
  */
 @Rule(
-        key = DmlCheckInConstructor.CHECK_KEY,
+        key = DmlInForCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "You can not be a DML statement in a 'constructor'",
-        description = "DML statement in a constructor",
+        name = "You can not be a DML statement in a 'for'",
+        description = "DML statement in a for",
         tags = Tags.BUG
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
-public class DmlCheckInConstructor extends SquidCheck<Grammar> {
-
+public class DmlInForCheck extends SquidCheck<Grammar>{
+    
     /**
      * Stores a message template.
      */
-    public static final String MESSAGE = "The DML statement \"%s\", can not be inside a constructor";
-
+    public static final String MESSAGE = "The DML statement \"%s\", can not be inside a for loop";
+    
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1005";
+    public static final String CHECK_KEY = "A1004";
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
-        subscribeTo(RuleKey.CONSTRUCTOR_DECLARATION);
+        subscribeTo(RuleKey.FOR_STATEMENT);
     }
 
     /**
@@ -77,7 +77,7 @@ public class DmlCheckInConstructor extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
         if (astNode.getFirstDescendant(RuleKey.DML_STATEMENT) != null) {
-            getContext().createLineViolation(this, String.format(MESSAGE,
+            getContext().createLineViolation(this, String.format(MESSAGE, 
                     astNode.getFirstDescendant(RuleKey.DML_STATEMENT).getTokenValue()), astNode);
         }
     }
