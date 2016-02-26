@@ -23,6 +23,8 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import java.util.List;
+
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
@@ -33,39 +35,40 @@ import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
+import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check for a DML is not within a "for loop"
+ * Check that a deprecated method does not contain lines of code.
  */
 @Rule(
-        key = DmlCheckInFor.CHECK_KEY,
-        priority = Priority.CRITICAL,
-        name = "You can not be a DML statement in a 'for'",
-        description = "DML statement in a for",
-        tags = Tags.BUG
+        key = DeprecatedMethodCheck.CHECK_KEY,
+        priority = Priority.MINOR,
+        name = "Verification methods deprecated",
+        description = "Prevent the body of a method contains deprecated code lines",
+        tags = Tags.OBSOLETE
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("5min")
+@SqaleConstantRemediation("1min")
 @ActivatedByDefault
-public class DmlCheckInFor extends SquidCheck<Grammar>{
-    
+public class DeprecatedMethodCheck extends SquidCheck<Grammar> {
+
     /**
      * Stores a message template.
      */
-    public static final String MESSAGE = "The DML statement \"%s\", can not be inside a for loop";
-    
+    public static final String MESSAGE = "The \"%s\" method is deprecated, suggest deleting the contents of the method";
+
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1004";
+    public static final String CHECK_KEY = "A1006";
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
-        subscribeTo(RuleKey.FOR_STATEMENT);
+        subscribeTo(RuleKey.METHOD_DECLARATION);
     }
 
     /**
@@ -76,9 +79,47 @@ public class DmlCheckInFor extends SquidCheck<Grammar>{
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.getFirstDescendant(RuleKey.DML_STATEMENT) != null) {
-            getContext().createLineViolation(this, String.format(MESSAGE, 
-                    astNode.getFirstDescendant(RuleKey.DML_STATEMENT).getTokenValue()), astNode);
+        if (astNode.getFirstDescendant(RuleKey.ANNOTATION) != null) {
+            List<AstNode> childrensMethodDeclaration = astNode.getChildren();
+            if (validateToken(childrensMethodDeclaration.get(0).getChildren())) {
+                AstNode nameMethod = validateStatementBlock(childrensMethodDeclaration);
+                if (nameMethod != null) {
+                    getContext().createLineViolation(this, String.format(MESSAGE,
+                            nameMethod.getTokenValue()), astNode);
+                }
+            }
         }
+    }
+
+    /**
+     * Checks if node token type is deprecated.
+     *
+     * @param astNode is the node to analyze.
+     * @return A value of true, if the node is expected.
+     */
+    private boolean validateToken(List<AstNode> astNode) {
+        return astNode.get(1).getTokenValue().equals(ApexKeyword.DEPRECATED.getValue());
+    }
+
+    /**
+     * Check if the node BLOCK_STATEMENT has content.
+     *
+     * @param astNode is the node to analyze.
+     * @return If the node has content, returns the same node, null if has not.
+     */
+    private AstNode validateStatementBlock(List<AstNode> astNode) {
+        AstNode nameMethod = null;
+        for (AstNode node : astNode) {
+            if (node.getName().equals(RuleKey.METHOD_NAME.toString())) {
+                nameMethod = node;
+            }
+            if (node.getName().equals(RuleKey.STATEMENT_BLOCK.toString())) {
+                if (node.getChildren().size() > 2) {
+                    return nameMethod;
+                }
+
+            }
+        }
+        return null;
     }
 }

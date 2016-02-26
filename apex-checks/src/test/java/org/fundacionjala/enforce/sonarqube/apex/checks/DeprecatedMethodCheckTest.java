@@ -32,25 +32,25 @@ import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
-public class DmlCheckInWhileTest {
+public class DeprecatedMethodCheckTest {
 
-    private DmlCheckInWhile dmlCheckInWhile;
+    private DeprecatedMethodCheck deprecatedMethodCheck;
     private SourceFile sourceFile;
 
     @Test
     public void testIncorrectDMLDeclarationCorrect() throws Exception {
-        dmlCheckInWhile = new DmlCheckInWhile();
-        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInWhile);
+        deprecatedMethodCheck = new DeprecatedMethodCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), deprecatedMethodCheck);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .noMore();
     }
 
     @Test
     public void testIncorrectDMLDeclarationIncorrectInsert() throws Exception {
-        dmlCheckInWhile = new DmlCheckInWhile();
-        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInWhile);
+        deprecatedMethodCheck = new DeprecatedMethodCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), deprecatedMethodCheck);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                next().atLine(4).withMessage(
-                "The DML statement \"insert\", can not be inside a while loop");
+                next().atLine(17).withMessage(
+                "The \"myInit\" method is deprecated, suggest deleting the contents of the method");
     }
 }

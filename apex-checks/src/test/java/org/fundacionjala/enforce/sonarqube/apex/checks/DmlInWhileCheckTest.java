@@ -32,25 +32,25 @@ import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
-public class DmlCheckInForTest {
+public class DmlInWhileCheckTest {
 
-    private DmlCheckInFor dmlCheckInFor;
+    private DmlInWhileCheck dmlCheckInWhile;
     private SourceFile sourceFile;
 
     @Test
-    public void testCorrectDMLDeclaration() throws Exception {
-        dmlCheckInFor = new DmlCheckInFor();
-        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInFor);
-        CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                noMore();
+    public void testIncorrectDMLDeclarationCorrect() throws Exception {
+        dmlCheckInWhile = new DmlInWhileCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInWhile);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .noMore();
     }
 
     @Test
-    public void testIncorrectDMLDeclaration() throws Exception {
-        dmlCheckInFor = new DmlCheckInFor();
-        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInFor);
+    public void testIncorrectDMLDeclarationIncorrectInsert() throws Exception {
+        dmlCheckInWhile = new DmlInWhileCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInWhile);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                next().atLine(8).withMessage(
-                "The DML statement \"merge\", can not be inside a for loop");
+                next().atLine(4).withMessage(
+                "The DML statement \"insert\", can not be inside a while loop");
     }
 }

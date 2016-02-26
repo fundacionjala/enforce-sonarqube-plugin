@@ -23,47 +23,31 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import java.util.List;
+import java.io.File;
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
+import org.junit.Test;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
-import com.google.common.collect.ImmutableList;
+public class DmlInConstructorCheckTest {
+    
+    private DmlInConstructorCheck dmlCheckInConstructor;
+    private SourceFile sourceFile;
 
-/**
- * Builds a list of custom checks.
- */
-public class CheckList {
-
-    /**
-     * Stores the sonarqube profile name.
-     */
-    public static final String SONAR_WAY_PROFILE = "Sonar way";
-
-    /**
-     * Stores the sonarqube repository name.
-     */
-    public static final String REPOSITORY_NAME = "SonarQube";
-
-    /**
-     * Stores the Apex's repository key.
-     */
-    public static final String REPOSITORY_KEY = "apex";
-
-    /**
-     * Default constructor.
-     */
-    private CheckList() {
+    @Test
+    public void testIncorrectDMLDeclarationCorrect() throws Exception {
+        dmlCheckInConstructor = new DmlInConstructorCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInConstructor);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .noMore();
     }
 
-    /**
-     * Builds and returns the custom checks to create Apex's rules.
-     *
-     * @return the list of the checks.
-     */
-    public static List<Class> getChecks() {
-        return ImmutableList.<Class>of(
-                ClassNameCheck.class,
-                DmlInForCheck.class,
-                DmlInWhileCheck.class,
-                LineLengthCheck.class,
-                MethodNameCheck.class);
+    @Test
+    public void testIncorrectDMLDeclarationIncorrectInsert() throws Exception {
+        dmlCheckInConstructor = new DmlInConstructorCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInConstructor);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
+                next().atLine(13).withMessage(
+                "The DML statement \"insert\", can not be inside a constructor");
     }
 }

@@ -39,7 +39,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
  * Check for a DML is not within a "Constructor"
  */
 @Rule(
-        key = DmlCheckInConstructor.CHECK_KEY,
+        key = DmlInConstructorCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
         name = "You can not be a DML statement in a 'constructor'",
         description = "DML statement in a constructor",
@@ -48,7 +48,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
-public class DmlCheckInConstructor extends SquidCheck<Grammar> {
+public class DmlInConstructorCheck extends SquidCheck<Grammar> {
 
     /**
      * Stores a message template.

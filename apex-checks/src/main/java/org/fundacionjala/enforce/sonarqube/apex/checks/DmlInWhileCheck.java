@@ -39,7 +39,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
  * Check for a DML is not within a "while"
  */
 @Rule(
-        key = DmlCheckInWhile.CHECK_KEY,
+        key = DmlInWhileCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
         name = "You can not be a DML statement in a 'while'",
         description = "DML statement in a while",
@@ -48,7 +48,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
-public class DmlCheckInWhile extends SquidCheck<Grammar> {
+public class DmlInWhileCheck extends SquidCheck<Grammar> {
 
     /**
      * Stores a message template.
