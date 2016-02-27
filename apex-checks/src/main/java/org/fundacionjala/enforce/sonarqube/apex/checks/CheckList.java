@@ -60,10 +60,14 @@ public class CheckList {
      */
     public static List<Class> getChecks() {
         return ImmutableList.<Class>of(
+                AssertMethodCheck.class,
                 ClassNameCheck.class,
+                DeprecatedMethodCheck.class,
+                DmlInConstructorCheck.class,
                 DmlInForCheck.class,
                 DmlInWhileCheck.class,
                 LineLengthCheck.class,
-                MethodNameCheck.class);
+                MethodNameCheck.class,
+                TestMethodCheck.class);
     }
 }
