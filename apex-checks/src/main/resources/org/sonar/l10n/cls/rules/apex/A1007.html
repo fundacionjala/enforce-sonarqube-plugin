@@ -1,0 +1,25 @@
+<p>
+    Test methods should be written in a test class.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+
+<pre>
+public class Book {
+    ...
+    @isTest public void testContent() {
+        ...
+    }
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+@isTest
+public class BookTest {
+    @isTest public void testContent() {
+        ...
+    }   
+}
+</pre>
