@@ -4,6 +4,3 @@ public with sharing class DraftArticle extends AbstractArticle {
         int number = 1902;
     }
 }
-
-
-    
