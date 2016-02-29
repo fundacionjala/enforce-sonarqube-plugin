@@ -23,51 +23,33 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
+import java.io.File;
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
+import org.junit.Before;
+import org.junit.Test;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
 /**
- * Builds a list of custom checks.
+ *
+ * @author Dan Joel Canqui Aviles
  */
-public class CheckList {
+public class AssertMethodCheckTest {
+    
+    private AssertMethodCheck assertMethodCheck;
+    private SourceFile sourceFile;
 
-    /**
-     * Stores the sonarqube profile name.
-     */
-    public static final String SONAR_WAY_PROFILE = "Sonar way";
-
-    /**
-     * Stores the sonarqube repository name.
-     */
-    public static final String REPOSITORY_NAME = "SonarQube";
-
-    /**
-     * Stores the Apex's repository key.
-     */
-    public static final String REPOSITORY_KEY = "apex";
-
-    /**
-     * Default constructor.
-     */
-    private CheckList() {
+    @Before
+    public void setup() {
+        assertMethodCheck = new AssertMethodCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/testMethod.cls"), assertMethodCheck);
     }
 
-    /**
-     * Builds and returns the custom checks to create Apex's rules.
-     *
-     * @return the list of the checks.
-     */
-    public static List<Class> getChecks() {
-        return ImmutableList.<Class>of(
-                AssertMethodCheck.class,
-                ClassNameCheck.class,
-                DeprecatedMethodCheck.class,
-                DmlInConstructorCheck.class,
-                DmlInForCheck.class,
-                DmlInWhileCheck.class,
-                LineLengthCheck.class,
-                MethodNameCheck.class,
-                TestMethodCheck.class);
+    @Test
+    public void testEmptyFile() {
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .next().atLine(5).withMessage("It's bad practice to use assert(true).")
+                .next().atLine(6).withMessage("It's bad practice to use assert(value, value).")
+                .noMore();
     }
 }

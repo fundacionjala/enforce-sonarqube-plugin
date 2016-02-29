@@ -1,0 +1,25 @@
+<p>
+    It's bad practice to use incorrectly assert methods.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+
+<pre>
+@isTest public void testContent(){
+    ...
+    Console.assertEquals(name, name);
+    ...
+    Console.assert(true);
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+@isTest public void testContent(){
+    ...
+    Console.assertEquals(name, 'Jalasoft');
+    ...
+    Console.assert(book.isOpen());
+}
+</pre>

@@ -23,10 +23,12 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import java.util.List;
-
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+import java.util.List;
+import java.util.Objects;
+import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -35,57 +37,69 @@ import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
-
 /**
- * Verifies if a class contains test methods.
+ * Verifies if a test method contains invalid asserts.
  */
 @Rule(
-        key = TestMethodCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        name = "Test methods incorrectly located",
-        description = "Test methods should be written in a test class",
+        key = AssertMethodCheck.CHECK_KEY,
+        priority = Priority.MINOR,
+        name = "Invalid asserts in test methods",
+        description = "It's bad practice to use incorrectly assert methods",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("6min")
 @ActivatedByDefault
-public class TestMethodCheck extends SquidCheck<Grammar> {
+public class AssertMethodCheck extends SquidCheck<Grammar> {
 
     /**
-     * Stores a message template.
+     * Stores an error message when to use 'assert(value, value)'.
      */
-    public static final String MESSAGE = "The \"%s\" method corresponds to a test class.";
+    public static final String ASSERT_EQUALS_MESSAGE
+            = "It's bad practice to use assert(value, value).";
+
+    /**
+     * Stores an error message when to use 'assert(true)'.
+     */
+    public static final String ASSERT_MESSAGE
+            = "It's bad practice to use assert(true).";
 
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1007";
+    public static final String CHECK_KEY = "A1008";
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
-        subscribeTo(RuleKey.CLASS_DECLARATION);
+        subscribeTo(RuleKey.METHOD_DECLARATION);
     }
 
     /**
-     * It is responsible for verifying whether the rule is met in the rule base. In the event that
-     * the rule is not correct, create message error.
+     * It is responsible for verifying whether the rule is met in the rule base.
+     * In the event that the rule is not correct, create message error.
      *
      * @param astNode It is the node that stores all the rules.
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (isTest(astNode)) {
+        if (!isTest(astNode)) {
             return;
         }
-        List<AstNode> methods = astNode.getDescendants(RuleKey.METHOD_DECLARATION);
-        methods.forEach(method -> {
-            if (isTest(method)) {
-                getContext().createLineViolation(this, methodMessage(astNode), method);
+        List<AstNode> expressions = astNode.getDescendants(RuleKey.ARGUMENTS);
+        expressions.forEach(expression -> {
+            if (isAssert(expression)) {
+                String first = getValue(expression, 0);
+                if (Objects.equals(first, "true")) {
+                    getContext().createLineViolation(this, ASSERT_MESSAGE, expression);
+                } else {
+                    String second = getValue(expression, 2);
+                    if (Objects.equals(first, second)) {
+                        getContext().createLineViolation(this, ASSERT_EQUALS_MESSAGE, expression);
+                    }
+                }
             }
         });
     }
@@ -103,15 +117,28 @@ public class TestMethodCheck extends SquidCheck<Grammar> {
         }
         return astNode != null;
     }
-    
+
     /**
-     * Returns the method message.
+     * Analyzes if a node is assert method.
      *
-     * @param astNode current node.
-     * @return the message.
+     * @param expression current node.
+     * @return the analysis result.
      */
-    private String methodMessage(AstNode astNode) {
-        astNode = astNode.getFirstDescendant(RuleKey.METHOD_NAME);
-        return String.format(MESSAGE, astNode.getTokenValue());
+    private boolean isAssert(AstNode expression) {
+        AstNode parent = expression.getParent();
+        return parent.getTokenValue().matches("assert(Equals)?");
+    }
+
+    /**
+     * Returns the token value from a requested index.
+     *
+     * @param expression current expression.
+     * @param index requested index.
+     * @return the value.
+     */
+    private String getValue(AstNode expression, int index) {
+        List<AstNode> arguments = expression.getChildren();
+        return (arguments.size() < index) ? null
+                : arguments.get(index).getTokenValue();
     }
 }
