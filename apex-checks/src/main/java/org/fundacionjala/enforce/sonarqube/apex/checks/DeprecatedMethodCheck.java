@@ -39,11 +39,11 @@ import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check that a deprecated method does not contain lines of code.
+ * This class checks that a deprecated method does not contain lines of code.
  */
 @Rule(
         key = DeprecatedMethodCheck.CHECK_KEY,
-        priority = Priority.MINOR,
+        priority = Priority.INFO,
         name = "Verification methods deprecated",
         description = "Prevent the body of a method contains deprecated code lines",
         tags = Tags.OBSOLETE
@@ -102,7 +102,7 @@ public class DeprecatedMethodCheck extends SquidCheck<Grammar> {
     }
 
     /**
-     * Check if the node BLOCK_STATEMENT has content.
+     * Checks if the node BLOCK_STATEMENT has content.
      *
      * @param astNode is the node to analyze.
      * @return If the node has content, returns the same node, null if has not.
