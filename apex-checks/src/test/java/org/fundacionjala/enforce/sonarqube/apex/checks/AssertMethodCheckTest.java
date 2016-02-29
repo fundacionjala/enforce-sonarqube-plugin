@@ -30,10 +30,6 @@ import org.junit.Test;
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
-/**
- *
- * @author Dan Joel Canqui Aviles
- */
 public class AssertMethodCheckTest {
     
     private AssertMethodCheck assertMethodCheck;
