@@ -48,8 +48,8 @@ public class AssertMethodCheckTest {
     @Test
     public void testEmptyFile() {
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .next().atLine(5).withMessage("It's bad practice to use assert(true).")
-                .next().atLine(6).withMessage("It's bad practice to use assert(value, value).")
+                .next().atLine(4).withMessage("It's bad practice to use assert(true).")
+                .next().atLine(5).withMessage("It's bad practice to use assert(value, value).")
                 .noMore();
     }
 }
