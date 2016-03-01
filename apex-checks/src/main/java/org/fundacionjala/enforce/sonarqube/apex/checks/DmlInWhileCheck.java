@@ -76,7 +76,7 @@ public class DmlInWhileCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.getFirstDescendant(RuleKey.DML_STATEMENT) != null) {
+        if (astNode.hasDescendant(RuleKey.DML_STATEMENT)) {
             getContext().createLineViolation(this, String.format(MESSAGE,
                     astNode.getFirstDescendant(RuleKey.DML_STATEMENT).getTokenValue()), astNode);
         }

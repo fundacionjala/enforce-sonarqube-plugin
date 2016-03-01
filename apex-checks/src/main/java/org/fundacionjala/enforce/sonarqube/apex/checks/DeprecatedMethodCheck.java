@@ -79,7 +79,7 @@ public class DeprecatedMethodCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.getFirstDescendant(RuleKey.ANNOTATION) != null) {
+        if (astNode.hasDescendant(RuleKey.ANNOTATION)) {
             List<AstNode> childrensMethodDeclaration = astNode.getChildren();
             if (validateToken(childrensMethodDeclaration.get(0).getChildren())) {
                 AstNode nameMethod = validateStatementBlock(childrensMethodDeclaration);

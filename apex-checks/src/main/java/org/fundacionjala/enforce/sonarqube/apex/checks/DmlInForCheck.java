@@ -48,13 +48,13 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
-public class DmlInForCheck extends SquidCheck<Grammar>{
-    
+public class DmlInForCheck extends SquidCheck<Grammar> {
+
     /**
      * Stores a message template.
      */
     public static final String MESSAGE = "The DML statement \"%s\", can not be inside a for loop";
-    
+
     /**
      * It is the code of the rule for the plugin.
      */
@@ -76,8 +76,8 @@ public class DmlInForCheck extends SquidCheck<Grammar>{
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.getFirstDescendant(RuleKey.DML_STATEMENT) != null) {
-            getContext().createLineViolation(this, String.format(MESSAGE, 
+        if (astNode.hasDescendant(RuleKey.DML_STATEMENT)) {
+            getContext().createLineViolation(this, String.format(MESSAGE,
                     astNode.getFirstDescendant(RuleKey.DML_STATEMENT).getTokenValue()), astNode);
         }
     }
