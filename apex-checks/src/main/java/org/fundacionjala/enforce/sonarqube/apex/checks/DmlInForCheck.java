@@ -23,15 +23,12 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
@@ -48,37 +45,20 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
-public class DmlInForCheck extends SquidCheck<Grammar> {
+public class DmlInForCheck extends DmlStatementCheck {
 
     /**
      * Stores a message template.
      */
-    public static final String MESSAGE = "The DML statement \"%s\", can not be inside a for loop";
+    private static final String MESSAGE = "The DML statement \"%s\", can not be inside a for loop";
 
     /**
      * It is the code of the rule for the plugin.
      */
     public static final String CHECK_KEY = "A1004";
 
-    /**
-     * The variables are initialized and subscribe the base rule.
-     */
-    @Override
-    public void init() {
-        subscribeTo(RuleKey.FOR_STATEMENT);
-    }
-
-    /**
-     * It is responsible for verifying whether the rule is met in the rule base.
-     * In the event that the rule is not correct, create message error.
-     *
-     * @param astNode It is the node that stores all the rules.
-     */
-    @Override
-    public void visitNode(AstNode astNode) {
-        if (astNode.hasDescendant(RuleKey.DML_STATEMENT)) {
-            getContext().createLineViolation(this, String.format(MESSAGE,
-                    astNode.getFirstDescendant(RuleKey.DML_STATEMENT).getTokenValue()), astNode);
-        }
+    public DmlInForCheck() {
+        ruleKey = RuleKey.FOR_STATEMENT;
+        message = MESSAGE;
     }
 }
