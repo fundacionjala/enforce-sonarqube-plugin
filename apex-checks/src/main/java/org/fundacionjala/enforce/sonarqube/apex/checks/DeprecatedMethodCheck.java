@@ -59,6 +59,11 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
     public static final String CHECK_KEY = "A1006";
 
     /**
+     * Stores the number of elements for empty block counting the start and end brace.
+     */
+    public static final int EMPTY_BLOCK = 2;
+
+    /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
@@ -89,6 +94,6 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      */
     private boolean isEmptyBlock(AstNode astNode) {
         astNode = astNode.getFirstDescendant(RuleKey.STATEMENT_BLOCK);
-        return astNode.getChildren().size() == 2;
+        return astNode.getNumberOfChildren() == EMPTY_BLOCK;
     }
 }
