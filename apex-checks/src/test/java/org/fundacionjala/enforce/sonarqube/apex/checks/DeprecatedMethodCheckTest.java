@@ -50,7 +50,7 @@ public class DeprecatedMethodCheckTest {
         deprecatedMethodCheck = new DeprecatedMethodCheck();
         sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), deprecatedMethodCheck);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                next().atLine(17).withMessage(
+                next().atLine(18).withMessage(
                 "The \"myInit\" method is deprecated, suggest deleting the contents of the method");
     }
 }

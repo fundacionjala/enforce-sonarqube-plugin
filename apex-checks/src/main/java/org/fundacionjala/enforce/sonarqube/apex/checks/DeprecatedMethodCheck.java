@@ -23,19 +23,14 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import java.util.List;
-
 import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.SquidCheck;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
@@ -51,7 +46,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("1min")
 @ActivatedByDefault
-public class DeprecatedMethodCheck extends SquidCheck<Grammar> {
+public class DeprecatedMethodCheck extends AnnotationMethodCheck {
 
     /**
      * Stores a message template.
@@ -72,54 +67,28 @@ public class DeprecatedMethodCheck extends SquidCheck<Grammar> {
     }
 
     /**
-     * It is responsible for verifying whether the rule is met in the rule base.
-     * In the event that the rule is not correct, create message error.
+     * It is responsible for verifying whether the rule is met in the rule base. In the event that
+     * the rule is not correct, create message error.
      *
      * @param astNode It is the node that stores all the rules.
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.hasDescendant(RuleKey.ANNOTATION)) {
-            List<AstNode> childrensMethodDeclaration = astNode.getChildren();
-            if (validateToken(childrensMethodDeclaration.get(0).getChildren())) {
-                AstNode nameMethod = validateStatementBlock(childrensMethodDeclaration);
-                if (nameMethod != null) {
-                    getContext().createLineViolation(this, String.format(MESSAGE,
-                            nameMethod.getTokenValue()), astNode);
-                }
-            }
+        if (isDeprecated(astNode) && !isEmptyBlock(astNode)) {
+            astNode = astNode.getFirstDescendant(RuleKey.METHOD_NAME);
+            getContext().createLineViolation(this, String.format(MESSAGE,
+                    astNode.getTokenValue()), astNode);
         }
     }
 
     /**
-     * Checks if node token type is deprecated.
+     * Checks if the node represents a empty statement block.
      *
-     * @param astNode is the node to analyze.
-     * @return A value of true, if the node is expected.
+     * @param astNode to be analyzed.
+     * @return the analysis result.
      */
-    private boolean validateToken(List<AstNode> astNode) {
-        return astNode.get(1).getTokenValue().equals(ApexKeyword.DEPRECATED.getValue());
-    }
-
-    /**
-     * Checks if the node BLOCK_STATEMENT has content.
-     *
-     * @param astNode is the node to analyze.
-     * @return If the node has content, returns the same node, null if has not.
-     */
-    private AstNode validateStatementBlock(List<AstNode> astNode) {
-        AstNode nameMethod = null;
-        for (AstNode node : astNode) {
-            if (node.getName().equals(RuleKey.METHOD_NAME.toString())) {
-                nameMethod = node;
-            }
-            if (node.getName().equals(RuleKey.STATEMENT_BLOCK.toString())) {
-                if (node.getChildren().size() > 2) {
-                    return nameMethod;
-                }
-
-            }
-        }
-        return null;
+    private boolean isEmptyBlock(AstNode astNode) {
+        astNode = astNode.getFirstDescendant(RuleKey.STATEMENT_BLOCK);
+        return astNode.getChildren().size() == 2;
     }
 }

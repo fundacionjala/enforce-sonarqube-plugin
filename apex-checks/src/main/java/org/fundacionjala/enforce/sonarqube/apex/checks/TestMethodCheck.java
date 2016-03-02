@@ -26,16 +26,13 @@ package org.fundacionjala.enforce.sonarqube.apex.checks;
 import java.util.List;
 
 import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.SquidCheck;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
@@ -51,7 +48,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("6min")
 @ActivatedByDefault
-public class TestMethodCheck extends SquidCheck<Grammar> {
+public class TestMethodCheck extends AnnotationMethodCheck {
 
     /**
      * Stores a message template.
@@ -90,20 +87,6 @@ public class TestMethodCheck extends SquidCheck<Grammar> {
         });
     }
 
-    /**
-     * Analyzes if a node is test class or method.
-     *
-     * @param astNode to be analyzed.
-     * @return the analysis result.
-     */
-    private boolean isTest(AstNode astNode) {
-        astNode = astNode.getFirstChild(RuleKey.ANNOTATION);
-        if (astNode != null) {
-            astNode = astNode.getFirstChild(ApexKeyword.IS_TEST);
-        }
-        return astNode != null;
-    }
-    
     /**
      * Returns the method message.
      *
