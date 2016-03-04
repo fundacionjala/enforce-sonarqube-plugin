@@ -65,8 +65,8 @@ public class ApexAstScannerTest {
 
     @Test
     public void testTheNumberOfScannedFunctions() {
-        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/functions.cls"));
-        assertThat(sourceFile.getInt(ApexMetric.FUNCTIONS)).isEqualTo(2);
+        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/methods.cls"));
+        assertThat(sourceFile.getInt(ApexMetric.METHODS)).isEqualTo(2);
     }
 
     @Test

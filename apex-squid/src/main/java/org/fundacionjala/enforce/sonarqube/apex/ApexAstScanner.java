@@ -50,19 +50,15 @@ import org.sonar.squidbridge.metrics.LinesOfCodeVisitor;
 import org.sonar.squidbridge.metrics.LinesVisitor;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexMetric;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexParser;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DML_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FOR_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RETURN_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TERMINAL_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.WHILE_STATEMENT;
@@ -191,7 +187,7 @@ public class ApexAstScanner {
         }, METHOD_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
-                .setMetricDef(ApexMetric.FUNCTIONS)
+                .setMetricDef(ApexMetric.METHODS)
                 .subscribeTo(METHOD_DECLARATION)
                 .build());
     }

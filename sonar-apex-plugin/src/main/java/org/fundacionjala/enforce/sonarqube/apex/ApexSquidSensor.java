@@ -196,7 +196,7 @@ public class ApexSquidSensor implements Sensor {
         context.saveMeasure(sonarFile, CoreMetrics.LINES, squidFile.getDouble(ApexMetric.LINES));
         context.saveMeasure(sonarFile, CoreMetrics.NCLOC, squidFile.getDouble(ApexMetric.LINES_OF_CODE));
         context.saveMeasure(sonarFile, CoreMetrics.STATEMENTS, squidFile.getDouble(ApexMetric.STATEMENTS));
-        context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ApexMetric.FUNCTIONS));
+        context.saveMeasure(sonarFile, CoreMetrics.FUNCTIONS, squidFile.getDouble(ApexMetric.METHODS));
         context.saveMeasure(sonarFile, CoreMetrics.CLASSES, squidFile.getDouble(ApexMetric.CLASSES));
         context.saveMeasure(sonarFile, CoreMetrics.COMPLEXITY, squidFile.getDouble(ApexMetric.COMPLEXITY));
         context.saveMeasure(sonarFile, CoreMetrics.COMMENT_LINES, squidFile.getDouble(ApexMetric.COMMENT_LINES));
