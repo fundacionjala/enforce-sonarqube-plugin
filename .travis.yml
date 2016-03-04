@@ -1,2 +1,12 @@
+
 language: java
-mvn test
+jdk:
+  - oraclejdk7
+notifications:
+  email:
+    - Alejandro.Ruiz@jalasoft.com
+    - Marco.Cadima@jalasoft.com
+    - Jimmy.Rojas@jalasoft.com
+    - Dan.Canqui@jalasoft.com
+    - Fernando.Hurtado@jalasoft.com
+script: "mvn test"
