@@ -38,6 +38,24 @@ public class ApexGrammarMethodDeclarationTest {
     @Test
     public void positiveRules() {
         assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("returnint;}");
+                .matches("publicintisMethod(){}")
+                .matches("publicintmyMethod(){intmyVariable;}")
+                .notMatches("publicint1MyMethod()");
+    }
+    
+    @Test
+    public void positiveRulesMethodWithParameter() {
+        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
+                .matches("publicintisMethod(intmyParameter){}")
+                .matches("publicintmyMethod(intmyParameter[]){}")
+                .notMatches("publicint1MyMethod(intmyParameter,intmyParameter2)");
+    }
+
+    @Test
+    public void positiveRulesMethodWithAnnotation() {
+        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
+                .matches("@isTestpublicintisMethod(intmyParameter){}")
+                .matches("@testSetuppublicintmyMethod(intmyParameter[]){}")
+                .notMatches("@ReadOnly@RemoteActionpublicint1MyMethod(intmyParameter,intmyParameter2)");
     }
 }

@@ -37,7 +37,7 @@ public enum ApexMetric implements MetricDef {
     LINES,
     LINES_OF_CODE,
     STATEMENTS,
-    FUNCTIONS,
+    METHODS,
     CLASSES,
     COMPLEXITY,
     COMMENT_LINES;

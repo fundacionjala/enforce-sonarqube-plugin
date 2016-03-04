@@ -1,0 +1,22 @@
+<p>
+    The DML statement, can not be inside a constructor
+</p>
+
+<h2>Noncompliant Code Example</h2>
+
+<pre>
+public MyClass(){
+    insert newAcct; 
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+public MyClass(){
+    ...
+}
+public void insertAcct(){
+    insert newAcct;
+}
+</pre>

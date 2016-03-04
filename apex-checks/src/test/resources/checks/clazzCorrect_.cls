@@ -1,7 +1,7 @@
 public class _DraftArticle {
 
     public int MyMethod () { 
-        return int;
+        return 0;
     }
 }
 

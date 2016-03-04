@@ -48,7 +48,7 @@ public class ApexAstScannerTest {
     }
 
     @Test
-    public void testTheNumberOfScannedClasses() {
+    public void testTheNumberOfScannedFiles() {
         AstScanner<Grammar> scanner = ApexAstScanner.create(apexConfiguration);
         scanner.scanFiles(ImmutableList.of(
                 new File("src/test/resources/metrics/functions.cls"),
@@ -58,15 +58,33 @@ public class ApexAstScannerTest {
     }
 
     @Test
-    public void testTheLineNumbersOfAClass() {
+    public void testTheNumberOfScannedLines() {
         sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/lines.cls"));
         assertThat(sourceFile.getInt(ApexMetric.LINES_OF_CODE)).isEqualTo(9);
     }
 
     @Test
-    public void testTheFunctionsNumberOfAClass() {
-        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/functions.cls"));
-        assertThat(sourceFile.getInt(ApexMetric.FUNCTIONS)).isEqualTo(1);
+    public void testTheNumberOfScannedFunctions() {
+        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/methods.cls"));
+        assertThat(sourceFile.getInt(ApexMetric.METHODS)).isEqualTo(2);
+    }
+
+    @Test
+    public void testTheNumberOfScannedStatements() {
+        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/statements.cls"));
+        assertThat(sourceFile.getInt(ApexMetric.STATEMENTS)).isEqualTo(2);
+    }
+
+    @Test
+    public void testTheNumberOfScannedClasses() {
+        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/classes.cls"));
+        assertThat(sourceFile.getInt(ApexMetric.CLASSES)).isEqualTo(2);
+    }
+
+    @Test
+    public void testTheNumberOfScannedComplexity() {
+        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/complexity.cls"));
+        assertThat(sourceFile.getInt(ApexMetric.COMPLEXITY)).isEqualTo(3);
     }
 
     private SourceProject buildProject(AstScanner<Grammar> scanner) {

@@ -21,25 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import org.junit.Test;
-
+import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
-import static org.sonar.sslr.tests.Assertions.assertThat;
+import org.sonar.squidbridge.checks.SquidCheck;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CLASS_OR_INTERFACE_BODY_DECLARATION;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
-public class ApexGrammarClassOrInterfaceBodyDeclarationTest {
+public class DmlStatementCheck extends SquidCheck<Grammar> {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    /**
+     * Stores a message template.
+     */
+    protected String message;
 
-    @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(CLASS_OR_INTERFACE_BODY_DECLARATION))
-                .matches("publicbooleanMyMethod(){"
-                        + "returnboolean;"
-                        + "}");
+    /**
+     * Stores the rule to subscribe.
+     */
+    protected RuleKey ruleKey;
+
+    /**
+     * The variables are initialized and subscribe the base rule.
+     */
+    @Override
+    public void init() {
+        subscribeTo(ruleKey);
+    }
+
+    /**
+     * It is responsible for verifying whether the rule is met in the rule base.
+     * In the event that the rule is not correct, create message error.
+     *
+     * @param astNode It is the node that stores all the rules.
+     */
+    @Override
+    public void visitNode(AstNode astNode) {
+        if (astNode.hasDescendant(RuleKey.DML_STATEMENT)) {
+            getContext().createLineViolation(this, String.format(message,
+                    astNode.getFirstDescendant(RuleKey.DML_STATEMENT).getTokenValue()), astNode);
+        }
     }
 }

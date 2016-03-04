@@ -38,44 +38,44 @@ public class ApexGrammarTypeDeclarationTest {
     @Test
     public void positiveRulesForClass() {
         assertThat(grammarBuilder.rule(TYPE_DECLARATION))
-                .matches("publicclassMyClass{")
-                .matches("publicwithsharingclassMyClass{")
-                .matches("privatewithoutsharingclassMyClass{")
-                .matches("publicclassMyClassimplementsYourClass{")
-                .matches("publicclassMyClassextendsYourClass{")
-                .matches("publicwithsharingclassMyClassimplementsYourClass{")
-                .matches("staticwithoutsharingclassMyClassimplementsYourClass{")
-                .matches("publicwithsharingclassMyClassextendsYourClass{")
-                .matches("staticwithoutsharingclassMyClassextendsYourClass{");
+                .matches("publicclassMyClass{}")
+                .matches("publicwithsharingclassMyClass{}")
+                .matches("privatewithoutsharingclassMyClass{}")
+                .matches("publicclassMyClassimplementsYourClass{}")
+                .matches("publicclassMyClassextendsYourClass{}")
+                .matches("publicwithsharingclassMyClassimplementsYourClass{}")
+                .matches("staticwithoutsharingclassMyClassimplementsYourClass{}")
+                .matches("publicwithsharingclassMyClassextendsYourClass{}")
+                .matches("staticwithoutsharingclassMyClassextendsYourClass{}");
     }
 
     @Test
     public void negativeRulesForClass() {
         assertThat(grammarBuilder.rule(TYPE_DECLARATION))
-                .notMatches("Class MyClass {")
-                .notMatches("publicstaticclassMyClass{")
-                .notMatches("public_classwithsharingclassMyClass{")
-                .notMatches("privateclasswithoutsharingclassMyClass {")
-                .notMatches("public class MyClass implementS YourClass {")
-                .notMatches("Public class MyClass extends YourClass {")
-                .notMatches("public with_sharing class MyClass implements YourClass {")
-                .notMatches("static without sharing 5class MyClass implements YourClass {")
-                .notMatches("public with sharing class 9MyClass extends YourClass {")
-                .notMatches("static without sharing class MyClass enum extends YourClass {");
+                .notMatches("Class MyClass {}")
+                .notMatches("publicstaticclassMyClass{}")
+                .notMatches("public_classwithsharingclassMyClass{}")
+                .notMatches("privateclasswithoutsharingclassMyClass {}")
+                .notMatches("public class MyClass implementS YourClass {}")
+                .notMatches("Public class MyClass extends YourClass {}")
+                .notMatches("public with_sharing class MyClass implements YourClass {}")
+                .notMatches("static without sharing 5class MyClass implements YourClass {}")
+                .notMatches("public with sharing class 9MyClass extends YourClass {}")
+                .notMatches("static without sharing class MyClass enum extends YourClass {}");
     }
 
     @Test
     public void positiveRulesForInterface() {
         assertThat(grammarBuilder.rule(TYPE_DECLARATION))
-                .matches("publicinterfaceMyClass{")
-                .matches("publicwithsharinginterfaceMyClass{")
-                .matches("privatewithoutsharinginterfaceMyClass{")
-                .matches("publicinterfaceMyClassimplementsYourClass{")
-                .matches("publicinterfaceMyClassextendsYourClass{")
-                .matches("publicwithsharinginterfaceMyClassimplementsYourClass{")
-                .matches("staticwithoutsharinginterfaceMyClassimplementsYourClass{")
-                .matches("publicwithsharinginterfaceMyClassextendsYourClass{")
-                .matches("staticwithoutsharinginterfaceMyClassextendsYourClass{");
+                .matches("publicinterfaceMyClass{}")
+                .matches("publicwithsharinginterfaceMyClass{}")
+                .matches("privatewithoutsharinginterfaceMyClass{}")
+                .matches("publicinterfaceMyClassimplementsYourClass{}")
+                .matches("publicinterfaceMyClassextendsYourClass{}")
+                .matches("publicwithsharinginterfaceMyClassimplementsYourClass{}")
+                .matches("staticwithoutsharinginterfaceMyClassimplementsYourClass{}")
+                .matches("publicwithsharinginterfaceMyClassextendsYourClass{}")
+                .matches("staticwithoutsharinginterfaceMyClassextendsYourClass{}");
     }
 
     @Test

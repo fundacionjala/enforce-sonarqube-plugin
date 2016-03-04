@@ -24,30 +24,33 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import java.io.File;
-import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
+
 import org.junit.Test;
+
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
-public class CheckReturnTypeMethodTest {
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
-    private CheckReturnTypeMethod typeReturn;
+public class DmlInForCheckTest {
+
+    private DmlInForCheck dmlCheckInFor;
     private SourceFile sourceFile;
 
     @Test
-    public void testCorrectReturnTypeMethod() throws Exception {
-        typeReturn = new CheckReturnTypeMethod();
-        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), typeReturn);
-        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .noMore();
+    public void testCorrectDMLDeclaration() throws Exception {
+        dmlCheckInFor = new DmlInForCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), dmlCheckInFor);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
+                noMore();
     }
 
     @Test
-    public void testIncorrectReturnTypeMethod() throws Exception {
-        typeReturn = new CheckReturnTypeMethod();
-        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), typeReturn);
+    public void testIncorrectDMLDeclaration() throws Exception {
+        dmlCheckInFor = new DmlInForCheck();
+        sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInFor);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                next().withMessage(
-                "The type of the return value \"double\", does not match the header \"int\"");
+                next().atLine(8).withMessage(
+                "The DML statement \"merge\", can not be inside a for loop");
     }
 }

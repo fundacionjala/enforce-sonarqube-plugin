@@ -48,7 +48,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("5min")
+@SqaleConstantRemediation("1min")
 @ActivatedByDefault
 public class ClassNameCheck extends SquidCheck<Grammar> {
 

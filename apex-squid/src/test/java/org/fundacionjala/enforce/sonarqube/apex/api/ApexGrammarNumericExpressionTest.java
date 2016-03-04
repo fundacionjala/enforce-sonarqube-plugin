@@ -29,17 +29,33 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMERIC_EXPRESSION;
 
-public class ApexGrammarModifiersTest {
+public class ApexGrammarNumericExpressionTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(MODIFIERS))
-                .matches("publicintMyMethod(){")
-                .matches("privatebooleanIsTheMethod(){")
-                .notMatches("PublicIntMethods");
+        assertThat(grammarBuilder.rule(NUMERIC_EXPRESSION))
+                .matches("11-10")
+                .matches("22+22")
+                .matches("10*22")
+                .matches("100/20")
+                .matches("100%10");
+    }
+    
+    @Test
+    public void positiveRulesOperationsSimplePlus() {
+        assertThat(grammarBuilder.rule(NUMERIC_EXPRESSION))
+                .matches("10++")
+                .matches("A++");
+    }
+    
+    @Test
+    public void positiveRulesOperationsSimpleMinus() {
+        assertThat(grammarBuilder.rule(NUMERIC_EXPRESSION))
+                .matches("10--")
+                .matches("A--");
     }
 }

@@ -29,7 +29,6 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LOOKAHEAD_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
 
 public class ApexGrammarModifierTest {
@@ -37,18 +36,7 @@ public class ApexGrammarModifierTest {
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
-    public void buildingModifierDifferentCorrectCasesLookaheadKeyword() {
-        assertThat(grammarBuilder.rule(LOOKAHEAD_KEYWORD))
-                .matches("publicwithsharing")
-                .matches("finalwithoutsharing")
-                .matches("abstractwithsharing")
-                .matches("synchronizedwithsharing")
-                .matches("nativewithsharing")
-                .matches("transientwithsharing");
-    }
-
-    @Test
-    public void buildingModifierWithOnlyCasesLookahead() {
+    public void positiveBasicRules() {
         assertThat(grammarBuilder.rule(MODIFIER))
                 .matches("static")
                 .matches("public")
@@ -63,26 +51,34 @@ public class ApexGrammarModifierTest {
     }
 
     @Test
-    public void buildingModifierDifferentCorrectCases() {
+    public void negativeBasicRulesSpaceAtTheInitAndEndLoockhead() {
         assertThat(grammarBuilder.rule(MODIFIER))
-                .matches("static")
-                .matches("publicwithsharing")
-                .matches("finalwithoutsharing")
-                .matches("abstractwithsharing")
-                .matches("synchronizedwithsharing")
-                .matches("nativewithsharing")
-                .matches("transientwithsharing");
+                .notMatches("    ")
+                .notMatches(" static ")
+                .notMatches(" public ")
+                .notMatches(" final ")
+                .notMatches(" abstract ")
+                .notMatches(" synchronized ")
+                .notMatches(" native ")
+                .notMatches(" transient ")
+                .notMatches(" volatile ")
+                .notMatches(" strictfp ")
+                .notMatches(" anotation ");
     }
 
     @Test
-    public void buildingModifierDifferentIncorrectCases() {
+    public void negativeRules() {
         assertThat(grammarBuilder.rule(MODIFIER))
-                .notMatches("_")
-                .notMatches("static _")
-                .notMatches("public With sharing")
-                .notMatches("final  without Sharing")
-                .notMatches("  _abstract with sharing")
-                .notMatches("synchronized_with sharing")
-                .notMatches("  transient with sharing_  ");
+                .notMatches(" _ ")
+                .notMatches("P static")
+                .notMatches(" public_")
+                .notMatches(" _final")
+                .notMatches(" Abstract")
+                .notMatches("synchRonized")
+                .notMatches("nativE")
+                .notMatches("_Transient")
+                .notMatches("Volatile_")
+                .notMatches("strictfp__")
+                .notMatches("anotation native");
     }
 }

@@ -29,23 +29,16 @@ import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PRIMITIVE_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CASTING_EXPRESSION;
 
-public class ApexGrammarPrimitiveTypeTest {
+public class ApexGrammarCastingExpressionTest {
 
     private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(PRIMITIVE_TYPE))
-                .matches("boolean")
-                .matches("int")
-                .matches("short")
-                .matches("long")
-                .matches("char")
-                .matches("float")
-                .matches("byte")
-                .notMatches("Boolean")
-                .notMatches("Byte");
+        assertThat(grammarBuilder.rule(CASTING_EXPRESSION))
+                .matches("(int)MyVariable")
+                .matches("(MyObjecto)MyVariable");
     }
 }

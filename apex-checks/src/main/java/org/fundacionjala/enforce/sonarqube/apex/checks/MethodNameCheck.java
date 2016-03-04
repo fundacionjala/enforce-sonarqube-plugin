@@ -43,13 +43,12 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
  */
 @Rule(
         key = MethodNameCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
+        priority = Priority.MINOR,
         name = "Method names should comply with a naming convention",
-        description = "Method names",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("5min")
+@SqaleConstantRemediation("1min")
 @ActivatedByDefault
 public class MethodNameCheck extends SquidCheck<Grammar> {
 
@@ -83,7 +82,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
     @Override
     public void init() {
         pattern = Pattern.compile(format);
-        subscribeTo(RuleKey.MODIFIERS);
+        subscribeTo(RuleKey.METHOD_DECLARATION);
     }
 
     /**

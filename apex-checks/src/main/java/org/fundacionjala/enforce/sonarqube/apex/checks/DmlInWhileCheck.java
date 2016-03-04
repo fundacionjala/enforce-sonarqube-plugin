@@ -23,78 +23,45 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Checks the return type of the method is equal to the header method type
+ * Check for a DML is not within a "while"
  */
 @Rule(
-        key = CheckReturnTypeMethod.CHECK_KEY,
-        priority = Priority.MAJOR,
-        name = "Checking the return type of the method",
-        tags = Tags.CONVENTION
+        key = DmlInWhileCheck.CHECK_KEY,
+        priority = Priority.CRITICAL,
+        name = "You can not be a DML statement in a 'while'",
+        description = "DML statement in a while",
+        tags = Tags.BUG
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
-public class CheckReturnTypeMethod extends SquidCheck<Grammar> {
+public class DmlInWhileCheck extends DmlStatementCheck {
 
     /**
      * Stores a message template.
      */
-    public static final String MESSAGE = "The type of the return value \"%s\", does not match the header \"%s\"";
+    private static final String MESSAGE = "The DML statement \"%s\", can not be inside a while loop";
 
     /**
-     * Id code for the plugin.
+     * It is the code of the rule for the plugin.
      */
     public static final String CHECK_KEY = "A1003";
 
     /**
-     * Stores an AstNode instance which hepls verify the next node.
+     * The variables are initialized and subscribe the base rule.
      */
-    private AstNode firstNode;
-
-    /**
-     * Subscribe the basic rules.
-     */
-    @Override
-    public void init() {
-        subscribeTo(RuleKey.MODIFIERS, RuleKey.RESULT_TYPE);
-    }
-
-    /**
-     * The tour manager AST nodes.
-     *
-     * @param node where the checks are done.
-     */
-    @Override
-    public void visitNode(AstNode node) {
-        checkNode(node.getFirstDescendant(RuleKey.TYPE_METHOD));
-
-    }
-
-    /**
-     * Checks if the new node is different from the first node. If it is true a
-     * message is created.
-     *
-     * @param node used to compare.
-     */
-    private void checkNode(AstNode node) {
-        if (firstNode == null) {
-            firstNode = node;
-        } else if (!firstNode.getTokenValue().equals(node.getTokenValue())) {
-            getContext().createLineViolation(this,
-                    String.format(MESSAGE, node.getToken().getValue(), firstNode.getToken().getValue()), node);
-        }
+    public DmlInWhileCheck() {
+        ruleKey = RuleKey.WHILE_STATEMENT;
+        message = MESSAGE;
     }
 }

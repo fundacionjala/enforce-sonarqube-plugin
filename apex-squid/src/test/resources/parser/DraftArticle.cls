@@ -6,7 +6,13 @@ public       with
 
 
     public      int     MyMethod() {
-        return                          int;
-                        }
-    
+        Account a = new Account();
+        for(Accts newAcct : listAccts){
+	    if (badCon.Department == 'Finance') {
+	        Object description = 'New description';
+	    }
+	    update badCon;
+	}
+        int number = 0;
+    }
 }
