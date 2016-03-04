@@ -25,9 +25,10 @@ package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+import org.sonar.squidbridge.checks.SquidCheck;
+
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
-import org.sonar.squidbridge.checks.SquidCheck;
 
 /**
  * Verifies if a class or method is an annotation.
