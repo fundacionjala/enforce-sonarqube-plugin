@@ -12,7 +12,7 @@
 
     <artifactId>apex-squid</artifactId>
 
-    <name>Apex :: Squid</name>
+    <name>Enforce :: Squid</name>
 
     <dependencies>
         <dependency>
