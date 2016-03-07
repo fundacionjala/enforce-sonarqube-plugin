@@ -21,28 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATOR_ID;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_BLOCK;
 
-public class ApexGrammarVariableDeclaratorIdTest {
+public class ApexGrammarStatementBlockTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(STATEMENT_BLOCK);
+    }
 
     @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(VARIABLE_DECLARATOR_ID))
-                .matches("myVariable")
-                .matches("myVariable[]")
-                .matches("my_Variable[]")
-                .notMatches("myVariable_[]")
-                .notMatches("1myVariable")
-                .notMatches("1myVariable[]");
+    public void RulesStatementBlock() {
+        assertThat(parser)
+                .matches("{}")
+                .matches("{int myVariable;}")
+                .matches("{int myVariable=23;if(NAME)12;}");
+    }
+
+    @Test
+    public void RulesStatementBlockCaseError() {
+        assertThat(parser)
+                .notMatches("{intmyVariable=23;}")
+                .notMatches("{intmyVariable=23;if(NAME)12;}");
     }
 }

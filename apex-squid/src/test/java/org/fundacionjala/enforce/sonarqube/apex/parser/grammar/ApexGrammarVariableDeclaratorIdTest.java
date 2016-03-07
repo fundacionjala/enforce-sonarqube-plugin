@@ -21,39 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATOR_ID;
 
-public class ApexGrammarParameter {
+public class ApexGrammarVariableDeclaratorIdTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void correctRuleBasic() {
-        assertThat(grammarBuilder.rule(PARAMETER))
-                .matches("intMyParameter")
-                .matches("intMyParameter[]");
+    @Before
+    public void init() {
+        setRootRule(VARIABLE_DECLARATOR_ID);
     }
-    
+
     @Test
-    public void correctRuleBasicParameterList() {
-        assertThat(grammarBuilder.rule(PARAMETER_LIST))
-                .matches("intMyParameter")
-                .matches("intMyParameter[]");
-    }
-    
-    @Test
-    public void correctRuleBasicParameterListOptional() {
-        assertThat(grammarBuilder.rule(PARAMETER_LIST))
-                .matches("intMyParameter,intMyPatameter2")
-                .matches("intMyParameter[],intMyParameter2[]");
+    public void positiveRules() {
+        assertThat(parser)
+                .matches("myVariable")
+                .matches("myVariable[]")
+                .matches("my_Variable[]")
+                .notMatches("myVariable_[]")
+                .notMatches("1myVariable")
+                .notMatches("1myVariable[]");
     }
 }

@@ -21,32 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_CLASS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMERIC_EXPRESSION;
 
-public class ApexGrammarTypeClassTest {
+public class ApexGrammarNumericExpressionTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(NUMERIC_EXPRESSION);
+    }
 
     @Test
-    public void checkingRules() {
-        assertThat(grammarBuilder.rule(TYPE_CLASS))
-                .matches("class")
-                .matches("interface")
-                .notMatches(" class")
-                .notMatches("class ")
-                .notMatches(" class ")
-                .notMatches(" interface")
-                .notMatches("interface ")
-                .notMatches(" interface ")
-                .notMatches("Class")
-                .notMatches("Interface");
+    public void positiveRules() {
+        assertThat(parser)
+                .matches("11-10")
+                .matches("22+22")
+                .matches("10*22")
+                .matches("100/20")
+                .matches("100%10");
+    }
+
+    @Test
+    public void positiveRulesOperationsSimplePlus() {
+        assertThat(parser)
+                .matches("10++")
+                .matches("A++");
+    }
+
+    @Test
+    public void positiveRulesOperationsSimpleMinus() {
+        assertThat(parser)
+                .matches("10--")
+                .matches("A--");
     }
 }

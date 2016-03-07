@@ -21,32 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_IF;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+import org.junit.Before;
 import org.junit.Test;
-
-import com.sonar.sslr.api.Grammar;
-
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXTENDS_LIST;
+public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
 
-public class ApexGrammarExtendsListTest {
-
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void negativeRulesMergeType() {
-        assertThat(grammarBuilder.rule(EXTENDS_LIST))
-                .notMatches("extendMyClass")
-                .notMatches("Extends _MyClass1")
-                .notMatches("_extends_MyClass1");
+    @Before
+    public void init() {
+        setRootRule(STATEMENT_IF);
     }
 
     @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(EXTENDS_LIST))
-                .matches("extendsMyClass")
-                .matches("extendsMyClass1");
+    public void RulesIfElseStatement() {
+        assertThat(parser)
+                .matches("if(NAME){}")
+                .matches("if(NAME){}else{}")
+                .matches("if(NAME)12;")
+                .matches("if(NAME)12;else'a';")
+                .matches("if(NAME){int number;}")
+                .matches("if(NAME){int number=12;}else{'a';}");
+    }
+
+    @Test
+    public void RulesIfElseStatementCaseError() {
+        assertThat(parser)
+                .notMatches("if(NAME){intnumber=12;}")
+                .notMatches("if(NAME){intnumber=12;}else{'a';}");
     }
 }

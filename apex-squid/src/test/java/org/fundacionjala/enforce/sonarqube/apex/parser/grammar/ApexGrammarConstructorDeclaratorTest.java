@@ -21,33 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CONSTRUCTOR_DECLARATION;
 
-public class ApexGrammarVariableDeclarationTest {
+public class ApexGrammarConstructorDeclaratorTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(CONSTRUCTOR_DECLARATION);
+    }
 
     @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(VARIABLE_DECLARATION))
-                .matches("intmyVariable;")
-                .matches("privatedoublemyVariable[];")
-                .matches("publicbooleanmy_Variable[];")
-                .matches("intmyVariable=1;")
-                .matches("publicdoublemyVariable[]=98;")
-                .matches("charmyVariable='A';")
-                .matches("publiccharmyVariable[]='B';")
-                .matches("privatecharmy_Variable[]='z';")
-                .notMatches("myVariable_[]")
-                .notMatches("1myVariable")
-                .notMatches("1myVariable[]");
+    public void testConstructor() {
+        assertThat(parser)
+                .matches("public Book(){}")
+                .matches("public Account(){int myVariable;}")
+                .notMatches("public Table()")
+                .notMatches("public int save(){");
+    }
+
+    @Test
+    public void testConstructorWithParameter() {
+        assertThat(parser)
+                .matches("public Book(int id){}")
+                .matches("public Table(int items[]){}")
+                .notMatches("public int update(intleft,intright)");
+    }
+
+    @Test
+    public void testConstructorWithAnnotation() {
+        assertThat(parser)
+                .matches("@ReadOnly public Book(int id){}")
+                .notMatches("@Rasjkads@Retionpublicint1MyMethod(intmyParameter,intmyParameter2)");
     }
 }

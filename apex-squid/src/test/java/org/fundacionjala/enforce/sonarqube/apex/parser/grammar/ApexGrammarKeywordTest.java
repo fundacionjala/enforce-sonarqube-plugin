@@ -21,41 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMERIC_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
 
-public class ApexGrammarNumericExpressionTest {
+public class ApexGrammarKeywordTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(NUMERIC_EXPRESSION))
-                .matches("11-10")
-                .matches("22+22")
-                .matches("10*22")
-                .matches("100/20")
-                .matches("100%10");
+    @Before
+    public void init() {
+        setRootRule(KEYWORD);
     }
-    
+
     @Test
-    public void positiveRulesOperationsSimplePlus() {
-        assertThat(grammarBuilder.rule(NUMERIC_EXPRESSION))
-                .matches("10++")
-                .matches("A++");
+    public void positiveBasicRules() {
+        assertThat(parser)
+                .matches("with sharing")
+                .matches("without sharing");
     }
-    
+
     @Test
-    public void positiveRulesOperationsSimpleMinus() {
-        assertThat(grammarBuilder.rule(NUMERIC_EXPRESSION))
-                .matches("10--")
-                .matches("A--");
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches(" ? ")
+                .notMatches("_with sharing ")
+                .notMatches("_with_sharing ")
+                .notMatches("_withSharing")
+                .notMatches("with sharinG ")
+                .notMatches(" without_sharing ")
+                .notMatches("withoutSharing")
+                .notMatches(" Without Sharing ");
     }
 }

@@ -21,33 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_SPECIFIER;
 
-public class ApexGrammarFieldDeclarationTest {
+public class ApexGrammarTypeSpecifierTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(TYPE_SPECIFIER);
+    }
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(FIELD_DECLARATION))
-                .matches("publicMyClass(){}")
-                .matches("publicbooleanMyMethod(){}")
-                .matches("intmyVariable;")
-                .matches("charmyVariable=newChar();")
-                .matches("privatedoublemyVariable[];")
-                .matches("publicbooleanmy_Variable[];")
-                .matches("intmyVariable=1;")
-                .matches("publicdoublemyVariable[]=98;")
-                .matches("charmyVariable='A';")
-                .matches("publiccharmyVariable[]='B';")
-                .matches("privatecharmy_Variable[]='z';");
+        assertThat(parser)
+                .matches("boolean")
+                .matches("int")
+                .matches("short")
+                .matches("long")
+                .matches("char")
+                .matches("float")
+                .matches("byte")
+                .matches("MyClass")
+                .notMatches("1Boolean")
+                .notMatches("2Byte");
     }
 }

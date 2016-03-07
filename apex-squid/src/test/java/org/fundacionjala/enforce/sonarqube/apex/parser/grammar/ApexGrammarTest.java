@@ -21,67 +21,79 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.junit.Test;
+import org.junit.Before;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.APEX_GRAMMAR;
 
-public class ApexGrammarTest {
+public class ApexGrammarTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(APEX_GRAMMAR);
+    }
 
     @Test
     public void correctRuleBasic() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicclassMyClass{publicbooleanMyMethod(){intname=0;while(true){insertaccout;}}}");
+        assertThat(parser)
+                .matches("public class MyClass {"
+                        + "public boolean MyMethod(){"
+                        + "int name=0;while(true){"
+                        + "insert accout;"
+                        + "}"
+                        + "}"
+                        + "}");
     }
 
     @Test
     public void correctRuleMoreImplements() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicwithsharingclassClass1implementsYourClass{"
-                        + "publicvoidMyMethod(intmyParameter){"
-                        + "intnumber=myParameter;"
+        assertThat(parser)
+                .matches("public with sharing class Class1 implements YourClass {"
+                        + "public void MyMethod(int myParameter){"
+                        + "int number = myParameter;"
                         + "}"
                         + "}");
     }
 
     @Test
     public void correctRuleMoreExtends() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicwithsharingclassClass1extendsYourClass{"
-                        + "publicintMyMethod(){"
-                        + "intnumber=0;"
+        assertThat(parser)
+                .matches("public with sharing class Class1 extends YourClass {"
+                        + "public int MyMethod(){"
+                        + "int number = 0;"
                         + "}"
                         + "}");
     }
-    
+
     @Test
     public void correctRuleBasicVariable() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicclassMyClass{intmyVariable;}");
+        assertThat(parser)
+                .matches("public class MyClass {"
+                        + "int myVariable;"
+                        + "}");
     }
 
     @Test
     public void correctRuleMoreImplementsVariableAndMethod() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicwithsharingclassClass1implementsYourClass{"
-                        + "publicbooleanmy_Variable=true;"
-                        + "publicbooleanMyMethod(){}"
+        assertThat(parser)
+                .matches("public with sharing class Class1 implements YourClass {"
+                        + "public boolean my_Variable = true;"
+                        + "public boolean MyMethod(){}"
                         + "}");
     }
 
     @Test
     public void correctRuleMoreExtendsVariableAndMethod() {
-        assertThat(grammarBuilder.rule(APEX_GRAMMAR))
-                .matches("publicwithsharingclassClass1extendsYourClass{"
-                        + "privateintmy_Variable=10;"
-                        + "publicbooleanMyMethod(){}"
+        assertThat(parser)
+                .matches("public with sharing class Class1 extends YourClass{"
+                        + "private int my_Variable = 10;"
+                        + "public boolean MyMethod(){}"
                         + "}");
     }
 }
