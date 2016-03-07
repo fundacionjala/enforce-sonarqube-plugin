@@ -12,7 +12,7 @@
 
     <artifactId>apex-check</artifactId>
 
-    <name>Enforce :: Checks</name>
+    <name>Apex :: Checks</name>
 
     <dependencies>
         <dependency>

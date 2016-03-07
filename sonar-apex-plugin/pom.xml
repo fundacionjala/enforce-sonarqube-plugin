@@ -13,7 +13,7 @@
     <artifactId>apex-plugin</artifactId>
     <packaging>sonar-plugin</packaging>
 
-    <name>Enforce :: Plugin</name>
+    <name>Apex :: Plugin</name>
 
     <dependencies>
         <dependency>
