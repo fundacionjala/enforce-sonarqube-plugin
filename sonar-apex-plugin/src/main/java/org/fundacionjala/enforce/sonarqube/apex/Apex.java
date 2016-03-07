@@ -53,7 +53,7 @@ public class Apex extends AbstractLanguage {
     /**
      * Stores the Apex suffix.
      */
-    public static final String KEY = "cls";
+    public static final String KEY = "apex";
 
     /**
      * Stores the settings of the project.

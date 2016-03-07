@@ -43,7 +43,7 @@ public class ApexTest {
     }
     @Test
     public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("cls"));
+        assertThat(apexLanguage.getKey(), is("apex"));
         assertThat(apexLanguage.getName(), is("Apex"));
         assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
     }
