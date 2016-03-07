@@ -21,23 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER;
 
-public class ApexGrammarModifierTest {
+public class ApexGrammarModifierTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(MODIFIER);
+    }
 
     @Test
     public void positiveBasicRules() {
-        assertThat(grammarBuilder.rule(MODIFIER))
+        assertThat(parser)
                 .matches("static")
                 .matches("public")
                 .matches("final")
@@ -51,24 +55,8 @@ public class ApexGrammarModifierTest {
     }
 
     @Test
-    public void negativeBasicRulesSpaceAtTheInitAndEndLoockhead() {
-        assertThat(grammarBuilder.rule(MODIFIER))
-                .notMatches("    ")
-                .notMatches(" static ")
-                .notMatches(" public ")
-                .notMatches(" final ")
-                .notMatches(" abstract ")
-                .notMatches(" synchronized ")
-                .notMatches(" native ")
-                .notMatches(" transient ")
-                .notMatches(" volatile ")
-                .notMatches(" strictfp ")
-                .notMatches(" anotation ");
-    }
-
-    @Test
     public void negativeRules() {
-        assertThat(grammarBuilder.rule(MODIFIER))
+        assertThat(parser)
                 .notMatches(" _ ")
                 .notMatches("P static")
                 .notMatches(" public_")

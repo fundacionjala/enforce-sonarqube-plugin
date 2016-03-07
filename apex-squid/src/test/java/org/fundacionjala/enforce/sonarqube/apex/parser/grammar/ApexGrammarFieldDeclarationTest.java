@@ -21,32 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.junit.Test;
+import org.junit.Before;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
-
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_SPECIFIER;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarTypeSpecifierTest {
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FIELD_DECLARATION;
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+public class ApexGrammarFieldDeclarationTest extends ApexRuleTest {
+
+    @Before
+    public void init() {
+        setRootRule(FIELD_DECLARATION);
+    }
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(TYPE_SPECIFIER))
-                .matches("boolean")
-                .matches("int")
-                .matches("short")
-                .matches("long")
-                .matches("char")
-                .matches("float")
-                .matches("byte")
-                .matches("MyClass")
-                .notMatches("1Boolean")
-                .notMatches("2Byte");
+        assertThat(parser)
+                .matches("public MyClass(){}")
+                .matches("public boolean MyMethod(){}")
+                .matches("int myVariable;")
+                .matches("char myVariable=newChar();")
+                .matches("private double myVariable[];")
+                .matches("public boolean my_Variable[];")
+                .matches("int myVariable = 1;")
+                .matches("public double myVariable[]=98;")
+                .matches("char myVariable = 'A';")
+                .matches("public char myVariable[]='B';")
+                .matches("private char my_Variable[]='z';");
     }
 }

@@ -21,23 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.junit.Test;
+import org.junit.Before;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.EXPRESSION;
 
-public class ApexGrammarExpressionTest {
+public class ApexGrammarExpressionTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(EXPRESSION);
+    }
 
     @Test
     public void positiveRules_LiteralExpresion_IntegerExpresion() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("1")
                 .matches("12")
                 .matches("1009");
@@ -45,7 +49,7 @@ public class ApexGrammarExpressionTest {
 
     @Test
     public void positiveRules_LiteralExpresion_StringLiteral() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("'A'")
                 .matches("'B'")
                 .matches("'c'")
@@ -59,7 +63,7 @@ public class ApexGrammarExpressionTest {
 
     @Test
     public void positiveRulesNumeralExpresion() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("11-10")
                 .matches("22+22")
                 .matches("10*22")
@@ -69,53 +73,53 @@ public class ApexGrammarExpressionTest {
 
     @Test
     public void positiveRulesNumericExpresionOperationSimple() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("11++")
                 .matches("A++");
     }
 
     @Test
     public void positiveRulesTestingExpression() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("10>5")
                 .matches("8>15");
     }
 
     @Test
     public void positiveRulesIdentifier() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("MyVariable")
                 .matches("PATHERN");
     }
 
     @Test
     public void positiveRulesNull() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("null");
     }
 
     @Test
     public void positiveRulesSuper() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("super");
     }
 
     @Test
     public void positiveRulesThis() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("this");
     }
 
     @Test
     public void positiveRulesCastingExpression() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("(int)MyVariable")
                 .matches("(MyObjecto)MyVariable");
     }
 
     @Test
     public void positiveRulesStringExpression() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("1")
                 .matches("MyVariable")
                 .matches("NAME")
@@ -125,7 +129,7 @@ public class ApexGrammarExpressionTest {
 
     @Test
     public void positiveRulesCreatingExpression() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("newMyClass()")
                 .matches("newMyClass(name)")
                 .matches("newMyClass(name,id,type)");
@@ -133,7 +137,7 @@ public class ApexGrammarExpressionTest {
 
     @Test
     public void positiveRulesInvokeExpression() {
-        assertThat(grammarBuilder.rule(EXPRESSION))
+        assertThat(parser)
                 .matches("array.length")
                 .matches("list.size()")
                 .matches("map.put(23,'message').values().toString()");

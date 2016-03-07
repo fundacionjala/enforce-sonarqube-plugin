@@ -21,27 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.junit.Test;
+import org.junit.Before;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TESTING_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CASTING_EXPRESSION;
 
-public class ApexGrammarTestingExpressionTest {
+public class ApexGrammarCastingExpressionTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(CASTING_EXPRESSION);
+    }
 
     @Test
-    public void positiveRulesOperationsSimpleMinus() {
-        assertThat(grammarBuilder.rule(TESTING_EXPRESSION))
-                .matches("10>5")
-                .matches("4>5")
-                .matches("4<5")
-                .matches("4==5")
-                .matches("a==b");
+    public void positiveRules() {
+        assertThat(parser)
+                .matches("(int)MyVariable")
+                .matches("(MyObjecto)MyVariable");
     }
 }

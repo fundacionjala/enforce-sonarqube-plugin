@@ -21,39 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LITERAL_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATION;
 
-public class ApexGrammarLiteralExpressionTest {
+public class ApexGrammarVariableDeclarationTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void positiveRules_IntegerLiteral() {
-        assertThat(grammarBuilder.rule(LITERAL_EXPRESSION))
-                .matches("1")
-                .matches("12")
-                .matches("1009")
-                .matches("0")
-                .notMatches("01");
+    @Before
+    public void init() {
+        setRootRule(VARIABLE_DECLARATION);
     }
-    
+
     @Test
-    public void positiveRules_CharacterLiteral() {
-        assertThat(grammarBuilder.rule(LITERAL_EXPRESSION))
-                .matches("'A'")
-                .matches("'c'")
-                .matches("0")
-                .matches("'name'")
-                .matches("'myVariable'")
-                .notMatches("01")
-                .notMatches("0A");
+    public void positiveRules() {
+        assertThat(parser)
+                .matches("int myVariable;")
+                .matches("private double myVariable[];")
+                .matches("public boolean my_Variable[];")
+                .matches("int myVariable=1;")
+                .matches("public double myVariable[]=98;")
+                .matches("char myVariable='A';")
+                .matches("public char myVariable[]='B';")
+                .matches("private char my_Variable[]='z';")
+                .notMatches("myVariable_[]")
+                .notMatches("1myVariable")
+                .notMatches("1myVariable[]");
     }
 }

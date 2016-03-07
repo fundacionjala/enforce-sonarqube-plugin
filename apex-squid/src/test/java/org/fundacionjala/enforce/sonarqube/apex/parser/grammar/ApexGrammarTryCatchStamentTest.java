@@ -21,24 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CASTING_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TRY_STATEMENT;
 
-public class ApexGrammarCastingExpressionTest {
+public class ApexGrammarTryCatchStamentTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(TRY_STATEMENT);
+    }
 
     @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(CASTING_EXPRESSION))
-                .matches("(int)MyVariable")
-                .matches("(MyObjecto)MyVariable");
+    public void RulesTryCatchStament() {
+        assertThat(parser)
+                .matches("try{}catch(Exception ex){}")
+                .matches("try{int number=0;}catch(Exception ex){char message=ex.message;}");
+    }
+
+    @Test
+    public void RulesTryCatchStamentCaseError() {
+        assertThat(parser)
+                .notMatches("try{}catch(intex){}")
+                .notMatches("try{intnumber=0;}catch(charex){charmessage=ex.message;}");
     }
 }

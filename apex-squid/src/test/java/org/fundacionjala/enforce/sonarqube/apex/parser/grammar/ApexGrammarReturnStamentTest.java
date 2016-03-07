@@ -21,32 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.RETURN_STATEMENT;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.IMPLEMENTS_LIST;
+public class ApexGrammarReturnStamentTest extends ApexRuleTest {
 
-public class ApexGrammarImplementsListTest {
-
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void negativeRulesMegeType() {
-        assertThat(grammarBuilder.rule(IMPLEMENTS_LIST))
-                .notMatches("_implementsMyClass")
-                .notMatches(" Implements_MyClass1")
-                .notMatches("=implements_MyClass1");
+    @Before
+    public void init() {
+        setRootRule(RETURN_STATEMENT);
     }
 
     @Test
-    public void positiveRules() {
-        assertThat(grammarBuilder.rule(IMPLEMENTS_LIST))
-                .matches("implementsMyClass")
-                .matches("implementsMyClass1");
+    public void RulesReturnStament() {
+        assertThat(parser)
+                .matches("return true;")
+                .matches("return 0;")
+                .matches("return null;");
+    }
+
+    @Test
+    public void RulesReturnStamentCaseError() {
+        assertThat(parser)
+                .notMatches("return;")
+                .notMatches("returntrue;")
+                .notMatches("return0;")
+                .notMatches("returnnull;");
     }
 }

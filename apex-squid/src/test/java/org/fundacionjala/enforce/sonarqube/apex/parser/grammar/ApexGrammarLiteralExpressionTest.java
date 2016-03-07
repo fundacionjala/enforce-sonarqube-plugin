@@ -21,38 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CONSTRUCTOR_DECLARATION;
+import org.junit.Before;
 import org.junit.Test;
+
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarConstructorDeclaratorTest {
-    
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.LITERAL_EXPRESSION;
 
-    @Test
-    public void testConstructor() {
-        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
-                .matches("publicBook(){}")
-                .matches("publicAccount(){intmyVariable;}")
-                .notMatches("publicTable()")
-                .notMatches("publicintsave(){");
-    }
-    
-    @Test
-    public void testConstructorWithParameter() {
-        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
-                .matches("publicBook(intid){}")
-                .matches("publicTable(intitems[]){}")
-                .notMatches("publicintupdate(intleft,intright)");
+public class ApexGrammarLiteralExpressionTest extends ApexRuleTest {
+
+    @Before
+    public void init() {
+        setRootRule(LITERAL_EXPRESSION);
     }
 
     @Test
-    public void testConstructorWithAnnotation() {
-        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
-                .matches("@ReadOnlypublicBook(intid){}")
-                .notMatches("@Rasjkads@Retionpublicint1MyMethod(intmyParameter,intmyParameter2)");
+    public void positiveRules_IntegerLiteral() {
+        assertThat(parser)
+                .matches("1")
+                .matches("12")
+                .matches("1009")
+                .matches("0")
+                .notMatches("01");
+    }
+
+    @Test
+    public void positiveRules_CharacterLiteral() {
+        assertThat(parser)
+                .matches("'A'")
+                .matches("'c'")
+                .matches("0")
+                .matches("'name'")
+                .matches("'myVariable'")
+                .notMatches("01")
+                .notMatches("0A");
     }
 }

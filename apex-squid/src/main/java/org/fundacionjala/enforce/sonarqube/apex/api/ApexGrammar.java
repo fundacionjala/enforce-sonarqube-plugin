@@ -24,6 +24,7 @@
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.Grammar;
+import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 
@@ -159,23 +160,13 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.ARGUM
 public class ApexGrammar {
 
     /**
-     * It is the main method of grammar. Here all other grammars are constructed.
+     * It is the main method of grammar. Here all other grammars are
+     * constructed.
      *
-     * @return The grammar of a class.
-     */
-    public static Grammar create() {
-        return create(Boolean.TRUE);
-    }
-
-    /**
-     * Creates a grammar from {@link ApexGrammarBuilder}. It's required a boolean to indicate the
-     * type of grammar builder. Only available for unit test.
-     *
-     * @param isFulGrammar represents the type of grammar builder required.
      * @return the grammar
      */
-    static Grammar create(boolean isFulGrammar) {
-        ApexGrammarBuilder grammarBuilder = ApexGrammarBuilder.create(isFulGrammar);
+    public static Grammar create() {
+        LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
         expression(grammarBuilder);
         expressionFinal(grammarBuilder);
         statement(grammarBuilder);
@@ -231,12 +222,12 @@ public class ApexGrammar {
     }
 
     /**
-     * Grammar is created for the head of a class with the switch and whether it will extend or
-     * implement otherwise.
+     * Grammar is created for the head of a class with the switch and whether it
+     * will extend or implement otherwise.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void typeDeclaration(ApexGrammarBuilder grammarBuilder) {
+    private static void typeDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE_DECLARATION).is(
                 grammarBuilder.oneOrMore(CLASS_DECLARATION)
         );
@@ -247,7 +238,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void modifierKeyWord(ApexGrammarBuilder grammarBuilder) {
+    private static void modifierKeyWord(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(MODIFIER_KEYWORD).is(
                 grammarBuilder.optional(MODIFIER),
                 grammarBuilder.optional(KEYWORD)
@@ -259,7 +250,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void modifier(ApexGrammarBuilder grammarBuilder) {
+    private static void modifier(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(MODIFIER).is(grammarBuilder.firstOf(
                 PUBLIC,
                 STATIC,
@@ -281,7 +272,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void keyword(ApexGrammarBuilder grammarBuilder) {
+    private static void keyword(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(KEYWORD).is(
                 grammarBuilder.firstOf(
                         WITHOUT,
@@ -295,7 +286,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void annotation(ApexGrammarBuilder grammarBuilder) {
+    private static void annotation(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ANNOTATION).is(
                 AT,
                 grammarBuilder.firstOf(
@@ -318,17 +309,18 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void className(ApexGrammarBuilder grammarBuilder) {
+    private static void className(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CLASS_NAME).is(IDENTIFIER);
     }
 
     /**
-     * Grammar for the declaration of a class or interface is constructed. Composed of the rules of
-     * a class type, its identified, extends, and implements.
+     * Grammar for the declaration of a class or interface is constructed.
+     * Composed of the rules of a class type, its identified, extends, and
+     * implements.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void classDeclaration(ApexGrammarBuilder grammarBuilder) {
+    private static void classDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CLASS_DECLARATION).is(
                 grammarBuilder.zeroOrMore(ANNOTATION),
                 MODIFIER_KEYWORD,
@@ -347,7 +339,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void implementsList(ApexGrammarBuilder grammarBuilder) {
+    private static void implementsList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(IMPLEMENTS_LIST).is(
                 IMPLEMENTS,
                 CLASS_NAME
@@ -359,7 +351,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void extendsList(ApexGrammarBuilder grammarBuilder) {
+    private static void extendsList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXTENDS_LIST).is(
                 EXTENDS,
                 CLASS_NAME
@@ -371,7 +363,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void typeClass(ApexGrammarBuilder grammarBuilder) {
+    private static void typeClass(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE_CLASS).is(
                 grammarBuilder.firstOf(
                         CLASS,
@@ -384,7 +376,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void fieldDeclaration(ApexGrammarBuilder grammarBuilder) {
+    private static void fieldDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_DECLARATION).is(
                 grammarBuilder.firstOf(
                         METHOD_DECLARATION,
@@ -398,7 +390,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void arguments(ApexGrammarBuilder grammarBuilder) {
+    private static void arguments(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ARGUMENTS).is(
                 TERMINAL_EXPRESSION,
                 grammarBuilder.zeroOrMore(
@@ -413,7 +405,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void parameter(ApexGrammarBuilder grammarBuilder) {
+    private static void parameter(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(PARAMETER).is(
                 TYPE,
                 IDENTIFIER,
@@ -426,7 +418,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void parameterList(ApexGrammarBuilder grammarBuilder) {
+    private static void parameterList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(PARAMETER_LIST).is(
                 PARAMETER,
                 grammarBuilder.zeroOrMore(COMMA, PARAMETER)
@@ -438,16 +430,17 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void methodName(ApexGrammarBuilder grammarBuilder) {
+    private static void methodName(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(METHOD_NAME).is(IDENTIFIER);
     }
 
     /**
-     * Creates rules to the last line of the method and the completion of the method.
+     * Creates rules to the last line of the method and the completion of the
+     * method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void methodDeclaration(ApexGrammarBuilder grammarBuilder) {
+    private static void methodDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(METHOD_DECLARATION).is(
                 grammarBuilder.zeroOrMore(ANNOTATION),
                 MODIFIER,
@@ -465,7 +458,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void constructorDeclaration(ApexGrammarBuilder grammarBuilder) {
+    private static void constructorDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONSTRUCTOR_DECLARATION).is(
                 grammarBuilder.zeroOrMore(ANNOTATION),
                 MODIFIER,
@@ -482,7 +475,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void typeSpecifier(ApexGrammarBuilder grammarBuilder) {
+    private static void typeSpecifier(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE_SPECIFIER).is(
                 grammarBuilder.firstOf(
                         BOOLEAN,
@@ -500,11 +493,12 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rule for merge with symbol '=' and an expression.
+     * It is responsible for creating the rule for merge with symbol '=' and an
+     * expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void assignVariableInitializer(ApexGrammarBuilder grammarBuilder) {
+    private static void assignVariableInitializer(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ASSIGN_VARIABLE_INITILIZER).is(
                 ASSIGN,
                 EXPRESSION
@@ -516,7 +510,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void literalExpression(ApexGrammarBuilder grammarBuilder) {
+    private static void literalExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(LITERAL_EXPRESSION).is(
                 grammarBuilder.firstOf(
                         STRING,
@@ -525,11 +519,12 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make the casting of an expression.
+     * It is responsible for creating the rules to make the casting of an
+     * expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void castingExpression(ApexGrammarBuilder grammarBuilder) {
+    private static void castingExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CASTING_EXPRESSION).is(
                 LPAREN,
                 TYPE,
@@ -543,16 +538,17 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    public static void testingExpressionEqual(ApexGrammarBuilder grammarBuilder) {
+    public static void testingExpressionEqual(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EQUAL).is(ASSIGN, ASSIGN);
     }
 
     /**
-     * It is responsible for creating the rules to make the testing of an expression.
+     * It is responsible for creating the rules to make the testing of an
+     * expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void testingExpression(ApexGrammarBuilder grammarBuilder) {
+    private static void testingExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TESTING_EXPRESSION).is(
                 TERMINAL_EXPRESSION,
                 grammarBuilder.firstOf(EQUAL, GT, LT),
@@ -561,11 +557,12 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for creating the rules to make the creating of an expression.
+     * It is responsible for creating the rules to make the creating of an
+     * expression.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void creatingExpression(ApexGrammarBuilder grammarBuilder) {
+    private static void creatingExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CREATING_EXPRESSION).is(
                 NEW,
                 CLASS_NAME,
@@ -580,11 +577,12 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for setting the rules for simple mathematical operations.
+     * It is responsible for setting the rules for simple mathematical
+     * operations.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void numericExpressionOperations(ApexGrammarBuilder grammarBuilder) {
+    private static void numericExpressionOperations(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(NUMERIC_EXPRESSION_OPERATIONS).is(
                 TERMINAL_EXPRESSION,
                 grammarBuilder.firstOf(
@@ -603,7 +601,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void numericExpressionOperationsSimpleInc(ApexGrammarBuilder grammarBuilder) {
+    private static void numericExpressionOperationsSimpleInc(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INC).is(PLUS, PLUS);
     }
 
@@ -612,16 +610,17 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void numericExpressionOperationsSimpleDec(ApexGrammarBuilder grammarBuilder) {
+    private static void numericExpressionOperationsSimpleDec(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DEC).is(MINUS, MINUS);
     }
 
     /**
-     * It is responsible for creating the rules to make one increment or decrement.
+     * It is responsible for creating the rules to make one increment or
+     * decrement.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void numericExpressionOperationsSimple(ApexGrammarBuilder grammarBuilder) {
+    private static void numericExpressionOperationsSimple(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(NUMERIC_EXPRESSION_OPERATIONS_SIMPLE).is(
                 TERMINAL_EXPRESSION,
                 grammarBuilder.firstOf(INC, DEC)
@@ -633,7 +632,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void numericExpression(ApexGrammarBuilder grammarBuilder) {
+    private static void numericExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(NUMERIC_EXPRESSION).is(
                 grammarBuilder.firstOf(
                         NUMERIC_EXPRESSION_OPERATIONS,
@@ -647,7 +646,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void invokeExpression(ApexGrammarBuilder grammarBuilder) {
+    private static void invokeExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INVOKE_EXPRESSION).is(
                 IDENTIFIER,
                 grammarBuilder.optional(
@@ -665,7 +664,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void terminalExpression(ApexGrammarBuilder grammarBuilder) {
+    private static void terminalExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TERMINAL_EXPRESSION).is(
                 grammarBuilder.firstOf(
                         INVOKE_EXPRESSION,
@@ -682,7 +681,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void expression(ApexGrammarBuilder grammarBuilder) {
+    private static void expression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXPRESSION).is(
                 grammarBuilder.firstOf(
                         NUMERIC_EXPRESSION,
@@ -699,7 +698,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void expressionFinal(ApexGrammarBuilder grammarBuilder) {
+    private static void expressionFinal(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXPRESSION_FINAL).is(EXPRESSION, SEMICOLON);
     }
 
@@ -708,7 +707,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void statamentElse(ApexGrammarBuilder grammarBuilder) {
+    private static void statamentElse(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(STATEMENT_ELSE).is(
                 ELSE,
                 grammarBuilder.firstOf(
@@ -722,7 +721,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void statementIf(ApexGrammarBuilder grammarBuilder) {
+    private static void statementIf(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(STATEMENT_IF).is(
                 IF,
                 LPAREN,
@@ -740,7 +739,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void statementBlock(ApexGrammarBuilder grammarBuilder) {
+    private static void statementBlock(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(STATEMENT_BLOCK).is(
                 LBRACE,
                 grammarBuilder.zeroOrMore(STATEMENT),
@@ -752,7 +751,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void whileStatement(ApexGrammarBuilder grammarBuilder) {
+    private static void whileStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(WHILE_STATEMENT).is(
                 WHILE,
                 LPAREN,
@@ -769,7 +768,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void forStatement(ApexGrammarBuilder grammarBuilder) {
+    private static void forStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FOR_STATEMENT).is(
                 FOR,
                 LPAREN,
@@ -789,7 +788,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void tryStatement(ApexGrammarBuilder grammarBuilder) {
+    private static void tryStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TRY_STATEMENT).is(
                 TRY,
                 grammarBuilder.firstOf(
@@ -810,7 +809,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void dmlStatement(ApexGrammarBuilder grammarBuilder) {
+    private static void dmlStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DML_STATEMENT).is(
                 grammarBuilder.firstOf(
                         INSERT,
@@ -828,7 +827,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void returnStatement(ApexGrammarBuilder grammarBuilder) {
+    private static void returnStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(RETURN_STATEMENT).is(
                 RETURN,
                 EXPRESSION_FINAL
@@ -840,7 +839,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void statement(ApexGrammarBuilder grammarBuilder) {
+    private static void statement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(STATEMENT).is(
                 grammarBuilder.firstOf(
                         TERMINAL_STATEMENT,
@@ -859,11 +858,12 @@ public class ApexGrammar {
     }
 
     /**
-     * It is responsible for setting the rules for the declaration of a variable.
+     * It is responsible for setting the rules for the declaration of a
+     * variable.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void variableDeclaration(ApexGrammarBuilder grammarBuilder) {
+    private static void variableDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(VARIABLE_DECLARATION).is(
                 grammarBuilder.optional(MODIFIER),
                 TYPE,
@@ -877,7 +877,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void variableDeclarator(ApexGrammarBuilder grammarBuilder) {
+    private static void variableDeclarator(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(VARIABLE_DECLARATOR).is(
                 VARIABLE_DECLARATOR_ID,
                 grammarBuilder.optional(ASSIGN_VARIABLE_INITILIZER)
@@ -888,7 +888,7 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void variableDeclaratorId(ApexGrammarBuilder grammarBuilder) {
+    private static void variableDeclaratorId(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(VARIABLE_DECLARATOR_ID).is(
                 IDENTIFIER,
                 grammarBuilder.optional(BRACKETS)
@@ -900,16 +900,17 @@ public class ApexGrammar {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void brackets(ApexGrammarBuilder grammarBuilder) {
+    private static void brackets(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(BRACKETS).is(LBRACKET, RBRACKET);
     }
 
     /**
-     * It is responsible for building the rules for the different types of return of a method.
+     * It is responsible for building the rules for the different types of
+     * return of a method.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void type(ApexGrammarBuilder grammarBuilder) {
+    private static void type(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE).is(TYPE_SPECIFIER);
     }
 }

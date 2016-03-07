@@ -21,23 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.MODIFIER_KEYWORD;
 
-public class ApexGrammarModifierKeywordTest {
+public class ApexGrammarModifierKeywordTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(MODIFIER_KEYWORD);
+    }
 
     @Test
     public void buildingModifierWithOnlyCasesLookahead() {
-        assertThat(grammarBuilder.rule(MODIFIER_KEYWORD))
+        assertThat(parser)
                 .matches("static")
                 .matches("public")
                 .matches("final")
@@ -52,19 +56,19 @@ public class ApexGrammarModifierKeywordTest {
 
     @Test
     public void buildingModifierDifferentCorrectCases() {
-        assertThat(grammarBuilder.rule(MODIFIER_KEYWORD))
+        assertThat(parser)
                 .matches("static")
-                .matches("publicwithsharing")
-                .matches("finalwithoutsharing")
-                .matches("abstractwithsharing")
-                .matches("synchronizedwithsharing")
-                .matches("nativewithsharing")
-                .matches("transientwithsharing");
+                .matches("public with sharing")
+                .matches("final without sharing")
+                .matches("abstract with sharing")
+                .matches("synchronized with sharing")
+                .matches("native with sharing")
+                .matches("transient with sharing");
     }
 
     @Test
     public void buildingModifierDifferentIncorrectCases() {
-        assertThat(grammarBuilder.rule(MODIFIER_KEYWORD))
+        assertThat(parser)
                 .notMatches("_")
                 .notMatches("static _")
                 .notMatches("public With sharing")
