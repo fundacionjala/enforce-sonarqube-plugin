@@ -33,12 +33,12 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check for a DML is not within a "for loop"
+ * Check for a DML is not within a "for loop".
  */
 @Rule(
         key = DmlInForCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "You can not be a DML statement in a 'for'",
+        name = "\"for\" loop should not have DML statement",
         description = "DML statement in a for",
         tags = Tags.BUG
 )

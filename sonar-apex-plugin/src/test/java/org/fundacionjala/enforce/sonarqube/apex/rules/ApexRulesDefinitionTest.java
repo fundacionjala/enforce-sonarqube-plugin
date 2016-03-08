@@ -42,7 +42,7 @@ public class ApexRulesDefinitionTest {
         RulesDefinition.Repository repository = context.repository("apex");
 
         assertThat(repository.name(), equalTo("SonarQube"));
-        assertThat(repository.language(), equalTo("cls"));
+        assertThat(repository.language(), equalTo("apex"));
         assertThat(repository.rules().size(), is(CheckList.getChecks().size()));
     }
 }
