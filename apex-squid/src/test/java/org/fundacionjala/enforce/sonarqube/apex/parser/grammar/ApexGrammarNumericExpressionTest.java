@@ -21,41 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
-public class ApexTest {
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-    private Apex apexLanguage;
-    
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMERIC_EXPRESSION;
+
+public class ApexGrammarNumericExpressionTest extends ApexRuleTest {
+
     @Before
-    public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("apex"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    public void init() {
+        setRootRule(NUMERIC_EXPRESSION);
     }
 
     @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
+    public void positiveRules() {
+        assertThat(parser)
+                .matches("11-10")
+                .matches("22+22")
+                .matches("10*22")
+                .matches("100/20")
+                .matches("100%10");
+    }
 
-        Settings settings = new Settings();
-        settings.addProperties(props);
+    @Test
+    public void positiveRulesOperationsSimplePlus() {
+        assertThat(parser)
+                .matches("10++")
+                .matches("A++");
+    }
 
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    @Test
+    public void positiveRulesOperationsSimpleMinus() {
+        assertThat(parser)
+                .matches("10--")
+                .matches("A--");
     }
 }

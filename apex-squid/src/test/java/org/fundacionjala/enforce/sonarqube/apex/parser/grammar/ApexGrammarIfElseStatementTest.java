@@ -21,41 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.STATEMENT_IF;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
 
-public class ApexTest {
-
-    private Apex apexLanguage;
-    
     @Before
-    public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("apex"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    public void init() {
+        setRootRule(STATEMENT_IF);
     }
 
     @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
+    public void RulesIfElseStatement() {
+        assertThat(parser)
+                .matches("if(NAME){}")
+                .matches("if(NAME){}else{}")
+                .matches("if(NAME)12;")
+                .matches("if(NAME)12;else'a';")
+                .matches("if(NAME){int number;}")
+                .matches("if(NAME){int number=12;}else{'a';}");
+    }
 
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    @Test
+    public void RulesIfElseStatementCaseError() {
+        assertThat(parser)
+                .notMatches("if(NAME){intnumber=12;}")
+                .notMatches("if(NAME){intnumber=12;}else{'a';}");
     }
 }

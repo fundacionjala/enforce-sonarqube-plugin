@@ -21,41 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
-public class ApexTest {
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-    private Apex apexLanguage;
-    
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TRY_STATEMENT;
+
+public class ApexGrammarTryCatchStamentTest extends ApexRuleTest {
+
     @Before
-    public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("apex"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    public void init() {
+        setRootRule(TRY_STATEMENT);
     }
 
     @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
+    public void RulesTryCatchStament() {
+        assertThat(parser)
+                .matches("try{}catch(Exception ex){}")
+                .matches("try{int number=0;}catch(Exception ex){char message=ex.message;}");
+    }
 
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    @Test
+    public void RulesTryCatchStamentCaseError() {
+        assertThat(parser)
+                .notMatches("try{}catch(intex){}")
+                .notMatches("try{intnumber=0;}catch(charex){charmessage=ex.message;}");
     }
 }

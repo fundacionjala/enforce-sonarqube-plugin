@@ -21,41 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.parser;
 
-import java.util.Map;
+import com.google.common.base.Charsets;
+import com.sonar.sslr.api.Grammar;
+import com.sonar.sslr.impl.Parser;
+import org.sonar.sslr.grammar.GrammarRuleKey;
 
-import com.google.common.collect.Maps;
-import org.junit.Before;
-import org.junit.Test;
-import org.sonar.api.config.Settings;
+import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+public class ApexRuleTest {
 
-public class ApexTest {
+    protected Parser<Grammar> parser = ApexParser.create(new ApexConfiguration(Charsets.UTF_8));
 
-    private Apex apexLanguage;
-    
-    @Before
-    public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("apex"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
-    }
-
-    @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
-
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    protected void setRootRule(GrammarRuleKey ruleKey) {
+        parser.setRootRule(parser.getGrammar().rule(ruleKey));
     }
 }

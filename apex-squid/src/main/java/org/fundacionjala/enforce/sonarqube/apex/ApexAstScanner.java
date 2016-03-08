@@ -85,6 +85,16 @@ public class ApexAstScanner {
     private static final String PROJECT_NAME = "Apex Project";
 
     /**
+     * Stores a key pattern.
+     */
+    private static final String KEY_PATTERN = "%s:%d";
+
+    /**
+     * Stores a value to identifier a class.
+     */
+    private static final boolean IS_CLASS = true;
+
+    /**
      * Default constructor.
      */
     private ApexAstScanner() {
@@ -176,15 +186,9 @@ public class ApexAstScanner {
      * @param builder scanner builder.
      */
     private static void setMethodAnalyser(AstScanner.Builder<Grammar> builder) {
-        builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(new SourceCodeBuilderCallback() {
-            @Override
-            public SourceCode createSourceCode(SourceCode parentSourceCode, AstNode astNode) {
-                String functionName = astNode.getFirstDescendant(METHOD_NAME).getTokenValue();
-                SourceFunction function = new SourceFunction(functionName + ":" + astNode.getToken().getLine());
-                function.setStartAtLine(astNode.getTokenLine());
-                return function;
-            }
-        }, METHOD_DECLARATION));
+        builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
+                buildCallback(METHOD_NAME, IS_CLASS),
+                METHOD_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.METHODS)
@@ -198,15 +202,9 @@ public class ApexAstScanner {
      * @param builder scanner builder.
      */
     private static void setClassesAnalyser(AstScanner.Builder<Grammar> builder) {
-        builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(new SourceCodeBuilderCallback() {
-            @Override
-            public SourceCode createSourceCode(SourceCode parentSourceCode, AstNode astNode) {
-                String className = astNode.getFirstDescendant(CLASS_NAME).getTokenValue();
-                SourceClass function = new SourceClass(className + ":" + astNode.getToken().getLine());
-                function.setStartAtLine(astNode.getTokenLine());
-                return function;
-            }
-        }, CLASS_DECLARATION));
+        builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
+                buildCallback(CLASS_NAME, !IS_CLASS),
+                CLASS_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.CLASSES)
@@ -236,5 +234,34 @@ public class ApexAstScanner {
                 return comment.substring(comment.indexOf('/'));
             }
         });
+    }
+
+    /**
+     * Builds and returns a source code builder callback.
+     *
+     * @param nodeName node type to identify a name.
+     * @param isClass define a SourceClass or SourceFunction.
+     * @return the builder callback.
+     */
+    private static SourceCodeBuilderCallback buildCallback(AstNodeType nodeName, boolean isClass) {
+        return (SourceCode sourceCode, AstNode astNode) -> {
+            String key = generateKey(astNode, nodeName);
+            sourceCode = isClass ? new SourceClass(key) : new SourceFunction(key);
+            sourceCode.setStartAtLine(astNode.getTokenLine());
+            return sourceCode;
+        };
+    }
+
+    /**
+     * Generates and returns the unique key for a node.
+     *
+     * @param node node type to identify a name
+     * @param nodeName current node to be analyzed.
+     * @return the key.
+     */
+    private static String generateKey(AstNode node, AstNodeType nodeName) {
+        String name = node.getFirstDescendant(nodeName).getTokenValue();
+        int line = node.getToken().getLine();
+        return String.format(KEY_PATTERN, name, line);
     }
 }

@@ -33,12 +33,12 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check for a DML is not within a "while"
+ * Check for a DML is not within a "while".
  */
 @Rule(
         key = DmlInWhileCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "You can not be a DML statement in a 'while'",
+        name = "\"while\" loop should not have DML statement",
         description = "DML statement in a while",
         tags = Tags.BUG
 )

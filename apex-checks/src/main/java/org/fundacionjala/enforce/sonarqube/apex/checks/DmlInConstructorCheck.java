@@ -33,12 +33,12 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 
 /**
- * Check for a DML is not within a "Constructor"
+ * Check for a DML is not within a "Constructor".
  */
 @Rule(
         key = DmlInConstructorCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "You can not be a DML statement in a 'constructor'",
+        name = "Constructor method should not have DML statement",
         description = "DML statement in a constructor",
         tags = Tags.BUG
 )

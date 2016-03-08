@@ -39,7 +39,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 @Rule(
         key = DeprecatedMethodCheck.CHECK_KEY,
         priority = Priority.INFO,
-        name = "Verification methods deprecated",
+        name = "Deprecated code should be removed eventually",
         description = "Prevent the body of a method contains deprecated code lines",
         tags = Tags.OBSOLETE
 )

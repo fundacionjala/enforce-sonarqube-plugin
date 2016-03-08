@@ -45,7 +45,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
 @Rule(
         key = AssertMethodCheck.CHECK_KEY,
         priority = Priority.MINOR,
-        name = "Invalid asserts in test methods",
+        name = "\"assert\" should not have the argument \"true\"",
         description = "It's bad practice to use incorrectly assert methods",
         tags = Tags.CONVENTION
 )

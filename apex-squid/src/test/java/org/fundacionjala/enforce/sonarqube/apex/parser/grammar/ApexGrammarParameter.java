@@ -21,41 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
-import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexTest {
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+import org.junit.Before;
 
-    private Apex apexLanguage;
-    
+public class ApexGrammarParameter extends ApexRuleTest {
+
     @Before
-    public void setup() {
-        apexLanguage = new Apex(new Settings());
-    }
-    @Test
-    public void testApexProperties() {
-        assertThat(apexLanguage.getKey(), is("apex"));
-        assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    public void init() {
+        setRootRule(PARAMETER_LIST);
     }
 
     @Test
-    public void testCustomFileSuffixes() {
-        Map<String, String> props = Maps.newHashMap();
-        props.put(Apex.FILE_SUFFIXES_KEY, "cls,apex");
+    public void correctRuleBasicParameterList() {
+        assertThat(parser)
+                .matches("int MyParameter")
+                .matches("int MyParameter[]");
+    }
 
-        Settings settings = new Settings();
-        settings.addProperties(props);
-
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+    @Test
+    public void correctRuleBasicParameterListOptional() {
+        assertThat(parser)
+                .matches("int MyParameter,int MyPatameter2")
+                .matches("int MyParameter[],int MyParameter2[]");
     }
 }
