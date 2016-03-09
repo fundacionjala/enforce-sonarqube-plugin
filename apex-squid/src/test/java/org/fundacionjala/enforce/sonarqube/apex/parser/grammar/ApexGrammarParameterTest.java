@@ -30,8 +30,9 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarParameter extends ApexRuleTest {
+public class ApexGrammarParameterTest extends ApexRuleTest {
 
     @Before
     public void init() {
