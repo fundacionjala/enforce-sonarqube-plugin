@@ -7,11 +7,11 @@ The plug-in enables analysis of Apex source code with SonarQube.
 
 ## Steps to Analyze a Apex Project
 
-    Note: It's recommended to compile apex plug-in from a stable release
+> Note: It's recommended to compile apex plug-in from a **stable release** or the **develop** branch
 
 1. Install SonarQube Server (see [Setup and Upgrade](http://docs.sonarqube.org/display/SONAR/Setup+and+Upgrade) for more details).
 
-2. Install [SonarQube Runner](http://docs.sonarqube.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) and be sure your can call sonar-runner from the directory where you have your source code.
+2. Install [SonarQube Scanner](http://docs.sonarqube.org/display/SONAR/Analyzing+with+SonarQube+Scanner) and be sure your can call sonar-runner from the directory where you have your source code.
 
 3. Install Apex Plug-in (see [Installing a Plugin](http://docs.sonarqube.org/display/SONAR/Installing+a+Plugin) for more details).
 
@@ -31,13 +31,13 @@ To build a SonarQube plug-in, you need [Java](http://www.oracle.com/technetwork/
 Enforce plug-in divides its structure in the following modules:
 ```
 enforce-sonarqube-plugin
-  | - sonar-checks
-  | - sonar-squid
-  | - sonar-plugins
+  | - apex-checks
+  | - apex-squid
+  | - sonar-apex-plugin
   /
 ```
-***sonar-checks:*** Represents all sonarqube rules for analyze Apex language.
+***[apex-checks](https://github.com/fundacionjala/enforce-sonarqube-plugin/wiki/Apex-Checks):*** Represents all sonarqube rules for analyze Apex language.
 
-***sonar-squid:*** Represents to Static source analyzer, which provides an AST.
+***[apex-squid](https://github.com/fundacionjala/enforce-sonarqube-plugin/wiki/Apex-Squid):*** Represents to static source analyzer, which provides an AST.
 
-***sonar-plugins:*** Represents to implementation of sonarqube plugin for Apex language.
+***[sonar-apex-plugin](https://github.com/fundacionjala/enforce-sonarqube-plugin/wiki/Sonar-Apex-Plugin):*** Represents to implementation of sonarqube plugin for Apex language.
