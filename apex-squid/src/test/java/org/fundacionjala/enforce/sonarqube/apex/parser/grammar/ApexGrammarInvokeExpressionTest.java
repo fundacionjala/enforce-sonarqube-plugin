@@ -21,22 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import com.sonar.sslr.api.Grammar;
+import org.junit.Before;
 import org.junit.Test;
+
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.INVOKE_EXPRESSION;
 
-public class ApexGrammarInvokeExpressionTest {
+public class ApexGrammarInvokeExpressionTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(INVOKE_EXPRESSION);
+    }
 
     @Test
     public void testExpression() {
-        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+        assertThat(parser)
                 .matches("account")
                 .notMatches("22")
                 .notMatches("'title'")
@@ -45,7 +50,7 @@ public class ApexGrammarInvokeExpressionTest {
 
     @Test
     public void testExpressionWhenInvokeProperties() {
-        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+        assertThat(parser)
                 .matches("account.name")
                 .notMatches("book.'title'")
                 .notMatches("calculator.100%10");
@@ -53,14 +58,13 @@ public class ApexGrammarInvokeExpressionTest {
 
     @Test
     public void testExpressionWhenInvokeMethods() {
-        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
-                .matches("account.update()")
+        assertThat(parser)
                 .matches("book.getTitle().toString()");
     }
 
     @Test
     public void testExpressionWhenInvokeMethodsWithArguments() {
-        assertThat(grammarBuilder.rule(INVOKE_EXPRESSION))
+        assertThat(parser)
                 .matches("account.save(user)")
                 .matches("book.setTitle('Avergers')")
                 .matches("calculator.sum(11,digit).pow(3).toString()");

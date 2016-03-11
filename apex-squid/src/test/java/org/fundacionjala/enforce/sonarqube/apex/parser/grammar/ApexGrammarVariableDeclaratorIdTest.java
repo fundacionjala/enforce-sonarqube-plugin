@@ -21,38 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.CONSTRUCTOR_DECLARATION;
+import org.junit.Before;
 import org.junit.Test;
+
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarConstructorDeclaratorTest {
-    
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.VARIABLE_DECLARATOR_ID;
 
-    @Test
-    public void testConstructor() {
-        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
-                .matches("publicBook(){}")
-                .matches("publicAccount(){intmyVariable;}")
-                .notMatches("publicTable()")
-                .notMatches("publicintsave(){");
-    }
-    
-    @Test
-    public void testConstructorWithParameter() {
-        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
-                .matches("publicBook(intid){}")
-                .matches("publicTable(intitems[]){}")
-                .notMatches("publicintupdate(intleft,intright)");
+public class ApexGrammarVariableDeclaratorIdTest extends ApexRuleTest {
+
+    @Before
+    public void init() {
+        setRootRule(VARIABLE_DECLARATOR_ID);
     }
 
     @Test
-    public void testConstructorWithAnnotation() {
-        assertThat(grammarBuilder.rule(CONSTRUCTOR_DECLARATION))
-                .matches("@ReadOnlypublicBook(intid){}")
-                .notMatches("@Rasjkads@Retionpublicint1MyMethod(intmyParameter,intmyParameter2)");
+    public void positiveRules() {
+        assertThat(parser)
+                .matches("myVariable")
+                .matches("myVariable[]")
+                .matches("my_Variable[]")
+                .notMatches("myVariable_[]")
+                .notMatches("1myVariable")
+                .notMatches("1myVariable[]");
     }
 }

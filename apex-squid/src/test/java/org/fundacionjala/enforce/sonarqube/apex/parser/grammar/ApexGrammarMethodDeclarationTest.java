@@ -21,41 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.junit.Test;
-
-import com.sonar.sslr.api.Grammar;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.METHOD_DECLARATION;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+import org.junit.Before;
 
-public class ApexGrammarMethodDeclarationTest {
+public class ApexGrammarMethodDeclarationTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
+    @Before
+    public void init() {
+        setRootRule(METHOD_DECLARATION);
+    }
 
     @Test
     public void positiveRules() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("publicintisMethod(){}")
-                .matches("publicintmyMethod(){intmyVariable;}")
-                .notMatches("publicint1MyMethod()");
+        assertThat(parser)
+                .matches("public int isMethod(){}")
+                .matches("public int myMethod(){intmyVariable;}")
+                .notMatches("public int 1MyMethod()");
     }
-    
+
     @Test
     public void positiveRulesMethodWithParameter() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("publicintisMethod(intmyParameter){}")
-                .matches("publicintmyMethod(intmyParameter[]){}")
+        assertThat(parser)
+                .matches("public int isMethod(int myParameter){}")
+                .matches("public int myMethod(int myParameter[]){}")
                 .notMatches("publicint1MyMethod(intmyParameter,intmyParameter2)");
     }
 
     @Test
     public void positiveRulesMethodWithAnnotation() {
-        assertThat(grammarBuilder.rule(METHOD_DECLARATION))
-                .matches("@isTestpublicintisMethod(intmyParameter){}")
-                .matches("@testSetuppublicintmyMethod(intmyParameter[]){}")
+        assertThat(parser)
+                .matches("@isTest public int isMethod(int myParameter){}")
+                .matches("@testSetup public int myMethod(int myParameter[]){}")
                 .notMatches("@ReadOnly@RemoteActionpublicint1MyMethod(intmyParameter,intmyParameter2)");
     }
 }

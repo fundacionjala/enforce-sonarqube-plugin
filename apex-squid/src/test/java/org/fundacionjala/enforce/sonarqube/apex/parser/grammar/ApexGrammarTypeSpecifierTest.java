@@ -21,39 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.PARAMETER_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_SPECIFIER;
 
-public class ApexGrammarParameter {
+public class ApexGrammarTypeSpecifierTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void correctRuleBasic() {
-        assertThat(grammarBuilder.rule(PARAMETER))
-                .matches("intMyParameter")
-                .matches("intMyParameter[]");
+    @Before
+    public void init() {
+        setRootRule(TYPE_SPECIFIER);
     }
-    
+
     @Test
-    public void correctRuleBasicParameterList() {
-        assertThat(grammarBuilder.rule(PARAMETER_LIST))
-                .matches("intMyParameter")
-                .matches("intMyParameter[]");
-    }
-    
-    @Test
-    public void correctRuleBasicParameterListOptional() {
-        assertThat(grammarBuilder.rule(PARAMETER_LIST))
-                .matches("intMyParameter,intMyPatameter2")
-                .matches("intMyParameter[],intMyParameter2[]");
+    public void positiveRules() {
+        assertThat(parser)
+                .matches("boolean")
+                .matches("int")
+                .matches("short")
+                .matches("long")
+                .matches("char")
+                .matches("float")
+                .matches("byte")
+                .matches("MyClass")
+                .notMatches("1Boolean")
+                .notMatches("2Byte");
     }
 }

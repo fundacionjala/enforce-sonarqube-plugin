@@ -21,37 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.KEYWORD;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DML_STATEMENT;
 
-public class ApexGrammarKeywordTest {
+public class ApexGrammarDmlStamentTest extends ApexRuleTest {
 
-    private final Grammar grammarBuilder = ApexGrammar.create(Boolean.FALSE);
-
-    @Test
-    public void positiveBasicRules() {
-        assertThat(grammarBuilder.rule(KEYWORD))
-                .matches("withsharing")
-                .matches("withoutsharing");
+    @Before
+    public void init() {
+        setRootRule(DML_STATEMENT);
     }
 
     @Test
-    public void negativeRules() {
-        assertThat(grammarBuilder.rule(KEYWORD))
-                .notMatches(" ? ")
-                .notMatches("_with sharing ")
-                .notMatches("_with_sharing ")
-                .notMatches("_withSharing")
-                .notMatches("with sharinG ")
-                .notMatches(" without_sharing ")
-                .notMatches("withoutSharing")
-                .notMatches(" Without Sharing ");
+    public void RulesDmlStament() {
+        assertThat(parser)
+                .matches("insert newAcct;")
+                .matches("update myAcct;")
+                .matches("upsert acctList;")
+                .matches("delete doomedAccts;")
+                .matches("undelete savedAccts;");
+    }
+
+    @Test
+    public void RulesDmlStamentCaseError() {
+        assertThat(parser)
+                .notMatches("insertnewAcct;")
+                .notMatches("updatemyAcct;")
+                .notMatches("upsertacctList;")
+                .notMatches("deletedoomedAccts;")
+                .notMatches("undeletesavedAccts;");
     }
 }
