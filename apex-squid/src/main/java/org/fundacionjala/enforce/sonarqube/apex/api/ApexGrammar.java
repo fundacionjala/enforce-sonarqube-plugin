@@ -26,6 +26,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 import com.sonar.sslr.api.Grammar;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
+import static com.sonar.sslr.api.GenericTokenType.EOF;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
@@ -221,7 +222,7 @@ public class ApexGrammar {
         modifierKeyWord(grammarBuilder);
         typeDeclaration(grammarBuilder);
 
-        grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION);
+        grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION, EOF);
         grammarBuilder.setRootRule(APEX_GRAMMAR);
         return grammarBuilder.build();
     }
