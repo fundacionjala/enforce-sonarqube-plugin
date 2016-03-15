@@ -33,7 +33,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Verifies if a class contains test methods.
@@ -65,7 +65,7 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(RuleKey.CLASS_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.CLASS_DECLARATION);
     }
 
     /**
@@ -79,7 +79,7 @@ public class TestMethodCheck extends AnnotationMethodCheck {
         if (isTest(astNode)) {
             return;
         }
-        List<AstNode> methods = astNode.getDescendants(RuleKey.METHOD_DECLARATION);
+        List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
         methods.forEach(method -> {
             if (isTest(method)) {
                 getContext().createLineViolation(this, methodMessage(astNode), method);
@@ -94,7 +94,7 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      * @return the message.
      */
     private String methodMessage(AstNode astNode) {
-        AstNode method = astNode.getFirstDescendant(RuleKey.METHOD_NAME);
+        AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_NAME);
         return String.format(MESSAGE, method.getTokenValue());
     }
 }

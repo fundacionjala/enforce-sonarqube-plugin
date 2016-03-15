@@ -34,7 +34,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Verifies if a test method contains invalid asserts.
@@ -78,7 +78,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(RuleKey.METHOD_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
     }
 
     /**
@@ -92,7 +92,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
         if (!isTest(astNode)) {
             return;
         }
-        List<AstNode> expressions = astNode.getDescendants(RuleKey.ARGUMENTS);
+        List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.ARGUMENTS);
         expressions.forEach(expression -> {
             if (isAssert(expression)) {
                 String first = getValue(expression, 0);

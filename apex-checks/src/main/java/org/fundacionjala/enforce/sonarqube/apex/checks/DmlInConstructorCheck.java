@@ -30,7 +30,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Check for a DML is not within a "Constructor".
@@ -61,7 +61,7 @@ public class DmlInConstructorCheck extends DmlStatementCheck {
      * The variables are initialized and subscribe the base rule.
      */
     public DmlInConstructorCheck() {
-        ruleKey = RuleKey.CONSTRUCTOR_DECLARATION;
+        ruleKey = ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
         message = MESSAGE;
     }
 }

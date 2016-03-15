@@ -28,7 +28,7 @@ import com.sonar.sslr.api.Grammar;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Verifies if a class or method is an annotation.
@@ -64,8 +64,8 @@ public abstract class AnnotationMethodCheck extends SquidCheck<Grammar> {
      */
     protected boolean isAnnotation(AstNode astNode, ApexKeyword keyword) {
         boolean result = Boolean.FALSE;
-        if (astNode.hasDirectChildren(RuleKey.ANNOTATION)) {
-            AstNode annotation = astNode.getFirstChild(RuleKey.ANNOTATION);
+        if (astNode.hasDirectChildren(ApexGrammarRuleKey.ANNOTATION)) {
+            AstNode annotation = astNode.getFirstChild(ApexGrammarRuleKey.ANNOTATION);
             result = annotation.hasDirectChildren(keyword);
         }
         return result;

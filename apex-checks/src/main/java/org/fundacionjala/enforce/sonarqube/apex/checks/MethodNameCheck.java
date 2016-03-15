@@ -36,7 +36,7 @@ import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Verification of the name of the method in a class.
@@ -82,7 +82,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
     @Override
     public void init() {
         pattern = Pattern.compile(format);
-        subscribeTo(RuleKey.METHOD_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
     }
 
     /**
@@ -93,7 +93,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        String methodName = astNode.getFirstDescendant(RuleKey.METHOD_NAME).getTokenValue();
+        String methodName = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_NAME).getTokenValue();
         if (!pattern.matcher(methodName).matches()) {
             getContext().createLineViolation(this,
                     "Rename method \"{0}\" to match the regular expression {1}.", astNode, methodName, format);

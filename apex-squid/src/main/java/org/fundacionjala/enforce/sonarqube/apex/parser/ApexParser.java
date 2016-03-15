@@ -41,6 +41,12 @@ public class ApexParser {
     private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
 
     /**
+     * Default constructor.
+     */
+    private ApexParser() {
+    }
+
+    /**
      * Creates a Parser integrated with Grammar and Lexer.
      *
      * @param config apex configuration.
@@ -53,11 +59,5 @@ public class ApexParser {
         }
         return Parser.builder(ApexGrammar.create())
                 .withLexer(ApexLexer.create(config)).build();
-    }
-
-    /**
-     * Default constructor.
-     */
-    public ApexParser() {
     }
 }
