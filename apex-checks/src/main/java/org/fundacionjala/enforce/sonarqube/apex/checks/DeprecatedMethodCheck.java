@@ -80,9 +80,9 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
     @Override
     public void visitNode(AstNode astNode) {
         if (isDeprecated(astNode) && !isEmptyBlock(astNode)) {
-            astNode = astNode.getFirstDescendant(RuleKey.METHOD_NAME);
+            AstNode method = astNode.getFirstDescendant(RuleKey.METHOD_NAME);
             getContext().createLineViolation(this, String.format(MESSAGE,
-                    astNode.getTokenValue()), astNode);
+                    method.getTokenValue()), method);
         }
     }
 
@@ -93,7 +93,7 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      * @return the analysis result.
      */
     private boolean isEmptyBlock(AstNode astNode) {
-        astNode = astNode.getFirstDescendant(RuleKey.STATEMENT_BLOCK);
-        return astNode.getNumberOfChildren() == EMPTY_BLOCK;
+        AstNode statement = astNode.getFirstDescendant(RuleKey.STATEMENT_BLOCK);
+        return statement.getNumberOfChildren() == EMPTY_BLOCK;
     }
 }

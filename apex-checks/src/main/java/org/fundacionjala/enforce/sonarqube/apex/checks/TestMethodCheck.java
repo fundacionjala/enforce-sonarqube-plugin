@@ -94,7 +94,7 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      * @return the message.
      */
     private String methodMessage(AstNode astNode) {
-        astNode = astNode.getFirstDescendant(RuleKey.METHOD_NAME);
-        return String.format(MESSAGE, astNode.getTokenValue());
+        AstNode method = astNode.getFirstDescendant(RuleKey.METHOD_NAME);
+        return String.format(MESSAGE, method.getTokenValue());
     }
 }

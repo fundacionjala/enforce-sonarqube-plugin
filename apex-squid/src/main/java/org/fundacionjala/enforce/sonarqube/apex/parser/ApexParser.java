@@ -54,4 +54,10 @@ public class ApexParser {
         return Parser.builder(ApexGrammar.create())
                 .withLexer(ApexLexer.create(config)).build();
     }
+
+    /**
+     * Default constructor.
+     */
+    public ApexParser() {
+    }
 }

@@ -78,4 +78,10 @@ public class ApexLexer {
                 .withChannel(new BlackHoleChannel(BLACK_HOLE))
                 .build();
     }
+
+    /**
+     * Default constructor.
+     */
+    public ApexLexer() {
+    }
 }

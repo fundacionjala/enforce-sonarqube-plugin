@@ -63,10 +63,11 @@ public abstract class AnnotationMethodCheck extends SquidCheck<Grammar> {
      * @return the analysis result.
      */
     protected boolean isAnnotation(AstNode astNode, ApexKeyword keyword) {
+        boolean result = Boolean.FALSE;
         if (astNode.hasDirectChildren(RuleKey.ANNOTATION)) {
-            astNode = astNode.getFirstChild(RuleKey.ANNOTATION);
-            return astNode.hasDirectChildren(keyword);
+            AstNode annotation = astNode.getFirstChild(RuleKey.ANNOTATION);
+            result = annotation.hasDirectChildren(keyword);
         }
-        return Boolean.FALSE;
+        return result;
     }
 }
