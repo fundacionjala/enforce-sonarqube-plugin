@@ -61,6 +61,12 @@ public class ApexLexer {
     private static final String BLACK_HOLE = "[ \t\r\n]+";
 
     /**
+     * Default constructor.
+     */
+    private ApexLexer() {
+    }
+
+    /**
      * Creates a Lexer, contains all channels to analyze apex language.
      *
      * @param config apex configuration.
@@ -77,11 +83,5 @@ public class ApexLexer {
                 .withChannel(new PunctuatorChannel(ApexPunctuator.values()))
                 .withChannel(new BlackHoleChannel(BLACK_HOLE))
                 .build();
-    }
-
-    /**
-     * Default constructor.
-     */
-    public ApexLexer() {
     }
 }
