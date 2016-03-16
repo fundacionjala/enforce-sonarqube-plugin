@@ -71,7 +71,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
     /**
      * Stores the index of the second argument.
      */
-    public static final int TWO = 2;
+    public static final int SECOND = 2;
 
     /**
      * The variables are initialized and subscribe the base rule.
@@ -99,7 +99,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
                 if (Objects.equals(first, "true")) {
                     getContext().createLineViolation(this, ASSERT_MESSAGE, expression);
                 } else {
-                    String second = getValue(expression, TWO);
+                    String second = getValue(expression, SECOND);
                     if (Objects.equals(first, second)) {
                         getContext().createLineViolation(this, ASSERT_EQUALS_MESSAGE, expression);
                     }
