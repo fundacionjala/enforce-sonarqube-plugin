@@ -30,7 +30,7 @@ import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.DML_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
 
 public class ApexGrammarDmlStamentTest extends ApexRuleTest {
 

@@ -60,6 +60,12 @@ public class ApexAstScannerTest {
     @Test
     public void testTheNumberOfScannedLines() {
         sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/lines.cls"));
+        assertThat(sourceFile.getInt(ApexMetric.LINES)).isEqualTo(12);
+    }
+
+    @Test
+    public void testTheNumberOfScannedLinesOfCode() {
+        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/lines.cls"));
         assertThat(sourceFile.getInt(ApexMetric.LINES_OF_CODE)).isEqualTo(9);
     }
 

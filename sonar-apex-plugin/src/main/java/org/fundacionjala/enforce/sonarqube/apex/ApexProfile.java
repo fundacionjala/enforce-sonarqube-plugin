@@ -59,12 +59,11 @@ public class ApexProfile extends ProfileDefinition {
     @Override
     public RulesProfile createProfile(ValidationMessages validation) {
         AnnotationBasedProfileBuilder annotationBasedProfileBuilder = new AnnotationBasedProfileBuilder(ruleFinder);
-        RulesProfile rules = annotationBasedProfileBuilder.build(
+        return annotationBasedProfileBuilder.build(
                 CheckList.REPOSITORY_KEY,
                 CheckList.SONAR_WAY_PROFILE,
                 Apex.KEY,
                 CheckList.getChecks(),
                 validation);
-        return rules;
     }
 }

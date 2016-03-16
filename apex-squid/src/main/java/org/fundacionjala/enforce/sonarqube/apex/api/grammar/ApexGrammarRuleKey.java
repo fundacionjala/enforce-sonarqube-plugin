@@ -28,7 +28,7 @@ import org.sonar.sslr.grammar.GrammarRuleKey;
 /**
  * Contains enum all the rules used in the grammar.
  */
-public enum RuleKey implements GrammarRuleKey {
+public enum ApexGrammarRuleKey implements GrammarRuleKey {
 
     ARGUMENTS,
     ANNOTATION,

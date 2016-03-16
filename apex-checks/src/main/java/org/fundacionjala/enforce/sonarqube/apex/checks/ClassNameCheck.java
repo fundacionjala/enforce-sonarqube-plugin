@@ -36,7 +36,7 @@ import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Verification of the name of the class.
@@ -81,7 +81,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
     @Override
     public void init() {
         pattern = Pattern.compile(format);
-        subscribeTo(RuleKey.TYPE_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.TYPE_DECLARATION);
     }
 
     /**
@@ -92,7 +92,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        String className = astNode.getFirstDescendant(RuleKey.CLASS_NAME).getTokenValue();
+        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.CLASS_NAME).getTokenValue();
         if (!pattern.matcher(className).matches()) {
             getContext().createLineViolation(this,
                     "Rename class \"{0}\" to match the regular expression {1}.", astNode, className, format);

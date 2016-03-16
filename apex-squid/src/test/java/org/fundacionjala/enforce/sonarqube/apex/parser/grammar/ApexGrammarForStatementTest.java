@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.FOR_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarForStatementTest extends ApexRuleTest {

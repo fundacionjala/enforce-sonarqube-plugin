@@ -4,6 +4,8 @@ public
             class
                 Article
                     implements
-                        IArticle 
+                        IArticle
+
                             {
+
                                 }

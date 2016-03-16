@@ -30,7 +30,7 @@ import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.NUMERIC_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMERIC_EXPRESSION;
 
 public class ApexGrammarNumericExpressionTest extends ApexRuleTest {
 

@@ -100,7 +100,7 @@ public class ApexSquidSensorTest {
         squidSensor.analyse(project, context);
 
         verify(context).saveMeasure(any(InputFile.class), eq(CoreMetrics.FILES), eq(1.0));
-        verify(context).saveMeasure(any(InputFile.class), eq(CoreMetrics.LINES), eq(0.0));
+        verify(context).saveMeasure(any(InputFile.class), eq(CoreMetrics.LINES), eq(7.0));
         verify(context).saveMeasure(any(InputFile.class), eq(CoreMetrics.NCLOC), eq(6.0));
         verify(context).saveMeasure(any(InputFile.class), eq(CoreMetrics.STATEMENTS), eq(2.0));
         verify(context).saveMeasure(any(InputFile.class), eq(CoreMetrics.FUNCTIONS), eq(1.0));

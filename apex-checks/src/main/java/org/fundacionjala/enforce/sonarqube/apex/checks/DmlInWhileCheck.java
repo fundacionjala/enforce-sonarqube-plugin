@@ -30,7 +30,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Check for a DML is not within a "while".
@@ -61,7 +61,7 @@ public class DmlInWhileCheck extends DmlStatementCheck {
      * The variables are initialized and subscribe the base rule.
      */
     public DmlInWhileCheck() {
-        ruleKey = RuleKey.WHILE_STATEMENT;
+        ruleKey = ApexGrammarRuleKey.WHILE_STATEMENT;
         message = MESSAGE;
     }
 }

@@ -31,7 +31,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * This class checks that a deprecated method does not contain lines of code.
@@ -68,7 +68,7 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(RuleKey.METHOD_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
     }
 
     /**
@@ -80,9 +80,9 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
     @Override
     public void visitNode(AstNode astNode) {
         if (isDeprecated(astNode) && !isEmptyBlock(astNode)) {
-            astNode = astNode.getFirstDescendant(RuleKey.METHOD_NAME);
+            AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_NAME);
             getContext().createLineViolation(this, String.format(MESSAGE,
-                    astNode.getTokenValue()), astNode);
+                    method.getTokenValue()), method);
         }
     }
 
@@ -93,7 +93,7 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      * @return the analysis result.
      */
     private boolean isEmptyBlock(AstNode astNode) {
-        astNode = astNode.getFirstDescendant(RuleKey.STATEMENT_BLOCK);
-        return astNode.getNumberOfChildren() == EMPTY_BLOCK;
+        AstNode statement = astNode.getFirstDescendant(ApexGrammarRuleKey.STATEMENT_BLOCK);
+        return statement.getNumberOfChildren() == EMPTY_BLOCK;
     }
 }

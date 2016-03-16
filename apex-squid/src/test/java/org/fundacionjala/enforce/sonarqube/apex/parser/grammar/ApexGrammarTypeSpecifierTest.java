@@ -30,7 +30,7 @@ import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey.TYPE_SPECIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_SPECIFIER;
 
 public class ApexGrammarTypeSpecifierTest extends ApexRuleTest {
 

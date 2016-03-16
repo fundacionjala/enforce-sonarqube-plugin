@@ -32,6 +32,7 @@ import com.google.common.collect.Lists;
 import com.sonar.sslr.api.Grammar;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
@@ -85,6 +86,11 @@ public class ApexSquidSensor implements Sensor {
     private final ResourcePerspectives resourcePerspectives;
 
     /**
+     * Stores a predicate associated with Apex language.
+     */
+    private final FilePredicate filePredicate;
+
+    /**
      * Stores all source files to be analyzed.
      */
     private final FileSystem fileSystem;
@@ -112,6 +118,11 @@ public class ApexSquidSensor implements Sensor {
                 .addAnnotatedChecks(CheckList.getChecks());
         this.fileSystem = fileSystem;
         this.resourcePerspectives = perspectives;
+
+        FilePredicates predicates = fileSystem.predicates();
+        filePredicate = predicates.and(
+                predicates.hasType(InputFile.Type.MAIN),
+                predicates.hasLanguage(Apex.KEY));
     }
 
     /**
@@ -122,10 +133,7 @@ public class ApexSquidSensor implements Sensor {
      */
     @Override
     public boolean shouldExecuteOnProject(Project project) {
-        FilePredicates predicates = fileSystem.predicates();
-        return fileSystem.hasFiles(predicates.and(
-                predicates.hasType(InputFile.Type.MAIN),
-                predicates.hasLanguage(Apex.KEY)));
+        return fileSystem.hasFiles(filePredicate);
     }
 
     /**
@@ -139,11 +147,12 @@ public class ApexSquidSensor implements Sensor {
         this.context = context;
 
         List<SquidAstVisitor<Grammar>> visitors = Lists.newArrayList(checks.all());
-        this.scanner = ApexAstScanner.create(createConfiguration(), visitors.toArray(new SquidAstVisitor[visitors.size()]));
-        FilePredicates p = fileSystem.predicates();
-        scanner.scanFiles(Lists.newArrayList(fileSystem.files(p.and(p.hasType(InputFile.Type.MAIN), p.hasLanguage(Apex.KEY)))));
+        scanner = ApexAstScanner.create(createConfiguration(),
+                visitors.toArray(new SquidAstVisitor[visitors.size()]));
+        scanner.scanFiles(Lists.newArrayList(fileSystem.files(filePredicate)));
 
-        Collection<SourceCode> squidSourceFiles = scanner.getIndex().search(new QueryByType(SourceFile.class));
+        Collection<SourceCode> squidSourceFiles = scanner.getIndex()
+                .search(new QueryByType(SourceFile.class));
         save(squidSourceFiles);
     }
 
@@ -215,9 +224,9 @@ public class ApexSquidSensor implements Sensor {
         RangeDistributionBuilder complexityDistribution = new RangeDistributionBuilder(
                 CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION,
                 FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
-        squidFunctionsInFile.forEach(squidFunction -> {
-            complexityDistribution.add(squidFunction.getDouble(ApexMetric.COMPLEXITY));
-        });
+        squidFunctionsInFile.forEach(squidFunction ->
+            complexityDistribution.add(squidFunction.getDouble(ApexMetric.COMPLEXITY))
+        );
         context.saveMeasure(sonarFile, buildMeasure(complexityDistribution));
     }
 

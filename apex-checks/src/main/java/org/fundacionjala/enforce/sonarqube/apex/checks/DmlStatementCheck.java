@@ -28,7 +28,7 @@ import com.sonar.sslr.api.Grammar;
 
 import org.sonar.squidbridge.checks.SquidCheck;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 public class DmlStatementCheck extends SquidCheck<Grammar> {
 
@@ -40,7 +40,7 @@ public class DmlStatementCheck extends SquidCheck<Grammar> {
     /**
      * Stores the rule to subscribe.
      */
-    protected RuleKey ruleKey;
+    protected ApexGrammarRuleKey ruleKey;
 
     /**
      * The variables are initialized and subscribe the base rule.
@@ -58,9 +58,9 @@ public class DmlStatementCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.hasDescendant(RuleKey.DML_STATEMENT)) {
+        if (astNode.hasDescendant(ApexGrammarRuleKey.DML_STATEMENT)) {
             getContext().createLineViolation(this, String.format(message,
-                    astNode.getFirstDescendant(RuleKey.DML_STATEMENT).getTokenValue()), astNode);
+                    astNode.getFirstDescendant(ApexGrammarRuleKey.DML_STATEMENT).getTokenValue()), astNode);
         }
     }
 }

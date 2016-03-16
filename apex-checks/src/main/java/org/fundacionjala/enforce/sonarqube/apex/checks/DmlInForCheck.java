@@ -30,7 +30,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.RuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Check for a DML is not within a "for loop".
@@ -58,7 +58,7 @@ public class DmlInForCheck extends DmlStatementCheck {
     public static final String CHECK_KEY = "A1004";
 
     public DmlInForCheck() {
-        ruleKey = RuleKey.FOR_STATEMENT;
+        ruleKey = ApexGrammarRuleKey.FOR_STATEMENT;
         message = MESSAGE;
     }
 }
