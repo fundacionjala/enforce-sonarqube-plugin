@@ -48,4 +48,17 @@ public class ApexGrammarPropertyDeclarationTest extends ApexRuleTest {
                 .matches("int prop {set stringSomething}")
                 .matches("boolean prop {set;}");
     }
+
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                //Without type
+                .notMatches("prop {get; set;}")
+                //without identifier
+                .notMatches("int {get; set;}")
+                //without semicolon
+                .notMatches("int prop {get set}")
+                //without braces
+                .notMatches("int prop [get; set;]");
+    }
 }
