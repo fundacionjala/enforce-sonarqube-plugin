@@ -26,14 +26,14 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 import com.sonar.sslr.api.Grammar;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Declaration;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Expression;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Keyword;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Statement;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Type;
 import static com.sonar.sslr.api.GenericTokenType.EOF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders.DeclarationsRulesBuilder;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders.ExpressionRulesBuilder;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders.KeywordRulesBuilder;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders.StatementRulesBuilder;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders.TypeRuleBuilder;
 
 /**
  * This class unites all the rules you need a class.
@@ -54,22 +54,16 @@ public class ApexGrammar {
      */
     public static Grammar create() {
         LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
-        //GLOBAL
 
-        //1 GRP
-        ExpressionRulesBuilder.create(grammarBuilder);
+        Expression.create(grammarBuilder);
         
-        //2 GRP
-        TypeRuleBuilder.create(grammarBuilder);
+        Type.create(grammarBuilder);
 
-        //3 GRP
-        KeywordRulesBuilder.create(grammarBuilder);
+        Keyword.create(grammarBuilder);
         
-        //4 grp
-        StatementRulesBuilder.create(grammarBuilder);
+        Statement.create(grammarBuilder);
         
-        //5 GRP
-        DeclarationsRulesBuilder.create(grammarBuilder);
+        Declaration.create(grammarBuilder);
         
         grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION, EOF);
         grammarBuilder.setRootRule(APEX_GRAMMAR);

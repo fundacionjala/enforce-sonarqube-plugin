@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
@@ -60,10 +60,11 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
 
 /**
- *
- * @author kevin_titichoca
+ *  This class contains constructors for Statement rules and its sub rules.
+ * 
  */
-public class StatementRulesBuilder {
+public class Statement {
+
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         statement(grammarBuilder);
         whileStatement(grammarBuilder);
@@ -75,8 +76,8 @@ public class StatementRulesBuilder {
         statementIf(grammarBuilder);
         statamentElse(grammarBuilder);
     }
-    
-      /**
+
+    /**
      * It is responsible for setting the rules for the else.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
