@@ -23,7 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PROPERTY_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,17 +33,18 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
  *
  * @author kevin_titichoca
  */
-public class ApexGrammarPropertyDeclarationTest extends ApexRuleTest {
+public class ApexGrammarAccessorTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(PROPERTY_DECLARATION);
+        setRootRule(ACCESSOR);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("int prop {get}")
-                .matches("boolean prop {set}");
+                .matches("get")
+                .matches("set");
     }
+
 }

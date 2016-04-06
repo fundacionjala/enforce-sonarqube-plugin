@@ -27,8 +27,10 @@ import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -36,6 +38,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGN_VARIABLE_INITILIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
@@ -85,6 +88,7 @@ public class DeclarationsRulesBuilder {
         methodName(grammarBuilder);
         methodDeclaration(grammarBuilder);
         propertyDeclaration(grammarBuilder);
+        accessor(grammarBuilder);
     }
 
     /**
@@ -290,7 +294,8 @@ public class DeclarationsRulesBuilder {
         );
     }
 
-    /* It is responsible for creating the rule for identifying a variable.
+    /**
+     * It is responsible for creating the rule for identifying a variable.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -301,12 +306,23 @@ public class DeclarationsRulesBuilder {
         );
     }
 
-    /* It is responsible for creating the rule for identifying a variable.
+    /**
+     * Creates the rule for Property Declaration within a class.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void propertyDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(PROPERTY_DECLARATION).is(
-                TYPE, IDENTIFIER, LBRACE, RBRACE);
+                TYPE, IDENTIFIER, LBRACE, ACCESSOR, RBRACE);
+    }
+
+    /**
+     * Creates the rule for accessor within a class.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void accessor(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ACCESSOR).is(
+                grammarBuilder.firstOf(GET, SET));
     }
 }
