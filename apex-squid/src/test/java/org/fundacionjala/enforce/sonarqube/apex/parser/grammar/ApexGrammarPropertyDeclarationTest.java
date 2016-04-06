@@ -43,8 +43,8 @@ public class ApexGrammarPropertyDeclarationTest extends ApexRuleTest {
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("int prop {get;}")
-                .matches("int prop {get hi}")
+                .matches("int prop {private get; set;}")
+                .matches("int prop {public get hi}")
                 .matches("int prop {set stringSomething}")
                 .matches("boolean prop {set;}");
     }

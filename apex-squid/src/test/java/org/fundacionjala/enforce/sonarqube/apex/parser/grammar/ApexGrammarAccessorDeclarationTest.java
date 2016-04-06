@@ -43,9 +43,9 @@ public class ApexGrammarAccessorDeclarationTest extends ApexRuleTest {
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("public get;");
-//                .matches("private get;")
-//                .matches("global static set;")
+                .matches("public get;")
+                .matches("get;")
+                .matches("private static set;");
 //                .matches("public set;")
 //                .matches("private set;")
 //                .matches("public static get;");

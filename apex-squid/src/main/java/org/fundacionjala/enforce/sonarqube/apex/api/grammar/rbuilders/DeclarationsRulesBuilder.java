@@ -322,9 +322,7 @@ public class DeclarationsRulesBuilder {
                 TYPE,
                 IDENTIFIER,
                 LBRACE,
-                ACCESSOR,
-                grammarBuilder.firstOf(
-                        ACCESSOR_BODY, SEMICOLON),
+                ACCESSOR_DECLARATIONS,
                 RBRACE);
     }
 
@@ -354,8 +352,8 @@ public class DeclarationsRulesBuilder {
      */
     private static void accessorDeclarations(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ACCESSOR_DECLARATIONS).is(
-                ACCESSOR_DECLARATION,
-                ACCESSOR_DECLARATION);
+                grammarBuilder.oneOrMore(
+                ACCESSOR_DECLARATION));
     }
 
     /**

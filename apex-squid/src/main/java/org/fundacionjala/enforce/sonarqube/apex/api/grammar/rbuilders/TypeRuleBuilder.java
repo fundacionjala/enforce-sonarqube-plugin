@@ -81,7 +81,7 @@ public class TypeRuleBuilder {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void modifier(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(MODIFIER).is(grammarBuilder.optional(
+        grammarBuilder.rule(MODIFIER).is(grammarBuilder.zeroOrMore(
                 grammarBuilder.firstOf(
                         PUBLIC,
                         STATIC,
