@@ -23,49 +23,41 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATIONS;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import org.junit.Test;
+import org.junit.Before;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER;
-
-public class ApexGrammarModifierTest extends ApexRuleTest {
+/**
+ *
+ * @author kevin_titichoca
+ */
+public class ApexGrammarAccessorDeclarationsTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(MODIFIER);
+        setRootRule(ACCESSOR_DECLARATIONS);
     }
 
     @Test
-    public void positiveBasicRules() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("static")
-                .matches("public")
-                .matches("final")
-                .matches("abstract")
-                .matches("synchronized")
-                .matches("native")
-                .matches("transient")
-                .matches("volatile")
-                .matches("strictfp")
-                .matches("anotation");
+                .matches("private get; \n"
+                        + "public set;")
+                .matches("protected final get; \n"
+                        + "public static set;")
+                .matches("public set;");
     }
-
+    
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches(" _ ")
-                .notMatches("P static")
-                .notMatches(" public_")
-                .notMatches(" _final")
-                .notMatches(" Abstract")
-                .notMatches("synchRonized")
-                .notMatches("nativE")
-                .notMatches("_Transient")
-                .notMatches("Volatile_")
-                .notMatches("strictfp__");
+                .notMatches("public GET")
+                .notMatches("private set;;")
+                .notMatches("integer set;")
+                .notMatches("public other;")
+                .notMatches("public get,set;");
     }
+
 }

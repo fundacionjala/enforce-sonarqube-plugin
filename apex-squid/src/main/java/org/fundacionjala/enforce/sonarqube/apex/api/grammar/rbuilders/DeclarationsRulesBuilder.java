@@ -23,12 +23,14 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders;
 
-import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
+import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -36,6 +38,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_BODY;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATIONS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGN_VARIABLE_INITILIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
@@ -52,6 +58,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PROPERTY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_CLASS;
@@ -83,6 +90,11 @@ public class DeclarationsRulesBuilder {
         parameterList(grammarBuilder);
         methodName(grammarBuilder);
         methodDeclaration(grammarBuilder);
+        propertyDeclaration(grammarBuilder);
+        accessor(grammarBuilder);
+        accessorBody(grammarBuilder);
+        accessorDeclaration(grammarBuilder);
+        accessorDeclarations(grammarBuilder);
     }
 
     /**
@@ -261,8 +273,6 @@ public class DeclarationsRulesBuilder {
         );
     }
 
-  
-
     /**
      * It is responsible for setting the rules for the declaration of a
      * variable.
@@ -290,7 +300,8 @@ public class DeclarationsRulesBuilder {
         );
     }
 
-    /* It is responsible for creating the rule for identifying a variable.
+    /**
+     * It is responsible for creating the rule for identifying a variable.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -299,5 +310,60 @@ public class DeclarationsRulesBuilder {
                 IDENTIFIER,
                 grammarBuilder.optional(BRACKETS)
         );
+    }
+
+    /**
+     * Creates the rule for Property Declaration within a class.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void propertyDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PROPERTY_DECLARATION).is(
+                TYPE,
+                IDENTIFIER,
+                LBRACE,
+                ACCESSOR_DECLARATIONS,
+                RBRACE);
+    }
+
+    /**
+     * Creates the rule for accessor within a class.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void accessor(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ACCESSOR).is(
+                grammarBuilder.firstOf(GET, SET));
+    }
+
+    /**
+     * Creates the rule for accessor body.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void accessorBody(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ACCESSOR_BODY).is(IDENTIFIER);
+    }
+    
+    /**
+     * Creates the rule for accessor declarations within a class.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void accessorDeclarations(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ACCESSOR_DECLARATIONS).is(
+                grammarBuilder.oneOrMore(
+                ACCESSOR_DECLARATION));
+    }
+
+    /**
+     * Creates the rule for accessor declaration within a class.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void accessorDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ACCESSOR_DECLARATION).is(
+                MODIFIER, ACCESSOR,
+                grammarBuilder.firstOf(ACCESSOR_BODY, SEMICOLON));
     }
 }
