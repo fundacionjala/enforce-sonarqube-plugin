@@ -261,8 +261,6 @@ public class DeclarationsRulesBuilder {
         );
     }
 
-  
-
     /**
      * It is responsible for setting the rules for the declaration of a
      * variable.
@@ -290,7 +288,8 @@ public class DeclarationsRulesBuilder {
         );
     }
 
-    /* It is responsible for creating the rule for identifying a variable.
+    /**
+     * It is responsible for creating the rule for identifying a variable.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */

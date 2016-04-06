@@ -64,6 +64,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
  * @author kevin_titichoca
  */
 public class StatementRulesBuilder {
+
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         statement(grammarBuilder);
         whileStatement(grammarBuilder);
@@ -75,8 +76,8 @@ public class StatementRulesBuilder {
         statementIf(grammarBuilder);
         statamentElse(grammarBuilder);
     }
-    
-      /**
+
+    /**
      * It is responsible for setting the rules for the else.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
