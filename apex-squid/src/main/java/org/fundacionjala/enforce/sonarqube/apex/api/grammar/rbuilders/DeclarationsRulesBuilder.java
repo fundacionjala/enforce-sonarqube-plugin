@@ -52,6 +52,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PROPERTY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_CLASS;
@@ -83,6 +84,7 @@ public class DeclarationsRulesBuilder {
         parameterList(grammarBuilder);
         methodName(grammarBuilder);
         methodDeclaration(grammarBuilder);
+        propertyDeclaration(grammarBuilder);
     }
 
     /**
@@ -261,8 +263,6 @@ public class DeclarationsRulesBuilder {
         );
     }
 
-  
-
     /**
      * It is responsible for setting the rules for the declaration of a
      * variable.
@@ -299,5 +299,14 @@ public class DeclarationsRulesBuilder {
                 IDENTIFIER,
                 grammarBuilder.optional(BRACKETS)
         );
+    }
+
+    /* It is responsible for creating the rule for identifying a variable.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void propertyDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PROPERTY_DECLARATION).is(
+                TYPE, IDENTIFIER, LBRACE, RBRACE);
     }
 }
