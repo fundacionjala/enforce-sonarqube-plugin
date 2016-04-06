@@ -23,8 +23,8 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders;
 
-import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
+import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
@@ -39,6 +39,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_BODY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGN_VARIABLE_INITILIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
@@ -89,6 +90,7 @@ public class DeclarationsRulesBuilder {
         methodDeclaration(grammarBuilder);
         propertyDeclaration(grammarBuilder);
         accessor(grammarBuilder);
+        accessorBody(grammarBuilder);
     }
 
     /**
@@ -313,7 +315,13 @@ public class DeclarationsRulesBuilder {
      */
     private static void propertyDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(PROPERTY_DECLARATION).is(
-                TYPE, IDENTIFIER, LBRACE, ACCESSOR, RBRACE);
+                TYPE,
+                IDENTIFIER,
+                LBRACE,
+                ACCESSOR,
+                grammarBuilder.firstOf(
+                        ACCESSOR_BODY, SEMICOLON),
+                RBRACE);
     }
 
     /**
@@ -324,5 +332,14 @@ public class DeclarationsRulesBuilder {
     private static void accessor(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ACCESSOR).is(
                 grammarBuilder.firstOf(GET, SET));
+    }
+
+    /**
+     * Creates the rule for accessor body.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void accessorBody(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ACCESSOR_BODY).is(IDENTIFIER);
     }
 }
