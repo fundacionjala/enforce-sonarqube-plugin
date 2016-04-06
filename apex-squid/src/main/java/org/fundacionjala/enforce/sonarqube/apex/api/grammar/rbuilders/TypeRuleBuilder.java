@@ -81,19 +81,20 @@ public class TypeRuleBuilder {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void modifier(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(MODIFIER).is(grammarBuilder.firstOf(
-                PUBLIC,
-                STATIC,
-                PROTECTED,
-                PRIVATE,
-                FINAL,
-                ABSTRACT,
-                SYNCHRONIZED,
-                NATIVE,
-                TRANSIENT,
-                VOLATILE,
-                STRICTFP,
-                ANOTATION)
+        grammarBuilder.rule(MODIFIER).is(grammarBuilder.optional(
+                grammarBuilder.firstOf(
+                        PUBLIC,
+                        STATIC,
+                        PROTECTED,
+                        PRIVATE,
+                        FINAL,
+                        ABSTRACT,
+                        SYNCHRONIZED,
+                        NATIVE,
+                        TRANSIENT,
+                        VOLATILE,
+                        STRICTFP,
+                        ANOTATION))
         );
     }
 
