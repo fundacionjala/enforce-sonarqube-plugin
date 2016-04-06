@@ -40,6 +40,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_BODY;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATIONS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGN_VARIABLE_INITILIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
@@ -91,6 +93,8 @@ public class DeclarationsRulesBuilder {
         propertyDeclaration(grammarBuilder);
         accessor(grammarBuilder);
         accessorBody(grammarBuilder);
+        accessorDeclaration(grammarBuilder);
+        accessorDeclarations(grammarBuilder);
     }
 
     /**
@@ -341,5 +345,27 @@ public class DeclarationsRulesBuilder {
      */
     private static void accessorBody(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ACCESSOR_BODY).is(IDENTIFIER);
+    }
+    
+    /**
+     * Creates the rule for accessor declarations within a class.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void accessorDeclarations(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ACCESSOR_DECLARATIONS).is(
+                ACCESSOR_DECLARATION,
+                ACCESSOR_DECLARATION);
+    }
+
+    /**
+     * Creates the rule for accessor declaration within a class.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void accessorDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ACCESSOR_DECLARATION).is(
+                MODIFIER, ACCESSOR,
+                grammarBuilder.firstOf(ACCESSOR_BODY, SEMICOLON));
     }
 }
