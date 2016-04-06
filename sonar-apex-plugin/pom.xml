@@ -10,20 +10,44 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>plugin</artifactId>
+    <artifactId>apex-plugin</artifactId>
+    <packaging>sonar-plugin</packaging>
 
     <name>Apex :: Plugin</name>
 
     <dependencies>
         <dependency>
-            <groupId>org.sonarsource.sonarqube</groupId>
+            <groupId>org.codehaus.sonar</groupId>
             <artifactId>sonar-plugin-api</artifactId>
-            <version>5.3</version>
+            <scope>provided</scope>
+            <version>4.5.6</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>squid</artifactId>
+            <artifactId>apex-squid</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>apex-check</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+                <artifactId>sonar-packaging-maven-plugin</artifactId>
+                <version>1.15</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <pluginKey>Sonarqube Apex</pluginKey>
+                    <pluginClass>org.fundacionjala.enforce.sonarqube.apex.ApexPlugin</pluginClass>
+                    <pluginName>Apex</pluginName>
+                    <pluginDescription>Apex static code analyzer.</pluginDescription>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
