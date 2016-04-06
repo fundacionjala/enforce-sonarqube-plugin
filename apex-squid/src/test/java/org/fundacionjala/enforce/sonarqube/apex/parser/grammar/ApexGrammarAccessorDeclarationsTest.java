@@ -49,5 +49,15 @@ public class ApexGrammarAccessorDeclarationsTest extends ApexRuleTest {
                         + "public static set;")
                 .matches("public set;");
     }
+    
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches("public GET")
+                .notMatches("private set;;")
+                .notMatches("integer set;")
+                .notMatches("public other;")
+                .notMatches("public get,set;");
+    }
 
 }

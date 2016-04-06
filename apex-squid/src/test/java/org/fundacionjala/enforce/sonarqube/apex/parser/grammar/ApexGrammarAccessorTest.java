@@ -46,5 +46,19 @@ public class ApexGrammarAccessorTest extends ApexRuleTest {
                 .matches("get")
                 .matches("set");
     }
+    
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches("other")
+                .notMatches("something")
+                .notMatches("GET")
+                .notMatches("SET")
+                .notMatches("Teg")
+                .notMatches("23")
+                .notMatches("gEt")
+                .notMatches("Set");
+        
+    }
 
 }
