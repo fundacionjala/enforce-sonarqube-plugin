@@ -66,7 +66,6 @@ public class ApexGrammarModifierTest extends ApexRuleTest {
                 .notMatches("nativE")
                 .notMatches("_Transient")
                 .notMatches("Volatile_")
-                .notMatches("strictfp__")
-                .notMatches("anotation native");
+                .notMatches("strictfp__");
     }
 }
