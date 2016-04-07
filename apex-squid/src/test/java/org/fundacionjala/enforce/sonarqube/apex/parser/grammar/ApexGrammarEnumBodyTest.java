@@ -26,23 +26,31 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_BODY;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarFormalParametersTest extends ApexRuleTest {
-
+public class ApexGrammarEnumBodyTest extends ApexRuleTest{
+    
     @Before
-    public void init() {
-        setRootRule(FORMAL_PARAMETERS);
+    public void setUp() {
+        setRootRule(ENUM_BODY);
     }
-
+    
     @Test
-    public void positiveRules() {
+    public void testValidEnumBody() {
         assertThat(parser)
-                .matches("(int x)")
-                .matches("(final int x)")
-                .matches("()")
-                .matches("(int x, string y)")
-                .matches("(boolean var, final int x, final double y)");
+                .matches("anotherText,someString")
+                .matches("onlyOneKeyword")
+                .matches("transient")
+                .matches("group")
+                .matches("stat,without");
     }
+    
+    @Test
+    public void testInvalidEnumBody() {
+        assertThat(parser)
+                .notMatches("'',''")
+                .notMatches("");
+    }
+         
 }

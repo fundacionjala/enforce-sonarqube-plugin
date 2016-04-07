@@ -26,23 +26,31 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarFormalParametersTest extends ApexRuleTest {
+public class ApexGrammarExplicitConstructorInvocationPiTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(FORMAL_PARAMETERS);
+        setRootRule(EXPLICIT_CONSTRUCTOR_INVOCATION_PI);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidExplicitConstrutorInvocations() {
         assertThat(parser)
-                .matches("(int x)")
-                .matches("(final int x)")
-                .matches("()")
-                .matches("(int x, string y)")
-                .matches("(boolean var, final int x, final double y)");
+                .matches("this(something);")
+                .matches("super(something);")
+                .matches("super(k);");
+    }
+    
+    @Test
+    public void testInvalidExplicitConstructorInvocations() {
+        assertThat(parser)
+                .notMatches("This(something);")
+                .notMatches("super(wrong parameter);")
+                .notMatches("super(explicitWithoutSemicolon)")
+                .notMatches("super(two parameters);")
+                .notMatches("this(four parameters for this)");
     }
 }

@@ -23,26 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
+import org.junit.Before;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarFormalParametersTest extends ApexRuleTest {
-
+public class ApexGrammarArgumentsPiTest extends ApexRuleTest{
     @Before
     public void init() {
-        setRootRule(FORMAL_PARAMETERS);
+        setRootRule(ARGUMENTSPI);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidArguments() {
         assertThat(parser)
-                .matches("(int x)")
-                .matches("(final int x)")
-                .matches("()")
-                .matches("(int x, string y)")
-                .matches("(boolean var, final int x, final double y)");
+                .matches("(argument)")
+                .matches("()");
+
     }
+    
+    @Test
+    public void testInvalidArguments() {
+        assertThat(parser)
+                .notMatches("")
+                .notMatches(")(")
+                .notMatches("argumentOutOfParenthesis()");
+        
+    }
+
+    
 }

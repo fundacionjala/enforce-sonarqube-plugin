@@ -26,23 +26,45 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarFormalParametersTest extends ApexRuleTest {
+public class ApexGrammarAllowedKeywordsAsIdentifierTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(FORMAL_PARAMETERS);
+    public void setUp() {
+        setRootRule(ALLOWED_KEYWORDS_AS_IDENTIFIER);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidAllowedKeywordsAsIdentifier() {
         assertThat(parser)
-                .matches("(int x)")
-                .matches("(final int x)")
-                .matches("()")
-                .matches("(int x, string y)")
-                .matches("(boolean var, final int x, final double y)");
+                .matches("anyEntry")
+                .matches("transient")
+                .matches("returning")
+                .matches("search")
+                .matches("stat")
+                .matches("convertcurrency")
+                .matches("savepoint")
+                .matches("tolabel")
+                .matches("sharing")
+                .matches("get")
+                .matches("after")
+                .matches("before")
+                .matches("first")
+                .matches("last")
+                .matches("category")
+                .matches("network")
+                .matches("iterator");
     }
+    
+    @Test
+    public void testInvalidKeywordsAsIdentifier() {
+        assertThat(parser)
+                //empty string
+                .notMatches("")
+                //empty string with spaces
+                .notMatches("   ");
+    }
+
 }

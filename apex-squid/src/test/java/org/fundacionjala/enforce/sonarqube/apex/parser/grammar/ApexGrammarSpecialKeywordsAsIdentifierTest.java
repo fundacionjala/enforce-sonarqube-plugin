@@ -26,23 +26,34 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarFormalParametersTest extends ApexRuleTest {
+public class ApexGrammarSpecialKeywordsAsIdentifierTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(FORMAL_PARAMETERS);
+    public void setUp() {
+        setRootRule(SPECIAL_KEYWORDS_AS_IDENTIFIER);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidSpecialKeywordsAsIdentifier() {
         assertThat(parser)
-                .matches("(int x)")
-                .matches("(final int x)")
-                .matches("()")
-                .matches("(int x, string y)")
-                .matches("(boolean var, final int x, final double y)");
+                .matches("without")
+                .matches("offset")
+                .matches("data")
+                .matches("group")
+                .matches("limit");
+    }
+
+    @Test
+    public void testInvalidSpecialKeywordsAsIdentifier() {
+        assertThat(parser)
+                .notMatches("otherKeywordsThanThespecifiedOnes")
+                .notMatches("spaces between keywords")
+                //empty keyword
+                .notMatches("")
+                //mix of uppercasse and lowercasse
+                .notMatches("withOUT");
     }
 }

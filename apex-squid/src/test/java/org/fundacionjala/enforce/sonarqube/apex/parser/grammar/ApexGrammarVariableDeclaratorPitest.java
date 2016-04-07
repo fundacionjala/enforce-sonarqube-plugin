@@ -23,26 +23,31 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarFormalParametersTest extends ApexRuleTest {
-
+public class ApexGrammarVariableDeclaratorPitest extends ApexRuleTest {
+    
     @Before
-    public void init() {
-        setRootRule(FORMAL_PARAMETERS);
+    public void setUp() {
+        setRootRule(VARIABLE_DECLARATOR_PI);
     }
-
+    
     @Test
-    public void positiveRules() {
+    public void testValidVariableDeclarator() {
         assertThat(parser)
-                .matches("(int x)")
-                .matches("(final int x)")
-                .matches("()")
-                .matches("(int x, string y)")
-                .matches("(boolean var, final int x, final double y)");
+                .matches("transient = this")
+                .matches("summ = 1")
+                .matches("group")
+                .matches("aNewVariableWithNoValue");
+    }
+    
+    @Test
+    public void testInvalidVariableDeclarator() {
+        assertThat(parser)
+                .notMatches("");
     }
 }
