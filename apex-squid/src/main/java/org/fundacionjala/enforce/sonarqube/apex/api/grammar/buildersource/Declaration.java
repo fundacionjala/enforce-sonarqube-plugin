@@ -31,6 +31,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -43,6 +45,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATIONS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGN_VARIABLE_INITILIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_DECLARATION;
@@ -66,10 +69,13 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS_PI;
 
 /**
  * This class contains constructors for Declaration rules and its sub rules.
- * 
+ *
  */
 public class Declaration {
 
@@ -95,6 +101,10 @@ public class Declaration {
         accessorBody(grammarBuilder);
         accessorDeclaration(grammarBuilder);
         accessorDeclarations(grammarBuilder);
+        constructorDeclarationPI(grammarBuilder);
+        explicitConstructorInvocationPI(grammarBuilder);
+        formalParametersPi(grammarBuilder);
+        
     }
 
     /**
@@ -261,6 +271,48 @@ public class Declaration {
     }
 
     /**
+     * Creates rules for method's last line and completion.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void constructorDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CONSTRUCTOR_DECLARATION_PI).is(
+                CLASS_NAME,
+                FORMAL_PARAMETERS_PI,
+                LBRACE,
+                grammarBuilder.optional(EXPLICIT_CONSTRUCTOR_INVOCATION_PI),
+                grammarBuilder.zeroOrMore(TYPE, IDENTIFIER),
+                RBRACE
+        );
+    }
+    
+    /**
+     * Creates rules for method's last line and completion.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void explicitConstructorInvocationPI(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(EXPLICIT_CONSTRUCTOR_INVOCATION_PI).is(
+                grammarBuilder.firstOf(THIS, SUPER),
+                ARGUMENTSPI,
+                SEMICOLON
+        );
+    }
+    
+    /**
+     * It is responsible for setting the rules for parameters.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void formalParametersPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FORMAL_PARAMETERS_PI).is(
+                LPAREN,
+                grammarBuilder.zeroOrMore(IDENTIFIER),
+                RPAREN
+        );
+    }
+
+    /**
      * It is responsible for creating the rule for merge with symbol '=' and an
      * expression.
      *
@@ -344,7 +396,7 @@ public class Declaration {
     private static void accessorBody(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ACCESSOR_BODY).is(IDENTIFIER);
     }
-    
+
     /**
      * Creates the rule for accessor declarations within a class.
      *
@@ -353,7 +405,7 @@ public class Declaration {
     private static void accessorDeclarations(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ACCESSOR_DECLARATIONS).is(
                 grammarBuilder.oneOrMore(
-                ACCESSOR_DECLARATION));
+                        ACCESSOR_DECLARATION));
     }
 
     /**

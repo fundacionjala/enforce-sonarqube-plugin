@@ -47,6 +47,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
@@ -73,6 +74,7 @@ public class Expression {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         arguments(grammarBuilder);
+        argumentsPI(grammarBuilder);
         testingExpressionEqual(grammarBuilder);
         testingExpression(grammarBuilder);
         creatingExpression(grammarBuilder);
@@ -102,6 +104,18 @@ public class Expression {
                         COMMA,
                         TERMINAL_EXPRESSION
                 )
+        );
+    }
+    /**
+     * It is responsible for setting the rules for arguments.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void argumentsPI(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ARGUMENTSPI).is(
+                LPAREN,
+                grammarBuilder.optional(IDENTIFIER),
+                RPAREN
         );
     }
 
