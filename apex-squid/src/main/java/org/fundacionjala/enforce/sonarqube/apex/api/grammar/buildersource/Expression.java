@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
+import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NEW;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
@@ -63,13 +64,12 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
-import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
 /**
- *
- * @author kevin_titichoca
+ * This class contains constructors for Expression rules and its sub rules.
+ * 
  */
-public class ExpressionRulesBuilder {
+public class Expression {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         arguments(grammarBuilder);

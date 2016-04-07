@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
@@ -63,10 +63,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_SPECIFIER;
 
 /**
- *
- * @author kevin_titichoca
+ * This class contains constructors for Type rules and its sub rules.
+ * 
  */
-public class TypeRuleBuilder {
+public class Type {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         typeSpecifier(grammarBuilder);

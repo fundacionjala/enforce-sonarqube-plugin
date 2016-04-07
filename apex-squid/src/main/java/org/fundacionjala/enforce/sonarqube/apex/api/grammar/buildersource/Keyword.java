@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.rbuilders;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
@@ -32,10 +32,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER_KEYWORD;
 
 /**
- *
- * @author kevin_titichoca
+ *  This class contains constructors for Keyword rules and its sub rules.
+ * 
  */
-public class KeywordRulesBuilder {
+public class Keyword {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         keyword(grammarBuilder);
