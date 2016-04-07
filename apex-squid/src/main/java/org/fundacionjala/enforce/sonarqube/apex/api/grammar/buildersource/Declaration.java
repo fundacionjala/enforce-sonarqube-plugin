@@ -31,6 +31,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -60,6 +61,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PROPERTY_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RESULT_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_CLASS;
@@ -97,6 +99,7 @@ public class Declaration {
         accessorDeclaration(grammarBuilder);
         accessorDeclarations(grammarBuilder);
         methodDeclarationPI(grammarBuilder);
+        resultType(grammarBuilder);
     }
 
     /**
@@ -378,12 +381,23 @@ public class Declaration {
     private static void methodDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(METHOD_DECLARATION_PI).is(
                 grammarBuilder.zeroOrMore(ANNOTATION),
-                TYPE,
+                RESULT_TYPE,
                 METHOD_NAME,
                 LPAREN,
                 grammarBuilder.optional(PARAMETER_LIST),
                 RPAREN,
                 STATEMENT_BLOCK
+        );
+    }
+    
+    /**
+     * Creates the rule that defines the return type a method can have.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void resultType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RESULT_TYPE).is(
+                grammarBuilder.firstOf(VOID, TYPE)
         );
     }
 }
