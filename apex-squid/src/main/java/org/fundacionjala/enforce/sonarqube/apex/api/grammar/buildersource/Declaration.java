@@ -27,10 +27,12 @@ import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -51,14 +53,18 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXTENDS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IMPLEMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PROPERTY_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RESULT_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_CLASS;
@@ -69,7 +75,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 
 /**
  * This class contains constructors for Declaration rules and its sub rules.
- * 
+ *
  */
 public class Declaration {
 
@@ -95,6 +101,10 @@ public class Declaration {
         accessorBody(grammarBuilder);
         accessorDeclaration(grammarBuilder);
         accessorDeclarations(grammarBuilder);
+        methodDeclarationPI(grammarBuilder);
+        resultType(grammarBuilder);
+        formalParameters(grammarBuilder);
+        formalParameter(grammarBuilder);
     }
 
     /**
@@ -344,7 +354,7 @@ public class Declaration {
     private static void accessorBody(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ACCESSOR_BODY).is(IDENTIFIER);
     }
-    
+
     /**
      * Creates the rule for accessor declarations within a class.
      *
@@ -353,7 +363,7 @@ public class Declaration {
     private static void accessorDeclarations(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ACCESSOR_DECLARATIONS).is(
                 grammarBuilder.oneOrMore(
-                ACCESSOR_DECLARATION));
+                        ACCESSOR_DECLARATION));
     }
 
     /**
@@ -365,5 +375,55 @@ public class Declaration {
         grammarBuilder.rule(ACCESSOR_DECLARATION).is(
                 MODIFIER, ACCESSOR,
                 grammarBuilder.firstOf(ACCESSOR_BODY, SEMICOLON));
+    }
+
+    /**
+     * Creates rules to the last line of the method and the completion of the
+     * method.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void methodDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(METHOD_DECLARATION_PI).is(
+                grammarBuilder.zeroOrMore(ANNOTATION),
+                RESULT_TYPE,
+                METHOD_NAME,
+                FORMAL_PARAMETERS,
+                grammarBuilder.firstOf(STATEMENT_BLOCK, SEMICOLON)
+        );
+    }
+
+    /**
+     * Creates the rule that defines the return type a method can have.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void resultType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RESULT_TYPE).is(
+                grammarBuilder.firstOf(VOID, TYPE)
+        );
+    }
+
+    /**
+     * Creates the rule that defines a set of formal parameters for a method.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void formalParameters(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FORMAL_PARAMETERS).is(
+                LPAREN, grammarBuilder.optional(FORMAL_PARAMETER,
+                        grammarBuilder.zeroOrMore(COMMA, FORMAL_PARAMETER)), RPAREN
+        );
+    }
+
+    /**
+     * Creates the rule that defines a formal parameter for a method.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void formalParameter(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FORMAL_PARAMETER).is(
+                grammarBuilder.optional(FINAL), TYPE, IDENTIFIER
+        );
     }
 }
