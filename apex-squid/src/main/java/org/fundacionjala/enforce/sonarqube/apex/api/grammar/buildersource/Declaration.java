@@ -53,6 +53,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IMPLEMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER_KEYWORD;
@@ -95,6 +96,7 @@ public class Declaration {
         accessorBody(grammarBuilder);
         accessorDeclaration(grammarBuilder);
         accessorDeclarations(grammarBuilder);
+        methodDeclarationPI(grammarBuilder);
     }
 
     /**
@@ -365,5 +367,23 @@ public class Declaration {
         grammarBuilder.rule(ACCESSOR_DECLARATION).is(
                 MODIFIER, ACCESSOR,
                 grammarBuilder.firstOf(ACCESSOR_BODY, SEMICOLON));
+    }
+    
+    /**
+     * Creates rules to the last line of the method and the completion of the
+     * method.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void methodDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(METHOD_DECLARATION_PI).is(
+                grammarBuilder.zeroOrMore(ANNOTATION),
+                TYPE,
+                METHOD_NAME,
+                LPAREN,
+                grammarBuilder.optional(PARAMETER_LIST),
+                RPAREN,
+                STATEMENT_BLOCK
+        );
     }
 }

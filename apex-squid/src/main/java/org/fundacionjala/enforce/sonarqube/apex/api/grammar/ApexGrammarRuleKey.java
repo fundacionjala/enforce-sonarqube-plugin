@@ -62,6 +62,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     DEC,
     MODIFIER,
     METHOD_DECLARATION,
+    METHOD_DECLARATION_PI,
     METHOD_NAME,
     MODIFIER_KEYWORD,
     NUMERIC_EXPRESSION,
