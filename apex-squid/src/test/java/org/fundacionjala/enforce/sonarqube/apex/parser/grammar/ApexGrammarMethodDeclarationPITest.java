@@ -48,6 +48,8 @@ public class ApexGrammarMethodDeclarationPITest extends ApexRuleTest {
                 .matches("boolean isMethod(int x, final boolean y){}")
                 .matches("string isMethod(boolean y){}")
                 .matches("float isMethod(int a, final int b, int c){}")
+                .matches("void isMethod();")
+                .matches("boolean isMethod(int x, final boolean y);")
                 .matches("boolean IsMethod(){intmyVariable;}");
     }
 }

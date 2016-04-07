@@ -389,7 +389,7 @@ public class Declaration {
                 RESULT_TYPE,
                 METHOD_NAME,
                 FORMAL_PARAMETERS,
-                STATEMENT_BLOCK
+                grammarBuilder.firstOf(STATEMENT_BLOCK, SEMICOLON)
         );
     }
 
