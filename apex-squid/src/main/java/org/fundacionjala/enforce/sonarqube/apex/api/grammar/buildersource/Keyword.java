@@ -32,8 +32,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER_KEYWORD;
 
 /**
- *
- * @author kevin_titichoca
+ *  This class contains constructors for Keyword rules and its sub rules.
+ * 
  */
 public class Keyword {
 

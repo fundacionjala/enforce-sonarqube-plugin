@@ -61,8 +61,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
 
 /**
- *
- * @author kevin_titichoca
+ * This class contains constructors for Declaration rules and its sub rules.
+ * 
  */
 public class Declaration {
 

@@ -60,8 +60,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
 
 /**
- *
- * @author kevin_titichoca
+ *  This class contains constructors for Statement rules and its sub rules.
+ * 
  */
 public class Statement {
 

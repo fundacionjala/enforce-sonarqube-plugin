@@ -63,8 +63,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_SPECIFIER;
 
 /**
- *
- * @author kevin_titichoca
+ * This class contains constructors for Type rules and its sub rules.
+ * 
  */
 public class Type {
 
