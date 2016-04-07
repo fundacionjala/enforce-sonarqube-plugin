@@ -23,10 +23,10 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RESULT_TYPE;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 /**
@@ -37,7 +37,7 @@ public class ApexGrammarResultTypeTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(ApexGrammarRuleKey.RESULT_TYPE);
+        setRootRule(RESULT_TYPE);
     }
 
     @Test

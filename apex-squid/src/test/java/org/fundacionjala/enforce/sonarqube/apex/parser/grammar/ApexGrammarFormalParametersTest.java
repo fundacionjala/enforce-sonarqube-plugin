@@ -26,28 +26,27 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 /**
  *
  * @author vicente_rodriguez
  */
-public class ApexGrammarMethodDeclarationPITest extends ApexRuleTest {
+public class ApexGrammarFormalParametersTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(METHOD_DECLARATION_PI);
+        setRootRule(FORMAL_PARAMETERS);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("int isMethod(){}")
-                .matches("void isMethod(){}")
-                .matches("boolean isMethod(int x, final boolean y){}")
-                .matches("string isMethod(boolean y){}")
-                .matches("float isMethod(int a, final int b, int c){}")
-                .matches("boolean IsMethod(){intmyVariable;}");
+                .matches("(int x)")
+                .matches("(final int x)")
+                .matches("()")
+                .matches("(int x, string y)")
+                .matches("(boolean var, final int x, final double y)");
     }
 }
