@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api.grammar.builders;
+package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NEW;
@@ -69,7 +69,7 @@ import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
  *
  * @author kevin_titichoca
  */
-public class ExpressionRules {
+public class Expression {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         arguments(grammarBuilder);

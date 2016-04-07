@@ -26,11 +26,11 @@ package org.fundacionjala.enforce.sonarqube.apex.api;
 import com.sonar.sslr.api.Grammar;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.builders.DeclarationsRules;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.builders.ExpressionRules;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.builders.KeywordRules;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.builders.StatementRules;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.builders.TypeRules;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Declaration;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Expression;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Keyword;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Statement;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Type;
 import static com.sonar.sslr.api.GenericTokenType.EOF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
@@ -55,15 +55,15 @@ public class ApexGrammar {
     public static Grammar create() {
         LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
 
-        ExpressionRules.create(grammarBuilder);
+        Expression.create(grammarBuilder);
         
-        TypeRules.create(grammarBuilder);
+        Type.create(grammarBuilder);
 
-        KeywordRules.create(grammarBuilder);
+        Keyword.create(grammarBuilder);
         
-        StatementRules.create(grammarBuilder);
+        Statement.create(grammarBuilder);
         
-        DeclarationsRules.create(grammarBuilder);
+        Declaration.create(grammarBuilder);
         
         grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION, EOF);
         grammarBuilder.setRootRule(APEX_GRAMMAR);
