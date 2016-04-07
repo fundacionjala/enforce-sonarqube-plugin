@@ -77,7 +77,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS_PI;
 
 /**
  * This class contains constructors for Declaration rules and its sub rules.
@@ -287,7 +286,7 @@ public class Declaration {
     private static void constructorDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONSTRUCTOR_DECLARATION_PI).is(
                 CLASS_NAME,
-                FORMAL_PARAMETERS_PI,
+                FORMAL_PARAMETERS,
                 LBRACE,
                 grammarBuilder.optional(EXPLICIT_CONSTRUCTOR_INVOCATION_PI),
                 grammarBuilder.zeroOrMore(TYPE, IDENTIFIER),
@@ -305,19 +304,6 @@ public class Declaration {
                 grammarBuilder.firstOf(THIS, SUPER),
                 ARGUMENTSPI,
                 SEMICOLON
-        );
-    }
-    
-    /**
-     * It is responsible for setting the rules for parameters.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void formalParametersPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FORMAL_PARAMETERS_PI).is(
-                LPAREN,
-                grammarBuilder.zeroOrMore(IDENTIFIER),
-                RPAREN
         );
     }
 

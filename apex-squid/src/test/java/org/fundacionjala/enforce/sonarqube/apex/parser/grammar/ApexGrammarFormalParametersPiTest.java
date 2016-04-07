@@ -23,7 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Test;
 import org.junit.Before;
@@ -33,17 +33,17 @@ import static org.sonar.sslr.tests.Assertions.assertThat;
  *
  * @author kevin_titichoca
  */
-public class ApexGrammarFormalParametersPiTest extends ApexRuleTest{
-    
+public class ApexGrammarFormalParametersPiTest extends ApexRuleTest {
+
     @Before
     public void init() {
-        setRootRule(FORMAL_PARAMETERS_PI);
+        setRootRule(FORMAL_PARAMETERS);
     }
 
     @Test
     public void testPositiveCases() {
         assertThat(parser)
-                .matches("(something)")
+                .matches("(int something)")
                 .matches("()")
                 .notMatches("")
                 .notMatches(")(")
@@ -51,5 +51,4 @@ public class ApexGrammarFormalParametersPiTest extends ApexRuleTest{
 
     }
 
-    
 }

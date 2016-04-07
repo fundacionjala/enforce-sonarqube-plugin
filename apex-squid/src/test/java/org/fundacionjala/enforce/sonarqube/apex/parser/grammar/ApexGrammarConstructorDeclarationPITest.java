@@ -46,7 +46,7 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
                 .matches("something() {"
                         + "this(blockstatement);"
                         + "}")
-                .matches("something(something) {"
+                .matches("something(int something) {"
                         + "super(blockstatement);"
                         + "}")
                 .matches("myClass() {"
