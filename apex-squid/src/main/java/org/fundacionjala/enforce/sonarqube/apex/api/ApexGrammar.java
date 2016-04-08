@@ -34,6 +34,7 @@ import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Type;
 import static com.sonar.sslr.api.GenericTokenType.EOF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.MostUsed;
 
 /**
  * This class unites all the rules you need a class.
@@ -55,15 +56,17 @@ public class ApexGrammar {
     public static Grammar create() {
         LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
 
+        MostUsed.create(grammarBuilder);
+        
         Expression.create(grammarBuilder);
         
         Type.create(grammarBuilder);
 
-        Keyword.create(grammarBuilder);
-        
         Statement.create(grammarBuilder);
         
         Declaration.create(grammarBuilder);
+        
+        Keyword.create(grammarBuilder);
         
         grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION, EOF);
         grammarBuilder.setRootRule(APEX_GRAMMAR);
