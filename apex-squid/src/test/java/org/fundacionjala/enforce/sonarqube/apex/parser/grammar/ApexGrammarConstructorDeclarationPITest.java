@@ -43,16 +43,21 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
     @Test
     public void testValidConstructorsDeclarations() {
         assertThat(parser)
-                .matches("something() {"
+                .matches("something () {"
                         + "this(blockstatement);"
                         + "}")
-                .matches("something(int something) {"
+                .matches("something (int something) {"
                         + "super(blockstatement);"
                         + "}")
-                .matches("myClass() {"
+                .matches("myClass () {"
                         + "}")
-                .matches("myClass(other otherClass) { "
+                .matches("myClass (other otherClass) { "
                         + "super();"
+                        + "}")
+                .matches("myConstructor (int parameter){}")
+                .matches("transient (int parameter) {super(parameter);}")
+                .matches("after (Class classParameter) {"
+                        + "this();"
                         + "}");
                 
     }
@@ -68,7 +73,7 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
                         + "}")
                 .notMatches("myClass() {"
                         + "{")
-                .notMatches("myClass(other otherClass) { "
+                .notMatches("myClass(lowercaselasstype otherClass) { "
                         + "super()"
                         + "}");
                 

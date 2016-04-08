@@ -46,6 +46,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_BODY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATIONS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGN_VARIABLE_INITILIZER;
@@ -112,7 +113,7 @@ public class Declaration {
         formalParameter(grammarBuilder);
         constructorDeclarationPI(grammarBuilder);
         explicitConstructorInvocationPI(grammarBuilder);
-        
+
     }
 
     /**
@@ -285,7 +286,7 @@ public class Declaration {
      */
     private static void constructorDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONSTRUCTOR_DECLARATION_PI).is(
-                CLASS_NAME,
+                ALLOWED_KEYWORDS_AS_IDENTIFIER,
                 FORMAL_PARAMETERS,
                 LBRACE,
                 grammarBuilder.optional(EXPLICIT_CONSTRUCTOR_INVOCATION_PI),
@@ -293,7 +294,7 @@ public class Declaration {
                 RBRACE
         );
     }
-    
+
     /**
      * Creates rules for method's last line and completion.
      *
