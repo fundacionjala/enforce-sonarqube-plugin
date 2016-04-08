@@ -53,6 +53,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXTENDS_LIST;
@@ -114,6 +115,7 @@ public class Declaration {
         formalParameter(grammarBuilder);
         constructorDeclarationPI(grammarBuilder);
         explicitConstructorInvocationPI(grammarBuilder);
+        classOrInterfaceDeclaration(grammarBuilder);
 
     }
 
@@ -465,6 +467,23 @@ public class Declaration {
     private static void formalParameter(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FORMAL_PARAMETER).is(
                 grammarBuilder.optional(FINAL), TYPE, IDENTIFIER
+        );
+    }
+    
+    /**
+     * Grammar for the declaration of a class or interface is constructed.
+     * Composed of the rules of a class type, its identified, extends, and
+     * implements.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void classOrInterfaceDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CLASS_OR_INTERFACE_DECLARATION).is(
+                MODIFIER,
+                TYPE_CLASS,
+                IDENTIFIER,
+                LBRACE,
+                RBRACE
         );
     }
 }
