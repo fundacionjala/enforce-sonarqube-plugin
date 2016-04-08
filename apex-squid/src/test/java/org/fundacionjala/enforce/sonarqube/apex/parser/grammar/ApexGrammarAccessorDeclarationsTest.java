@@ -29,10 +29,6 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- *
- * @author kevin_titichoca
- */
 public class ApexGrammarAccessorDeclarationsTest extends ApexRuleTest {
 
     @Before

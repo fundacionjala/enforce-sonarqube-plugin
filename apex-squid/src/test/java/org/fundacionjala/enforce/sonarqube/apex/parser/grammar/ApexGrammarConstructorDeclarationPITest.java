@@ -29,10 +29,6 @@ import org.junit.Test;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- *
- * @author kevin_titichoca
- */
 public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
     
     @Before

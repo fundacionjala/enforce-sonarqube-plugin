@@ -29,10 +29,6 @@ import org.junit.Test;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- *
- * @author vicente_rodriguez
- */
 public class ApexGrammarFormalParameterTest extends ApexRuleTest {
 
     @Before
