@@ -54,7 +54,9 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
                 .matches("transient (int parameter) {super(parameter);}")
                 .matches("after (Class classParameter) {"
                         + "this();"
-                        + "}");
+                        + "}")
+                .matches("data (ClassType parameter) {}")
+                .matches("group (int parameter) {super(parameter);}");
                 
     }
     
