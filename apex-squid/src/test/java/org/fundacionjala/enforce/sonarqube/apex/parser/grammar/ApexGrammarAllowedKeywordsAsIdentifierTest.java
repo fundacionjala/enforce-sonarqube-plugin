@@ -61,5 +61,14 @@ public class ApexGrammarAllowedKeywordsAsIdentifierTest extends ApexRuleTest {
                 .matches("network")
                 .matches("iterator");
     }
+    
+    @Test
+    public void testInvalidKeywordsAsIdentifier() {
+        assertThat(parser)
+                //empty string
+                .notMatches("")
+                //empty string with spaces
+                .notMatches("   ");
+    }
 
 }
