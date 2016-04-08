@@ -39,7 +39,7 @@ public class ApexGrammarEnumBodyTest extends ApexRuleTest{
     @Test
     public void testValidEnumBody() {
         assertThat(parser)
-                .matches("AllowedKeywords,AllowedKeyword")
+                .matches("anotherText,someString")
                 .matches("onlyOneKeyword")
                 .matches("transient")
                 .matches("group")
