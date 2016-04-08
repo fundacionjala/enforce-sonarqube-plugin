@@ -23,34 +23,37 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GET_SHARING_RULES;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IMPLEMENTS_LIST;
-
-public class ApexGrammarImplementsListTest extends ApexRuleTest {
+/**
+ *
+ * @author vicente_rodriguez
+ */
+public class ApexGrammarGetSharingRulesTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(IMPLEMENTS_LIST);
-    }
-
-    @Test
-    public void negativeRulesMegeType() {
-        assertThat(parser)
-                .notMatches("_implementsMyClass")
-                .notMatches(" Implements_MyClass1")
-                .notMatches("=implements_MyClass1");
+        setRootRule(GET_SHARING_RULES);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("implements MyClass")
-                .matches("implements MyClass, MyClass2, Myclass3");
+                .matches("with sharing")
+                .matches("without sharing");
+    }
+
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches("with")
+                .notMatches("without")
+                .notMatches("with with")
+                .notMatches("sharing")
+                .notMatches("without with");
     }
 }
