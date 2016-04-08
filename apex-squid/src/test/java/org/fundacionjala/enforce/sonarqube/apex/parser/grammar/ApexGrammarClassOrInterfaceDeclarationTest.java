@@ -43,24 +43,32 @@ public class ApexGrammarClassOrInterfaceDeclarationTest extends ApexRuleTest {
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("class MyClass{}")
-                .matches("interface MyClass{}");
+                .matches("with sharing class MyClass{}")
+                .matches("with sharing interface MyClass{}")
+                .matches("without sharing class MyClass{}")
+                .matches("without sharing interface MyClass{}");
 //                .matches("class MyClass extends YourClass{}")
 //                .matches("class MyClass implements YourClass{}")
 //                .matches("interface MyClass extends YourClass{}")
 //                .matches("interface MyClass implements YourClass{}");
     }
 
-//    @Test
-//    public void negativeRules() {
-//        assertThat(parser)
-//                .notMatches("class1MyClass{}")
-//                .notMatches("InterfaceMyClass{}")
-//                .notMatches("_classMyClassextendsYourClass{}")
-//                .notMatches("class-MyClass implements YourClass{}")
-//                .notMatches("interface1 MyClass extends YourClass{}")
-//                .notMatches("interface MyClass_implements YourClass{}");
-//    }
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches("class1MyClass{}")
+                .notMatches("Interface MyClass{}")
+                //should fail when you have no with or without sharing
+                .notMatches("interface MyClass{}")
+                .notMatches("class MyClass{}")
+                .notMatches("with InterfaceMyClass{}")
+                .notMatches("without InterfaceMyClass{}")
+                .notMatches("sharing InterfaceMyClass{}")
+                .notMatches("_classMyClassextendsYourClass{}")
+                .notMatches("class-MyClass implements YourClass{}")
+                .notMatches("interface1 MyClass extends YourClass{}")
+                .notMatches("interface MyClass_implements YourClass{}");
+    }
 //
 //    @Test
 //    public void positiveRulesForClass() {

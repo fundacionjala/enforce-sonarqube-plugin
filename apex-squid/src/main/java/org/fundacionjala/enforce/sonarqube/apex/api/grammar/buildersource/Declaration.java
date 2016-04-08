@@ -32,9 +32,12 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -79,6 +82,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GET_SHARING_RULES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 
 /**
@@ -116,6 +120,7 @@ public class Declaration {
         constructorDeclarationPI(grammarBuilder);
         explicitConstructorInvocationPI(grammarBuilder);
         classOrInterfaceDeclaration(grammarBuilder);
+        getSharingRules(grammarBuilder);
 
     }
 
@@ -469,7 +474,7 @@ public class Declaration {
                 grammarBuilder.optional(FINAL), TYPE, IDENTIFIER
         );
     }
-    
+
     /**
      * Grammar for the declaration of a class or interface is constructed.
      * Composed of the rules of a class type, its identified, extends, and
@@ -479,11 +484,26 @@ public class Declaration {
      */
     private static void classOrInterfaceDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CLASS_OR_INTERFACE_DECLARATION).is(
+                GET_SHARING_RULES,
                 MODIFIER,
                 TYPE_CLASS,
                 IDENTIFIER,
                 LBRACE,
                 RBRACE
+        );
+    }
+
+    /**
+     * Defines the possible sharing rules a class declaration can have.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void getSharingRules(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(GET_SHARING_RULES).is(
+                grammarBuilder.firstOf(
+                        WITHOUT,
+                        WITH),
+                SHARING
         );
     }
 }

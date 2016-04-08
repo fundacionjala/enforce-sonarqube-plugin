@@ -61,6 +61,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     FOR_STATEMENT,
     FORMAL_PARAMETERS,
     FORMAL_PARAMETER,
+    GET_SHARING_RULES,
     IMPLEMENTS_LIST,
     INC,
     INIT_IDENTIFIER,
