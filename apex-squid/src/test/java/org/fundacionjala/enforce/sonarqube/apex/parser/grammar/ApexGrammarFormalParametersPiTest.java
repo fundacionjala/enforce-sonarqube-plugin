@@ -43,12 +43,18 @@ public class ApexGrammarFormalParametersPiTest extends ApexRuleTest {
     @Test
     public void testPositiveCases() {
         assertThat(parser)
-                .matches("(int something)")
-                .matches("()")
+                .matches("(int formalParameter)")
+                //it supports noArgument
+                .matches("()");
+    }
+    
+    @Test
+    public void testInvalidFormalParameters() {
+        assertThat(parser)
                 .notMatches("")
                 .notMatches(")(")
                 .notMatches("somthing()");
-
+        
     }
 
 }

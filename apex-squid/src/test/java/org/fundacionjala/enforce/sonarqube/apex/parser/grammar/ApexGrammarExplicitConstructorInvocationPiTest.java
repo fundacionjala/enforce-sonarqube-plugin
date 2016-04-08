@@ -41,13 +41,20 @@ public class ApexGrammarExplicitConstructorInvocationPiTest extends ApexRuleTest
     }
 
     @Test
-    public void testPositiveCases() {
+    public void testValidExplicitConstrutorInvocations() {
         assertThat(parser)
                 .matches("this(something);")
                 .matches("super(something);")
-                .matches("super(k);")
-                .notMatches("super(sd asd);")
-                .notMatches("this(nothing)")
-                .notMatches("super(class class);");
+                .matches("super(k);");
+    }
+    
+    @Test
+    public void testInvalidExplicitConstructorInvocations() {
+        assertThat(parser)
+                .notMatches("This(something);")
+                .notMatches("super(wrong parameter);")
+                .notMatches("super(explicitWithoutSemicolon)")
+                .notMatches("super(two parameters);")
+                .notMatches("this(four parameters for this)");
     }
 }

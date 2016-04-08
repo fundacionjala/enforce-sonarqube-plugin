@@ -41,7 +41,7 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
     }
 
     @Test
-    public void testPositiveCases() {
+    public void testValidConstructorsDeclarations() {
         assertThat(parser)
                 .matches("something() {"
                         + "this(blockstatement);"
@@ -53,6 +53,23 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
                         + "}")
                 .matches("myClass(other otherClass) { "
                         + "super();"
+                        + "}");
+                
+    }
+    
+    @Test
+    public void testInvalidConstructorDeclarations() {
+                assertThat(parser)
+                .notMatches("myClass)( {"
+                        + "this(blockstatement);"
+                        + "}")
+                .notMatches("public classDeclaration(int parameter) {"
+                        + "super(blockstatement);"
+                        + "}")
+                .notMatches("myClass() {"
+                        + "{")
+                .notMatches("myClass(other otherClass) { "
+                        + "super()"
                         + "}");
                 
     }

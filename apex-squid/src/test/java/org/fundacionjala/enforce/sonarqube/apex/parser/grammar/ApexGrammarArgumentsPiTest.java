@@ -40,14 +40,20 @@ public class ApexGrammarArgumentsPiTest extends ApexRuleTest{
     }
 
     @Test
-    public void testPositiveCases() {
+    public void testValidArguments() {
         assertThat(parser)
-                .matches("(something)")
-                .matches("()")
+                .matches("(argument)")
+                .matches("()");
+
+    }
+    
+    @Test
+    public void testInvalidArguments() {
+        assertThat(parser)
                 .notMatches("")
                 .notMatches(")(")
-                .notMatches("somthing()");
-
+                .notMatches("argumentOutOfParenthesis()");
+        
     }
 
     

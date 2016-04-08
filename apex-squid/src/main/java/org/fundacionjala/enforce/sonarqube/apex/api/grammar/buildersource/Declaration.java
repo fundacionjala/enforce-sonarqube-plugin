@@ -23,8 +23,8 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
-import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
+import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
