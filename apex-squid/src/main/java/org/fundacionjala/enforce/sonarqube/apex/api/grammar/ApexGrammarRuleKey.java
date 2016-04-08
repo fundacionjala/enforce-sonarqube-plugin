@@ -79,6 +79,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     PROPERTY_DECLARATION,
     RESULT_TYPE,
     RETURN_STATEMENT,
+    SPECIAL_KEYWORDS_AS_IDENTIFIER,
     STATEMENT,
     STATEMENT_BLOCK,
     STATEMENT_ELSE,

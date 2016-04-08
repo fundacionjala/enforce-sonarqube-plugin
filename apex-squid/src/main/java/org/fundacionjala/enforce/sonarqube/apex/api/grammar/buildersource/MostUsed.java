@@ -23,17 +23,21 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
-import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
+import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AFTER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BEFORE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATEGORY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CONVERT_CURRENCY;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DATA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FIRST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GROUP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LAST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIMIT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NETWORK;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OFFSET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURNING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SAVE_POINT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SEARCH;
@@ -41,7 +45,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STAT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TO_LABEL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 
 /**
  * This class contains constructors for most used rules and its sub rules.
@@ -51,6 +57,7 @@ public class MostUsed {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         allowedKeywordsAsIdentifier(grammarBuilder);
+        specialKeywordsAsIdentifier(grammarBuilder);
     }
     
     /**
@@ -78,5 +85,16 @@ public class MostUsed {
                                 CATEGORY,
                                 NETWORK,
                                 ITERATOR));
+    }
+    
+    private static void specialKeywordsAsIdentifier(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(SPECIAL_KEYWORDS_AS_IDENTIFIER).is(
+                                grammarBuilder.firstOf(
+                                WITHOUT,
+                                OFFSET,
+                                DATA,
+                                GROUP,
+                                LIMIT
+                                ));
     }
 }
