@@ -26,6 +26,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ENUM;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
@@ -77,6 +78,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_BODY;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 
@@ -114,7 +117,8 @@ public class Declaration {
         formalParameter(grammarBuilder);
         constructorDeclarationPI(grammarBuilder);
         explicitConstructorInvocationPI(grammarBuilder);
-
+        enumDeclaration(grammarBuilder);
+        enumBody(grammarBuilder);
     }
 
     /**
@@ -465,6 +469,34 @@ public class Declaration {
     private static void formalParameter(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FORMAL_PARAMETER).is(
                 grammarBuilder.optional(FINAL), TYPE, IDENTIFIER
+        );
+    }
+    
+    /**
+     * Creates the rule that defines an enum declaration.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void enumDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ENUM_DECLARATION).is(
+                ENUM,
+                grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                        SPECIAL_KEYWORDS_AS_IDENTIFIER),
+                LBRACE,
+                ENUM_BODY,
+                RBRACE
+        );
+    }
+    
+    private static void enumBody(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ENUM_BODY).is(
+                grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                    SPECIAL_KEYWORDS_AS_IDENTIFIER),
+                grammarBuilder.zeroOrMore(COMMA,
+                        grammarBuilder.firstOf(
+                                ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                SPECIAL_KEYWORDS_AS_IDENTIFIER
+                        )
+                )
         );
     }
 }
