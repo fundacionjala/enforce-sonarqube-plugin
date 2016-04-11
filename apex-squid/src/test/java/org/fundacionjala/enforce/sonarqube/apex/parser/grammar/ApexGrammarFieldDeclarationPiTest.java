@@ -26,31 +26,31 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION_PI;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_DECLARATION;
 
-public class ApexGrammarEnumDeclarationTest extends ApexRuleTest {
+public class ApexGrammarFieldDeclarationPiTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(ENUM_DECLARATION);
+        setRootRule(FIELD_DECLARATION_PI);
     }
 
     @Test
-    public void testValidEnumDeclaration() {
+    public void testValidFieldDeclaration() {
         assertThat(parser)
-                .matches("enum allowedKeyword {transient}")
-                .matches("enum specialKeyword {stat}")
-                .matches("enum transient {first}")
-                .matches("enum sharing {last}");
+                .matches("int myVariable;")
+                .matches("int addition,takeaway;")
+                .matches("boolean isActive = true;")
+                .matches("int addition = 0;")
+                .matches("ClassType transient;")
+                .matches("Iterator iterator = iteratorParameter;");
     }
-
+    
     @Test
-    public void testInvalidEnumDeclaration() {
+    public void testInvalidFieldDeclaration() {
         assertThat(parser)
-                .notMatches("enum {}")
-                .notMatches("")
-                .notMatches("ENUM transient {}")
-                .notMatches("enum sharing {{");
+                .notMatches("char varCharMissingSemicolon")
+                .notMatches("ClassType missingValue =;");
     }
 }

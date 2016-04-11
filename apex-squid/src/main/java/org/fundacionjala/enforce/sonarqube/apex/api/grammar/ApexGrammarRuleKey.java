@@ -59,6 +59,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     EXPRESSION_FINAL,
     EXTENDS_LIST,
     FIELD_DECLARATION,
+    FIELD_DECLARATION_PI,
     FOR_STATEMENT,
     FORMAL_PARAMETERS,
     FORMAL_PARAMETER,
@@ -97,6 +98,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     TYPE_DECLARATION,
     VARIABLE_DECLARATION,
     VARIABLE_DECLARATOR,
+    VARIABLE_DECLARATOR_PI,
     VARIABLE_DECLARATOR_ID,
     WHILE_STATEMENT;
 }

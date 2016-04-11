@@ -23,34 +23,31 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_DECLARATION;
 
-public class ApexGrammarEnumDeclarationTest extends ApexRuleTest {
-
+public class ApexGrammarVariableDeclaratorPitest extends ApexRuleTest {
+    
     @Before
     public void setUp() {
-        setRootRule(ENUM_DECLARATION);
+        setRootRule(VARIABLE_DECLARATOR_PI);
     }
-
+    
     @Test
-    public void testValidEnumDeclaration() {
+    public void testValidVariableDeclarator() {
         assertThat(parser)
-                .matches("enum allowedKeyword {transient}")
-                .matches("enum specialKeyword {stat}")
-                .matches("enum transient {first}")
-                .matches("enum sharing {last}");
+                .matches("transient = this")
+                .matches("summ = 1")
+                .matches("group")
+                .matches("aNewVariableWithNoValue");
     }
-
+    
     @Test
-    public void testInvalidEnumDeclaration() {
+    public void testInvalidVariableDeclarator() {
         assertThat(parser)
-                .notMatches("enum {}")
-                .notMatches("")
-                .notMatches("ENUM transient {}")
-                .notMatches("enum sharing {{");
+                .notMatches("");
     }
 }

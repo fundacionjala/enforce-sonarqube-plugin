@@ -81,7 +81,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_BODY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 
 /**
  * This class contains constructors for Declaration rules and its sub rules.
@@ -119,6 +121,8 @@ public class Declaration {
         explicitConstructorInvocationPI(grammarBuilder);
         enumDeclaration(grammarBuilder);
         enumBody(grammarBuilder);
+        fieldDeclarationPi(grammarBuilder);
+        variableDeclaratorPi(grammarBuilder);
     }
 
     /**
@@ -487,6 +491,10 @@ public class Declaration {
         );
     }
     
+    /**
+     * Creates the rule that defines an enum body.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void enumBody(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ENUM_BODY).is(
                 grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER,
@@ -496,6 +504,38 @@ public class Declaration {
                                 ALLOWED_KEYWORDS_AS_IDENTIFIER,
                                 SPECIAL_KEYWORDS_AS_IDENTIFIER
                         )
+                )
+        );
+    }
+    
+    /**
+     * Creates the rule that defines field declaration.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void fieldDeclarationPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FIELD_DECLARATION_PI).is(
+                TYPE,
+                VARIABLE_DECLARATOR_PI,
+                grammarBuilder.zeroOrMore(
+                        COMMA,
+                        VARIABLE_DECLARATOR_PI
+                ),
+                SEMICOLON
+        );
+    }
+    
+    /**
+     * Creates the rule that defines a variable declarator.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void variableDeclaratorPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(VARIABLE_DECLARATOR_PI).is(
+                grammarBuilder.firstOf(
+                        ALLOWED_KEYWORDS_AS_IDENTIFIER, 
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER    
+                        ),
+                grammarBuilder.optional(
+                        ASSIGN_VARIABLE_INITILIZER
                 )
         );
     }
