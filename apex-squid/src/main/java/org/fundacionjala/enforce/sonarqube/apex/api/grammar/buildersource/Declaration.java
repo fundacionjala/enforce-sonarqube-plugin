@@ -565,7 +565,10 @@ public class Declaration {
                 MODIFIER,
                 TYPE_CLASS,
                 IDENTIFIER,
+                grammarBuilder.optional(EXTENDS_LIST),
+                grammarBuilder.optional(IMPLEMENTS_LIST),
                 LBRACE,
+                //TODO:add for proper CLASS_OR_INTERFACE_BODY rule.
                 RBRACE
         );
     }

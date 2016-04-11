@@ -46,11 +46,11 @@ public class ApexGrammarClassOrInterfaceDeclarationTest extends ApexRuleTest {
                 .matches("with sharing class MyClass{}")
                 .matches("with sharing interface MyClass{}")
                 .matches("without sharing class MyClass{}")
-                .matches("without sharing interface MyClass{}");
-//                .matches("class MyClass extends YourClass{}")
-//                .matches("class MyClass implements YourClass{}")
-//                .matches("interface MyClass extends YourClass{}")
-//                .matches("interface MyClass implements YourClass{}");
+                .matches("without sharing interface MyClass{}")
+                .matches("with sharing class MyClass extends YourClass{}")
+                .matches("with sharing class MyClass implements YourClass{}")
+                .matches("with sharing interface MyClass extends YourClass{}")
+                .matches("with sharing interface MyClass implements YourClass{}");
     }
 
     @Test
@@ -64,75 +64,10 @@ public class ApexGrammarClassOrInterfaceDeclarationTest extends ApexRuleTest {
                 .notMatches("with InterfaceMyClass{}")
                 .notMatches("without InterfaceMyClass{}")
                 .notMatches("sharing InterfaceMyClass{}")
-                .notMatches("_classMyClassextendsYourClass{}")
-                .notMatches("class-MyClass implements YourClass{}")
-                .notMatches("interface1 MyClass extends YourClass{}")
-                .notMatches("interface MyClass_implements YourClass{}");
+                //should fail when extends and iterfaces aren't correctly declared
+                .notMatches("with sharing _classMyClassextendsYourClass{}")
+                .notMatches("with sharing class-MyClass implements YourClass{}")
+                .notMatches("with sharing interface1 MyClass extends YourClass{}")
+                .notMatches("with sharing interface MyClass_implements YourClass{}");
     }
-//
-//    @Test
-//    public void positiveRulesForClass() {
-//        assertThat(parser)
-//                .matches("public class MyClass{}")
-//                .matches("public with sharing class MyClass{}")
-//                .matches("private without sharing class MyClass{}")
-//                .matches("public class MyClass implements YourClass{}")
-//                .matches("public class MyClass extends YourClass{}")
-//                .matches("public with sharing class MyClass implements YourClass{}")
-//                .matches("static without sharing class MyClass implements YourClass{}")
-//                .matches("public with sharing class MyClass extends YourClass{}")
-//                .matches("static without sharing class MyClass extends YourClass{}");
-//    }
-//
-//    @Test
-//    public void negativeRulesForClass() {
-//        assertThat(parser)
-//                .notMatches("Class MyClass {")
-//                .notMatches("publicstaticclassMyClass{")
-//                .notMatches("public_classwithsharingclassMyClass{")
-//                .notMatches("privateclasswithoutsharingclassMyClass {")
-//                .notMatches("public class MyClass implementS YourClass {")
-//                .notMatches("Public class MyClass extends YourClass {")
-//                .notMatches("public with_sharing class MyClass implements YourClass {")
-//                .notMatches("static without sharing 5class MyClass implements YourClass {")
-//                .notMatches("public with sharing class 9MyClass extends YourClass {")
-//                .notMatches("static without sharing class MyClass enum extends YourClass {");
-//    }
-//
-//    @Test
-//    public void positiveRulesForInterface() {
-//        assertThat(parser)
-//                .matches("public interface MyClass{}")
-//                .matches("public with sharing interface MyClass{}")
-//                .matches("private without sharing interface MyClass{}")
-//                .matches("public interface MyClass implements YourClass{}")
-//                .matches("public interface MyClass extends YourClass{}")
-//                .matches("public with sharing interface MyClass implements YourClass{}")
-//                .matches("static without sharing interface MyClass implements YourClass{}")
-//                .matches("public with sharing interface MyClass extends YourClass{}")
-//                .matches("static without sharing interface MyClass extends YourClass{}");
-//    }
-//
-//    @Test
-//    public void negativeRulesForInterface() {
-//        assertThat(parser)
-//                .notMatches("Interface MyClass {}")
-//                .notMatches("publicstatic interface MyClass {}")
-//                .notMatches("public  interface  with sharing class MyClass {}")
-//                .notMatches("private class without sharing interface MyClass {}")
-//                .notMatches("public interface MyClass implementS YourClass {}")
-//                .notMatches("PublicinterfaceMyClassextendsYourClass{}")
-//                .notMatches("public with_sharing interface MyClass implements YourClass {}")
-//                .notMatches("static without sharing 5interface MyClass implements YourClass {}")
-//                .notMatches("public with sharing interface 9MyClass extends YourClass {}")
-//                .notMatches("static without sharing interface MyClass enum extends YourClass {}");
-//    }
-//
-//    @Test
-//    public void positiveRulesForClassWithAnnotation() {
-//        assertThat(parser)
-//                .matches("@isTest public class MyClassadasdasd{}")
-//                .notMatches("@lolpublicstaticclassMyClass{")
-//                .notMatches("@jajajaja@public_classwithsharingclassMyClass{");
-//    }
 }
