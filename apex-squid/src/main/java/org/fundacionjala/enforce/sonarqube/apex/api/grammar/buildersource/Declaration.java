@@ -92,6 +92,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_MEMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GET_SHARING_RULES;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 
@@ -129,6 +130,8 @@ public class Declaration {
         formalParameter(grammarBuilder);
         constructorDeclarationPI(grammarBuilder);
         explicitConstructorInvocationPI(grammarBuilder);
+        classOrInterfaceDeclaration(grammarBuilder);
+        getSharingRules(grammarBuilder);
         enumDeclaration(grammarBuilder);
         enumBody(grammarBuilder);
         fieldDeclarationPi(grammarBuilder);
@@ -139,6 +142,7 @@ public class Declaration {
         classOrInterfaceDeclaration(grammarBuilder);
         getSharingRules(grammarBuilder);
 
+        localVariableDeclaration(grammarBuilder);
     }
 
     /**
@@ -581,7 +585,7 @@ public class Declaration {
     private static void initializerBlock(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INITIALIZER_BLOCK).is(
                 LBRACE,
-                grammarBuilder.oneOrMore(
+                grammarBuilder.zeroOrMore(
                         INITIALIZER_BLOCK_MEMBER),
                 RBRACE
         );
@@ -632,7 +636,15 @@ public class Declaration {
                 grammarBuilder.firstOf(
                         WITHOUT,
                         WITH),
-                SHARING
+                SHARING);
+    }
+
+    private static void localVariableDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION).is(
+                grammarBuilder.optional(FINAL),
+                TYPE,
+                VARIABLE_DECLARATOR_PI,
+                grammarBuilder.zeroOrMore(COMMA, VARIABLE_DECLARATOR)
         );
     }
 }
