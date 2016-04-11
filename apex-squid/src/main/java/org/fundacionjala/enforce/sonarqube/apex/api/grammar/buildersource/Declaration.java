@@ -328,7 +328,7 @@ public class Declaration {
     private static void assignVariableInitializer(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ASSIGN_VARIABLE_INITILIZER).is(
                 ASSIGN,
-                EXPRESSION
+                grammarBuilder.firstOf(EXPRESSION, THIS)
         );
     }
 
