@@ -565,7 +565,8 @@ public class Declaration {
     private static void initializerBlock(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INITIALIZER_BLOCK).is(
                 LBRACE,
-                INITIALIZER_BLOCK_MEMBER,
+                grammarBuilder.oneOrMore(
+                INITIALIZER_BLOCK_MEMBER),
                 RBRACE
         );
     }
