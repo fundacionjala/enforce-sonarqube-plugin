@@ -35,6 +35,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IMPLEMENT
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
@@ -88,6 +89,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GET_SHARING_RULES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_MEMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 
@@ -132,6 +136,9 @@ public class Declaration {
         enumBody(grammarBuilder);
         fieldDeclarationPi(grammarBuilder);
         variableDeclaratorPi(grammarBuilder);
+        initializer(grammarBuilder);
+        initializerBlock(grammarBuilder);
+        initializerBlockMember(grammarBuilder);
     }
 
     /**
@@ -545,9 +552,9 @@ public class Declaration {
     private static void variableDeclaratorPi(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(VARIABLE_DECLARATOR_PI).is(
                 grammarBuilder.firstOf(
-                        ALLOWED_KEYWORDS_AS_IDENTIFIER, 
-                        SPECIAL_KEYWORDS_AS_IDENTIFIER    
-                        ),
+                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER
+                ),
                 grammarBuilder.optional(
                         ASSIGN_VARIABLE_INITILIZER
                 )
@@ -586,6 +593,45 @@ public class Declaration {
                         WITHOUT,
                         WITH),
                 SHARING
+        );
+    }
+
+    /**
+     * Creates the rule that defines an initializer.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void initializer(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(INITIALIZER).is(
+                grammarBuilder.optional(STATIC),
+                INITIALIZER_BLOCK
+        );
+    }
+
+    /**
+     * Creates the rule that defines an initializer block .
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void initializerBlock(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(INITIALIZER_BLOCK).is(
+                LBRACE,
+                INITIALIZER_BLOCK_MEMBER,
+                RBRACE
+        );
+    }
+
+    /**
+     * Creates the rule that defines an initializerBlockMember.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void initializerBlockMember(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(INITIALIZER_BLOCK_MEMBER).is(
+                grammarBuilder.firstOf(
+                        INITIALIZER_BLOCK,
+                        FIELD_DECLARATION_PI
+                )
         );
     }
 }
