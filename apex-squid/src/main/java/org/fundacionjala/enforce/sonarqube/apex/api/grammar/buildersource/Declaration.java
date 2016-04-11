@@ -27,6 +27,7 @@ import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ENUM;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCEPTION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXTENDS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GET;
@@ -183,7 +184,8 @@ public class Declaration {
     private static void implementsList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(IMPLEMENTS_LIST).is(
                 IMPLEMENTS,
-                CLASS_NAME
+                CLASS_NAME,
+                grammarBuilder.zeroOrMore(COMMA, CLASS_NAME)
         );
     }
 
@@ -195,7 +197,7 @@ public class Declaration {
     private static void extendsList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXTENDS_LIST).is(
                 EXTENDS,
-                CLASS_NAME
+                grammarBuilder.firstOf(EXCEPTION, CLASS_NAME)
         );
     }
 

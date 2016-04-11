@@ -23,10 +23,10 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 /**
@@ -49,7 +49,9 @@ public class ApexGrammarClassOrInterfaceDeclarationTest extends ApexRuleTest {
                 .matches("without sharing interface MyClass{}")
                 .matches("with sharing class MyClass extends YourClass{}")
                 .matches("with sharing class MyClass implements YourClass{}")
+                .matches("with sharing class MyClass implements YourClass, MyClass, ThisClass{}")
                 .matches("with sharing interface MyClass extends YourClass{}")
+                .matches("with sharing interface MyClass extends exception{}")
                 .matches("with sharing interface MyClass implements YourClass{}");
     }
 

@@ -51,6 +51,6 @@ public class ApexGrammarImplementsListTest extends ApexRuleTest {
     public void positiveRules() {
         assertThat(parser)
                 .matches("implements MyClass")
-                .matches("implements MyClass1");
+                .matches("implements MyClass, MyClass2, Myclass3");
     }
 }
