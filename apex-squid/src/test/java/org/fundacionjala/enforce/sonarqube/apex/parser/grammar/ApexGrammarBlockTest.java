@@ -26,29 +26,25 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarInitializerTest extends ApexRuleTest {
+public class ApexGrammarBlockTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(INITIALIZER);
+        setRootRule(BLOCK);
     }
 
     @Test
-    public void testValidInitializer() {
-        assertThat(parser)
-                .matches("static { int x;}")
-                .matches("{{{int x;}}}")
-                .matches("static {{}}");
+    public void testValidInitializerBlock() {
+        assertThat(parser).matches("{ int variable;}");
     }
 
     @Test
-    public void testInvalidInitializer() {
-        assertThat(parser)
-                .notMatches("someString {}")
-                .notMatches("static {}{}{}");
-
+    public void testInValidInitializerBlock() {
+        assertThat(parser).notMatches("")
+                .notMatches("{}int variable");
     }
+
 }

@@ -26,29 +26,29 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarInitializerTest extends ApexRuleTest {
+public class ApexGrammarLocalVariableDeclarationTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(INITIALIZER);
+        setRootRule(LOCAL_VARIABLE_DECLARATION);
     }
 
     @Test
-    public void testValidInitializer() {
+    public void testValidInitializerBlock() {
         assertThat(parser)
-                .matches("static { int x;}")
-                .matches("{{{int x;}}}")
-                .matches("static {{}}");
+                .matches("final int variable")
+                .matches("int variable,variable1")
+                .matches("int variable");
     }
 
     @Test
-    public void testInvalidInitializer() {
+    public void testInValidInitializerBlock() {
         assertThat(parser)
-                .notMatches("someString {}")
-                .notMatches("static {}{}{}");
-
+                .notMatches("")
+                .notMatches("int final variable")
+                .notMatches("int final VAriable;");
     }
 }

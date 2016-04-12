@@ -92,6 +92,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_MEMBER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 
@@ -139,6 +140,7 @@ public class Declaration {
         initializer(grammarBuilder);
         initializerBlock(grammarBuilder);
         initializerBlockMember(grammarBuilder);
+        localVariableDeclaration(grammarBuilder);
     }
 
     /**
@@ -617,7 +619,7 @@ public class Declaration {
         grammarBuilder.rule(INITIALIZER_BLOCK).is(
                 LBRACE,
                 grammarBuilder.zeroOrMore(
-                INITIALIZER_BLOCK_MEMBER),
+                        INITIALIZER_BLOCK_MEMBER),
                 RBRACE
         );
     }
@@ -633,6 +635,15 @@ public class Declaration {
                         INITIALIZER_BLOCK,
                         FIELD_DECLARATION_PI
                 )
+        );
+    }
+
+    private static void localVariableDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION).is(
+                grammarBuilder.optional(FINAL),
+                TYPE,
+                VARIABLE_DECLARATOR,
+                grammarBuilder.zeroOrMore(COMMA, VARIABLE_DECLARATOR)
         );
     }
 }
