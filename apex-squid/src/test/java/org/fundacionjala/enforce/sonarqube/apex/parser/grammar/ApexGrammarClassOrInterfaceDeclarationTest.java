@@ -30,7 +30,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarClassOrInterfaceDeclarationTest extends ApexRuleTest {
-    
+
     @Before
     public void init() {
         setRootRule(CLASS_OR_INTERFACE_DECLARATION);

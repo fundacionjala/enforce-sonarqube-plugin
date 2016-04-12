@@ -48,6 +48,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
@@ -68,13 +69,14 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
- * 
+ *
  */
 public class Expression {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         arguments(grammarBuilder);
         argumentsPI(grammarBuilder);
+        argumentsList(grammarBuilder);
         testingExpressionEqual(grammarBuilder);
         testingExpression(grammarBuilder);
         creatingExpression(grammarBuilder);
@@ -106,6 +108,7 @@ public class Expression {
                 )
         );
     }
+
     /**
      * It is responsible for setting the rules for arguments.
      *
@@ -114,8 +117,21 @@ public class Expression {
     private static void argumentsPI(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ARGUMENTSPI).is(
                 LPAREN,
-                grammarBuilder.optional(IDENTIFIER),
+                grammarBuilder.optional(ARGUMENTS_LIST),
                 RPAREN
+        );
+    }
+
+    /**
+     * Creates a grammar rule for arguments list.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void argumentsList(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ARGUMENTS_LIST).is(
+                grammarBuilder.firstOf(EXPRESSION, THIS),
+                grammarBuilder.zeroOrMore(COMMA,
+                        grammarBuilder.firstOf(EXPRESSION, THIS))
         );
     }
 

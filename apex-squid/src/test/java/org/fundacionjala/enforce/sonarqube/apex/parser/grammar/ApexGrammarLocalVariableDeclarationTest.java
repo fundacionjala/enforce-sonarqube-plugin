@@ -37,7 +37,7 @@ public class ApexGrammarLocalVariableDeclarationTest extends ApexRuleTest {
     }
 
     @Test
-    public void testValidInitializerBlock() {
+    public void testValidLocalVariableDeclaration() {
         assertThat(parser)
                 .matches("final int variable")
                 .matches("int variable,variable1")
@@ -45,7 +45,7 @@ public class ApexGrammarLocalVariableDeclarationTest extends ApexRuleTest {
     }
 
     @Test
-    public void testInValidInitializerBlock() {
+    public void testInValidLocalVariableDeclaration() {
         assertThat(parser)
                 .notMatches("")
                 .notMatches("int final variable")

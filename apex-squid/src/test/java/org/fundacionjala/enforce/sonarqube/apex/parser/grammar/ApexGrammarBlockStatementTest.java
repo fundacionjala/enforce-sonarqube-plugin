@@ -37,7 +37,7 @@ public class ApexGrammarBlockStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void testValidInitializerBlock() {
+    public void testValidBlockStatement() {
         assertThat(parser)
                 .matches("int variable;")
                 .matches("return null;")
@@ -45,7 +45,7 @@ public class ApexGrammarBlockStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void testInValidInitializerBlock() {
+    public void testInValidBlockStatement() {
         assertThat(parser)
                 .notMatches("")
                 .notMatches("REturn null;");

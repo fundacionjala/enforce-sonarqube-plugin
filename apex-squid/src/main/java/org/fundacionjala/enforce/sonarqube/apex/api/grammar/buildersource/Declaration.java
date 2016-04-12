@@ -56,9 +56,12 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGN_VARIABLE_INITILIZER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_BODY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_MEMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
@@ -143,6 +146,7 @@ public class Declaration {
         initializerBlockMember(grammarBuilder);
         classOrInterfaceMember(grammarBuilder);
         localVariableDeclaration(grammarBuilder);
+        classOrInterfaceBody(grammarBuilder);
     }
 
     /**
@@ -322,7 +326,7 @@ public class Declaration {
                 FORMAL_PARAMETERS,
                 LBRACE,
                 grammarBuilder.optional(EXPLICIT_CONSTRUCTOR_INVOCATION_PI),
-                grammarBuilder.zeroOrMore(TYPE, IDENTIFIER),
+                grammarBuilder.zeroOrMore(BLOCK_STATEMENT),
                 RBRACE
         );
     }
@@ -422,7 +426,7 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void accessorBody(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(ACCESSOR_BODY).is(IDENTIFIER);
+        grammarBuilder.rule(ACCESSOR_BODY).is(BLOCK);
     }
 
     /**
@@ -459,7 +463,7 @@ public class Declaration {
                 RESULT_TYPE,
                 METHOD_NAME,
                 FORMAL_PARAMETERS,
-                grammarBuilder.firstOf(STATEMENT_BLOCK, SEMICOLON)
+                grammarBuilder.firstOf(BLOCK, SEMICOLON)
         );
     }
 
@@ -493,7 +497,9 @@ public class Declaration {
      */
     private static void formalParameter(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FORMAL_PARAMETER).is(
-                grammarBuilder.optional(FINAL), TYPE, IDENTIFIER
+                grammarBuilder.optional(FINAL), TYPE,
+                grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER)
         );
     }
 
@@ -581,8 +587,20 @@ public class Declaration {
                 grammarBuilder.optional(EXTENDS_LIST),
                 grammarBuilder.optional(IMPLEMENTS_LIST),
                 LBRACE,
-                //TODO:add for proper CLASS_OR_INTERFACE_BODY rule.
+                CLASS_OR_INTERFACE_BODY,
                 RBRACE
+        );
+
+    }
+
+    /**
+     * Grammar for the declaration of a class or interface body.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void classOrInterfaceBody(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CLASS_OR_INTERFACE_BODY).is(
+                grammarBuilder.zeroOrMore(CLASS_OR_INTERFACE_MEMBER)
         );
     }
 
@@ -664,6 +682,10 @@ public class Declaration {
         );
     }
 
+    /**
+     * Creates the rule for localVariableDeclaration.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void localVariableDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION).is(
                 grammarBuilder.optional(FINAL),
