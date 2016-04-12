@@ -31,11 +31,13 @@ import com.sonar.sslr.api.TokenType;
  */
 public enum ApexKeyword implements TokenType {
 
-    /**
+/**
      * RESERVED WORDS AND LITERALS.
      */
     ABSTRACT("abstract"),
+    ACTIVATE("activate"),
     ANOTATION("anotation"),
+    ANY("any"),
     AFTER("after"),
     BEFORE("before"),
     BOOLEAN("boolean"),

@@ -23,38 +23,33 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PROPERTY_DECLARATION;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
 
-public class ApexGrammarPropertyDeclarationTest extends ApexRuleTest {
+public class ApexGrammrArgumentsListTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(PROPERTY_DECLARATION);
+    public void setUp() {
+        setRootRule(ARGUMENTS_LIST);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidArgumentsList() {
         assertThat(parser)
-                .matches("int prop {private get; set;}")
-                .matches("int prop {public get{return variable;}}")
-                .matches("int prop {set {int prop = 5;}}")
-                .matches("boolean prop {set;}");
+                .matches("this,this")
+                .matches("3")
+                .matches("abc,3")
+                .matches("this,this,this,this,this")
+                .matches("3,3,3,3,3");
     }
 
     @Test
-    public void negativeRules() {
+    public void testInValidArgumentsList() {
         assertThat(parser)
-                //Without type
-                .notMatches("prop {get; set;}")
-                //without identifier
-                .notMatches("int {get; set;}")
-                //without semicolon
-                .notMatches("int prop {get set}")
-                //without braces
-                .notMatches("int prop [get; set;]");
+                .notMatches("3,,3,,3,,3")
+                .notMatches("this,,ss,ssd,est");
     }
 }

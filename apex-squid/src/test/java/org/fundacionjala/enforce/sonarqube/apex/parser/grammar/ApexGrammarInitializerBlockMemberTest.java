@@ -37,7 +37,7 @@ public class ApexGrammarInitializerBlockMemberTest extends ApexRuleTest {
     }
 
     @Test
-    public void testValidInitializerBlock() {
+    public void testValidInitializerBlockMember() {
         assertThat(parser)
                 .matches("{{int something;}}")
                 .matches("int variable;")
@@ -45,7 +45,7 @@ public class ApexGrammarInitializerBlockMemberTest extends ApexRuleTest {
     }
 
     @Test
-    public void testInValidInitializerBlock() {
+    public void testInValidInitializerBlockMember() {
         assertThat(parser)
                 .notMatches("")
                 .notMatches("{}{int variable;}")

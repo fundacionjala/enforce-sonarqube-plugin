@@ -23,10 +23,10 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_BODY;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Test;
 import org.junit.Before;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_BODY;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarAccessorBodyTest extends ApexRuleTest {
@@ -37,9 +37,19 @@ public class ApexGrammarAccessorBodyTest extends ApexRuleTest {
     }
 
     @Test
-    public void positiveRules() {
-        //TODO:
+    public void validAccessorBody() {
         assertThat(parser)
-                .matches("hi");
+                .matches("{}")
+                .matches("{final int transient;}")
+                .matches("{int validVariable;}");
+    }
+
+    @Test
+    public void testInvalidAccessorBody() {
+        assertThat(parser)
+                .notMatches("hi")
+                .notMatches("{}{}")
+                .notMatches("")
+                .notMatches("{int variable}");
     }
 }

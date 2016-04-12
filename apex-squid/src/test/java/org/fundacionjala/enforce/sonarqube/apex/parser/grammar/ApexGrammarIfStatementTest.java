@@ -23,38 +23,32 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PROPERTY_DECLARATION;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
 
-public class ApexGrammarPropertyDeclarationTest extends ApexRuleTest {
+public class ApexGrammarIfStatementTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(PROPERTY_DECLARATION);
+    public void setUp() {
+        setRootRule(IF_STATEMENT);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidIfStatement() {
         assertThat(parser)
-                .matches("int prop {private get; set;}")
-                .matches("int prop {public get{return variable;}}")
-                .matches("int prop {set {int prop = 5;}}")
-                .matches("boolean prop {set;}");
-    }
-
-    @Test
-    public void negativeRules() {
-        assertThat(parser)
-                //Without type
-                .notMatches("prop {get; set;}")
-                //without identifier
-                .notMatches("int {get; set;}")
-                //without semicolon
-                .notMatches("int prop {get set}")
-                //without braces
-                .notMatches("int prop [get; set;]");
+                .matches("if(anExpression)"
+                        + "{};")
+                .matches("if(otherExpression)"
+                        + "{};"
+                        + "else "
+                        + "if(anotherExpression)"
+                        + "{};")
+                .matches("if(expression)"
+                        + "{};"
+                        + "else "
+                        + "{}");
     }
 }
