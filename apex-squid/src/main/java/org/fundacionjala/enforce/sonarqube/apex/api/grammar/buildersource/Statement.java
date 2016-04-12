@@ -42,10 +42,14 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION_SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
@@ -60,8 +64,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
 
 /**
- *  This class contains constructors for Statement rules and its sub rules.
- * 
+ * This class contains constructors for Statement rules and its sub rules.
+ *
  */
 public class Statement {
 
@@ -75,6 +79,8 @@ public class Statement {
         statementBlock(grammarBuilder);
         statementIf(grammarBuilder);
         statamentElse(grammarBuilder);
+        blockStatement(grammarBuilder);
+
     }
 
     /**
@@ -229,6 +235,25 @@ public class Statement {
                         EXPRESSION_FINAL,
                         VARIABLE_DECLARATION,
                         DML_STATEMENT)
+        );
+    }
+
+    /**
+     * Grammar to define block statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void blockStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(BLOCK_STATEMENT).is(
+                grammarBuilder.firstOf(
+                        LOCAL_VARIABLE_DECLARATION_SEMICOLON,
+                        STATEMENT
+                )
+        );
+
+        grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION_SEMICOLON).is(
+                LOCAL_VARIABLE_DECLARATION,
+                SEMICOLON
         );
     }
 }

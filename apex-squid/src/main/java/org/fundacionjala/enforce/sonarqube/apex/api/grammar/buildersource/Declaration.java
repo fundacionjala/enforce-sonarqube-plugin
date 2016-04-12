@@ -132,7 +132,6 @@ public class Declaration {
         explicitConstructorInvocationPI(grammarBuilder);
         classOrInterfaceDeclaration(grammarBuilder);
         getSharingRules(grammarBuilder);
-
         enumDeclaration(grammarBuilder);
         enumBody(grammarBuilder);
         fieldDeclarationPi(grammarBuilder);
@@ -642,7 +641,7 @@ public class Declaration {
         grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION).is(
                 grammarBuilder.optional(FINAL),
                 TYPE,
-                VARIABLE_DECLARATOR,
+                VARIABLE_DECLARATOR_PI,
                 grammarBuilder.zeroOrMore(COMMA, VARIABLE_DECLARATOR)
         );
     }
