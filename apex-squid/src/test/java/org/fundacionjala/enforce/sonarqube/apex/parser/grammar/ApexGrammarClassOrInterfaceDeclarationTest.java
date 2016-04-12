@@ -29,10 +29,6 @@ import org.junit.Test;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- *
- * @author vicente_rodriguez
- */
 public class ApexGrammarClassOrInterfaceDeclarationTest extends ApexRuleTest {
     
     @Before
