@@ -94,6 +94,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_MEMBER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 
@@ -142,6 +143,7 @@ public class Declaration {
         initializerBlock(grammarBuilder);
         initializerBlockMember(grammarBuilder);
         classOrInterfaceMember(grammarBuilder);
+        localVariableDeclaration(grammarBuilder);
     }
 
     /**
@@ -653,12 +655,22 @@ public class Declaration {
         );
         grammarBuilder.rule(DECLARATIONS_WITH_MODIFIERS).is(
                 MODIFIER,
-                grammarBuilder.firstOf(METHOD_DECLARATION_PI, 
+                grammarBuilder.firstOf(METHOD_DECLARATION_PI,
                         PROPERTY_DECLARATION,
                         CLASS_OR_INTERFACE_DECLARATION,
                         ENUM_DECLARATION,
                         CONSTRUCTOR_DECLARATION_PI,
                         FIELD_DECLARATION_PI
-                        ));
+                )
+        );
+    }
+
+    private static void localVariableDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION).is(
+                grammarBuilder.optional(FINAL),
+                TYPE,
+                VARIABLE_DECLARATOR,
+                grammarBuilder.zeroOrMore(COMMA, VARIABLE_DECLARATOR)
+        );
     }
 }

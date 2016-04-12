@@ -46,8 +46,16 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STAT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TO_LABEL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION_SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
 
 /**
  * This class contains constructors for most used rules and its sub rules.
@@ -58,8 +66,11 @@ public class MostUsed {
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         allowedKeywordsAsIdentifier(grammarBuilder);
         specialKeywordsAsIdentifier(grammarBuilder);
+        block(grammarBuilder);
+        blockStatement(grammarBuilder);
+
     }
-    
+
     /**
      * Grammar to define which are the allowed keywords to be use as identifier.
      *
@@ -67,34 +78,73 @@ public class MostUsed {
      */
     private static void allowedKeywordsAsIdentifier(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ALLOWED_KEYWORDS_AS_IDENTIFIER).is(
-                        grammarBuilder.firstOf(
-                                IDENTIFIER,
-                                TRANSIENT,
-                                RETURNING,
-                                SEARCH,
-                                STAT,
-                                CONVERT_CURRENCY,
-                                SAVE_POINT,
-                                TO_LABEL,
-                                SHARING,
-                                GET,
-                                AFTER,
-                                BEFORE,
-                                FIRST,
-                                LAST,
-                                CATEGORY,
-                                NETWORK,
-                                ITERATOR));
+                grammarBuilder.firstOf(
+                        IDENTIFIER,
+                        TRANSIENT,
+                        RETURNING,
+                        SEARCH,
+                        STAT,
+                        CONVERT_CURRENCY,
+                        SAVE_POINT,
+                        TO_LABEL,
+                        SHARING,
+                        GET,
+                        AFTER,
+                        BEFORE,
+                        FIRST,
+                        LAST,
+                        CATEGORY,
+                        NETWORK,
+                        ITERATOR));
     }
-    
+
+    /**
+     * Grammar to define which are the allowed keywords to be used as
+     * identifier.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void specialKeywordsAsIdentifier(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SPECIAL_KEYWORDS_AS_IDENTIFIER).is(
-                                grammarBuilder.firstOf(
-                                WITHOUT,
-                                OFFSET,
-                                DATA,
-                                GROUP,
-                                LIMIT
-                                ));
+                grammarBuilder.firstOf(
+                        WITHOUT,
+                        OFFSET,
+                        DATA,
+                        GROUP,
+                        LIMIT
+                ));
     }
+
+    /**
+     * Grammar to define block rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void block(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(BLOCK).is(
+                LBRACE,
+                grammarBuilder.zeroOrMore(BLOCK_STATEMENT),
+                RBRACE
+        );
+    }
+
+    /**
+     * Grammar to define block statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void blockStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(BLOCK_STATEMENT).is(
+                grammarBuilder.firstOf(
+                        LOCAL_VARIABLE_DECLARATION_SEMICOLON,
+                        STATEMENT
+                )
+        );
+
+        grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION_SEMICOLON).is(
+                LOCAL_VARIABLE_DECLARATION,
+                SEMICOLON
+        );
+    }
+
 }
