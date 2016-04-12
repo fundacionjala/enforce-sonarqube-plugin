@@ -60,6 +60,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_MEMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXTENDS_LIST;
@@ -84,6 +85,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECLARATIONS_WITH_MODIFIERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_BODY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
@@ -139,6 +141,7 @@ public class Declaration {
         initializer(grammarBuilder);
         initializerBlock(grammarBuilder);
         initializerBlockMember(grammarBuilder);
+        classOrInterfaceMember(grammarBuilder);
         localVariableDeclaration(grammarBuilder);
     }
 
@@ -632,6 +635,30 @@ public class Declaration {
         grammarBuilder.rule(INITIALIZER_BLOCK_MEMBER).is(
                 grammarBuilder.firstOf(
                         INITIALIZER_BLOCK,
+                        FIELD_DECLARATION_PI
+                )
+        );
+    }
+
+    /**
+     * Creates the rule for all the possible class or interface members.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void classOrInterfaceMember(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CLASS_OR_INTERFACE_MEMBER).is(
+                grammarBuilder.firstOf(
+                        INITIALIZER,
+                        DECLARATIONS_WITH_MODIFIERS
+                )
+        );
+        grammarBuilder.rule(DECLARATIONS_WITH_MODIFIERS).is(
+                MODIFIER,
+                grammarBuilder.firstOf(METHOD_DECLARATION_PI,
+                        PROPERTY_DECLARATION,
+                        CLASS_OR_INTERFACE_DECLARATION,
+                        ENUM_DECLARATION,
+                        CONSTRUCTOR_DECLARATION_PI,
                         FIELD_DECLARATION_PI
                 )
         );
