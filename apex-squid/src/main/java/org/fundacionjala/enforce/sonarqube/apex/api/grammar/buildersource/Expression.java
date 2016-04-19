@@ -29,26 +29,38 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NEW;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ANDEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIV;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIVEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EXCOREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GTGTEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GTGTGTEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LTLTEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUSEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MOD;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MODEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUSEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
@@ -57,6 +69,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INVOKE_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL_EXPRESSION;
@@ -92,6 +105,8 @@ public class Expression {
         terminalExpression(grammarBuilder);
         expression(grammarBuilder);
         expressionFinal(grammarBuilder);
+        expressionPi(grammarBuilder);
+        assignmentOperator(grammarBuilder);
     }
 
     /**
@@ -339,5 +354,32 @@ public class Expression {
      */
     public static void testingExpressionEqual(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EQUAL).is(ASSIGN, ASSIGN);
+    }
+
+    public static void expressionPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(EXPRESSION_PI).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.optional(
+                        grammarBuilder.sequence(ASSIGNMENT_OPERATOR, EXPRESSION))
+        );
+    }
+
+    public static void assignmentOperator(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ASSIGNMENT_OPERATOR).is(
+                grammarBuilder.firstOf(
+                        ASSIGN,
+                        DIVEQU,
+                        MINUSEQU,
+                        PLUSEQU,
+                        MODEQU,
+                        STAREQU,
+                        LTLTEQU,
+                        GTGTEQU,
+                        GTGTGTEQU,
+                        ANDEQU,
+                        OREQU,
+                        EXCOREQU
+        )
+        );
     }
 }
