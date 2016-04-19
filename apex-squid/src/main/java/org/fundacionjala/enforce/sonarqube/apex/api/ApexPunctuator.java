@@ -47,6 +47,7 @@ public enum ApexPunctuator implements TokenType {
     DOT("."),
     AT("@"),
     QUESTION("?"),
+    OR("|"),
     /**
      * OPERATORS.
      */

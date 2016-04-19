@@ -48,6 +48,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUSEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MODEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUSEQU;
@@ -67,6 +68,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CREATING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DEC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUAL;
@@ -111,6 +113,7 @@ public class Expression {
         expressionPi(grammarBuilder);
         assignmentOperator(grammarBuilder);
         conditionalExpression(grammarBuilder);
+        conditionalOrExpression(grammarBuilder);
     }
 
     /**
@@ -389,12 +392,22 @@ public class Expression {
 
     public static void conditionalExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONDITIONAL_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                CONDITIONAL_OR_EXPRESSION,
                 grammarBuilder.optional(
                         grammarBuilder.sequence(QUESTION,
                                 EXPRESSION_PI,
                                 COLON,
                                 EXPRESSION_PI))
+        );
+    }
+
+    public static void conditionalOrExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CONDITIONAL_OR_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.sequence(
+                                OR, OR,
+                                TERMINAL_EXPRESSION))
         );
     }
 }
