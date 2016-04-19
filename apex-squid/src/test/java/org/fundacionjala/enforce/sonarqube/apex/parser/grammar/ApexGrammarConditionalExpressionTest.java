@@ -26,45 +26,20 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 
-public class ApexGrammarExpressionPiTest extends ApexRuleTest {
+public class ApexGrammarConditionalExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(EXPRESSION_PI);
+        setRootRule(CONDITIONAL_EXPRESSION);
     }
 
     @Test
-    public void positiveRules() {
+    public void positiveRules_LiteralExpresion_IntegerExpresion() {
         assertThat(parser)
-                .matches("1")
-                .matches("a")
-                .matches("someIdentifier")
-                .matches("this")
-                .matches("null")
-                .matches("super")
-                .matches("1009")
-                //with assignmentOperators
-                .matches("x = 5")
-                .matches("x = y = 2")
-                .matches("count += 4")
-                //with conditional expression
-                .matches("thisValue ? 0 : 1")
-                .matches("x = somethingTrue ? this : null")
-                .matches("y += question ? 1 : 10");
-    }
-    
-    @Test
-    public void negativeRules() {
-        assertThat(parser)
-                .notMatches("private")
-                .notMatches("void")
-                .notMatches("class = this")
-                .notMatches("this == that")
-                .notMatches("4 == 4")
-                .notMatches("*")
-                .notMatches("y == question ? 1 : 10");
+                .matches("boolStatement ? doSomething : x = 3")
+                .matches("boolStatement ? null : 0");
     }
 }

@@ -31,6 +31,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ANDEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIV;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIVEQU;
@@ -50,6 +51,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MODEQU
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUSEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.QUESTION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
@@ -64,6 +66,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CREATING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DEC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUAL;
@@ -107,6 +110,7 @@ public class Expression {
         expressionFinal(grammarBuilder);
         expressionPi(grammarBuilder);
         assignmentOperator(grammarBuilder);
+        conditionalExpression(grammarBuilder);
     }
 
     /**
@@ -358,9 +362,9 @@ public class Expression {
 
     public static void expressionPi(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXPRESSION_PI).is(
-                TERMINAL_EXPRESSION,
+                CONDITIONAL_EXPRESSION,
                 grammarBuilder.optional(
-                        grammarBuilder.sequence(ASSIGNMENT_OPERATOR, EXPRESSION))
+                        grammarBuilder.sequence(ASSIGNMENT_OPERATOR, EXPRESSION_PI))
         );
     }
 
@@ -379,7 +383,18 @@ public class Expression {
                         ANDEQU,
                         OREQU,
                         EXCOREQU
-        )
+                )
+        );
+    }
+
+    public static void conditionalExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CONDITIONAL_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.optional(
+                        grammarBuilder.sequence(QUESTION,
+                                EXPRESSION_PI,
+                                COLON,
+                                EXPRESSION_PI))
         );
     }
 }
