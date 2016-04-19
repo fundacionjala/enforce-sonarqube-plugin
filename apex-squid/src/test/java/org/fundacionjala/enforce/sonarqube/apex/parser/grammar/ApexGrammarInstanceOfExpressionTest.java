@@ -23,31 +23,36 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
-
-public class ApexGrammarTestingExpressionTest extends ApexRuleTest {
+public class ApexGrammarInstanceOfExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(TESTING_EXPRESSION);
+        setRootRule(INSTANCE_OF_EXPRESSION);
     }
 
     @Test
-    public void positiveRulesOperationsSimpleMinus() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("10>5")
-                .matches("4>5")
-                .matches("4<5");
-//these tests cases are invalidated with the new rules, 
-//will be deleted when refactor is complete.
-//                .matches("4==5")
-//                .matches("a==b");
+                .matches("3")
+                .matches("a")
+                .matches("someExpression")
+                .matches("thisThing instanceof someType");
+//                .matches("thisThing instanceof list<someType>")
+//                .matches("thisThing instanceof map<someKey, someType>");
+    }
+
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches(" a instance of b")
+                .notMatches(" a instanceOf b")
+                .notMatches(" a InstanceOf b")
+                .notMatches(" a instanceof 3");
     }
 }

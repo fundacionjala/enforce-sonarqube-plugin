@@ -23,31 +23,36 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUALITY_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
-
-public class ApexGrammarTestingExpressionTest extends ApexRuleTest {
+public class ApexGrammarEqualityExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(TESTING_EXPRESSION);
+        setRootRule(EQUALITY_EXPRESSION);
     }
 
     @Test
-    public void positiveRulesOperationsSimpleMinus() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("10>5")
-                .matches("4>5")
-                .matches("4<5");
-//these tests cases are invalidated with the new rules, 
-//will be deleted when refactor is complete.
-//                .matches("4==5")
-//                .matches("a==b");
+                .matches("3")
+                .matches("a")
+                .matches("someExpression")
+                .matches("thisThing == thatThing")
+                .matches("thisThing != thatThing")
+                .matches("5 == 6 != 7 == a")
+                .matches("a.b == x.y");
+    }
+
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches(" a = b")
+                .notMatches(" a ! b")
+                .notMatches(" a !! b");
     }
 }
