@@ -32,6 +32,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BYTE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CHAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DEPRECATED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DOUBLE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCEPTION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FLOAT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FUTURE;
@@ -39,13 +40,16 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INVOCABLE_METHOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INVOCABLE_VARIABLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IS_TEST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LONG;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MAP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NATIVE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PROTECTED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PUBLIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.READ_ONLY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.REMOTE_ACTION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHORT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STRICTFP;
@@ -56,10 +60,22 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.AT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COLLECTIONS_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.REFERENCE_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_SPECIFIER;
 
 /**
@@ -73,6 +89,10 @@ public class Type {
         type(grammarBuilder);
         annotation(grammarBuilder);
         modifier(grammarBuilder);
+        typePi(grammarBuilder);
+        referenceType(grammarBuilder);
+        simpleType(grammarBuilder);
+        classOrInterfaceType(grammarBuilder);
     }
 
     /**
@@ -151,5 +171,59 @@ public class Type {
      */
     private static void type(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE).is(TYPE_SPECIFIER);
+    }
+    
+    /**
+     * Rule for the types used in all the grammar.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void typePi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(TYPE_PI).is(grammarBuilder.firstOf(REFERENCE_TYPE, MAP_TYPE, COLLECTIONS_TYPE));
+
+        grammarBuilder.rule(MAP_TYPE).is(MAP,
+                LT,
+                TYPE_PI,
+                COMMA,
+                TYPE,
+                GT);
+        grammarBuilder.rule(COLLECTIONS_TYPE).is(grammarBuilder.firstOf(LIST, SET),
+                LT,
+                TYPE_PI,
+                GT);
+    }
+
+    /**
+     * Rule for the reference types used in the grammar.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void referenceType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(REFERENCE_TYPE).is(
+                SIMPLE_TYPE,
+                grammarBuilder.optional(BRACKETS));
+    }
+
+    /**
+     * Rule for the simple type.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void simpleType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(SIMPLE_TYPE).is(
+                grammarBuilder.firstOf(EXCEPTION,
+                        CLASS_OR_INTERFACE_TYPE));
+    }
+
+    /**
+     * Rule that defines what can be used as a type for a class or interface.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void classOrInterfaceType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CLASS_OR_INTERFACE_TYPE).is(
+                grammarBuilder.firstOf(
+                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER));
     }
 }

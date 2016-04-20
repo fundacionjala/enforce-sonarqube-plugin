@@ -23,31 +23,33 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_OR_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
-
-public class ApexGrammarTestingExpressionTest extends ApexRuleTest {
+public class ApexGrammarConditionalOrExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(TESTING_EXPRESSION);
+        setRootRule(CONDITIONAL_OR_EXPRESSION);
     }
 
     @Test
-    public void positiveRulesOperationsSimpleMinus() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("10>5")
-                .matches("4>5")
-                .matches("4<5");
-//these tests cases are invalidated with the new rules, 
-//will be deleted when refactor is complete.
-//                .matches("4==5")
-//                .matches("a==b");
+                .matches("3")
+                .matches("a")
+                .matches("someExpression")
+                .matches("thisThing || thatThing")
+                .matches("5 || 6 || 7")
+                .matches("a.b || x.y")
+                //with nested "AND" expression
+                .matches("a && b")
+                .matches("a && b || c")
+                .matches("thisThing && thatThing || aThing && anotherThing")
+                .matches("a.b || x.y")
+                .matches("a.b || x.y");
     }
 }

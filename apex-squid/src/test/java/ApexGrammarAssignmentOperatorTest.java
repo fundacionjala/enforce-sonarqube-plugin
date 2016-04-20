@@ -1,3 +1,4 @@
+
 /*
  * The MIT License
  *
@@ -21,33 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
-
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
-
-public class ApexGrammarTestingExpressionTest extends ApexRuleTest {
+public class ApexGrammarAssignmentOperatorTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(TESTING_EXPRESSION);
+        setRootRule(ASSIGNMENT_OPERATOR);
     }
 
     @Test
-    public void positiveRulesOperationsSimpleMinus() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("10>5")
-                .matches("4>5")
-                .matches("4<5");
-//these tests cases are invalidated with the new rules, 
-//will be deleted when refactor is complete.
-//                .matches("4==5")
-//                .matches("a==b");
+                .matches("=")
+                .matches("/=")
+                .matches("-=")
+                .matches("+=")
+                .matches("%=")
+                .matches("*=")
+                .matches("<<=")
+                .matches(">>=")
+                .matches(">>>=")
+                .matches("&=")
+                .matches("^=")
+                .matches("|=");
+    }
+
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches("==")
+                .notMatches("===")
+                .notMatches("/ =");
     }
 }
