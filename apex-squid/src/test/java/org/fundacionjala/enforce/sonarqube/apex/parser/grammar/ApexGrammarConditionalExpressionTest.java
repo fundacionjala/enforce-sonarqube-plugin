@@ -37,7 +37,7 @@ public class ApexGrammarConditionalExpressionTest extends ApexRuleTest {
     }
 
     @Test
-    public void positiveRules_LiteralExpresion_IntegerExpresion() {
+    public void positiveRules() {
         assertThat(parser)
                 .matches("boolStatement ? doSomething : x = 3")
                 .matches("boolStatement ? null : 0");

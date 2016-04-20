@@ -37,7 +37,7 @@ public class ApexGrammarConditionalOrExpressionTest extends ApexRuleTest {
     }
 
     @Test
-    public void positiveRules_LiteralExpresion_IntegerExpresion() {
+    public void positiveRules() {
         assertThat(parser)
                 .matches("3")
                 .matches("a")
@@ -46,6 +46,7 @@ public class ApexGrammarConditionalOrExpressionTest extends ApexRuleTest {
                 .matches("5 || 6 || 7")
                 .matches("a.b || x.y")
                 //with nested "AND" expression
+                .matches("a && b")
                 .matches("a && b || c")
                 .matches("thisThing && thatThing || aThing && anotherThing")
                 .matches("a.b || x.y")

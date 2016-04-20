@@ -78,6 +78,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INVOKE_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMERIC_EXPRESSION;
@@ -117,6 +118,7 @@ public class Expression {
         conditionalExpression(grammarBuilder);
         conditionalOrExpression(grammarBuilder);
         conditionalAndExpression(grammarBuilder);
+        inclusiveOrExpression(grammarBuilder);
     }
 
     /**
@@ -416,10 +418,20 @@ public class Expression {
     
     public static void conditionalAndExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONDITIONAL_AND_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                INCLUSIVE_OR_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
                                 AND, AND,
+                                INCLUSIVE_OR_EXPRESSION))
+        );
+    }
+    
+    public static void inclusiveOrExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(INCLUSIVE_OR_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.sequence(
+                                OR,
                                 TERMINAL_EXPRESSION))
         );
     }
