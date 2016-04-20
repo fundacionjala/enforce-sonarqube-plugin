@@ -24,37 +24,25 @@
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
+import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT_PI;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarStatementPiTest extends ApexRuleTest {
+public class ApexGrammarWhileStatemetPiTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(STATEMENT_PI);
+        setRootRule(WHILE_STATEMENT_PI);
     }
 
     @Test
-    public void testValidStatementPi() {
+    public void testValidWhileStatementPI() {
         assertThat(parser)
-                .matches("{}")
-                .matches(";")
-                .matches("if('anExpression')"
-                        + "{};")
-                .matches("if('anExpression')"
-                        + "{};"
-                        + "else "
-                        + "if('anotherExpression')"
-                        + "{};")
-                .matches("while(true){}")
-                .matches("do {} while (true);")
-                .matches("break;")
-                .matches("continue;")
-                .matches("return something;")
-                .matches("return this;")
-                .matches("throw someException;");
-                
+                .matches("while(true)"
+                        + "{}")
+                .matches("while(something)"
+                        + "while(anotherthing)"
+                        + "{}");
     }
 }

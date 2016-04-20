@@ -24,37 +24,30 @@
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
+import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONTINUE_STATEMENT;
 
-public class ApexGrammarStatementPiTest extends ApexRuleTest {
+public class ApexGrammarContinueStatementTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(STATEMENT_PI);
+        setRootRule(CONTINUE_STATEMENT);
     }
 
     @Test
-    public void testValidStatementPi() {
+    public void testValidContinueStatement() {
         assertThat(parser)
-                .matches("{}")
-                .matches(";")
-                .matches("if('anExpression')"
-                        + "{};")
-                .matches("if('anExpression')"
-                        + "{};"
-                        + "else "
-                        + "if('anotherExpression')"
-                        + "{};")
-                .matches("while(true){}")
-                .matches("do {} while (true);")
-                .matches("break;")
-                .matches("continue;")
-                .matches("return something;")
-                .matches("return this;")
-                .matches("throw someException;");
-                
+                .matches("continue;");
+    }
+
+    @Test
+    public void testInvalidContinueStatement() {
+        assertThat(parser)
+                .notMatches("somethingelse")
+                .notMatches("continue")
+                .notMatches(";")
+                .notMatches("somethingelse;");
     }
 }

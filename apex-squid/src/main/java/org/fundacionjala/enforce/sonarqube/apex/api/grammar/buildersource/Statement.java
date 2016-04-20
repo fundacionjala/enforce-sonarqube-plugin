@@ -23,15 +23,20 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BREAK;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CONTINUE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DO;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THROW;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UNDELETE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPDATE;
@@ -45,7 +50,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BREAK_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONTINUE_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
@@ -55,17 +63,20 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION_SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT_PI;
 
 /**
  * This class contains constructors for Statement rules and its sub rules.
@@ -87,8 +98,13 @@ public class Statement {
         statementPi(grammarBuilder);
         emptyStatement(grammarBuilder);
         ifStatement(grammarBuilder);
-
-    }
+        whileStatementPi(grammarBuilder);
+        doStatement(grammarBuilder);
+        breakStatement(grammarBuilder);
+        continueStatement(grammarBuilder);
+        returnStatementPi(grammarBuilder);
+        throwStatement(grammarBuilder);
+    }   
 
     /**
      * It is responsible for setting the rules for the else.
@@ -274,7 +290,13 @@ public class Statement {
                 grammarBuilder.firstOf(
                         BLOCK,
                         EMPTY_STATEMENT,
-                        IF_STATEMENT
+                        IF_STATEMENT,
+                        WHILE_STATEMENT_PI,
+                        DO_STATEMENT,
+                        BREAK_STATEMENT,
+                        CONTINUE_STATEMENT,
+                        RETURN_STATEMENT_PI,
+                        THROW_STATEMENT
                 )
         );
     }
@@ -307,6 +329,85 @@ public class Statement {
                         ELSE,
                         STATEMENT_PI
                 )
+        );
+    }
+
+    /**
+     * Defines the while loop rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void whileStatementPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(WHILE_STATEMENT_PI).is(
+                WHILE,
+                LPAREN,
+                EXPRESSION,
+                RPAREN,
+                STATEMENT_PI
+        );
+    }
+
+    /**
+     * Defines the do statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter
+     */
+    private static void doStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DO_STATEMENT).is(
+                DO,
+                STATEMENT_PI,
+                WHILE,
+                LPAREN,
+                EXPRESSION,
+                RPAREN,
+                SEMICOLON
+        );
+    }
+
+    /**
+     * Defines the break statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void breakStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(BREAK_STATEMENT).is(
+                BREAK,
+                SEMICOLON
+        );
+    }
+
+    /**
+     * Defines the continue statement rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void continueStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CONTINUE_STATEMENT).is(
+                CONTINUE,
+                SEMICOLON
+        );
+    }
+    
+    /**
+     * Defines the return statement rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void returnStatementPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RETURN_STATEMENT_PI).is(
+                RETURN,
+                grammarBuilder.firstOf(EXPRESSION, THIS),
+                SEMICOLON
+        );
+    }
+    
+    /**
+     * Defines the throw statement rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void throwStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(THROW_STATEMENT).is(
+                THROW,
+                EXPRESSION,
+                SEMICOLON
         );
     }
 }
