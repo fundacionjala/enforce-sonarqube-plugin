@@ -44,7 +44,11 @@ public class ApexGrammarExclusiveOrExpressionTest extends ApexRuleTest {
                 .matches("someExpression")
                 .matches("thisThing ^ thatThing")
                 .matches("5 ^ 6 ^ 7")
-                .matches("a.b ^ x.y");
+                .matches("a.b ^ x.y")
+                //with nested andExpressions
+                .matches("a&b")
+                .matches("a&b ^ x&y")
+                .matches("a&b&c ^ x ^ y.z&f");
     }
     
     @Test

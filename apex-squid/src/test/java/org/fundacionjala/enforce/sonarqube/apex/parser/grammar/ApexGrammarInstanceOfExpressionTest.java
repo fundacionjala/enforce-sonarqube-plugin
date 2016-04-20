@@ -42,9 +42,9 @@ public class ApexGrammarInstanceOfExpressionTest extends ApexRuleTest {
                 .matches("3")
                 .matches("a")
                 .matches("someExpression")
-                .matches("thisThing instanceof someType");
-//                .matches("thisThing instanceof list<someType>")
-//                .matches("thisThing instanceof map<someKey, someType>");
+                .matches("thisThing instanceof someType")
+                .matches("thisThing instanceof list<someType>")
+                .matches("thisThing instanceof map<someKey, someType>");
     }
 
     @Test

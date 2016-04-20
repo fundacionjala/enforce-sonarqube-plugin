@@ -44,7 +44,11 @@ public class ApexGrammarAndExpressionTest extends ApexRuleTest {
                 .matches("someExpression")
                 .matches("thisThing & thatThing")
                 .matches("5 & 6 & 7")
-                .matches("a.b & x.y");
+                .matches("a.b & x.y")
+                //with nested equality expressions
+                .matches("a==b")
+                .matches("a!=b & x==y")
+                .matches("a==b==c & x & y!=z!=null");
     }
 
     @Test

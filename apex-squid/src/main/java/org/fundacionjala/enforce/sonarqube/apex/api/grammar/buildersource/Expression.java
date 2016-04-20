@@ -95,6 +95,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -447,11 +448,11 @@ public class Expression {
 
     public static void exclusiveOrExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXCLUSIVE_OR_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                AND_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
                                 EXCOR,
-                                TERMINAL_EXPRESSION))
+                                AND_EXPRESSION))
         );
     }
 
@@ -481,7 +482,7 @@ public class Expression {
                 grammarBuilder.optional(
                         grammarBuilder.sequence(
                                 INSTANCEOF,
-                                TYPE))
+                                TYPE_PI))
         );
     }
 }
