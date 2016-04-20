@@ -96,6 +96,7 @@ public enum ApexKeyword implements TokenType {
     THIS("this"),
     TO_LABEL("tolabel"),
     TRANSIENT("transient"),
+    THROW("throw"),
     TRY("try"),
     UNDELETE("undelete"),
     UPDATE("update"),

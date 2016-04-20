@@ -110,6 +110,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     TESTING_EXPRESSION,
     TERMINAL_EXPRESSION,
     TERMINAL_STATEMENT,
+    THROW_STATEMENT,
     TRY_STATEMENT,
     TYPE_SPECIFIER,
     TYPE,

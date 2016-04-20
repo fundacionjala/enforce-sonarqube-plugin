@@ -36,6 +36,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THROW;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UNDELETE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPDATE;
@@ -69,6 +70,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATION;
@@ -101,6 +103,7 @@ public class Statement {
         breakStatement(grammarBuilder);
         continueStatement(grammarBuilder);
         returnStatementPi(grammarBuilder);
+        throwStatement(grammarBuilder);
     }   
 
     /**
@@ -292,7 +295,8 @@ public class Statement {
                         DO_STATEMENT,
                         BREAK_STATEMENT,
                         CONTINUE_STATEMENT,
-                        RETURN_STATEMENT_PI
+                        RETURN_STATEMENT_PI,
+                        THROW_STATEMENT
                 )
         );
     }
@@ -391,6 +395,18 @@ public class Statement {
         grammarBuilder.rule(RETURN_STATEMENT_PI).is(
                 RETURN,
                 grammarBuilder.firstOf(EXPRESSION, THIS),
+                SEMICOLON
+        );
+    }
+    
+    /**
+     * Defines the throw statement rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void throwStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(THROW_STATEMENT).is(
+                THROW,
+                EXPRESSION,
                 SEMICOLON
         );
     }

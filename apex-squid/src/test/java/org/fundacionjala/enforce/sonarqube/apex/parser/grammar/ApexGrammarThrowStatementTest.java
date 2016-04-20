@@ -24,37 +24,30 @@
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
+import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarStatementPiTest extends ApexRuleTest {
+public class ApexGrammarThrowStatementTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(STATEMENT_PI);
+        setRootRule(THROW_STATEMENT);
     }
 
     @Test
-    public void testValidStatementPi() {
+    public void testValidThrowStatement() {
         assertThat(parser)
-                .matches("{}")
-                .matches(";")
-                .matches("if('anExpression')"
-                        + "{};")
-                .matches("if('anExpression')"
-                        + "{};"
-                        + "else "
-                        + "if('anotherExpression')"
-                        + "{};")
-                .matches("while(true){}")
-                .matches("do {} while (true);")
-                .matches("break;")
-                .matches("continue;")
-                .matches("return something;")
-                .matches("return this;")
-                .matches("throw someException;");
-                
+                .matches("throw something;");
+    }
+
+    @Test
+    public void testInvalidThrowStatement() {
+        assertThat(parser)
+                .notMatches("somethingelse")
+                .notMatches("throw")
+                .notMatches(";")
+                .notMatches("somethingelse;");
     }
 }
