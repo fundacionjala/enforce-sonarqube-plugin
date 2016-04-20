@@ -37,6 +37,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIV;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIVEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EXCOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EXCOREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
@@ -50,6 +51,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUSEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MODEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUS;
@@ -76,6 +78,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CREATING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DEC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUALITY_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
@@ -124,6 +127,7 @@ public class Expression {
         inclusiveOrExpression(grammarBuilder);
         exclusiveOrExpression(grammarBuilder);
         andExpression(grammarBuilder);
+        equalityExpression(grammarBuilder);
     }
 
     /**
@@ -420,7 +424,7 @@ public class Expression {
                                 CONDITIONAL_AND_EXPRESSION))
         );
     }
-    
+
     public static void conditionalAndExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONDITIONAL_AND_EXPRESSION).is(
                 INCLUSIVE_OR_EXPRESSION,
@@ -430,14 +434,14 @@ public class Expression {
                                 INCLUSIVE_OR_EXPRESSION))
         );
     }
-    
+
     public static void inclusiveOrExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INCLUSIVE_OR_EXPRESSION).is(EXCLUSIVE_OR_EXPRESSION,
                 grammarBuilder.zeroOrMore(grammarBuilder.sequence(OR,
-                                EXCLUSIVE_OR_EXPRESSION))
+                        EXCLUSIVE_OR_EXPRESSION))
         );
     }
-    
+
     public static void exclusiveOrExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXCLUSIVE_OR_EXPRESSION).is(
                 TERMINAL_EXPRESSION,
@@ -447,13 +451,23 @@ public class Expression {
                                 TERMINAL_EXPRESSION))
         );
     }
-    
+
     public static void andExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(AND_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                EQUALITY_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
                                 AND,
+                                EQUALITY_EXPRESSION))
+        );
+    }
+
+    public static void equalityExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(EQUALITY_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.sequence(
+                                grammarBuilder.firstOf(EQUALS, NOTEQUALS),
                                 TERMINAL_EXPRESSION))
         );
     }
