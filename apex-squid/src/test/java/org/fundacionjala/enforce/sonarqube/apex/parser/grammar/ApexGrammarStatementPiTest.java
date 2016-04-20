@@ -37,7 +37,7 @@ public class ApexGrammarStatementPiTest extends ApexRuleTest {
     }
 
     @Test
-    public void testValidAllowedKeywordsAsIdentifierForMethods() {
+    public void testValidStatementPi() {
         assertThat(parser)
                 .matches("{}")
                 .matches(";")
@@ -47,7 +47,8 @@ public class ApexGrammarStatementPiTest extends ApexRuleTest {
                         + "{};"
                         + "else "
                         + "if('anotherExpression')"
-                        + "{};");
+                        + "{};")
+                .matches("while(true){}");
                 
     }
 }

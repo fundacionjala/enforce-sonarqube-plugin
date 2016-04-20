@@ -37,7 +37,7 @@ public class ApexGrammarIfStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void testValidAllowedKeywordsAsIdentifierForMethods() {
+    public void testValidIfStatement() {
         assertThat(parser)
                 .matches("if(anExpression)"
                         + "{};")

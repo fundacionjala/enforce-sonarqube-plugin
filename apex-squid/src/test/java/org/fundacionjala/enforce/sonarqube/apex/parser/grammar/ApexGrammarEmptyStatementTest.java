@@ -37,7 +37,7 @@ public class ApexGrammarEmptyStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void testValidAllowedKeywordsAsIdentifierForMethods() {
+    public void testValidEmptyStatement() {
         assertThat(parser)
                 .matches(";");
     }
