@@ -85,6 +85,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     INITIALIZER,
     INITIALIZER_BLOCK,
     INITIALIZER_BLOCK_MEMBER,
+    INSTANCE_OF_EXPRESSION,
     KEYWORD,
     LITERAL_EXPRESSION,
     DEC,

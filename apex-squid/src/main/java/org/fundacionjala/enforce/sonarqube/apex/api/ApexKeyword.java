@@ -62,6 +62,7 @@ public enum ApexKeyword implements TokenType {
     INSERT("insert"),
     INT("int"),
     INTERFACE("interface"),
+    INSTANCEOF("instanceof"),
     IMPLEMENTS("implements"),
     ITERATOR("iterator"),
     LAST("last"),

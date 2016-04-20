@@ -25,6 +25,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSTANCEOF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NEW;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
@@ -93,6 +94,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -128,6 +130,7 @@ public class Expression {
         exclusiveOrExpression(grammarBuilder);
         andExpression(grammarBuilder);
         equalityExpression(grammarBuilder);
+        instanceOfExpression(grammarBuilder);
     }
 
     /**
@@ -464,11 +467,21 @@ public class Expression {
 
     public static void equalityExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EQUALITY_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                INSTANCE_OF_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
                                 grammarBuilder.firstOf(EQUALS, NOTEQUALS),
-                                TERMINAL_EXPRESSION))
+                                INSTANCE_OF_EXPRESSION))
+        );
+    }
+    
+    public static void instanceOfExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(INSTANCE_OF_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.optional(
+                        grammarBuilder.sequence(
+                                INSTANCEOF,
+                                TYPE))
         );
     }
 }
