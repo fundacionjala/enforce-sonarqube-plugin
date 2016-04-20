@@ -57,6 +57,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     CONSTRUCTOR_DECLARATION_PI,
     DML_STATEMENT,
     DECLARATIONS_WITH_MODIFIERS,
+    DO_STATEMENT,
     EQUAL,
     ENUM_DECLARATION,
     ENUM_BODY,

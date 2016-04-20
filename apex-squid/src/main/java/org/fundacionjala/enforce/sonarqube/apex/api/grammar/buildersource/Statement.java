@@ -26,6 +26,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DO;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IF;
@@ -46,6 +47,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICO
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
@@ -89,6 +91,7 @@ public class Statement {
         emptyStatement(grammarBuilder);
         ifStatement(grammarBuilder);
         whileStatementPi(grammarBuilder);
+        doStatement(grammarBuilder);
     }
 
     /**
@@ -276,7 +279,8 @@ public class Statement {
                         BLOCK,
                         EMPTY_STATEMENT,
                         IF_STATEMENT,
-                        WHILE_STATEMENT_PI
+                        WHILE_STATEMENT_PI,
+                        DO_STATEMENT
                 )
         );
     }
@@ -323,6 +327,18 @@ public class Statement {
                 EXPRESSION,
                 RPAREN,
                 STATEMENT_PI
+        );
+    }
+    
+    private static void doStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DO_STATEMENT).is(
+                DO,
+                STATEMENT_PI,
+                WHILE,
+                LPAREN,
+                EXPRESSION,
+                RPAREN,
+                SEMICOLON
         );
     }
 }

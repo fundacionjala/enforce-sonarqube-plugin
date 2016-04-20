@@ -49,6 +49,7 @@ public enum ApexKeyword implements TokenType {
     CLASS("class"),
     DATA("data"),
     DELETE("delete"),
+    DO("do"),
     DOUBLE("double"),
     ELSE("else"),
     ENUM("enum"),
