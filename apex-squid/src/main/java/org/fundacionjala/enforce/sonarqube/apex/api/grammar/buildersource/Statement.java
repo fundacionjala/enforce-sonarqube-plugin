@@ -43,8 +43,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
@@ -56,6 +58,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_ELSE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
@@ -80,6 +83,8 @@ public class Statement {
         statementIf(grammarBuilder);
         statamentElse(grammarBuilder);
         blockStatement(grammarBuilder);
+        statementPi(grammarBuilder);
+        emptyStatement(grammarBuilder);
 
     }
 
@@ -253,6 +258,23 @@ public class Statement {
 
         grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION_SEMICOLON).is(
                 LOCAL_VARIABLE_DECLARATION,
+                SEMICOLON
+        );
+    }
+    
+    /**
+     * Defines the statement rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void statementPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(STATEMENT_PI).is(
+                BLOCK,
+                EMPTY_STATEMENT
+        );
+    }
+    
+    private static void emptyStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(EMPTY_STATEMENT).is(
                 SEMICOLON
         );
     }
