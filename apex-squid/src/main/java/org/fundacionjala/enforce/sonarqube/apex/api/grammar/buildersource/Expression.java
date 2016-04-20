@@ -62,6 +62,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
@@ -122,6 +123,7 @@ public class Expression {
         conditionalAndExpression(grammarBuilder);
         inclusiveOrExpression(grammarBuilder);
         exclusiveOrExpression(grammarBuilder);
+        andExpression(grammarBuilder);
     }
 
     /**
@@ -442,6 +444,16 @@ public class Expression {
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
                                 EXCOR,
+                                TERMINAL_EXPRESSION))
+        );
+    }
+    
+    public static void andExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(AND_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.sequence(
+                                AND,
                                 TERMINAL_EXPRESSION))
         );
     }

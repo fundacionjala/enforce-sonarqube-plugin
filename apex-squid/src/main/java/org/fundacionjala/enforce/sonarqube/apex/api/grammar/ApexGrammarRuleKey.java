@@ -38,6 +38,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     ARGUMENTS,
     ARGUMENTSPI,
     ARGUMENTS_LIST,
+    AND_EXPRESSION,
     ANNOTATION,
     APEX_GRAMMAR,
     ASSIGNMENT_OPERATOR,
