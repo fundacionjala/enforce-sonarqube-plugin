@@ -37,6 +37,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIV;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DIVEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EXCOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EXCOREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GTGTEQU;
@@ -87,6 +88,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -119,6 +121,7 @@ public class Expression {
         conditionalOrExpression(grammarBuilder);
         conditionalAndExpression(grammarBuilder);
         inclusiveOrExpression(grammarBuilder);
+        exclusiveOrExpression(grammarBuilder);
     }
 
     /**
@@ -427,11 +430,18 @@ public class Expression {
     }
     
     public static void inclusiveOrExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(INCLUSIVE_OR_EXPRESSION).is(
+        grammarBuilder.rule(INCLUSIVE_OR_EXPRESSION).is(EXCLUSIVE_OR_EXPRESSION,
+                grammarBuilder.zeroOrMore(grammarBuilder.sequence(OR,
+                                EXCLUSIVE_OR_EXPRESSION))
+        );
+    }
+    
+    public static void exclusiveOrExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(EXCLUSIVE_OR_EXPRESSION).is(
                 TERMINAL_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
-                                OR,
+                                EXCOR,
                                 TERMINAL_EXPRESSION))
         );
     }
