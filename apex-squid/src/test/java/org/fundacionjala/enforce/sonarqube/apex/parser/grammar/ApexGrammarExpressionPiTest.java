@@ -53,7 +53,12 @@ public class ApexGrammarExpressionPiTest extends ApexRuleTest {
                 //with conditional expression
                 .matches("thisValue ? 0 : 1")
                 .matches("x = somethingTrue ? this : null")
-                .matches("y += question ? 1 : 10");
+                .matches("y += question ? 1 : 10")
+                //with AND and OR expressions
+                .matches("a || b")
+                .matches("aBooleanValue = firstCondition && secondCondition || thirdCondition")
+                .matches("a = b || c ? someValue : someOtherValue");
+                
     }
     
     @Test
@@ -65,6 +70,8 @@ public class ApexGrammarExpressionPiTest extends ApexRuleTest {
                 .notMatches("this == that")
                 .notMatches("4 == 4")
                 .notMatches("*")
-                .notMatches("y == question ? 1 : 10");
+                .notMatches("y == question ? 1 : 10")
+                .notMatches("a && b == c")
+                .notMatches("a = b &| c");
     }
 }

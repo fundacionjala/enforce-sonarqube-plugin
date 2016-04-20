@@ -21,19 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_OR_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_AND_EXPRESSION;
 
-public class ApexGrammarConditionalOrExpressionTest extends ApexRuleTest {
+public class ApexGrammarConditionalAndExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(CONDITIONAL_OR_EXPRESSION);
+        setRootRule(CONDITIONAL_AND_EXPRESSION);
     }
 
     @Test
@@ -42,13 +41,16 @@ public class ApexGrammarConditionalOrExpressionTest extends ApexRuleTest {
                 .matches("3")
                 .matches("a")
                 .matches("someExpression")
-                .matches("thisThing || thatThing")
-                .matches("5 || 6 || 7")
-                .matches("a.b || x.y")
-                //with nested "AND" expression
-                .matches("a && b || c")
-                .matches("thisThing && thatThing || aThing && anotherThing")
-                .matches("a.b || x.y")
-                .matches("a.b || x.y");
+                .matches("thisThing && thatThing")
+                .matches("5 && 6 && 7")
+                .matches("a.b && x.y");
+    }
+    
+    @Test
+    public void negativeRules_LiteralExpresion_IntegerExpresion() {
+        assertThat(parser)
+                .notMatches(" a b &&")
+                .notMatches(" a !& b")
+                .notMatches(" a &| b");
     }
 }
