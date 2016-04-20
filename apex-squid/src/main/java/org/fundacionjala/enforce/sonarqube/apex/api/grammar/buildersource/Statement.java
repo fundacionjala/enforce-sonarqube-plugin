@@ -66,6 +66,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT_PI;
 
 /**
  * This class contains constructors for Statement rules and its sub rules.
@@ -87,7 +88,7 @@ public class Statement {
         statementPi(grammarBuilder);
         emptyStatement(grammarBuilder);
         ifStatement(grammarBuilder);
-
+        whileStatementPi(grammarBuilder);
     }
 
     /**
@@ -274,7 +275,8 @@ public class Statement {
                 grammarBuilder.firstOf(
                         BLOCK,
                         EMPTY_STATEMENT,
-                        IF_STATEMENT
+                        IF_STATEMENT,
+                        WHILE_STATEMENT_PI
                 )
         );
     }
@@ -307,6 +309,20 @@ public class Statement {
                         ELSE,
                         STATEMENT_PI
                 )
+        );
+    }
+    
+    /**
+     * Defines the while loop rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void whileStatementPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(WHILE_STATEMENT_PI).is(
+                WHILE,
+                LPAREN,
+                EXPRESSION,
+                RPAREN,
+                STATEMENT_PI
         );
     }
 }

@@ -115,5 +115,6 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     VARIABLE_DECLARATOR,
     VARIABLE_DECLARATOR_PI,
     VARIABLE_DECLARATOR_ID,
-    WHILE_STATEMENT;
+    WHILE_STATEMENT,
+    WHILE_STATEMENT_PI;
 }
