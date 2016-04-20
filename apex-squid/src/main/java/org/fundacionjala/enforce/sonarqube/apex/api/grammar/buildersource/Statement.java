@@ -50,6 +50,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION_SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
@@ -85,6 +86,7 @@ public class Statement {
         blockStatement(grammarBuilder);
         statementPi(grammarBuilder);
         emptyStatement(grammarBuilder);
+        ifStatement(grammarBuilder);
 
     }
 
@@ -261,21 +263,50 @@ public class Statement {
                 SEMICOLON
         );
     }
-    
+
     /**
      * Defines the statement rule.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void statementPi(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(STATEMENT_PI).is(
-                BLOCK,
-                EMPTY_STATEMENT
+                grammarBuilder.firstOf(
+                        BLOCK,
+                        EMPTY_STATEMENT,
+                        IF_STATEMENT
+                )
         );
     }
-    
+
+    /**
+     * Defines the empty statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void emptyStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EMPTY_STATEMENT).is(
                 SEMICOLON
+        );
+    }
+
+    /**
+     * Defines the if statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void ifStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(IF_STATEMENT).is(
+                IF,
+                LPAREN,
+                EXPRESSION,
+                RPAREN,
+                STATEMENT_PI,
+                SEMICOLON,
+                grammarBuilder.optional(
+                        ELSE,
+                        STATEMENT_PI
+                )
         );
     }
 }

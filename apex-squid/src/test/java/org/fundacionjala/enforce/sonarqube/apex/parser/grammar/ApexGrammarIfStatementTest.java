@@ -24,30 +24,31 @@
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
+import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
 
-public class ApexGrammarStatementPiTest extends ApexRuleTest {
+public class ApexGrammarIfStatementTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(STATEMENT_PI);
+        setRootRule(IF_STATEMENT);
     }
 
     @Test
     public void testValidAllowedKeywordsAsIdentifierForMethods() {
         assertThat(parser)
-                .matches("{}")
-                .matches(";")
-                .matches("if('anExpression')"
+                .matches("if(anExpression)"
                         + "{};")
-                .matches("if('anExpression')"
+                .matches("if(otherExpression)"
                         + "{};"
                         + "else "
-                        + "if('anotherExpression')"
-                        + "{};");
-                
+                        + "if(anotherExpression)"
+                        + "{};")
+                .matches("if(expression)"
+                        + "{};"
+                        + "else "
+                        + "{}");
     }
 }
