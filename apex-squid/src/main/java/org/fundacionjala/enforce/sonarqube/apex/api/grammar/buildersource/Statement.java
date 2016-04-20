@@ -35,6 +35,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UNDELETE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPDATE;
@@ -61,6 +62,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION_SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_ELSE;
@@ -98,6 +100,7 @@ public class Statement {
         doStatement(grammarBuilder);
         breakStatement(grammarBuilder);
         continueStatement(grammarBuilder);
+        returnStatementPi(grammarBuilder);
     }   
 
     /**
@@ -287,7 +290,9 @@ public class Statement {
                         IF_STATEMENT,
                         WHILE_STATEMENT_PI,
                         DO_STATEMENT,
-                        BREAK_STATEMENT
+                        BREAK_STATEMENT,
+                        CONTINUE_STATEMENT,
+                        RETURN_STATEMENT_PI
                 )
         );
     }
@@ -374,6 +379,18 @@ public class Statement {
     private static void continueStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONTINUE_STATEMENT).is(
                 CONTINUE,
+                SEMICOLON
+        );
+    }
+    
+    /**
+     * Defines the return statement rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void returnStatementPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RETURN_STATEMENT_PI).is(
+                RETURN,
+                grammarBuilder.firstOf(EXPRESSION, THIS),
                 SEMICOLON
         );
     }
