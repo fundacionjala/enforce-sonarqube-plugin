@@ -26,6 +26,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BREAK;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CONTINUE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DO;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ELSE;
@@ -48,6 +49,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICO
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BREAK_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONTINUE_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
@@ -95,7 +97,8 @@ public class Statement {
         whileStatementPi(grammarBuilder);
         doStatement(grammarBuilder);
         breakStatement(grammarBuilder);
-    }
+        continueStatement(grammarBuilder);
+    }   
 
     /**
      * It is responsible for setting the rules for the else.
@@ -319,9 +322,10 @@ public class Statement {
                 )
         );
     }
-    
+
     /**
      * Defines the while loop rule.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void whileStatementPi(LexerfulGrammarBuilder grammarBuilder) {
@@ -333,9 +337,10 @@ public class Statement {
                 STATEMENT_PI
         );
     }
-    
+
     /**
      * Defines the do statement rule.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter
      */
     private static void doStatement(LexerfulGrammarBuilder grammarBuilder) {
@@ -349,10 +354,26 @@ public class Statement {
                 SEMICOLON
         );
     }
-    
+
+    /**
+     * Defines the break statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void breakStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(BREAK_STATEMENT).is(
                 BREAK,
+                SEMICOLON
+        );
+    }
+
+    /**
+     * Defines the continue statement rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void continueStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CONTINUE_STATEMENT).is(
+                CONTINUE,
                 SEMICOLON
         );
     }

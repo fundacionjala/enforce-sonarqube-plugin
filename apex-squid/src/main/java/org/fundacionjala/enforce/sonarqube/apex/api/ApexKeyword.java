@@ -45,6 +45,7 @@ public enum ApexKeyword implements TokenType {
     BYTE("byte"),
     CATCH("catch"),
     CATEGORY("category"),
+    CONTINUE("continue"),
     CONVERT_CURRENCY("convertcurrency"),
     CHAR("char"),
     CLASS("class"),
