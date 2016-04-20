@@ -41,6 +41,7 @@ public enum ApexKeyword implements TokenType {
     AFTER("after"),
     BEFORE("before"),
     BOOLEAN("boolean"),
+    BREAK("break"),
     BYTE("byte"),
     CATCH("catch"),
     CATEGORY("category"),

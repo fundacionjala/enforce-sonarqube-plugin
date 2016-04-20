@@ -45,6 +45,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     BLOCK_STATEMENT,
     BODY_IDENTIFIER,
     BRACKETS,
+    BREAK_STATEMENT,
     INVOKE_EXPRESSION,
     CASTING_EXPRESSION,
     CLASS_DECLARATION,

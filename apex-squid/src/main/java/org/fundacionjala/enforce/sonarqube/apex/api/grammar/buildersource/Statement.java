@@ -23,6 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BREAK;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;
@@ -46,6 +47,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BREAK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
@@ -92,6 +94,7 @@ public class Statement {
         ifStatement(grammarBuilder);
         whileStatementPi(grammarBuilder);
         doStatement(grammarBuilder);
+        breakStatement(grammarBuilder);
     }
 
     /**
@@ -280,7 +283,8 @@ public class Statement {
                         EMPTY_STATEMENT,
                         IF_STATEMENT,
                         WHILE_STATEMENT_PI,
-                        DO_STATEMENT
+                        DO_STATEMENT,
+                        BREAK_STATEMENT
                 )
         );
     }
@@ -330,6 +334,10 @@ public class Statement {
         );
     }
     
+    /**
+     * Defines the do statement rule.
+     * @param grammarBuilder ApexGrammarBuilder parameter
+     */
     private static void doStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DO_STATEMENT).is(
                 DO,
@@ -338,6 +346,13 @@ public class Statement {
                 LPAREN,
                 EXPRESSION,
                 RPAREN,
+                SEMICOLON
+        );
+    }
+    
+    private static void breakStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(BREAK_STATEMENT).is(
+                BREAK,
                 SEMICOLON
         );
     }
