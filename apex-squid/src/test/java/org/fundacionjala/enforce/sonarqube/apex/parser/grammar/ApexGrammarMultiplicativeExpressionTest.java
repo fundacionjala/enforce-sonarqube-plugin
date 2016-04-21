@@ -1,4 +1,3 @@
-
 /*
  * The MIT License
  *
@@ -22,40 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
+
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MULTIPLICATIVE_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarAssignmentOperatorTest extends ApexRuleTest {
+public class ApexGrammarMultiplicativeExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(ASSIGNMENT_OPERATOR);
+        setRootRule(MULTIPLICATIVE_EXPRESSION);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("=")
-                .matches("/=")
-                .matches("-=")
-                .matches("+=")
-                .matches("%=")
-                .matches("*=")
-                .matches("<<=")
-                .matches(">>>=")
-                .matches("&=")
-                .matches("^=")
-                .matches("|=");
+                .matches("3")
+                .matches("a")
+                .matches("someExpression")
+                .matches("3 * 4")
+                .matches("3 / 4")
+                .matches("3 % 4")
+                .matches("3 * 4 / 12 % 1")
+                .matches("a * b % c / d");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("==")
-                .notMatches("===")
-                .notMatches("/ =");
+                .notMatches(" a ** b")
+                .notMatches(" a */ b")
+                .notMatches(" a b %")
+                .notMatches(" a + b*c");
     }
 }

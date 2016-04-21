@@ -66,6 +66,8 @@ public enum ApexPunctuator implements TokenType {
     LT("<"),
     LEQUT("<="),
     GEQUT(">="),
+    MLT("<<"),
+    MGTEQU(">>="),
     
     /**
      * ASSIGNMENT OPERATORS.
