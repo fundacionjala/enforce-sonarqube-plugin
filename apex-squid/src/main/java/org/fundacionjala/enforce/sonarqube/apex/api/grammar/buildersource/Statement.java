@@ -63,6 +63,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_INIT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_LOOP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION_SEMICOLON;
@@ -114,6 +115,7 @@ public class Statement {
         forEachLoop(grammarBuilder);
         forInit(grammarBuilder);
         forLoop(grammarBuilder);
+        forStatementPi(grammarBuilder);
     }
 
     /**
@@ -303,6 +305,7 @@ public class Statement {
                         IF_STATEMENT,
                         WHILE_STATEMENT_PI,
                         DO_STATEMENT,
+                        FOR_STATEMENT_PI,
                         BREAK_STATEMENT,
                         CONTINUE_STATEMENT,
                         RETURN_STATEMENT_PI,
@@ -479,6 +482,21 @@ public class Statement {
                 grammarBuilder.optional(EXPRESSION),
                 RPAREN,
                 STATEMENT_PI
+        );
+    }
+
+    /**
+     * Defines the for statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void forStatementPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FOR_STATEMENT_PI).is(
+                FOR,
+                grammarBuilder.firstOf(
+                        FOR_EACH_LOOP,
+                        FOR_LOOP
+                )
         );
     }
 }
