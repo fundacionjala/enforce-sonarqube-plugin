@@ -58,6 +58,7 @@ public enum ApexKeyword implements TokenType {
     EXTENDS("extends"),
     EXCEPTION("exception"),
     FINAL("final"),
+    FINALLY("finally"),
     FIRST("first"),
     FLOAT("float"),
     FOR("for"),

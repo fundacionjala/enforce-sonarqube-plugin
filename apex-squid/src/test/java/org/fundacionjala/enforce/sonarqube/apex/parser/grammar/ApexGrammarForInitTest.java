@@ -24,40 +24,31 @@
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
+import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_INIT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarStatementPiTest extends ApexRuleTest {
+public class ApexGrammarForInitTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(STATEMENT_PI);
+        setRootRule(FOR_INIT);
     }
 
     @Test
-    public void testValidStatementPi() {
+    public void testValidForInit() {
         assertThat(parser)
-                .matches("{}")
-                .matches(";")
-                .matches("if('anExpression')"
-                        + "{};")
-                .matches("if('anExpression')"
-                        + "{};"
-                        + "else "
-                        + "if('anotherExpression')"
-                        + "{};")
-                .matches("while(true){}")
-                .matches("do {} while (true);")
-                .matches("break;")
-                .matches("continue;")
-                .matches("return something;")
-                .matches("return this;")
-                .matches("throw someException;")
-                .matches("for(int addition = 3; doSomething; updateIterator){}")
-                .matches("for(Object current:listOfObjects){}")
-                .matches("try{} catch(Object variable){} finally{}");
-                
+                .matches("int addition = 3")
+                .matches("int division,anotherDivision")
+                .matches("final int division = 3")
+                .matches("variable,anotherOne");
+    }
+
+    @Test
+    public void testInvalidForInit() {
+        assertThat(parser)
+                .notMatches("int variable;")
+                .notMatches("int variable; anotherVariable;");
     }
 }

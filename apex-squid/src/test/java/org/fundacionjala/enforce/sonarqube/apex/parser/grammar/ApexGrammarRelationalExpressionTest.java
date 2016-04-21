@@ -24,40 +24,36 @@
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
+import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarStatementPiTest extends ApexRuleTest {
+public class ApexGrammarRelationalExpressionTest extends ApexRuleTest {
 
     @Before
-    public void setUp() {
-        setRootRule(STATEMENT_PI);
+    public void init() {
+        setRootRule(RELATIONAL_EXPRESSION);
     }
 
     @Test
-    public void testValidStatementPi() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("{}")
-                .matches(";")
-                .matches("if('anExpression')"
-                        + "{};")
-                .matches("if('anExpression')"
-                        + "{};"
-                        + "else "
-                        + "if('anotherExpression')"
-                        + "{};")
-                .matches("while(true){}")
-                .matches("do {} while (true);")
-                .matches("break;")
-                .matches("continue;")
-                .matches("return something;")
-                .matches("return this;")
-                .matches("throw someException;")
-                .matches("for(int addition = 3; doSomething; updateIterator){}")
-                .matches("for(Object current:listOfObjects){}")
-                .matches("try{} catch(Object variable){} finally{}");
-                
+                .matches("3")
+                .matches("a")
+                .matches("someExpression")
+                .matches("a < b")
+                .matches("x > y > z > 0")
+                .matches("thisThing >= thatThing")
+                .matches("0 <= thisThing <= thatThing >= x");
+    }
+
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches(" a instance of b")
+                .notMatches(" a instanceOf b")
+                .notMatches(" a InstanceOf b")
+                .notMatches(" a instanceof 3");
     }
 }
