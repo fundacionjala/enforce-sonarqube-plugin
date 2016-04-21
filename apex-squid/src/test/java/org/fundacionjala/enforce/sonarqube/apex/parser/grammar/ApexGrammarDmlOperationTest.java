@@ -23,34 +23,35 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATION;
 
-public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
-
-    @Before
+public class ApexGrammarDmlOperationTest extends ApexRuleTest{
+@Before
     public void init() {
-        setRootRule(STATEMENT_IF);
+        setRootRule(DML_OPERATION);
     }
 
     @Test
-    public void rulesIfElseStatement() {
+    public void RulesDmlOperation() {
         assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int number;}")
-                .matches("if(NAME){int number=12;}else{'a';}");
+                .matches("insert primaryExpression")
+                .matches("update prmaryExpression")
+                .matches("undelete primaryExpression")
+                .matches("delete primaryExpression");
     }
 
     @Test
-    public void rulesIfElseStatementCaseError() {
+    public void RulesDmlOperationCaseError() {
         assertThat(parser)
-                .notMatches("if(NAME){intnumber=12;}")
-                .notMatches("if(NAME){intnumber=12;}else{'a';}");
-    }
+                .notMatches("insertnewAcct;")
+                .notMatches("updatemyAcct;")
+                .notMatches("upsertacctList;")
+                .notMatches("deletedoomedAccts;")
+                .notMatches("undeletesavedAccts;");
+    }    
+    
 }

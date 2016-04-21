@@ -23,34 +23,30 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_UPSERT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
+public class ApexGrammarDmlUpsertTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(STATEMENT_IF);
+        setRootRule(DML_UPSERT);
     }
 
     @Test
-    public void rulesIfElseStatement() {
+    public void rulesDmlUpsert() {
         assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int number;}")
-                .matches("if(NAME){int number=12;}else{'a';}");
+                .matches("upsert primaryExpression")
+                .matches("upsert primaryExpression optionalPrimaryExpression");
     }
 
     @Test
-    public void rulesIfElseStatementCaseError() {
+    public void rulesDmlUpsertCaseError() {
         assertThat(parser)
-                .notMatches("if(NAME){intnumber=12;}")
-                .notMatches("if(NAME){intnumber=12;}else{'a';}");
+                .notMatches("upsertprimaryExpression")
+                .notMatches("upsertoptionalPrimaryExpression");
     }
 }

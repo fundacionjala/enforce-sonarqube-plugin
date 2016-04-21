@@ -39,7 +39,7 @@ public class ApexGrammarForStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesForStament() {
+    public void rulesForStament() {
         assertThat(parser)
                 .matches("for(Object MyObject : listIntegers){ }")
                 .matches("for(int MyObject:listIntegers){}")
@@ -48,7 +48,7 @@ public class ApexGrammarForStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesForStamentCaseError() {
+    public void rulesForStamentCaseError() {
         assertThat(parser)
                 .notMatches("for(ObjectMyObject:listIntegers){ }")
                 .notMatches("for(intMyObject:listIntegers){}")

@@ -40,7 +40,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesDmlStament() {
+    public void rulesDmlStament() {
         assertThat(parser)
                 .matches("insert newAcct;")
                 .matches("update myAcct;")
@@ -50,7 +50,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesForStament() {
+    public void rulesForStament() {
         assertThat(parser)
                 .matches("for(Object MyObject : listIntegers){ }")
                 .matches("for(int MyObject:listIntegers){}")
@@ -59,7 +59,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesIfElseStatement() {
+    public void rulesIfElseStatement() {
         assertThat(parser)
                 .matches("if(NAME){}")
                 .matches("if(NAME){}else{}")
@@ -70,14 +70,14 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesTryCatchStament() {
+    public void rulesTryCatchStament() {
         assertThat(parser)
                 .matches("try{}catch(Exception ex){}")
                 .matches("try{int number=0;}catch(Exception ex){char message=ex.message;}");
     }
 
     @Test
-    public void RulesWhileStament() {
+    public void rulesWhileStament() {
         assertThat(parser)
                 .matches("while(true){}")
                 .matches("while(A)12;")
@@ -85,7 +85,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesReturnStament() {
+    public void rulesReturnStament() {
         assertThat(parser)
                 .matches("return true;")
                 .matches("return 0;")
@@ -93,7 +93,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesVariableDeclaration() {
+    public void rulesVariableDeclaration() {
         assertThat(parser)
                 .matches("int myVariable;")
                 .matches("private double myVariable[];")
@@ -101,7 +101,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesExpression() {
+    public void rulesExpression() {
         assertThat(parser)
                 .matches("1;")
                 .matches("12;")
