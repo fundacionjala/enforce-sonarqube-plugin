@@ -64,6 +64,8 @@ public enum ApexPunctuator implements TokenType {
     STAR("*"),
     GT(">"),
     LT("<"),
+    LEQUT("<="),
+    GEQUT(">="),
     
     /**
      * ASSIGNMENT OPERATORS.

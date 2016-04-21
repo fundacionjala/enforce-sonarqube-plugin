@@ -41,10 +41,12 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EXCOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.EXCOREQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GEQUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GTGTEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GTGTGTEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACKET;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LEQUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LTLTEQU;
@@ -95,6 +97,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 
 /**
@@ -132,6 +135,7 @@ public class Expression {
         andExpression(grammarBuilder);
         equalityExpression(grammarBuilder);
         instanceOfExpression(grammarBuilder);
+        relationalExpression(grammarBuilder);
     }
 
     /**
@@ -478,11 +482,21 @@ public class Expression {
     
     public static void instanceOfExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INSTANCE_OF_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                RELATIONAL_EXPRESSION,
                 grammarBuilder.optional(
                         grammarBuilder.sequence(
                                 INSTANCEOF,
                                 TYPE_PI))
+        );
+    }
+    
+    public static void relationalExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RELATIONAL_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.sequence(
+                                grammarBuilder.firstOf(LT, GT, LEQUT, GEQUT),
+                                TERMINAL_EXPRESSION))
         );
     }
 }

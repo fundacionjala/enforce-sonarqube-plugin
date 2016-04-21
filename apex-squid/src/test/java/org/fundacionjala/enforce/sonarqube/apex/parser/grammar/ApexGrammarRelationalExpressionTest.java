@@ -23,17 +23,17 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarInstanceOfExpressionTest extends ApexRuleTest {
+public class ApexGrammarRelationalExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(INSTANCE_OF_EXPRESSION);
+        setRootRule(RELATIONAL_EXPRESSION);
     }
 
     @Test
@@ -42,13 +42,10 @@ public class ApexGrammarInstanceOfExpressionTest extends ApexRuleTest {
                 .matches("3")
                 .matches("a")
                 .matches("someExpression")
-                .matches("thisThing instanceof someType")
-                .matches("thisThing instanceof list<someType>")
-                .matches("thisThing instanceof map<someKey, someType>")
-                //with nested Relational Expressions
                 .matches("a < b")
-                .matches("a >= b instanceof SomeClass")
-                .matches("a < b <= c instanceof SomeClass");
+                .matches("x > y > z > 0")
+                .matches("thisThing >= thatThing")
+                .matches("0 <= thisThing <= thatThing >= x");
     }
 
     @Test
