@@ -58,6 +58,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATIONS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATIONS_SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_UPSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
@@ -314,6 +315,7 @@ public class Statement {
         grammarBuilder.rule(STATEMENT_PI).is(
                 grammarBuilder.firstOf(
                         BLOCK,
+                        DML_OPERATIONS_SEMICOLON,
                         EMPTY_STATEMENT,
                         IF_STATEMENT,
                         WHILE_STATEMENT_PI,
@@ -591,6 +593,11 @@ public class Statement {
                         DML_MERGE
                 )
         
+        );
+        
+        grammarBuilder.rule(DML_OPERATIONS_SEMICOLON).is(
+                DML_OPERATIONS,
+                SEMICOLON
         );
     }
 }

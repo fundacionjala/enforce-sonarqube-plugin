@@ -68,6 +68,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     DML_MERGE,
     DML_OPERATION,
     DML_OPERATIONS,
+    DML_OPERATIONS_SEMICOLON,
     DML_STATEMENT,
     DML_UPSERT,
     DECLARATIONS_WITH_MODIFIERS,
