@@ -104,6 +104,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SHIFT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -144,6 +145,7 @@ public class Expression {
         shiftExpression(grammarBuilder);
         additiveExpression(grammarBuilder);
         multiplicativeExpression(grammarBuilder);
+        unaryExpression(grammarBuilder);
     }
 
     /**
@@ -529,9 +531,18 @@ public class Expression {
 
     public static void multiplicativeExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(MULTIPLICATIVE_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                UNARY_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.firstOf(STAR, DIV, MOD),
+                        UNARY_EXPRESSION)
+        );
+    }
+
+    public static void unaryExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(UNARY_EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(grammarBuilder.firstOf(PLUS, MINUS),
+                                UNARY_EXPRESSION),
                         TERMINAL_EXPRESSION)
         );
     }

@@ -52,8 +52,8 @@ public class ApexGrammarAdditiveExpressionTest extends ApexRuleTest {
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches(" a ++ b")
-                .notMatches(" a -+ b")
+                .notMatches(" a ++")
+                .notMatches(" a - 5 b")
                 .notMatches(" a b -");
     }
 }

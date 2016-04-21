@@ -141,6 +141,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     TYPE_PI,
     TYPE_CLASS,
     TYPE_DECLARATION,
+    UNARY_EXPRESSION,
     VARIABLE_DECLARATION,
     VARIABLE_DECLARATOR,
     VARIABLE_DECLARATOR_PI,
