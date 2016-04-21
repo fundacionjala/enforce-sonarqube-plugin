@@ -101,6 +101,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MULTIPLICATIVE_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRE_DECREMENT_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRE_INCREMENT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SHIFT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
@@ -146,6 +148,8 @@ public class Expression {
         additiveExpression(grammarBuilder);
         multiplicativeExpression(grammarBuilder);
         unaryExpression(grammarBuilder);
+        preIncrementExpression(grammarBuilder);
+        preDecrementExpression(grammarBuilder);
     }
 
     /**
@@ -543,7 +547,21 @@ public class Expression {
                 grammarBuilder.firstOf(
                         grammarBuilder.sequence(grammarBuilder.firstOf(PLUS, MINUS),
                                 UNARY_EXPRESSION),
+                        PRE_INCREMENT_EXPRESSION,
+                        PRE_DECREMENT_EXPRESSION,
                         TERMINAL_EXPRESSION)
+        );
+    }
+
+    public static void preIncrementExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PRE_INCREMENT_EXPRESSION).is(
+                PLUS, PLUS, TERMINAL_EXPRESSION
+        );
+    }
+
+    public static void preDecrementExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PRE_DECREMENT_EXPRESSION).is(
+                MINUS, MINUS, TERMINAL_EXPRESSION
         );
     }
 }
