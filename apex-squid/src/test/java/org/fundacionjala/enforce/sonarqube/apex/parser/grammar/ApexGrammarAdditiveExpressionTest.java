@@ -1,4 +1,3 @@
-
 /*
  * The MIT License
  *
@@ -22,40 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ADDITIVE_EXPRESSION;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarAssignmentOperatorTest extends ApexRuleTest {
+public class ApexGrammarAdditiveExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(ASSIGNMENT_OPERATOR);
+        setRootRule(ADDITIVE_EXPRESSION);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("=")
-                .matches("/=")
-                .matches("-=")
-                .matches("+=")
-                .matches("%=")
-                .matches("*=")
-                .matches("<<=")
-                .matches(">>>=")
-                .matches("&=")
-                .matches("^=")
-                .matches("|=");
+                .matches("3")
+                .matches("a")
+                .matches("someExpression")
+                .matches("3 + 4")
+                .matches("x - y + z + 0");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("==")
-                .notMatches("===")
-                .notMatches("/ =");
+                .notMatches(" a ++ b")
+                .notMatches(" a -+ b")
+                .notMatches(" a b -");
     }
 }

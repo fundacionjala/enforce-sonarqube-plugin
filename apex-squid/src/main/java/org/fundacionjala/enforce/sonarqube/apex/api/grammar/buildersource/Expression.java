@@ -50,8 +50,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LEQUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LTLTEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MGTEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUSEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MLT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MODEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
@@ -67,6 +69,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ADDITIVE_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
@@ -98,6 +101,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SHIFT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 
 /**
@@ -136,6 +140,8 @@ public class Expression {
         equalityExpression(grammarBuilder);
         instanceOfExpression(grammarBuilder);
         relationalExpression(grammarBuilder);
+        shiftExpression(grammarBuilder);
+        additiveExpression(grammarBuilder);
     }
 
     /**
@@ -479,7 +485,7 @@ public class Expression {
                                 INSTANCE_OF_EXPRESSION))
         );
     }
-    
+
     public static void instanceOfExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INSTANCE_OF_EXPRESSION).is(
                 RELATIONAL_EXPRESSION,
@@ -489,14 +495,33 @@ public class Expression {
                                 TYPE_PI))
         );
     }
-    
+
     public static void relationalExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(RELATIONAL_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                SHIFT_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
                                 grammarBuilder.firstOf(LT, GT, LEQUT, GEQUT),
-                                TERMINAL_EXPRESSION))
+                                SHIFT_EXPRESSION))
+        );
+    }
+
+    public static void shiftExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(SHIFT_EXPRESSION).is(
+                ADDITIVE_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.sequence(
+                                grammarBuilder.firstOf(MLT, MGTEQU),
+                                ADDITIVE_EXPRESSION))
+        );
+    }
+
+    public static void additiveExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ADDITIVE_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.firstOf(PLUS, MINUS),
+                        TERMINAL_EXPRESSION)
         );
     }
 }

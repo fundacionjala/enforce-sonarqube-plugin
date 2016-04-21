@@ -45,15 +45,18 @@ public class ApexGrammarRelationalExpressionTest extends ApexRuleTest {
                 .matches("a < b")
                 .matches("x > y > z > 0")
                 .matches("thisThing >= thatThing")
-                .matches("0 <= thisThing <= thatThing >= x");
+                .matches("0 <= thisThing <= thatThing >= x")
+                //with nested ShiftExpressions
+                .matches("a << b")
+                .matches("a >>= b < c << d");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches(" a instance of b")
-                .notMatches(" a instanceOf b")
-                .notMatches(" a InstanceOf b")
-                .notMatches(" a instanceof 3");
+                .notMatches(" a < < b")
+                .notMatches(" a b <")
+                .notMatches(" a = b")
+                .notMatches(" a <> 3");
     }
 }
