@@ -23,34 +23,28 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_MERGE;
 
-public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
+public class ApexGrammarDmlMergeTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(STATEMENT_IF);
+        setRootRule(DML_MERGE);
     }
 
     @Test
-    public void rulesIfElseStatement() {
+    public void rulesDmlMerge() {
         assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int number;}")
-                .matches("if(NAME){int number=12;}else{'a';}");
+                .matches("merge primaryExpression optionalPrimaryExpression");
     }
 
     @Test
-    public void rulesIfElseStatementCaseError() {
+    public void rulesDmlMergeCaseError() {
         assertThat(parser)
-                .notMatches("if(NAME){intnumber=12;}")
-                .notMatches("if(NAME){intnumber=12;}else{'a';}");
+                .notMatches("mergeoptionalPrimaryExpression");
     }
 }

@@ -40,7 +40,7 @@ public class ApexGrammarWhileStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesWhileStament() {
+    public void rulesWhileStament() {
         assertThat(parser)
                 .matches("while(true){}")
                 .matches("while(A)12;")
@@ -48,7 +48,7 @@ public class ApexGrammarWhileStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesWhileStamentCaseError() {
+    public void rulesWhileStamentCaseError() {
         assertThat(parser)
                 .notMatches("while(A){intnumber=0;}");
     }

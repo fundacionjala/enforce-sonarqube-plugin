@@ -40,7 +40,7 @@ public class ApexGrammarStatementBlockTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesStatementBlock() {
+    public void rulesStatementBlock() {
         assertThat(parser)
                 .matches("{}")
                 .matches("{int myVariable;}")
@@ -48,7 +48,7 @@ public class ApexGrammarStatementBlockTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesStatementBlockCaseError() {
+    public void rulesStatementBlockCaseError() {
         assertThat(parser)
                 .notMatches("{intmyVariable=23;}")
                 .notMatches("{intmyVariable=23;if(NAME)12;}");
