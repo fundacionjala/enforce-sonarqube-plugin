@@ -26,32 +26,33 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATIONS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATION;
 
-public class ApexGrammarDmlOperationTest extends ApexRuleTest{
-@Before
+public class ApexGrammarDmlOperationsTest extends ApexRuleTest {
+
+    @Before
     public void init() {
-        setRootRule(DML_OPERATION);
+        setRootRule(DML_OPERATIONS);
     }
 
     @Test
-    public void RulesDmlOperation() {
+    public void RulesDmlOperations() {
         assertThat(parser)
                 .matches("insert primaryExpression")
-                .matches("update prmaryExpression")
-                .matches("undelete primaryExpression")
-                .matches("delete primaryExpression");
+                .matches("delete primaryExpression")
+                .matches("upsert primaryExpression")
+                .matches("upsert primaryExpression primaryExpression")
+                .matches("merge primaryExpression primaryExpression");
     }
 
     @Test
-    public void RulesDmlOperationCaseError() {
+    public void RulesDmlOperationsCaseError() {
         assertThat(parser)
-                .notMatches("insertnewAcct;")
-                .notMatches("updatemyAcct;")
-                .notMatches("upsertacctList;")
-                .notMatches("deletedoomedAccts;")
-                .notMatches("undeletesavedAccts;");
-    }    
-    
+                .notMatches("insertprimaryExpression")
+                .notMatches("deleteprimaryExpression")
+                .notMatches("upsertprimaryExpression")
+                .notMatches("merge primaryExpression")
+                .notMatches("mergeprimaryExpression");
+    }
 }

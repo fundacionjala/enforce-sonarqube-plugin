@@ -27,31 +27,24 @@ import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_MERGE;
 
-public class ApexGrammarDmlOperationTest extends ApexRuleTest{
-@Before
+public class ApexGrammarDmlMergeTest extends ApexRuleTest {
+
+    @Before
     public void init() {
-        setRootRule(DML_OPERATION);
+        setRootRule(DML_MERGE);
     }
 
     @Test
-    public void RulesDmlOperation() {
+    public void RulesDmlMerge() {
         assertThat(parser)
-                .matches("insert primaryExpression")
-                .matches("update prmaryExpression")
-                .matches("undelete primaryExpression")
-                .matches("delete primaryExpression");
+                .matches("merge primaryExpression optionalPrimaryExpression");
     }
 
     @Test
-    public void RulesDmlOperationCaseError() {
+    public void RulesDmlMergeCaseError() {
         assertThat(parser)
-                .notMatches("insertnewAcct;")
-                .notMatches("updatemyAcct;")
-                .notMatches("upsertacctList;")
-                .notMatches("deletedoomedAccts;")
-                .notMatches("undeletesavedAccts;");
-    }    
-    
+                .notMatches("mergeoptionalPrimaryExpression");
+    }
 }

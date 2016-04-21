@@ -55,7 +55,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BREAK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONTINUE_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATIONS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_UPSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
@@ -125,6 +127,8 @@ public class Statement {
         tryStatementPi(grammarBuilder);
         dmlOperation(grammarBuilder);
         dmlUpsert(grammarBuilder);
+        dmlMerge(grammarBuilder);
+        dmlOperations(grammarBuilder);
     }
 
     /**
@@ -543,12 +547,16 @@ public class Statement {
                         INSERT,
                         DELETE,
                         UNDELETE,
-                        UPDATE,
-                        TERMINAL_EXPRESSION
-                )
+                        UPDATE
+                ),
+                TERMINAL_EXPRESSION                        
         );
     }
     
+    /**
+     * Defines the rule for upsert operation.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void dmlUpsert(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DML_UPSERT).is(
                 UPSERT,
@@ -557,5 +565,32 @@ public class Statement {
         );
         
     
+    }
+    
+    /**
+     * Defines the rule for merge dml operation.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void dmlMerge(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DML_MERGE).is(
+                MERGE,
+                TERMINAL_EXPRESSION,
+                TERMINAL_EXPRESSION
+        );
+    }
+    
+    /**
+     * Defines dml operations such as upsert merge and insert,undelete,delete,update.
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void dmlOperations(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DML_OPERATIONS).is(
+                grammarBuilder.firstOf(
+                        DML_OPERATION,
+                        DML_UPSERT,
+                        DML_MERGE
+                )
+        
+        );
     }
 }
