@@ -30,6 +30,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CONTINUE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DO;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ELSE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINALLY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSERT;
@@ -59,6 +60,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_EACH_LOOP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_INIT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_LOOP;
@@ -78,7 +80,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATORS_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
@@ -116,6 +120,7 @@ public class Statement {
         forInit(grammarBuilder);
         forLoop(grammarBuilder);
         forStatementPi(grammarBuilder);
+        tryStatementPi(grammarBuilder);
     }
 
     /**
@@ -309,7 +314,8 @@ public class Statement {
                         BREAK_STATEMENT,
                         CONTINUE_STATEMENT,
                         RETURN_STATEMENT_PI,
-                        THROW_STATEMENT
+                        THROW_STATEMENT,
+                        TRY_STATEMENT_PI
                 )
         );
     }
@@ -496,6 +502,29 @@ public class Statement {
                 grammarBuilder.firstOf(
                         FOR_EACH_LOOP,
                         FOR_LOOP
+                )
+        );
+    }
+
+    /**
+     * Defines the try statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void tryStatementPi(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(TRY_STATEMENT_PI).is(
+                TRY,
+                BLOCK,
+                grammarBuilder.oneOrMore(
+                        CATCH,
+                        LPAREN,
+                        FORMAL_PARAMETER,
+                        RPAREN,
+                        BLOCK
+                ),
+                grammarBuilder.optional(
+                        FINALLY,
+                        BLOCK
                 )
         );
     }

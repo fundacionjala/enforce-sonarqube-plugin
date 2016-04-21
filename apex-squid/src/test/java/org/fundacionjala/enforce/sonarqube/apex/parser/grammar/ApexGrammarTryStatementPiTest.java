@@ -24,40 +24,32 @@
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
+import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT_PI;
 
-public class ApexGrammarStatementPiTest extends ApexRuleTest {
+public class ApexGrammarTryStatementPiTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(STATEMENT_PI);
+        setRootRule(TRY_STATEMENT_PI);
     }
 
     @Test
-    public void testValidStatementPi() {
+        public void testValidTryStatement() {
         assertThat(parser)
-                .matches("{}")
-                .matches(";")
-                .matches("if('anExpression')"
-                        + "{};")
-                .matches("if('anExpression')"
-                        + "{};"
-                        + "else "
-                        + "if('anotherExpression')"
-                        + "{};")
-                .matches("while(true){}")
-                .matches("do {} while (true);")
-                .matches("break;")
-                .matches("continue;")
-                .matches("return something;")
-                .matches("return this;")
-                .matches("throw someException;")
-                .matches("for(int addition = 3; doSomething; updateIterator){}")
-                .matches("for(Object current:listOfObjects){}")
-                .matches("try{} catch(Object variable){} finally{}");
-                
+                .matches("try{} catch(Object exceptionObject){}")
+                .matches("try{} catch(Object exceptionObject){} catch(Object anotherException){}")
+                .matches("try{} catch(Object exceptionObject){} finally {}");
+    }
+
+    @Test
+    public void testInvalidTryStatement() {
+        assertThat(parser)
+                .notMatches("try{}{}")
+                .notMatches("try{} catch{}")
+                .notMatches("try catch")
+                .notMatches("try {} catch(){finally{}}");
     }
 }
