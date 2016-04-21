@@ -65,6 +65,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     COLLECTIONS_TYPE,
     CONSTRUCTOR_DECLARATION_PI,
     CONTINUE_STATEMENT,
+    DECIMAL_LITERAL,
     DML_MERGE,
     DML_OPERATION,
     DML_OPERATIONS,

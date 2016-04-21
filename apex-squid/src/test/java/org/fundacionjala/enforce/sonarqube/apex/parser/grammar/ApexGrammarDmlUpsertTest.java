@@ -37,14 +37,14 @@ public class ApexGrammarDmlUpsertTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesDmlUpsert() {
+    public void rulesDmlUpsert() {
         assertThat(parser)
                 .matches("upsert primaryExpression")
                 .matches("upsert primaryExpression optionalPrimaryExpression");
     }
 
     @Test
-    public void RulesDmlUpsertCaseError() {
+    public void rulesDmlUpsertCaseError() {
         assertThat(parser)
                 .notMatches("upsertprimaryExpression")
                 .notMatches("upsertoptionalPrimaryExpression");

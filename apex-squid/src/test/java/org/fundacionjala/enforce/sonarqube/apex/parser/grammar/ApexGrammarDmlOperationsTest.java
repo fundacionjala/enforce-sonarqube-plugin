@@ -37,7 +37,7 @@ public class ApexGrammarDmlOperationsTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesDmlOperations() {
+    public void rulesDmlOperations() {
         assertThat(parser)
                 .matches("insert primaryExpression")
                 .matches("delete primaryExpression")
@@ -47,7 +47,7 @@ public class ApexGrammarDmlOperationsTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesDmlOperationsCaseError() {
+    public void rulesDmlOperationsCaseError() {
         assertThat(parser)
                 .notMatches("insertprimaryExpression")
                 .notMatches("deleteprimaryExpression")

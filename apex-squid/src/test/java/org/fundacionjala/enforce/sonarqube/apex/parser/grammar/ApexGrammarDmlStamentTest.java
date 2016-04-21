@@ -40,7 +40,7 @@ public class ApexGrammarDmlStamentTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesDmlStament() {
+    public void rulesDmlStament() {
         assertThat(parser)
                 .matches("insert newAcct;")
                 .matches("update myAcct;")
@@ -50,7 +50,7 @@ public class ApexGrammarDmlStamentTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesDmlStamentCaseError() {
+    public void rulesDmlStamentCaseError() {
         assertThat(parser)
                 .notMatches("insertnewAcct;")
                 .notMatches("updatemyAcct;")

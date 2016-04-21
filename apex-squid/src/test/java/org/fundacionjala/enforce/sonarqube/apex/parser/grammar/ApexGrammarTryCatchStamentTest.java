@@ -40,14 +40,14 @@ public class ApexGrammarTryCatchStamentTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesTryCatchStament() {
+    public void rulesTryCatchStament() {
         assertThat(parser)
                 .matches("try{}catch(Exception ex){}")
                 .matches("try{int number=0;}catch(Exception ex){char message=ex.message;}");
     }
 
     @Test
-    public void RulesTryCatchStamentCaseError() {
+    public void rulesTryCatchStamentCaseError() {
         assertThat(parser)
                 .notMatches("try{}catch(intex){}")
                 .notMatches("try{intnumber=0;}catch(charex){charmessage=ex.message;}");
