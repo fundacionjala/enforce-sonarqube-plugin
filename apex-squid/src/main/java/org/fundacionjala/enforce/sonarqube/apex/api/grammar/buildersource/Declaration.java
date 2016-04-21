@@ -73,7 +73,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IMPLEMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER_KEYWORD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
@@ -100,6 +99,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
 
 /**
  * This class contains constructors for Declaration rules and its sub rules.
@@ -274,7 +274,10 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void methodName(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(METHOD_NAME).is(IDENTIFIER);
+        grammarBuilder.rule(METHOD_IDENTIFIER).is(
+                grammarBuilder.firstOf(
+                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER));
     }
 
     /**
@@ -284,11 +287,10 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void methodDeclaration(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(METHOD_DECLARATION).is(
-                grammarBuilder.zeroOrMore(ANNOTATION),
+        grammarBuilder.rule(METHOD_DECLARATION).is(grammarBuilder.zeroOrMore(ANNOTATION),
                 MODIFIER,
                 TYPE,
-                METHOD_NAME,
+                METHOD_IDENTIFIER,
                 LPAREN,
                 grammarBuilder.optional(PARAMETER_LIST),
                 RPAREN,
@@ -404,7 +406,7 @@ public class Declaration {
     private static void propertyDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(PROPERTY_DECLARATION).is(
                 TYPE,
-                IDENTIFIER,
+                grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER, SPECIAL_KEYWORDS_AS_IDENTIFIER),
                 LBRACE,
                 ACCESSOR_DECLARATIONS,
                 RBRACE);
@@ -458,10 +460,9 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void methodDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(METHOD_DECLARATION_PI).is(
-                grammarBuilder.zeroOrMore(ANNOTATION),
+        grammarBuilder.rule(METHOD_DECLARATION_PI).is(grammarBuilder.zeroOrMore(ANNOTATION),
                 RESULT_TYPE,
-                METHOD_NAME,
+                METHOD_IDENTIFIER,
                 FORMAL_PARAMETERS,
                 grammarBuilder.firstOf(BLOCK, SEMICOLON)
         );
@@ -583,7 +584,7 @@ public class Declaration {
                 GET_SHARING_RULES,
                 MODIFIER,
                 TYPE_CLASS,
-                IDENTIFIER,
+                grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER, SPECIAL_KEYWORDS_AS_IDENTIFIER),
                 grammarBuilder.optional(EXTENDS_LIST),
                 grammarBuilder.optional(IMPLEMENTS_LIST),
                 LBRACE,
@@ -684,6 +685,7 @@ public class Declaration {
 
     /**
      * Creates the rule for localVariableDeclaration.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void localVariableDeclaration(LexerfulGrammarBuilder grammarBuilder) {
@@ -691,7 +693,7 @@ public class Declaration {
                 grammarBuilder.optional(FINAL),
                 TYPE,
                 VARIABLE_DECLARATOR_PI,
-                grammarBuilder.zeroOrMore(COMMA, VARIABLE_DECLARATOR)
+                grammarBuilder.zeroOrMore(COMMA, VARIABLE_DECLARATOR_PI)
         );
     }
 }

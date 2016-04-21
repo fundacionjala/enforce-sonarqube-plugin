@@ -31,28 +31,34 @@ import com.sonar.sslr.api.TokenType;
  */
 public enum ApexKeyword implements TokenType {
 
-    /**
+/**
      * RESERVED WORDS AND LITERALS.
      */
     ABSTRACT("abstract"),
+    ACTIVATE("activate"),
     ANOTATION("anotation"),
+    ANY("any"),
     AFTER("after"),
     BEFORE("before"),
     BOOLEAN("boolean"),
+    BREAK("break"),
     BYTE("byte"),
     CATCH("catch"),
     CATEGORY("category"),
+    CONTINUE("continue"),
     CONVERT_CURRENCY("convertcurrency"),
     CHAR("char"),
     CLASS("class"),
     DATA("data"),
     DELETE("delete"),
+    DO("do"),
     DOUBLE("double"),
     ELSE("else"),
     ENUM("enum"),
     EXTENDS("extends"),
     EXCEPTION("exception"),
     FINAL("final"),
+    FINALLY("finally"),
     FIRST("first"),
     FLOAT("float"),
     FOR("for"),
@@ -94,6 +100,7 @@ public enum ApexKeyword implements TokenType {
     THIS("this"),
     TO_LABEL("tolabel"),
     TRANSIENT("transient"),
+    THROW("throw"),
     TRY("try"),
     UNDELETE("undelete"),
     UPDATE("update"),
