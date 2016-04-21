@@ -23,33 +23,40 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
-
-public class ApexGrammarWhileStatementTest extends ApexRuleTest {
+public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(WHILE_STATEMENT);
+        setRootRule(UNARY_EXPRESSION_NOT_PLUS_MINUS);
     }
 
     @Test
-    public void rulesWhileStament() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("while(true){}")
-                .matches("while(A)12;")
-                .matches("while(A){int someNumber=0;}");
+                .matches("!x")
+                .matches("!+x")
+                .matches("!-!x")
+                .matches("!x.y")
+                .matches("!-+++--!-+x")
+                //with cast expression
+                .matches("(someType) var")
+                .matches("(someType) -!+-var")
+                .matches("(list<someType>) var")
+                .matches("(someType[]) var");
     }
 
     @Test
-    public void rulesWhileStamentCaseError() {
+    public void negativeRules() {
         assertThat(parser)
-                .notMatches("while(A){intnumber=0;}");
+                .notMatches("a!")
+                .notMatches("!")
+                .notMatches("!-")
+                .notMatches("a ! b");
     }
 }

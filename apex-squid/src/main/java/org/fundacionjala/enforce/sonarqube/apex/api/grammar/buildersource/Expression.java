@@ -56,6 +56,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUSE
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MLT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MODEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OREQU;
@@ -70,6 +71,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAREQ
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ADDITIVE_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
@@ -77,6 +79,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CAST_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_EXPRESSION;
@@ -101,9 +104,15 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MULTIPLICATIVE_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRE_DECREMENT_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRE_INCREMENT_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRIMARY_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRIMARY_SUFFIX;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SHIFT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -144,6 +153,13 @@ public class Expression {
         shiftExpression(grammarBuilder);
         additiveExpression(grammarBuilder);
         multiplicativeExpression(grammarBuilder);
+        unaryExpression(grammarBuilder);
+        preIncrementExpression(grammarBuilder);
+        preDecrementExpression(grammarBuilder);
+        unaryExpressionNotPlusMinus(grammarBuilder);
+        castExpression(grammarBuilder);
+        primaryExpression(grammarBuilder);
+        primarySuffix(grammarBuilder);
     }
 
     /**
@@ -529,10 +545,68 @@ public class Expression {
 
     public static void multiplicativeExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(MULTIPLICATIVE_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                UNARY_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.firstOf(STAR, DIV, MOD),
-                        TERMINAL_EXPRESSION)
+                        UNARY_EXPRESSION)
+        );
+    }
+
+    public static void unaryExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(UNARY_EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(grammarBuilder.firstOf(PLUS, MINUS),
+                                UNARY_EXPRESSION),
+                        PRE_INCREMENT_EXPRESSION,
+                        PRE_DECREMENT_EXPRESSION,
+                        UNARY_EXPRESSION_NOT_PLUS_MINUS)
+        );
+    }
+
+    public static void preIncrementExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PRE_INCREMENT_EXPRESSION).is(
+                PLUS, PLUS, PRIMARY_EXPRESSION
+        );
+    }
+
+    public static void preDecrementExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PRE_DECREMENT_EXPRESSION).is(
+                MINUS, MINUS, PRIMARY_EXPRESSION
+        );
+    }
+
+    public static void unaryExpressionNotPlusMinus(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(UNARY_EXPRESSION_NOT_PLUS_MINUS).is(
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(NOT, UNARY_EXPRESSION),
+                        CAST_EXPRESSION,
+                        PRIMARY_EXPRESSION)
+        );
+    }
+
+    public static void castExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CAST_EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(LPAREN, TYPE_PI, RPAREN, UNARY_EXPRESSION),
+                        grammarBuilder.sequence(LPAREN, TYPE_PI, RPAREN, UNARY_EXPRESSION_NOT_PLUS_MINUS)
+                )
+        );
+    }
+
+    public static void primaryExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PRIMARY_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(PRIMARY_SUFFIX)
+        );
+    }
+
+    public static void primarySuffix(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PRIMARY_SUFFIX).is(
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(LBRACKET, EXPRESSION_PI, RBRACKET),
+                        grammarBuilder.sequence(DOT,
+                                ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS),
+                        ARGUMENTSPI)
         );
     }
 }

@@ -23,33 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRE_INCREMENT_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
-
-public class ApexGrammarWhileStatementTest extends ApexRuleTest {
+public class ApexGrammarPreIncrementExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(WHILE_STATEMENT);
+        setRootRule(PRE_INCREMENT_EXPRESSION);
     }
 
     @Test
-    public void rulesWhileStament() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("while(true){}")
-                .matches("while(A)12;")
-                .matches("while(A){int someNumber=0;}");
+                .matches("++3")
+                .matches("++a")
+                .matches("++x.y")
+                .matches("++someVariable");
     }
 
     @Test
-    public void rulesWhileStamentCaseError() {
+    public void negativeRules() {
         assertThat(parser)
-                .notMatches("while(A){intnumber=0;}");
+                .notMatches(" +a")
+                .notMatches(" --a")
+                .notMatches(" a++")
+                .notMatches(" a++ b");
     }
 }
