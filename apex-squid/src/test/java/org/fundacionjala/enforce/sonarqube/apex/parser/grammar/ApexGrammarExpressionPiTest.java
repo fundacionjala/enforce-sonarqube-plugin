@@ -57,7 +57,11 @@ public class ApexGrammarExpressionPiTest extends ApexRuleTest {
                 //with AND and OR expressions
                 .matches("a || b")
                 .matches("aBooleanValue = firstCondition && secondCondition || thirdCondition")
-                .matches("a = b || c ? someValue : someOtherValue");
+                .matches("a = b || c ? someValue : someOtherValue")
+                //with several types of Expressions
+                .matches("aBoolean = a == b | c != d && x.something || z == null")
+                .matches("var += a instanceof b ^ c && d instanceof SomeClass || f != null == this")
+                .matches("var = x != null ? a&b&c||y : z|y||this");
                 
     }
     
@@ -67,11 +71,9 @@ public class ApexGrammarExpressionPiTest extends ApexRuleTest {
                 .notMatches("private")
                 .notMatches("void")
                 .notMatches("class = this")
-                .notMatches("this == that")
-                .notMatches("4 == 4")
                 .notMatches("*")
-                .notMatches("y == question ? 1 : 10")
-                .notMatches("a && b == c")
-                .notMatches("a = b &| c");
+                .notMatches("y == question ?? 1 : 10")
+                .notMatches("a &&& b == c")
+                .notMatches("a =! b &| c");
     }
 }

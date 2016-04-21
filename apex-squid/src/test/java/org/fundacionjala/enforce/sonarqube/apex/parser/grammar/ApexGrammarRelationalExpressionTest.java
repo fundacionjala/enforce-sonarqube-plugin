@@ -26,14 +26,14 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarAndExpressionTest extends ApexRuleTest {
+public class ApexGrammarRelationalExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(AND_EXPRESSION);
+        setRootRule(RELATIONAL_EXPRESSION);
     }
 
     @Test
@@ -42,20 +42,18 @@ public class ApexGrammarAndExpressionTest extends ApexRuleTest {
                 .matches("3")
                 .matches("a")
                 .matches("someExpression")
-                .matches("thisThing & thatThing")
-                .matches("5 & 6 & 7")
-                .matches("a.b & x.y")
-                //with nested equality expressions
-                .matches("a==b")
-                .matches("a!=b & x==y")
-                .matches("a==b==c & x & y!=z!=null");
+                .matches("a < b")
+                .matches("x > y > z > 0")
+                .matches("thisThing >= thatThing")
+                .matches("0 <= thisThing <= thatThing >= x");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches(" a b &")
-                .notMatches(" a | b")
-                .notMatches(" a && b");
+                .notMatches(" a instance of b")
+                .notMatches(" a instanceOf b")
+                .notMatches(" a InstanceOf b")
+                .notMatches(" a instanceof 3");
     }
 }
