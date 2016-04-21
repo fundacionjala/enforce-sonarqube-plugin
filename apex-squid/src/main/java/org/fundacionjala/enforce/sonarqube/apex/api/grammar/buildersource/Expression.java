@@ -100,6 +100,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MULTIPLICATIVE_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SHIFT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
@@ -142,6 +143,7 @@ public class Expression {
         relationalExpression(grammarBuilder);
         shiftExpression(grammarBuilder);
         additiveExpression(grammarBuilder);
+        multiplicativeExpression(grammarBuilder);
     }
 
     /**
@@ -518,9 +520,18 @@ public class Expression {
 
     public static void additiveExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ADDITIVE_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
+                MULTIPLICATIVE_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.firstOf(PLUS, MINUS),
+                        MULTIPLICATIVE_EXPRESSION)
+        );
+    }
+
+    public static void multiplicativeExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(MULTIPLICATIVE_EXPRESSION).is(
+                TERMINAL_EXPRESSION,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.firstOf(STAR, DIV, MOD),
                         TERMINAL_EXPRESSION)
         );
     }

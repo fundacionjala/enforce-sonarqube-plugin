@@ -23,17 +23,17 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ADDITIVE_EXPRESSION;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MULTIPLICATIVE_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarAdditiveExpressionTest extends ApexRuleTest {
+public class ApexGrammarMultiplicativeExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(ADDITIVE_EXPRESSION);
+        setRootRule(MULTIPLICATIVE_EXPRESSION);
     }
 
     @Test
@@ -42,18 +42,19 @@ public class ApexGrammarAdditiveExpressionTest extends ApexRuleTest {
                 .matches("3")
                 .matches("a")
                 .matches("someExpression")
-                .matches("3 + 4")
-                .matches("x - y + z + 0")
-                //with nested Multiplicative Expressions
-                .matches("a * b / c")
-                .matches("a*b + c/d - e%f");
+                .matches("3 * 4")
+                .matches("3 / 4")
+                .matches("3 % 4")
+                .matches("3 * 4 / 12 % 1")
+                .matches("a * b % c / d");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches(" a ++ b")
-                .notMatches(" a -+ b")
-                .notMatches(" a b -");
+                .notMatches(" a ** b")
+                .notMatches(" a */ b")
+                .notMatches(" a b %")
+                .notMatches(" a + b*c");
     }
 }
