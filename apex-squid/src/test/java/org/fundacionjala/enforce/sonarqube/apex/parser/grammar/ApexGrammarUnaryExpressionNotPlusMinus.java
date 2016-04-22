@@ -26,44 +26,32 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarUnaryExpressionTest extends ApexRuleTest {
+public class ApexGrammarUnaryExpressionNotPlusMinus extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(UNARY_EXPRESSION);
+        setRootRule(UNARY_EXPRESSION_NOT_PLUS_MINUS);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("3")
-                .matches("a")
-                .matches("someExpression")
-                .matches("-3")
-                .matches("+-a")
-                .matches("-+-3")
-                .matches("+something")
-                .matches("--+-a")
-                //with preincrement and predecrement expressions
-                .matches("--a")
-                .matches("++b")
-                .matches("- ++a")
-                .matches("+ - + ++b")
-                //with not-plus-minus expressions
-                .matches("!a")
-                .matches("+!-+b")
-                .matches("- !+--!++a")
-                .matches("+ - + ++b");
+                .matches("!x")
+                .matches("!+x")
+                .matches("!-!x")
+                .matches("!x.y")
+                .matches("!-+++--!-+x");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches(" a*")
-                .notMatches(" a+")
-                .notMatches(" a - b");
+                .notMatches("a!")
+                .notMatches("!")
+                .notMatches("!-")
+                .notMatches("a ! b");
     }
 }

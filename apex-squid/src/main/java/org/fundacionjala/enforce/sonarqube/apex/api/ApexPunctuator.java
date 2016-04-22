@@ -50,6 +50,7 @@ public enum ApexPunctuator implements TokenType {
     OR("|"),
     AND("&"),
     EXCOR("^"),
+    NOT("!"),
     EQUALS("=="),
     NOTEQUALS("!="),
     

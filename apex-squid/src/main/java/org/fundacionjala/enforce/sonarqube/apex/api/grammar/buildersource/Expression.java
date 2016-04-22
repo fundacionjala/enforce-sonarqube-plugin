@@ -56,6 +56,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MINUSE
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MLT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MODEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OREQU;
@@ -107,6 +108,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SHIFT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -150,6 +152,7 @@ public class Expression {
         unaryExpression(grammarBuilder);
         preIncrementExpression(grammarBuilder);
         preDecrementExpression(grammarBuilder);
+        unaryExpressionNotPlusMinus(grammarBuilder);
     }
 
     /**
@@ -549,6 +552,7 @@ public class Expression {
                                 UNARY_EXPRESSION),
                         PRE_INCREMENT_EXPRESSION,
                         PRE_DECREMENT_EXPRESSION,
+                        UNARY_EXPRESSION_NOT_PLUS_MINUS,
                         TERMINAL_EXPRESSION)
         );
     }
@@ -562,6 +566,12 @@ public class Expression {
     public static void preDecrementExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(PRE_DECREMENT_EXPRESSION).is(
                 MINUS, MINUS, TERMINAL_EXPRESSION
+        );
+    }
+    
+    public static void unaryExpressionNotPlusMinus(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(UNARY_EXPRESSION_NOT_PLUS_MINUS).is(
+                NOT, UNARY_EXPRESSION
         );
     }
 }
