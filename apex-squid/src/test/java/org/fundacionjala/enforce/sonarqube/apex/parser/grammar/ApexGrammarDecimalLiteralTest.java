@@ -41,13 +41,13 @@ public class ApexGrammarDecimalLiteralTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("156")
                 .matches("4")
-                .matches("0");
+                .matches("10");
     }
 
     @Test
     public void rulesDecimalLiteralCaseError() {
         assertThat(parser)
-                .notMatches("01");
+                .notMatches("012345678");
     }
 
 }

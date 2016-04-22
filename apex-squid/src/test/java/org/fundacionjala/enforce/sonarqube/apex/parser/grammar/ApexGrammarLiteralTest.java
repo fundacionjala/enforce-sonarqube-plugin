@@ -21,33 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+import org.junit.Before;
+import org.junit.Test;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- * Enum save a custom type of Apex.
- */
-public enum ApexTokenType implements TokenType {
+public class ApexGrammarLiteralTest extends ApexRuleTest {
 
-    NEW_LINE,
-    STRING,
-    NUMERIC,
-    HEXADECIMAL;
-
-    @Override
-    public String getName() {
-        return name();
+    @Before
+    public void setUp() {
+        setRootRule(LITERAL);
     }
 
-    @Override
-    public String getValue() {
-        return name();
+    @Test
+    public void testValidLiteral() {
+        assertThat(parser)
+                .matches("323")
+                .matches("'anyString'")
+                .matches("true")
+                .matches("false")
+                .matches("null");
     }
 
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
+    @Test
+    public void testInvalidLiteral() {
+        assertThat(parser)
+                .notMatches("True")
+                .notMatches("False")
+                .notMatches("NULL")
+                .notMatches("nuLL")
+                .notMatches("nul");
     }
 }

@@ -41,7 +41,7 @@ public class ApexGrammarReturnStamentTest extends ApexRuleTest {
     @Test
     public void rulesReturnStament() {
         assertThat(parser)
-                .matches("return true;")
+                .matches("return trueExpression;")
                 .matches("return 0;")
                 .matches("return null;");
     }

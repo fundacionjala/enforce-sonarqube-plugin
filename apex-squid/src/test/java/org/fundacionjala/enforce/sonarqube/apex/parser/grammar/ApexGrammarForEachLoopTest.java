@@ -40,7 +40,7 @@ public class ApexGrammarForEachLoopTest extends ApexRuleTest {
     public void testValidForEachLoop() {
         assertThat(parser)
                 .matches("(int variable: anotherVariable) {}")
-                .matches("(boolean true: anotherVariable) {}");
+                .matches("(boolean trueExpression: anotherVariable) {}");
     }
 
     @Test

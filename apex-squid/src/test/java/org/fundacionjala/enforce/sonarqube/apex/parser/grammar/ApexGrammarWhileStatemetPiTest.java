@@ -39,7 +39,7 @@ public class ApexGrammarWhileStatemetPiTest extends ApexRuleTest {
     @Test
     public void testValidWhileStatementPI() {
         assertThat(parser)
-                .matches("while(true)"
+                .matches("while(trueExpression)"
                         + "{}")
                 .matches("while(something)"
                         + "while(anotherthing)"
