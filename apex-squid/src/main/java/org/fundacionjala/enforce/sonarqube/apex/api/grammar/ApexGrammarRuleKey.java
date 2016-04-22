@@ -50,6 +50,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     BRACKETS,
     BREAK_STATEMENT,
     INVOKE_EXPRESSION,
+    CAST_EXPRESSION,
     CASTING_EXPRESSION,
     CLASS_DECLARATION,
     CLASS_NAME,

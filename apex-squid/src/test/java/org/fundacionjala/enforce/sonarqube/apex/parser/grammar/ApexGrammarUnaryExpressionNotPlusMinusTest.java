@@ -29,7 +29,7 @@ import org.junit.Test;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarUnaryExpressionNotPlusMinus extends ApexRuleTest {
+public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
 
     @Before
     public void init() {
@@ -43,7 +43,12 @@ public class ApexGrammarUnaryExpressionNotPlusMinus extends ApexRuleTest {
                 .matches("!+x")
                 .matches("!-!x")
                 .matches("!x.y")
-                .matches("!-+++--!-+x");
+                .matches("!-+++--!-+x")
+                //with cast expression
+                .matches("(someType) var")
+                .matches("(someType) -!+-var")
+                .matches("(list<someType>) var")
+                .matches("(someType[]) var");
     }
 
     @Test

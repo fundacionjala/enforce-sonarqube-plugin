@@ -78,6 +78,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CAST_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_EXPRESSION;
@@ -153,6 +154,7 @@ public class Expression {
         preIncrementExpression(grammarBuilder);
         preDecrementExpression(grammarBuilder);
         unaryExpressionNotPlusMinus(grammarBuilder);
+        castExpression(grammarBuilder);
     }
 
     /**
@@ -568,10 +570,21 @@ public class Expression {
                 MINUS, MINUS, TERMINAL_EXPRESSION
         );
     }
-    
+
     public static void unaryExpressionNotPlusMinus(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(UNARY_EXPRESSION_NOT_PLUS_MINUS).is(
-                NOT, UNARY_EXPRESSION
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(NOT, UNARY_EXPRESSION),
+                        CAST_EXPRESSION)
+        );
+    }
+
+    public static void castExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CAST_EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(LPAREN, TYPE_PI, RPAREN, UNARY_EXPRESSION),
+                        grammarBuilder.sequence(LPAREN, TYPE_PI, RPAREN, UNARY_EXPRESSION_NOT_PLUS_MINUS)
+                )
         );
     }
 }
