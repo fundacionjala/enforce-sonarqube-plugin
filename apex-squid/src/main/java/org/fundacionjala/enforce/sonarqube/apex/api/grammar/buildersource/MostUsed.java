@@ -36,7 +36,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GROUP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LAST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIMIT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LOWERCASE_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NETWORK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OFFSET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURNING;
@@ -46,7 +45,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STAT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TO_LABEL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPPERCASE_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -198,13 +196,7 @@ public class MostUsed {
                         HEX_LITERAL,
                         OCTAL_LITERAL,
                         DECIMAL_LITERAL
-                ),
-                grammarBuilder.optional(
-                        grammarBuilder.firstOf(
-                                UPPERCASE_LITERAL, 
-                                LOWERCASE_LITERAL)
                 )
-                
         );
     }
 }

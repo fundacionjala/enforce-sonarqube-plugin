@@ -55,7 +55,7 @@ public class ApexGrammarStatementPiTest extends ApexRuleTest {
                 .matches("return something;")
                 .matches("return this;")
                 .matches("throw someException;")
-                .matches("for(int addition = 3; doSomething; updateIterator){}")
+                .matches("for(int addition = 0; doSomething; updateIterator){}")
                 .matches("for(Object current:listOfObjects){}")
                 .matches("try{} catch(Object variable){} finally{}")
                 .matches("insert primaryExpression;")

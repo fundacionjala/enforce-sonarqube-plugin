@@ -31,7 +31,7 @@ import com.sonar.sslr.api.TokenType;
  */
 public enum ApexKeyword implements TokenType {
 
-/**
+    /**
      * RESERVED WORDS AND LITERALS.
      */
     ABSTRACT("abstract"),
@@ -110,7 +110,6 @@ public enum ApexKeyword implements TokenType {
     WHILE("while"),
     WITH("with"),
     WITHOUT("without"),
-
     /**
      * APEX ANNOTATIONS.
      */
@@ -123,14 +122,8 @@ public enum ApexKeyword implements TokenType {
     READ_ONLY("ReadOnly"),
     REMOTE_ACTION("RemoteAction"),
     TEST_SETUP("testSetup"),
-    TEST_VISIBLE("TestVisible"),
-    
-    /**
-     * Pseudo regular expressions.
-     */
-    UPPERCASE_LITERAL("L"),
-    LOWERCASE_LITERAL("l");
-    
+    TEST_VISIBLE("TestVisible");
+
     /**
      * Save the value with enums.
      */
