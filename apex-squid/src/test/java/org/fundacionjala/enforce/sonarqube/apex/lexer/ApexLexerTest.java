@@ -88,7 +88,7 @@ public class ApexLexerTest {
         assertThat(tokens, hasToken("pow", GenericTokenType.IDENTIFIER));
         assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
         assertThat(tokens, hasToken("int", ApexKeyword.INT));
-        assertThat(tokens, hasToken("number", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasToken("number", ApexKeyword.NUMBER));
         assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
         assertThat(tokens, hasToken("{", ApexPunctuator.LBRACE));
         assertThat(tokens, hasToken("return", ApexKeyword.RETURN));
@@ -96,7 +96,7 @@ public class ApexLexerTest {
         assertThat(tokens, hasToken(".", ApexPunctuator.DOT));
         assertThat(tokens, hasToken("pow", GenericTokenType.IDENTIFIER));
         assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
-        assertThat(tokens, hasToken("number", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasToken("number", ApexKeyword.NUMBER));
         assertThat(tokens, hasToken(",", ApexPunctuator.COMMA));
         assertThat(tokens, hasToken("2", ApexTokenType.NUMERIC));
         assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));

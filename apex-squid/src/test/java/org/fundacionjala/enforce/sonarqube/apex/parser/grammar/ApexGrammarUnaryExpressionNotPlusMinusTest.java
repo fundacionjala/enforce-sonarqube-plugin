@@ -23,34 +23,40 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
+public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(STATEMENT_IF);
+        setRootRule(UNARY_EXPRESSION_NOT_PLUS_MINUS);
     }
 
     @Test
-    public void rulesIfElseStatement() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int someNumber;}")
-                .matches("if(NAME){int someNumber=12;}else{'a';}");
+                .matches("!x")
+                .matches("!+x")
+                .matches("!-!x")
+                .matches("!x.y")
+                .matches("!-+++--!-+x")
+                //with cast expression
+                .matches("(someType) var")
+                .matches("(someType) -!+-var")
+                .matches("(list<someType>) var")
+                .matches("(someType[]) var");
     }
 
     @Test
-    public void rulesIfElseStatementCaseError() {
+    public void negativeRules() {
         assertThat(parser)
-                .notMatches("if(NAME){intnumber=12;}")
-                .notMatches("if(NAME){intnumber=12;}else{'a';}");
+                .notMatches("a!")
+                .notMatches("!")
+                .notMatches("!-")
+                .notMatches("a ! b");
     }
 }

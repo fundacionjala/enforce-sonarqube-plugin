@@ -23,34 +23,36 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRIMARY_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
+public class ApexGrammarPrimaryExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(STATEMENT_IF);
+        setRootRule(PRIMARY_EXPRESSION);
     }
 
     @Test
-    public void rulesIfElseStatement() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int someNumber;}")
-                .matches("if(NAME){int someNumber=12;}else{'a';}");
+                .matches("anExpression")
+                .matches("pExpression[sExpression]")
+                .matches("pExpression.sExpression")
+                .matches("pExpression(sExpression)")
+                .matches("x.y[++x-!-y]")
+                .matches("x.doThis(p1, null, p2).doToo().doThree(this, 3)")
+                .matches("a.someArray[0].doThis(this, that)");
     }
 
     @Test
-    public void rulesIfElseStatementCaseError() {
+    public void negativeRules() {
         assertThat(parser)
-                .notMatches("if(NAME){intnumber=12;}")
-                .notMatches("if(NAME){intnumber=12;}else{'a';}");
+                .notMatches("a..b")
+                .notMatches("a(b.)")
+                .notMatches(".3");
     }
 }

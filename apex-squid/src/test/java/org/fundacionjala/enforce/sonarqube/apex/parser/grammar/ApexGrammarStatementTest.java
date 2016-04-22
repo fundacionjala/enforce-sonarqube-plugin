@@ -55,7 +55,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
                 .matches("for(Object MyObject : listIntegers){ }")
                 .matches("for(int MyObject:listIntegers){}")
                 .matches("for(double MyObject:listDoubles)intnumber;")
-                .matches("for(boolean MyObject:listBooleans){int number=i;}");
+                .matches("for(boolean MyObject:listBooleans){int someNumber=i;}");
     }
 
     @Test
@@ -65,15 +65,15 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
                 .matches("if(NAME){}else{}")
                 .matches("if(NAME)12;")
                 .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int number;}")
-                .matches("if(NAME){int number=12;}else{'a';}");
+                .matches("if(NAME){int someNumber;}")
+                .matches("if(NAME){int someNumber=12;}else{'a';}");
     }
 
     @Test
     public void rulesTryCatchStament() {
         assertThat(parser)
                 .matches("try{}catch(Exception ex){}")
-                .matches("try{int number=0;}catch(Exception ex){char message=ex.message;}");
+                .matches("try{int someNumber=0;}catch(Exception ex){char message=ex.message;}");
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("while(trueExpression){}")
                 .matches("while(A)12;")
-                .matches("while(A){int number=0;}");
+                .matches("while(A){int someNumber=0;}");
     }
 
     @Test

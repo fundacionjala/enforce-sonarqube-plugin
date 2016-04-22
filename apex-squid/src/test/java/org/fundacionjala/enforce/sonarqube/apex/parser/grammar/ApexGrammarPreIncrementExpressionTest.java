@@ -23,34 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRE_INCREMENT_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
+public class ApexGrammarPreIncrementExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(STATEMENT_IF);
+        setRootRule(PRE_INCREMENT_EXPRESSION);
     }
 
     @Test
-    public void rulesIfElseStatement() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int someNumber;}")
-                .matches("if(NAME){int someNumber=12;}else{'a';}");
+                .matches("++3")
+                .matches("++a")
+                .matches("++x.y")
+                .matches("++someVariable");
     }
 
     @Test
-    public void rulesIfElseStatementCaseError() {
+    public void negativeRules() {
         assertThat(parser)
-                .notMatches("if(NAME){intnumber=12;}")
-                .notMatches("if(NAME){intnumber=12;}else{'a';}");
+                .notMatches(" +a")
+                .notMatches(" --a")
+                .notMatches(" a++")
+                .notMatches(" a++ b");
     }
 }

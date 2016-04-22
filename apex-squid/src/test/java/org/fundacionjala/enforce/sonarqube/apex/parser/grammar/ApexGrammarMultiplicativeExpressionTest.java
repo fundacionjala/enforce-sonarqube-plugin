@@ -46,7 +46,11 @@ public class ApexGrammarMultiplicativeExpressionTest extends ApexRuleTest {
                 .matches("3 / 4")
                 .matches("3 % 4")
                 .matches("3 * 4 / 12 % 1")
-                .matches("a * b % c / d");
+                .matches("a * b % c / d")
+                //with nested unary expressions
+                .matches("+-a")
+                .matches("-a * -+-b")
+                .matches("a / 5 * ---x");
     }
 
     @Test

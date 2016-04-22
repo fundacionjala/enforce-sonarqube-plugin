@@ -43,7 +43,7 @@ public class ApexGrammarTryCatchStamentTest extends ApexRuleTest {
     public void rulesTryCatchStament() {
         assertThat(parser)
                 .matches("try{}catch(Exception ex){}")
-                .matches("try{int number=0;}catch(Exception ex){char message=ex.message;}");
+                .matches("try{int someNumber=0;}catch(Exception ex){char message=ex.message;}");
     }
 
     @Test

@@ -44,7 +44,7 @@ public class ApexGrammarWhileStatementTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("while(trueExpression){}")
                 .matches("while(A)12;")
-                .matches("while(A){int number=0;}");
+                .matches("while(A){int someNumber=0;}");
     }
 
     @Test
