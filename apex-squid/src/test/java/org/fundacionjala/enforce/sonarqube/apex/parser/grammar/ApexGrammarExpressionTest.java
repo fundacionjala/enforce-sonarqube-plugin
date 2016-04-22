@@ -138,7 +138,7 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
     @Test
     public void positiveRulesInvokeExpression() {
         assertThat(parser)
-                .matches("array.length")
+                .matches("someArray.length")
                 .matches("someList.size()")
                 .matches("someMap.put(23,'message').values().toString()");
     }

@@ -56,7 +56,7 @@ public class ApexGrammarTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("public with sharing class Class1 implements YourClass {"
                         + "public void MyMethod(int myParameter){"
-                        + "int number = myParameter;"
+                        + "int someNumber = myParameter;"
                         + "}"
                         + "}");
     }
@@ -66,7 +66,7 @@ public class ApexGrammarTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("public with sharing class Class1 extends YourClass {"
                         + "public int MyMethod(){"
-                        + "int number = 0;"
+                        + "int someNumber = 0;"
                         + "}"
                         + "}");
     }

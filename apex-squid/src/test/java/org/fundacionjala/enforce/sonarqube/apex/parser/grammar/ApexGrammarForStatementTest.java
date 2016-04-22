@@ -44,7 +44,7 @@ public class ApexGrammarForStatementTest extends ApexRuleTest {
                 .matches("for(Object MyObject : listIntegers){ }")
                 .matches("for(int MyObject:listIntegers){}")
                 .matches("for(double MyObject:listDoubles)intnumber;")
-                .matches("for(boolean MyObject:listBooleans){int number=i;}");
+                .matches("for(boolean MyObject:listBooleans){int someNumber=i;}");
     }
 
     @Test

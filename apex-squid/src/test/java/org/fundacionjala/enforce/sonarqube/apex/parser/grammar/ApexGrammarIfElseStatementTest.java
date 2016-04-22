@@ -43,8 +43,8 @@ public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
                 .matches("if(NAME){}else{}")
                 .matches("if(NAME)12;")
                 .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int number;}")
-                .matches("if(NAME){int number=12;}else{'a';}");
+                .matches("if(NAME){int someNumber;}")
+                .matches("if(NAME){int someNumber=12;}else{'a';}");
     }
 
     @Test

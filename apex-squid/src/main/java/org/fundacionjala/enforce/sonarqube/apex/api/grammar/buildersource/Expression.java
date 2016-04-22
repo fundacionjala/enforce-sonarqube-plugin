@@ -71,6 +71,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAREQ
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ADDITIVE_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
@@ -603,7 +604,8 @@ public class Expression {
         grammarBuilder.rule(PRIMARY_SUFFIX).is(
                 grammarBuilder.firstOf(
                         grammarBuilder.sequence(LBRACKET, EXPRESSION_PI, RBRACKET),
-                        grammarBuilder.sequence(DOT, IDENTIFIER),
+                        grammarBuilder.sequence(DOT,
+                                ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS),
                         ARGUMENTSPI)
         );
     }
