@@ -123,8 +123,14 @@ public enum ApexKeyword implements TokenType {
     READ_ONLY("ReadOnly"),
     REMOTE_ACTION("RemoteAction"),
     TEST_SETUP("testSetup"),
-    TEST_VISIBLE("TestVisible");
-
+    TEST_VISIBLE("TestVisible"),
+    
+    /**
+     * Pseudo regular expressions.
+     */
+    UPPERCASE_LITERAL("L"),
+    LOWERCASE_LITERAL("l");
+    
     /**
      * Save the value with enums.
      */

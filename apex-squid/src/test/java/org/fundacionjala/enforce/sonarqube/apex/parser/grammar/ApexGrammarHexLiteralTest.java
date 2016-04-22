@@ -21,33 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+import org.junit.Before;
+import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEX_LITERAL;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-/**
- * Enum save a custom type of Apex.
- */
-public enum ApexTokenType implements TokenType {
+public class ApexGrammarHexLiteralTest extends ApexRuleTest {
 
-    NEW_LINE,
-    STRING,
-    NUMERIC,
-    HEXADECIMAL;
-
-    @Override
-    public String getName() {
-        return name();
+    @Before
+    public void init() {
+        setRootRule(HEX_LITERAL);
     }
 
-    @Override
-    public String getValue() {
-        return name();
+    @Test
+    public void rulesHexLiteral() {
+        assertThat(parser)
+                .matches("0x4564afe")
+                .matches("0X46465AFED")
+                .matches("0x1323abcde");
     }
 
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
+    @Test
+    public void rulesHexLiteralCaseError() {
+        assertThat(parser)
+                .notMatches("AFEad")
+                .notMatches("1323adf0X");
     }
 }

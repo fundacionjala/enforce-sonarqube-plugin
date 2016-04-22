@@ -36,6 +36,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GROUP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LAST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIMIT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LOWERCASE_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NETWORK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OFFSET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURNING;
@@ -45,17 +46,22 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STAT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TO_LABEL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPPERCASE_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.HEXADECIMAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEX_LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INTEGER_LITERAL_NUMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.OCTAL_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 
 /**
@@ -70,6 +76,9 @@ public class MostUsed {
         block(grammarBuilder);
         name(grammarBuilder);
         decimalLiteral(grammarBuilder);
+        hexLiteral(grammarBuilder);
+        octalLiteral(grammarBuilder);
+        integerLiteralNumber(grammarBuilder);
     }
 
     /**
@@ -128,28 +137,74 @@ public class MostUsed {
                 RBRACE
         );
     }
-    
+
     /**
      * Defines the rule for name.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void name(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(NAME).is(
-            METHOD_IDENTIFIER,
-            grammarBuilder.zeroOrMore(
-                    DOT,
-                    METHOD_IDENTIFIER
-            )
+                METHOD_IDENTIFIER,
+                grammarBuilder.zeroOrMore(
+                        DOT,
+                        METHOD_IDENTIFIER
+                )
         );
     }
-    
+
     /**
      * Defines decimal literal rule.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void decimalLiteral(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DECIMAL_LITERAL).is(
                 NUMERIC
+        );
+    }
+
+    /**
+     * Defines rule for hexadecimal literal.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void hexLiteral(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(HEX_LITERAL).is(
+                NUMERIC,
+                HEXADECIMAL
+        );
+    }
+
+    /**
+     * Defines rule for octal literal.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void octalLiteral(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(OCTAL_LITERAL).is(
+                NUMERIC
+        );
+    }
+
+    /**
+     * Defines rule for integer literal number.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void integerLiteralNumber(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(INTEGER_LITERAL_NUMBER).is(
+                grammarBuilder.firstOf(
+                        HEX_LITERAL,
+                        OCTAL_LITERAL,
+                        DECIMAL_LITERAL
+                ),
+                grammarBuilder.optional(
+                        grammarBuilder.firstOf(
+                                UPPERCASE_LITERAL, 
+                                LOWERCASE_LITERAL)
+                )
+                
         );
     }
 }

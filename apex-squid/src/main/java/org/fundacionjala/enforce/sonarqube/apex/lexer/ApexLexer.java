@@ -53,8 +53,13 @@ public class ApexLexer {
     /**
      * Stores an numeric pattern.
      */
-    private static final String NUMERIC_PATTERN = "(0|[1-9]\\d*)";
-
+    private static final String NUMERIC_PATTERN = "(0([0-7]*)?|[1-9]\\d*)";
+    
+    /**
+     * Stores an hexadecimal pattern.
+     */
+    private static final String HEXADECIMAL_PATTERN = "([Xx][0-9a-fA-F]+)?";
+    
     /**
      * Stores a pattern to identify a black hole.
      */
@@ -78,6 +83,7 @@ public class ApexLexer {
                 .withFailIfNoChannelToConsumeOneCharacter(Boolean.TRUE)
                 .withChannel(regexp(ApexTokenType.NUMERIC, NUMERIC_PATTERN))
                 .withChannel(regexp(ApexTokenType.STRING, STRING_PATTERN))
+                .withChannel(regexp(ApexTokenType.HEXADECIMAL, HEXADECIMAL_PATTERN))
                 .withChannel(new IdentifierAndKeywordChannel(KEYWORD,
                         Boolean.TRUE, ApexKeyword.values()))
                 .withChannel(new PunctuatorChannel(ApexPunctuator.values()))
