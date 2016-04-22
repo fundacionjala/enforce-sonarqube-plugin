@@ -23,35 +23,31 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BOOLEAN_LITERAL;
 
-public class ApexGrammarReturnStamentTest extends ApexRuleTest {
+public class ApexGrammarBooleanLiteralTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(RETURN_STATEMENT);
+    public void setUp() {
+        setRootRule(BOOLEAN_LITERAL);
     }
 
     @Test
-    public void rulesReturnStament() {
+    public void testValidBooleanLiteral() {
         assertThat(parser)
-                .matches("return trueExpression;")
-                .matches("return 0;")
-                .matches("return null;");
+                .matches("true")
+                .matches("false");
     }
 
     @Test
-    public void rulesReturnStamentCaseError() {
+    public void testInvalidBooleanLiteral() {
         assertThat(parser)
-                .notMatches("return;")
-                .notMatches("returntrue;")
-                .notMatches("return0;")
-                .notMatches("returnnull;");
+                .notMatches("TRue")
+                .notMatches("False")
+                .notMatches("falSes");
     }
 }

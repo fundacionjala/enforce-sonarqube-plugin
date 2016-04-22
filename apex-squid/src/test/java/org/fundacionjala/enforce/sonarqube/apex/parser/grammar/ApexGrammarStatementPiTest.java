@@ -48,8 +48,8 @@ public class ApexGrammarStatementPiTest extends ApexRuleTest {
                         + "else "
                         + "if('anotherExpression')"
                         + "{};")
-                .matches("while(true){}")
-                .matches("do {} while (true);")
+                .matches("while(trueExpression){}")
+                .matches("do {} while (trueExpression);")
                 .matches("break;")
                 .matches("continue;")
                 .matches("return something;")

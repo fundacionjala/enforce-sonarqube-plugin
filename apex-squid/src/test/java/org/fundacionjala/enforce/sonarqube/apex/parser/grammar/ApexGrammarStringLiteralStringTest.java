@@ -23,35 +23,29 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STRING_LITERAL_STRING;
 
-public class ApexGrammarReturnStamentTest extends ApexRuleTest {
+public class ApexGrammarStringLiteralStringTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(RETURN_STATEMENT);
+    public void setUp() {
+        setRootRule(STRING_LITERAL_STRING);
     }
 
     @Test
-    public void rulesReturnStament() {
+    public void testValidStringLiteralString() {
         assertThat(parser)
-                .matches("return trueExpression;")
-                .matches("return 0;")
-                .matches("return null;");
+                .matches("'anyword'")
+                .matches("'single quotes'");
     }
 
     @Test
-    public void rulesReturnStamentCaseError() {
+    public void testInvalidStringLiteralString() {
         assertThat(parser)
-                .notMatches("return;")
-                .notMatches("returntrue;")
-                .notMatches("return0;")
-                .notMatches("returnnull;");
+                .notMatches("");
     }
 }

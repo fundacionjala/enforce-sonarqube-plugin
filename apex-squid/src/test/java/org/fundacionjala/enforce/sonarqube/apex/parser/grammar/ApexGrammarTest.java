@@ -44,7 +44,7 @@ public class ApexGrammarTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("public class MyClass {"
                         + "public boolean MyMethod(){"
-                        + "int name=0;while(true){"
+                        + "int name=0;while(trueExpression){"
                         + "insert accout;"
                         + "}"
                         + "}"
@@ -83,7 +83,7 @@ public class ApexGrammarTest extends ApexRuleTest {
     public void correctRuleMoreImplementsVariableAndMethod() {
         assertThat(parser)
                 .matches("public with sharing class Class1 implements YourClass {"
-                        + "public boolean my_Variable = true;"
+                        + "public boolean my_Variable = trueExpression;"
                         + "public boolean MyMethod(){}"
                         + "}");
     }

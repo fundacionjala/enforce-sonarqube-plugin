@@ -79,7 +79,7 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     @Test
     public void rulesWhileStament() {
         assertThat(parser)
-                .matches("while(true){}")
+                .matches("while(trueExpression){}")
                 .matches("while(A)12;")
                 .matches("while(A){int number=0;}");
     }
@@ -87,9 +87,9 @@ public class ApexGrammarStatementTest extends ApexRuleTest {
     @Test
     public void rulesReturnStament() {
         assertThat(parser)
-                .matches("return true;")
+                .matches("return trueExpression;")
                 .matches("return 0;")
-                .matches("return null;");
+                .matches("return nullExpression;");
     }
 
     @Test

@@ -42,7 +42,7 @@ public class ApexGrammarWhileStatementTest extends ApexRuleTest {
     @Test
     public void rulesWhileStament() {
         assertThat(parser)
-                .matches("while(true){}")
+                .matches("while(trueExpression){}")
                 .matches("while(A)12;")
                 .matches("while(A){int number=0;}");
     }
