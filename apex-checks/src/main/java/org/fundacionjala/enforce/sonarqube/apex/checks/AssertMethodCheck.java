@@ -96,7 +96,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
         expressions.forEach(expression -> {
             if (isAssert(expression)) {
                 String first = getValue(expression, 0);
-                if (Objects.equals(first, "true")) {
+                if (Objects.equals(first, "trueExpression")) {
                     getContext().createLineViolation(this, ASSERT_MESSAGE, expression);
                 } else {
                     String second = getValue(expression, SECOND_ARGUMENT);

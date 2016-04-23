@@ -69,6 +69,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COLLECTIONS_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.REFERENCE_TYPE;
@@ -80,7 +81,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 
 /**
  * This class contains constructors for Type rules and its sub rules.
- * 
+ *
  */
 public class Type {
 
@@ -93,6 +94,7 @@ public class Type {
         referenceType(grammarBuilder);
         simpleType(grammarBuilder);
         classOrInterfaceType(grammarBuilder);
+        genericType(grammarBuilder);
     }
 
     /**
@@ -172,7 +174,7 @@ public class Type {
     private static void type(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE).is(TYPE_SPECIFIER);
     }
-    
+
     /**
      * Rule for the types used in all the grammar.
      *
@@ -225,5 +227,14 @@ public class Type {
                 grammarBuilder.firstOf(
                         ALLOWED_KEYWORDS_AS_IDENTIFIER,
                         SPECIAL_KEYWORDS_AS_IDENTIFIER));
+    }
+
+    private static void genericType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(GENERIC_TYPE).is(
+                LT,
+                TYPE_PI,
+                grammarBuilder.optional(COMMA, TYPE_PI),
+                GT
+        );
     }
 }

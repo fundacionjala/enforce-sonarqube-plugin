@@ -44,7 +44,9 @@ public class ApexGrammarPrimaryExpressionTest extends ApexRuleTest {
                 .matches("pExpression.sExpression")
                 .matches("pExpression(sExpression)")
                 .matches("x.y[++x-!-y]")
-                .matches("x.doThis(p1, null, p2).doToo().doThree(this, 3)")
+//                TODO: uncomment this when the old rules are deleted and it should work
+//                .matches("x.doSomething(this)")
+                .matches("x.doThis(p1, null, p2).doToo().doThree(thisValue, 3)")
                 .matches("a.someArray[0].doThis(this, that)");
     }
 

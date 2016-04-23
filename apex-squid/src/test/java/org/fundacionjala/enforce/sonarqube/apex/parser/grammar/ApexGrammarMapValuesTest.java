@@ -23,47 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_VALUES;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
+public class ApexGrammarMapValuesTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(UNARY_EXPRESSION_NOT_PLUS_MINUS);
+        setRootRule(MAP_VALUES);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("!x")
-                .matches("!+x")
-                .matches("!-!x")
-                .matches("!x.y")
-                .matches("!-+++--!-+x")
-                //with cast expression
-                .matches("(someType) var")
-                .matches("(someType) -!+-var")
-                .matches("(list<someType>) var")
-                .matches("(someType[]) var")
-                //with primary expression
-                .matches("var")
-                .matches("3")
-                .matches("'something'")
-                .matches("a.b.c[0].d(p1, p2)")
-                .matches("x++")
-                .matches("x--");
+                .matches("someKey => someValue")
+                .matches("someKey => someValue,"
+                        + "otherKey => otherValue,"
+                        + "anotherKey => anotherValue")
+                .matches("(someKey = true ? a : b ) => 3-(5*y)/x++");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("a!")
-                .notMatches("!")
-                .notMatches("!-")
-                .notMatches("a ! b");
+                .notMatches("key = value")
+                .notMatches("key ==> value")
+                .notMatches("key => a, b");
     }
 }
