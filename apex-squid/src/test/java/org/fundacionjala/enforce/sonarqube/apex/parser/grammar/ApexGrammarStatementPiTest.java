@@ -48,14 +48,14 @@ public class ApexGrammarStatementPiTest extends ApexRuleTest {
                         + "else "
                         + "if('anotherExpression')"
                         + "{};")
-                .matches("while(true){}")
-                .matches("do {} while (true);")
+                .matches("while(trueExpression){}")
+                .matches("do {} while (trueExpression);")
                 .matches("break;")
                 .matches("continue;")
                 .matches("return something;")
                 .matches("return this;")
                 .matches("throw someException;")
-                .matches("for(int addition = 3; doSomething; updateIterator){}")
+                .matches("for(int addition = 0; doSomething; updateIterator){}")
                 .matches("for(Object current:listOfObjects){}")
                 .matches("try{} catch(Object variable){} finally{}")
                 .matches("insert primaryExpression;")

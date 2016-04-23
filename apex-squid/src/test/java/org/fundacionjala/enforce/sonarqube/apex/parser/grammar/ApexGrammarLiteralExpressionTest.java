@@ -44,9 +44,7 @@ public class ApexGrammarLiteralExpressionTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("1")
                 .matches("12")
-                .matches("1009")
-                .matches("0")
-                .notMatches("01");
+                .matches("1009");
     }
 
     @Test
@@ -54,10 +52,8 @@ public class ApexGrammarLiteralExpressionTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("'A'")
                 .matches("'c'")
-                .matches("0")
                 .matches("'name'")
                 .matches("'myVariable'")
-                .notMatches("01")
                 .notMatches("0A");
     }
 }

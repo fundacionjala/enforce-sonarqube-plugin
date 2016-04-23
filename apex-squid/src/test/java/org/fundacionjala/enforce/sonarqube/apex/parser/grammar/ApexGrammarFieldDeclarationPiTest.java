@@ -41,7 +41,7 @@ public class ApexGrammarFieldDeclarationPiTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("int myVariable;")
                 .matches("int addition,takeaway;")
-                .matches("boolean isActive = true;")
+                .matches("boolean isActive = trueExpression;")
                 .matches("int addition = 0;")
                 .matches("ClassType transient;")
                 .matches("Iterator iterator = iteratorParameter;");

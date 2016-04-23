@@ -23,33 +23,39 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INTEGER_LITERAL_NUMBER;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
-
-public class ApexGrammarWhileStatementTest extends ApexRuleTest {
+public class ApexGrammarIntegerLiteralNumberTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(WHILE_STATEMENT);
+        setRootRule(INTEGER_LITERAL_NUMBER);
     }
 
     @Test
-    public void rulesWhileStament() {
+    public void rulesIntegerLiteralNumber() {
         assertThat(parser)
-                .matches("while(trueExpression){}")
-                .matches("while(A)12;")
-                .matches("while(A){int someNumber=0;}");
+                .matches("12345567890")
+                .matches("12345567890l")
+                .matches("12345567890L")
+                .matches("0x1234567890abcdef")
+                .matches("0x1234567890abcdefl")
+                .matches("0x1234567890abcdefL")
+                .matches("01234567")
+                .matches("01234567l")
+                .matches("01234567L");
     }
 
     @Test
-    public void rulesWhileStamentCaseError() {
+    public void rulesIntegerLiteralNumberCaseError() {
         assertThat(parser)
-                .notMatches("while(A){intnumber=0;}");
+                .notMatches("08")
+                .notMatches("0x323bct")
+                .notMatches("0123456789");
     }
+
 }
