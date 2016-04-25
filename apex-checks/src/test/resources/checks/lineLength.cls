@@ -2,8 +2,8 @@ public       with       sharing         class               DraftArticle    exte
 
 
                     public           int          MyMethod                       () { 
-                        int     number = 1902;
-                            return number;
+                        int     numberExpression = 1902;
+                            return numberExpression;
                     }
 }
 
