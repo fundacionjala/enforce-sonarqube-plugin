@@ -23,46 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_VALUES;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOCATION_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarAllocationExpressionTest extends ApexRuleTest {
+public class ApexGrammarMapValuesTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(ALLOCATION_EXPRESSION);
+        setRootRule(MAP_VALUES);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("new SomeType()")
-                .matches("new SomeType(p1, p2, 0, null)")
-                .matches("new SomeType(p1, p2) {}")
-                .matches("new SomeType[5]")
-                .matches("new SomeType[5-2*4/y]")
-                .matches("new SomeType[a.b().c[1]]")
-                .matches("new SomeType[]{1, 2, x, y, this}")
-                .matches("new list<SomeType>()")
-                .matches("new iterator<set<someType>>()")
-                .matches("new set<SomeType>(p1, 3, null, this)")
-                .matches("new set<SomeType>{}")
-                .matches("new map<K, V>()")
-                .matches("new map<K, V>{}")
-                .matches("new map<K, V>(1, 2 , x, y)")
-                .matches("new map<K, V>{k1 => 2 , x => y}");
+                .matches("someKey => someValue")
+                .matches("someKey => someValue,"
+                        + "otherKey => otherValue,"
+                        + "anotherKey => anotherValue")
+                .matches("(someKey = true ? a : b ) => 3-(5*y)/x++");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("new")
-                .notMatches("new 3")
-                .notMatches("new 'aString'")
-                .notMatches("new null")
-                .notMatches("new SomeType");
+                .notMatches("key = value")
+                .notMatches("key ==> value")
+                .notMatches("key => a, b");
     }
 }

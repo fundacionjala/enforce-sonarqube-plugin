@@ -34,6 +34,8 @@ public enum ApexPunctuator implements TokenType {
 
     /**
      * SEPARATORS.
+     *//**
+     * SEPARATORS.
      */
     LPAREN("("),
     RPAREN(")"),
@@ -84,7 +86,8 @@ public enum ApexPunctuator implements TokenType {
     GTGTGTEQU(">>>="),
     ANDEQU("&="),
     OREQU("^="),
-    EXCOREQU("|=");
+    EXCOREQU("|="),
+    MAP_ASSIGN("=>");
 
     /**
      * Save the value of each enum.

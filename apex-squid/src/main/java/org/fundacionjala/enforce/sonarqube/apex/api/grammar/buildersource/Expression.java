@@ -29,6 +29,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSTANCEOF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MAP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NEW;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
@@ -112,8 +113,11 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_INITIAL_COLLECTION_VALUES;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_VALUES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MULTIPLICATIVE_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.POST_FIX_EXPRESSION;
@@ -125,11 +129,13 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RESULT_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SHIFT_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_INITIAL_COLLECTION_VALUES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_INITIALIZER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MAP_ASSIGN;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -183,6 +189,7 @@ public class Expression {
         arrayDimsAndInits(grammarBuilder);
         arrayInitializer(grammarBuilder);
         variableInitializer(grammarBuilder);
+        mapValues(grammarBuilder);
     }
 
     /**
@@ -662,14 +669,34 @@ public class Expression {
     public static void allocationExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ALLOCATION_EXPRESSION).is(
                 NEW, grammarBuilder.firstOf(
-                grammarBuilder.sequence(CLASS_OR_INTERFACE_TYPE,
-                        grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
-                                grammarBuilder.sequence(ARGUMENTSPI,
-                                        grammarBuilder.optional(LBRACE, RBRACE)))),
+                        grammarBuilder.sequence(CLASS_OR_INTERFACE_TYPE,
+                                grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
+                                        grammarBuilder.sequence(ARGUMENTSPI,
+                                                grammarBuilder.optional(LBRACE, RBRACE)))),
                         grammarBuilder.sequence(
-                                grammarBuilder.firstOf(LIST, SET, ITERATOR), 
-                                TYPE)
+                                grammarBuilder.firstOf(LIST, SET, ITERATOR),
+                                GENERIC_TYPE,
+                                grammarBuilder.firstOf(ARGUMENTSPI,
+                                        grammarBuilder.sequence(
+                                                LBRACE,
+                                                SIMPLE_INITIAL_COLLECTION_VALUES,
+                                                RBRACE))),
+                        grammarBuilder.sequence(MAP, GENERIC_TYPE,
+                                grammarBuilder.firstOf(ARGUMENTSPI,
+                                        grammarBuilder.sequence(LBRACE,
+                                                MAP_INITIAL_COLLECTION_VALUES,
+                                                RBRACE)
+                                )
+                        )
                 )
+        );
+
+        grammarBuilder.rule(SIMPLE_INITIAL_COLLECTION_VALUES).is(
+                grammarBuilder.optional(ARGUMENTS_LIST)
+        );
+
+        grammarBuilder.rule(MAP_INITIAL_COLLECTION_VALUES).is(
+                grammarBuilder.optional(MAP_VALUES)
         );
     }
 
@@ -697,6 +724,19 @@ public class Expression {
                         THIS,
                         EXPRESSION_PI
                 )
+        );
+    }
+
+    public static void mapValues(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(MAP_VALUES).is(grammarBuilder.sequence(
+                EXPRESSION_PI,
+                MAP_ASSIGN,
+                EXPRESSION_PI),
+                grammarBuilder.zeroOrMore(grammarBuilder.sequence(
+                        COMMA,
+                        EXPRESSION_PI,
+                        MAP_ASSIGN,
+                        EXPRESSION_PI))
         );
     }
 }
