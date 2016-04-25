@@ -23,46 +23,29 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_FLOATING_POINT_LITERAL;
 
-public class ApexGrammarLiteralTest extends ApexRuleTest {
+public class ApexGrammarDecimalFloatingPointLiteralTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(LITERAL);
+        setRootRule(DECIMAL_FLOATING_POINT_LITERAL);
     }
 
     @Test
-    public void testValidLiteral() {
+    public void testValidDecimalFloatingPointLiteral() {
         assertThat(parser)
-                .matches("323l")
-                .matches("323d")
-                .matches("1.1f")
-                .matches("0x123abcde.1235p212F")
-                .matches("1.2323e+12d")
-                .matches("0x123f")
-                .matches("0x123.432p-323")
-                .matches("'anyString'")
-                .matches("true")
-                .matches("false")
-                .matches("null")
-                .matches("without")
-                .matches("limit");
-    }
-
-    @Test
-    public void testInvalidLiteral() {
-        assertThat(parser)
-                .notMatches("323l120x234abcd")
-                .notMatches("0x234234.p-234f")
-                .notMatches("True")
-                .notMatches("False")
-                .notMatches("NULL")
-                .notMatches("nuLL")
-                .notMatches("nul");
+                .matches("123123.23422e-32323f")
+                .matches("123123.23422d")
+                .matches(".23422e+123f")
+                .matches(".23422f")
+                .matches("123.123f")
+                .matches("123123e-23422F")
+                .matches("123123e+23422F")
+                .matches("123123d");
     }
 }

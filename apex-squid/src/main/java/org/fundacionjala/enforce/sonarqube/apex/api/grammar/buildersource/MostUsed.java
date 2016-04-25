@@ -108,13 +108,19 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BOOLEAN_LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_FLOATING_POINT_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DOT_NUMBER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FLOATING_POINT_LITERAL_NUMBER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEXADECIMAL_FLOATING_POINT_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEX_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INTEGER_LITERAL_NUMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NULL_LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMBER_DOT_NUMBER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMBER_EXPONENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.OCTAL_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STRING_LITERAL_STRING;
@@ -139,6 +145,10 @@ public class MostUsed {
         booleanLiteral(grammarBuilder);
         nullLiteral(grammarBuilder);
         literal(grammarBuilder);
+        decimalFloatingPointLiteral(grammarBuilder);
+        hexadecimalFloatingPointLiteral(grammarBuilder);
+        floatingPointLiteralNumber(grammarBuilder);
+        allowedKeywordsAsIdentifierForMethods(grammarBuilder);
     }
 
     /**
@@ -376,15 +386,62 @@ public class MostUsed {
                 NULL
         );
     }
-    
+
+    /**
+     * Defines rule for literal.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void literal(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(LITERAL).is(
                 grammarBuilder.firstOf(
+                        FLOATING_POINT_LITERAL_NUMBER,
                         INTEGER_LITERAL_NUMBER,
                         STRING_LITERAL_STRING,
                         BOOLEAN_LITERAL,
                         NULL_LITERAL,
-                        SPECIAL_KEYWORDS_AS_IDENTIFIER
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER,
+                        INTEGER_LITERAL_NUMBER
+                )
+        );
+    }
+
+    private static void decimalFloatingPointLiteral(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DECIMAL_FLOATING_POINT_LITERAL).is(
+                grammarBuilder.firstOf(
+                        NUMBER_DOT_NUMBER,
+                        DOT_NUMBER,
+                        NUMBER_EXPONENT)
+        );
+
+        grammarBuilder.rule(NUMBER_DOT_NUMBER).is(
+                grammarBuilder.oneOrMore(NUMERIC),
+                DOT,
+                NUMERIC
+        );
+
+        grammarBuilder.rule(DOT_NUMBER).is(
+                DOT,
+                grammarBuilder.oneOrMore(NUMERIC)
+        );
+
+        grammarBuilder.rule(NUMBER_EXPONENT).is(
+                NUMERIC
+        );
+    }
+
+    private static void hexadecimalFloatingPointLiteral(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(HEXADECIMAL_FLOATING_POINT_LITERAL).is(
+                NUMERIC,
+                HEXADECIMAL
+        );
+    }
+
+    private static void floatingPointLiteralNumber(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FLOATING_POINT_LITERAL_NUMBER).is(
+                grammarBuilder.firstOf(
+                        HEXADECIMAL_FLOATING_POINT_LITERAL,
+                        DECIMAL_FLOATING_POINT_LITERAL
                 )
         );
     }

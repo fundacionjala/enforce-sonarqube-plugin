@@ -23,46 +23,32 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEXADECIMAL_FLOATING_POINT_LITERAL;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarLiteralTest extends ApexRuleTest {
+public class ApexGrammarHexadecimalFloatingPointLiteralTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(LITERAL);
+        setRootRule(HEXADECIMAL_FLOATING_POINT_LITERAL);
     }
 
     @Test
-    public void testValidLiteral() {
+    public void testValidHexadecimalFloatingPointLiteral() {
         assertThat(parser)
-                .matches("323l")
-                .matches("323d")
-                .matches("1.1f")
-                .matches("0x123abcde.1235p212F")
-                .matches("1.2323e+12d")
-                .matches("0x123f")
-                .matches("0x123.432p-323")
-                .matches("'anyString'")
-                .matches("true")
-                .matches("false")
-                .matches("null")
-                .matches("without")
-                .matches("limit");
+                .matches("0x1234567890abcdefp-12345F")
+                .matches("0X12354abcdep-12345F")
+                .matches("0x12345abce.1234abdcedfD")
+                .matches("0x112345ab.1235abdcep1235d");
+    }
+    
+    @Test
+    public void testInvalidHexadecimalFloatingPointLiteral(){
+        assertThat(parser)
+                .notMatches("0x1235534327443.p-2734823f");
     }
 
-    @Test
-    public void testInvalidLiteral() {
-        assertThat(parser)
-                .notMatches("323l120x234abcd")
-                .notMatches("0x234234.p-234f")
-                .notMatches("True")
-                .notMatches("False")
-                .notMatches("NULL")
-                .notMatches("nuLL")
-                .notMatches("nul");
-    }
 }

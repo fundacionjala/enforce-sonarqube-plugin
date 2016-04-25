@@ -96,6 +96,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
         expressions.forEach(expression -> {
             if (isAssert(expression)) {
                 String first = getValue(expression, 0);
+                //TODO: Change trueExpression for true when Expression rule is full implemented.
                 if (Objects.equals(first, "trueExpression")) {
                     getContext().createLineViolation(this, ASSERT_MESSAGE, expression);
                 } else {
