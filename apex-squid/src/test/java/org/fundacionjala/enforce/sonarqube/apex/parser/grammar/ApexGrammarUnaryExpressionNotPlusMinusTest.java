@@ -48,7 +48,14 @@ public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
                 .matches("(someType) var")
                 .matches("(someType) -!+-var")
                 .matches("(list<someType>) var")
-                .matches("(someType[]) var");
+                .matches("(someType[]) var")
+                //with primary expression
+                .matches("var")
+                .matches("3")
+                .matches("'something'")
+                .matches("a.b.c[0].d(p1, p2)")
+                .matches("x++")
+                .matches("x--");
     }
 
     @Test

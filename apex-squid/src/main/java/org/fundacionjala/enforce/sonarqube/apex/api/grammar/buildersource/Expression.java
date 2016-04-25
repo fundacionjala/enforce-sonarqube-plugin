@@ -107,6 +107,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MULTIPLICATIVE_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.POST_FIX_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRE_DECREMENT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRE_INCREMENT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRIMARY_EXPRESSION;
@@ -167,6 +168,7 @@ public class Expression {
         primaryExpression(grammarBuilder);
         primarySuffix(grammarBuilder);
         primaryPrefix(grammarBuilder);
+        postfixExpression(grammarBuilder);
     }
 
     /**
@@ -587,7 +589,8 @@ public class Expression {
                 grammarBuilder.firstOf(
                         grammarBuilder.sequence(NOT, UNARY_EXPRESSION),
                         CAST_EXPRESSION,
-                        PRIMARY_EXPRESSION)
+                        grammarBuilder.sequence(PRIMARY_EXPRESSION,
+                                grammarBuilder.optional(POST_FIX_EXPRESSION)))
         );
     }
 
@@ -629,6 +632,15 @@ public class Expression {
                                 NAME
                         ),
                         grammarBuilder.sequence(LPAREN, EXPRESSION_PI, RPAREN)
+                )
+        );
+    }
+
+    public static void postfixExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(POST_FIX_EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(PLUS, PLUS),
+                        grammarBuilder.sequence(MINUS, MINUS)
                 )
         );
     }
