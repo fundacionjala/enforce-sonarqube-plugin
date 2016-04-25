@@ -363,7 +363,7 @@ public class Expression {
     private static void terminalExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TERMINAL_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        //                        INVOKE_EXPRESSION,
+                        INVOKE_EXPRESSION,
                         LITERAL_EXPRESSION,
                         NULL,
                         SUPER,
