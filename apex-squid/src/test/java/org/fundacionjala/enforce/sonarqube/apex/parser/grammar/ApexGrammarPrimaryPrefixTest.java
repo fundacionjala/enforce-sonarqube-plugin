@@ -26,55 +26,44 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRIMARY_PREFIX;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 
-public class ApexGrammarExpressionPiTest extends ApexRuleTest {
+public class ApexGrammarPrimaryPrefixTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(EXPRESSION_PI);
+        setRootRule(PRIMARY_PREFIX);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
                 .matches("1")
-                .matches("a")
-                .matches("someIdentifier")
+                .matches("true")
+                .matches("false")
 //                TODO: uncomment this when the old rules are deleted and it should work
 //                .matches("this")
-//                .matches("super")
-                .matches("null")
-                .matches("1009")
-                //with assignmentOperators
-                .matches("x = 5")
-                .matches("x = y = 2")
-                .matches("count += 4")
-                //with conditional expression
-                .matches("thisValue ? 0 : 1")
-//                TODO: uncomment this when the old rules are deleted and it should work
-//                .matches("x = somethingTrue ? this : null")
-                .matches("y += question ? 1 : 10")
-                //with AND and OR expressions
-                .matches("a || b")
-                .matches("aBooleanValue = firstCondition && secondCondition || thirdCondition")
-                .matches("a = b || c ? someValue : someOtherValue")
-                //with several types of Expressions
-                .matches("aBoolean = a == b | c != d && x.something || z == null")
-                .matches("var += a instanceof b ^ c && d instanceof SomeClass || f != null == 0")
-                .matches("var = x != null ? a&b&c||y : z|y||x");
+                .matches("'something'")
+                .matches("someIdentifier")
+                .matches("a.b.c")
+                .matches("this.something")
+                .matches("super.something")
+                .matches("something.something")
+                .matches("(anExpression)")
+                .matches("(a.b.c)")
+                .matches("(++x)")
+                .matches("(4-3*x-y+--+-z-2)")
+                .matches("(null)")
+                .matches("(x = z = 3-5)")
+                .matches("(x ? y : z)");
     }
-    
+
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("private")
-                .notMatches("void")
-                .notMatches("class = this")
-                .notMatches("*")
-                .notMatches("y == question ?? 1 : 10")
-                .notMatches("a &&& b == c")
-                .notMatches("a =! b &| c");
+                .notMatches("class")
+                .notMatches("5-3")
+                .notMatches(".b");
     }
 }

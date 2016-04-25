@@ -23,8 +23,8 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BREAK;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BREAK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CONTINUE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;

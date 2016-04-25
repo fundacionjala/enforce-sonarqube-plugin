@@ -21,49 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
+public class ApexGrammarGenericTypeTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(UNARY_EXPRESSION_NOT_PLUS_MINUS);
+        setRootRule(GENERIC_TYPE);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("!x")
-                .matches("!+x")
-                .matches("!-!x")
-                .matches("!x.y")
-                .matches("!-+++--!-+x")
-                //with cast expression
-                .matches("(someType) var")
-                .matches("(someType) -!+-var")
-                .matches("(list<someType>) var")
-                .matches("(someType[]) var")
-                //with primary expression
-                .matches("var")
-                .matches("3")
-                .matches("'something'")
-                .matches("a.b.c[0].d(p1, p2)")
-                .matches("x++")
-                .matches("x--");
+                .matches("<SomeType>")
+                .matches("<SomeType, SomeOtherType>")
+                .matches("<list<set<someType>>>");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("a!")
-                .notMatches("!")
-                .notMatches("!-")
-                .notMatches("a ! b");
+                .notMatches("<someType")
+                .notMatches("<sometype,>")
+                .notMatches("<>");
     }
 }

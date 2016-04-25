@@ -26,44 +26,43 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOCATION_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
+public class ApexGrammarAllocationExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(UNARY_EXPRESSION_NOT_PLUS_MINUS);
+        setRootRule(ALLOCATION_EXPRESSION);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("!x")
-                .matches("!+x")
-                .matches("!-!x")
-                .matches("!x.y")
-                .matches("!-+++--!-+x")
-                //with cast expression
-                .matches("(someType) var")
-                .matches("(someType) -!+-var")
-                .matches("(list<someType>) var")
-                .matches("(someType[]) var")
-                //with primary expression
-                .matches("var")
-                .matches("3")
-                .matches("'something'")
-                .matches("a.b.c[0].d(p1, p2)")
-                .matches("x++")
-                .matches("x--");
+                .matches("new SomeType()")
+                .matches("new SomeType(p1, p2, 0, null)")
+                .matches("new SomeType(p1, p2) {}")
+                .matches("new SomeType[5]")
+                .matches("new SomeType[5-2*4/y]")
+                .matches("new SomeType[a.b().c[1]]")
+                .matches("new SomeType[]{1, 2, x, y, this}")
+                .matches("new list<SomeType>()")
+                .matches("new iterator<set<someType>>()")
+                .matches("new set<SomeType>(p1, 3, null, this)")
+                .matches("new set<SomeType>{}")
+                .matches("new map<K, V>()")
+                .matches("new map<K, V>{}")
+                .matches("new map<K, V>(1, 2 , x, y)")
+                .matches("new map<K, V>{k1 => 2 , x => y}");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("a!")
-                .notMatches("!")
-                .notMatches("!-")
-                .notMatches("a ! b");
+                .notMatches("new")
+                .notMatches("new 3")
+                .notMatches("new 'aString'")
+                .notMatches("new null")
+                .notMatches("new SomeType");
     }
 }

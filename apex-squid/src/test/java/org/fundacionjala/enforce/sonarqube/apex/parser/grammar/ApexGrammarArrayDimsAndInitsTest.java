@@ -26,44 +26,36 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARRAY_DIMS_AND_INITS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
+public class ApexGrammarArrayDimsAndInitsTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(UNARY_EXPRESSION_NOT_PLUS_MINUS);
+        setRootRule(ARRAY_DIMS_AND_INITS);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("!x")
-                .matches("!+x")
-                .matches("!-!x")
-                .matches("!x.y")
-                .matches("!-+++--!-+x")
-                //with cast expression
-                .matches("(someType) var")
-                .matches("(someType) -!+-var")
-                .matches("(list<someType>) var")
-                .matches("(someType[]) var")
-                //with primary expression
-                .matches("var")
-                .matches("3")
-                .matches("'something'")
-                .matches("a.b.c[0].d(p1, p2)")
-                .matches("x++")
-                .matches("x--");
+                .matches("[3]")
+                .matches("[var]")
+                .matches("[something.x]")
+                .matches("[anArray.size()]")
+                .matches("[a(p1, p2).b[3]]")
+                .matches("[x = b <= c ? 5-3 : r*s/t-2]")
+                .matches("[]{}")
+                .matches("[]{1,2,3,X,Y,Z,'x','y',this}")
+                .matches("[]{a.b(p1).c(), x.y[0].z[4-3*x]}")
+                .matches("[]{this}");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("a!")
-                .notMatches("!")
-                .notMatches("!-")
-                .notMatches("a ! b");
+                .notMatches("[2")
+                .notMatches("(3)")
+                .notMatches("[]");
     }
 }
