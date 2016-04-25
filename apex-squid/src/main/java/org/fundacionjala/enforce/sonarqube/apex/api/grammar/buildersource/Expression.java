@@ -27,8 +27,11 @@ import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSTANCEOF;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NEW;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.AND;
@@ -658,10 +661,15 @@ public class Expression {
 
     public static void allocationExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ALLOCATION_EXPRESSION).is(
-                NEW, grammarBuilder.sequence(CLASS_OR_INTERFACE_TYPE,
+                NEW, grammarBuilder.firstOf(
+                grammarBuilder.sequence(CLASS_OR_INTERFACE_TYPE,
                         grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
                                 grammarBuilder.sequence(ARGUMENTSPI,
-                                        grammarBuilder.optional(LBRACE, RBRACE))))
+                                        grammarBuilder.optional(LBRACE, RBRACE)))),
+                        grammarBuilder.sequence(
+                                grammarBuilder.firstOf(LIST, SET, ITERATOR), 
+                                TYPE)
+                )
         );
     }
 
