@@ -46,6 +46,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GEQUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GTGTEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GTGTGTEQU;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LEQUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
@@ -64,6 +65,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.OREQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.PLUSEQU;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.QUESTION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACKET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
@@ -72,16 +74,20 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAREQ
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ADDITIVE_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOCATION_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARRAY_DIMS_AND_INITS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARRAY_INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CAST_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_OR_EXPRESSION;
@@ -120,6 +126,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_INITIALIZER;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -169,6 +176,10 @@ public class Expression {
         primarySuffix(grammarBuilder);
         primaryPrefix(grammarBuilder);
         postfixExpression(grammarBuilder);
+        allocationExpression(grammarBuilder);
+        arrayDimsAndInits(grammarBuilder);
+        arrayInitializer(grammarBuilder);
+        variableInitializer(grammarBuilder);
     }
 
     /**
@@ -641,6 +652,42 @@ public class Expression {
                 grammarBuilder.firstOf(
                         grammarBuilder.sequence(PLUS, PLUS),
                         grammarBuilder.sequence(MINUS, MINUS)
+                )
+        );
+    }
+
+    public static void allocationExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ALLOCATION_EXPRESSION).is(
+                NEW, grammarBuilder.sequence(CLASS_OR_INTERFACE_TYPE,
+                        grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
+                                grammarBuilder.sequence(ARGUMENTSPI,
+                                        grammarBuilder.optional(LBRACE, RBRACE))))
+        );
+    }
+
+    public static void arrayDimsAndInits(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ARRAY_DIMS_AND_INITS).is(
+                grammarBuilder.firstOf(
+                        grammarBuilder.sequence(LBRACKET, EXPRESSION_PI, RBRACKET),
+                        grammarBuilder.sequence(BRACKETS, LBRACE, ARRAY_INITIALIZER, RBRACE)
+                )
+        );
+    }
+
+    public static void arrayInitializer(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(ARRAY_INITIALIZER).is(
+                grammarBuilder.optional(
+                        VARIABLE_INITIALIZER,
+                        grammarBuilder.zeroOrMore(COMMA, VARIABLE_INITIALIZER)
+                )
+        );
+    }
+
+    public static void variableInitializer(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(VARIABLE_INITIALIZER).is(
+                grammarBuilder.firstOf(
+                        THIS,
+                        EXPRESSION_PI
                 )
         );
     }
