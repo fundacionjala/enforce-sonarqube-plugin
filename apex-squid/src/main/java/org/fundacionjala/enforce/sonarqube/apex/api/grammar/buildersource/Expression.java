@@ -24,14 +24,12 @@
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
-import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSTANCEOF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MAP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NEW;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
@@ -75,43 +73,24 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.STAREQU;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ADDITIVE_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOCATION_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARRAY_DIMS_AND_INITS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARRAY_INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CAST_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_AND_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_OR_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CREATING_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DEC;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUALITY_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INCLUSIVE_OR_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INVOKE_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMERIC_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMERIC_EXPRESSION_OPERATIONS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMERIC_EXPRESSION_OPERATIONS_SIMPLE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TESTING_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
@@ -136,6 +115,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MAP_ASSIGN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_EXPRESSION;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -144,24 +126,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MAP_AS
 public class Expression {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
-        arguments(grammarBuilder);
         argumentsPI(grammarBuilder);
         argumentsList(grammarBuilder);
-        testingExpressionEqual(grammarBuilder);
-        testingExpression(grammarBuilder);
-        creatingExpression(grammarBuilder);
-        castingExpression(grammarBuilder);
         brackets(grammarBuilder);
-        literalExpression(grammarBuilder);
-        numericExpressionOperationsSimpleInc(grammarBuilder);
-        numericExpressionOperationsSimpleDec(grammarBuilder);
-        numericExpressionOperations(grammarBuilder);
-        numericExpressionOperationsSimple(grammarBuilder);
-        numericExpression(grammarBuilder);
-        invokeExpression(grammarBuilder);
-        terminalExpression(grammarBuilder);
-        expression(grammarBuilder);
-        expressionFinal(grammarBuilder);
         expressionPi(grammarBuilder);
         assignmentOperator(grammarBuilder);
         conditionalExpression(grammarBuilder);
@@ -190,21 +157,8 @@ public class Expression {
         arrayInitializer(grammarBuilder);
         variableInitializer(grammarBuilder);
         mapValues(grammarBuilder);
-    }
-
-    /**
-     * It is responsible for setting the rules for arguments.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void arguments(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(ARGUMENTS).is(
-                TERMINAL_EXPRESSION,
-                grammarBuilder.zeroOrMore(
-                        COMMA,
-                        TERMINAL_EXPRESSION
-                )
-        );
+        compoundStatementExpression(grammarBuilder);
+        statementExpression(grammarBuilder);
     }
 
     /**
@@ -227,198 +181,10 @@ public class Expression {
      */
     private static void argumentsList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ARGUMENTS_LIST).is(
-                grammarBuilder.firstOf(EXPRESSION, THIS),
+                grammarBuilder.firstOf(EXPRESSION_PI, THIS),
                 grammarBuilder.zeroOrMore(COMMA,
-                        grammarBuilder.firstOf(EXPRESSION, THIS))
+                        grammarBuilder.firstOf(EXPRESSION_PI, THIS))
         );
-    }
-
-    /**
-     * It is responsible for managing the rule of integers, strings, characters.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void literalExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(LITERAL_EXPRESSION).is(
-                grammarBuilder.firstOf(
-                        STRING,
-                        NUMERIC)
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules to make the casting of an
-     * expression.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void castingExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CASTING_EXPRESSION).is(
-                LPAREN,
-                TYPE,
-                RPAREN,
-                TERMINAL_EXPRESSION
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules to make the testing of an
-     * expression.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void testingExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TESTING_EXPRESSION).is(
-                TERMINAL_EXPRESSION,
-                grammarBuilder.firstOf(EQUAL, GT, LT),
-                TERMINAL_EXPRESSION
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules to make the creating of an
-     * expression.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void creatingExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CREATING_EXPRESSION).is(
-                NEW,
-                CLASS_NAME,
-                LPAREN,
-                grammarBuilder.optional(
-                        IDENTIFIER,
-                        grammarBuilder.zeroOrMore(
-                                COMMA,
-                                IDENTIFIER)),
-                RPAREN
-        );
-    }
-
-    /**
-     * It is responsible for setting the rules for simple mathematical
-     * operations.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void numericExpressionOperations(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(NUMERIC_EXPRESSION_OPERATIONS).is(
-                TERMINAL_EXPRESSION,
-                grammarBuilder.firstOf(
-                        PLUS,
-                        MINUS,
-                        STAR,
-                        DIV,
-                        MOD
-                ),
-                TERMINAL_EXPRESSION
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules to make one increment.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void numericExpressionOperationsSimpleInc(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(INC).is(PLUS, PLUS);
-    }
-
-    /**
-     * It is responsible for creating the rules to make one decrement.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void numericExpressionOperationsSimpleDec(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(DEC).is(MINUS, MINUS);
-    }
-
-    /**
-     * It is responsible for creating the rules to make one increment or
-     * decrement.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void numericExpressionOperationsSimple(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(NUMERIC_EXPRESSION_OPERATIONS_SIMPLE).is(
-                TERMINAL_EXPRESSION,
-                grammarBuilder.firstOf(INC, DEC)
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules for numeric operations.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void numericExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(NUMERIC_EXPRESSION).is(
-                grammarBuilder.firstOf(
-                        NUMERIC_EXPRESSION_OPERATIONS,
-                        NUMERIC_EXPRESSION_OPERATIONS_SIMPLE
-                )
-        );
-    }
-
-    /**
-     * It is responsible for setting the rules for invoke expression.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void invokeExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(INVOKE_EXPRESSION).is(
-                IDENTIFIER,
-                grammarBuilder.optional(
-                        LPAREN,
-                        grammarBuilder.optional(ARGUMENTS),
-                        RPAREN),
-                grammarBuilder.zeroOrMore(
-                        DOT,
-                        INVOKE_EXPRESSION)
-        );
-    }
-
-    /**
-     * It is responsible for setting the rules for terminal expression.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void terminalExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TERMINAL_EXPRESSION).is(
-                grammarBuilder.firstOf(
-                        INVOKE_EXPRESSION,
-                        LITERAL_EXPRESSION,
-                        NULL,
-                        SUPER,
-                        THIS
-                )
-        );
-    }
-
-    /**
-     * It is responsible for creating a rule expression language.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void expression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(EXPRESSION).is(
-                grammarBuilder.firstOf(
-                        NUMERIC_EXPRESSION,
-                        TESTING_EXPRESSION,
-                        CREATING_EXPRESSION,
-                        CASTING_EXPRESSION,
-                        TERMINAL_EXPRESSION
-                )
-        );
-    }
-
-    /**
-     * It is responsible for setting the rules for final expression.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void expressionFinal(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(EXPRESSION_FINAL).is(EXPRESSION, SEMICOLON);
     }
 
     /**
@@ -428,15 +194,6 @@ public class Expression {
      */
     private static void brackets(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(BRACKETS).is(LBRACKET, RBRACKET);
-    }
-
-    /**
-     * It is responsible for setting the rules for equal comparison.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    public static void testingExpressionEqual(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(EQUAL).is(ASSIGN, ASSIGN);
     }
 
     public static void expressionPi(LexerfulGrammarBuilder grammarBuilder) {
@@ -652,7 +409,8 @@ public class Expression {
                                 DOT,
                                 NAME
                         ),
-                        grammarBuilder.sequence(LPAREN, EXPRESSION_PI, RPAREN)
+                        grammarBuilder.sequence(LPAREN, EXPRESSION_PI, RPAREN),
+                        ALLOCATION_EXPRESSION
                 )
         );
     }
@@ -737,6 +495,33 @@ public class Expression {
                         EXPRESSION_PI,
                         MAP_ASSIGN,
                         EXPRESSION_PI))
+        );
+    }
+
+    public static void compoundStatementExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(COMPOUND_STATEMENT_EXPRESSION).is(
+                STATEMENT_EXPRESSION,
+                grammarBuilder.firstOf(BLOCK, SEMICOLON)
+        );
+    }
+
+    public static void statementExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(STATEMENT_EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        PRE_INCREMENT_EXPRESSION,
+                        PRE_DECREMENT_EXPRESSION,
+                        grammarBuilder.sequence(
+                                PRIMARY_EXPRESSION,
+                                grammarBuilder.zeroOrMore(
+                                        grammarBuilder.firstOf(
+                                                grammarBuilder.sequence(PLUS, PLUS),
+                                                grammarBuilder.sequence(MINUS, MINUS),
+                                                grammarBuilder.sequence(ASSIGNMENT_OPERATOR,
+                                                        grammarBuilder.firstOf(EXPRESSION_PI, THIS))
+                                        )
+                                )
+                        )
+                )
         );
     }
 }

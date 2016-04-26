@@ -59,6 +59,6 @@ public class ClassNameCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), classNameCheck);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(1).withMessage(
-                "Rename class \"draftArticle\" to match the regular expression ^[A-Z_][a-zA-Z0-9]+$.");
+                "Rename class \"someDraftArticle\" to match the regular expression ^[A-Z_][a-zA-Z0-9]+$.");
     }
 }

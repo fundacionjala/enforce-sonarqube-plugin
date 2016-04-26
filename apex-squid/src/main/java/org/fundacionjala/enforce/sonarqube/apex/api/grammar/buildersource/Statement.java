@@ -45,54 +45,38 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RBRACE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BREAK_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONTINUE_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATIONS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATIONS_SEMICOLON;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_UPSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_EACH_LOOP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_INIT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_LOOP;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION_SEMICOLON;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PARAMETER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRIMARY_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_BLOCK;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_ELSE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATORS_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT_PI;
 
 /**
@@ -102,15 +86,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 public class Statement {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
-        statement(grammarBuilder);
-        whileStatement(grammarBuilder);
-        tryStatement(grammarBuilder);
-        forStatement(grammarBuilder);
-        returnStatement(grammarBuilder);
-        dmlStatement(grammarBuilder);
-        statementBlock(grammarBuilder);
-        statementIf(grammarBuilder);
-        statamentElse(grammarBuilder);
         blockStatement(grammarBuilder);
         statementPi(grammarBuilder);
         emptyStatement(grammarBuilder);
@@ -133,161 +108,6 @@ public class Statement {
     }
 
     /**
-     * It is responsible for setting the rules for the else.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void statamentElse(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(STATEMENT_ELSE).is(
-                ELSE,
-                grammarBuilder.firstOf(
-                        TERMINAL_STATEMENT,
-                        STATEMENT_BLOCK)
-        );
-    }
-
-    /**
-     * It is responsible for setting the rules for the if else.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void statementIf(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(STATEMENT_IF).is(
-                IF,
-                LPAREN,
-                EXPRESSION,
-                RPAREN,
-                grammarBuilder.firstOf(
-                        TERMINAL_STATEMENT,
-                        STATEMENT_BLOCK),
-                grammarBuilder.optional(STATEMENT_ELSE)
-        );
-    }
-
-    /**
-     * It is responsible for setting the rules for a block of statements.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void statementBlock(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(STATEMENT_BLOCK).is(
-                LBRACE,
-                grammarBuilder.zeroOrMore(STATEMENT),
-                RBRACE);
-    }
-
-    /**
-     * It is responsible for creating the rules for a while.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void whileStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(WHILE_STATEMENT).is(
-                WHILE,
-                LPAREN,
-                EXPRESSION,
-                RPAREN,
-                grammarBuilder.firstOf(
-                        TERMINAL_STATEMENT,
-                        STATEMENT_BLOCK)
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules for a while.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void forStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FOR_STATEMENT).is(
-                FOR,
-                LPAREN,
-                TYPE,
-                VARIABLE_DECLARATOR_ID,
-                COLON,
-                VARIABLE_DECLARATOR_ID,
-                RPAREN,
-                grammarBuilder.firstOf(
-                        TERMINAL_STATEMENT,
-                        STATEMENT_BLOCK)
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules for a try catch.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void tryStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TRY_STATEMENT).is(
-                TRY,
-                grammarBuilder.firstOf(
-                        TERMINAL_STATEMENT,
-                        STATEMENT_BLOCK),
-                CATCH,
-                LPAREN,
-                PARAMETER,
-                RPAREN,
-                grammarBuilder.firstOf(
-                        TERMINAL_STATEMENT,
-                        STATEMENT_BLOCK)
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules for a DML statement.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void dmlStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(DML_STATEMENT).is(
-                grammarBuilder.firstOf(
-                        INSERT,
-                        UPDATE,
-                        UPSERT,
-                        DELETE,
-                        UNDELETE,
-                        MERGE),
-                EXPRESSION_FINAL
-        );
-    }
-
-    /**
-     * It is responsible for creating the rules for a return statement.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void returnStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(RETURN_STATEMENT).is(
-                RETURN,
-                EXPRESSION_FINAL
-        );
-    }
-
-    /**
-     * It is responsible for setting the rules for the all statements.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void statement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(STATEMENT).is(
-                grammarBuilder.firstOf(
-                        TERMINAL_STATEMENT,
-                        STATEMENT_IF,
-                        WHILE_STATEMENT,
-                        FOR_STATEMENT,
-                        TRY_STATEMENT,
-                        RETURN_STATEMENT)
-        );
-        grammarBuilder.rule(TERMINAL_STATEMENT).is(
-                grammarBuilder.firstOf(
-                        EXPRESSION_FINAL,
-                        VARIABLE_DECLARATION,
-                        DML_STATEMENT)
-        );
-    }
-
-    /**
      * Grammar to define block statement rule.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
@@ -296,7 +116,7 @@ public class Statement {
         grammarBuilder.rule(BLOCK_STATEMENT).is(
                 grammarBuilder.firstOf(
                         LOCAL_VARIABLE_DECLARATION_SEMICOLON,
-                        STATEMENT
+                        STATEMENT_PI
                 )
         );
 
@@ -315,8 +135,9 @@ public class Statement {
         grammarBuilder.rule(STATEMENT_PI).is(
                 grammarBuilder.firstOf(
                         BLOCK,
-                        DML_OPERATIONS_SEMICOLON,
+                        grammarBuilder.sequence(DML_OPERATIONS, SEMICOLON),
                         EMPTY_STATEMENT,
+                        COMPOUND_STATEMENT_EXPRESSION,
                         IF_STATEMENT,
                         WHILE_STATEMENT_PI,
                         DO_STATEMENT,
@@ -350,10 +171,9 @@ public class Statement {
         grammarBuilder.rule(IF_STATEMENT).is(
                 IF,
                 LPAREN,
-                EXPRESSION,
+                EXPRESSION_PI,
                 RPAREN,
                 STATEMENT_PI,
-                SEMICOLON,
                 grammarBuilder.optional(
                         ELSE,
                         STATEMENT_PI
@@ -370,7 +190,7 @@ public class Statement {
         grammarBuilder.rule(WHILE_STATEMENT_PI).is(
                 WHILE,
                 LPAREN,
-                EXPRESSION,
+                EXPRESSION_PI,
                 RPAREN,
                 STATEMENT_PI
         );
@@ -387,7 +207,7 @@ public class Statement {
                 STATEMENT_PI,
                 WHILE,
                 LPAREN,
-                EXPRESSION,
+                EXPRESSION_PI,
                 RPAREN,
                 SEMICOLON
         );
@@ -425,7 +245,7 @@ public class Statement {
     private static void returnStatementPi(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(RETURN_STATEMENT_PI).is(
                 RETURN,
-                grammarBuilder.firstOf(EXPRESSION, THIS),
+                grammarBuilder.firstOf(EXPRESSION_PI, THIS),
                 SEMICOLON
         );
     }
@@ -438,7 +258,7 @@ public class Statement {
     private static void throwStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(THROW_STATEMENT).is(
                 THROW,
-                EXPRESSION,
+                EXPRESSION_PI,
                 SEMICOLON
         );
     }
@@ -451,10 +271,10 @@ public class Statement {
     private static void forEachLoop(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FOR_EACH_LOOP).is(
                 LPAREN,
-                TYPE,
+                TYPE_PI,
                 ALLOWED_KEYWORDS_AS_IDENTIFIER,
                 COLON,
-                EXPRESSION,
+                EXPRESSION_PI,
                 RPAREN,
                 STATEMENT_PI
         );
@@ -493,9 +313,9 @@ public class Statement {
                 LPAREN,
                 grammarBuilder.optional(FOR_INIT),
                 SEMICOLON,
-                grammarBuilder.optional(EXPRESSION),
+                grammarBuilder.optional(EXPRESSION_PI),
                 SEMICOLON,
-                grammarBuilder.optional(EXPRESSION),
+                grammarBuilder.optional(EXPRESSION_PI),
                 RPAREN,
                 STATEMENT_PI
         );
@@ -538,9 +358,11 @@ public class Statement {
                 )
         );
     }
-    
+
     /**
-     * Defines dml operation which is insert, delete, undelete,update operations.
+     * Defines dml operation which is insert, delete, undelete,update
+     * operations.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void dmlOperation(LexerfulGrammarBuilder grammarBuilder) {
@@ -551,38 +373,41 @@ public class Statement {
                         UNDELETE,
                         UPDATE
                 ),
-                TERMINAL_EXPRESSION                        
+                PRIMARY_EXPRESSION
         );
     }
-    
+
     /**
      * Defines the rule for upsert operation.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void dmlUpsert(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DML_UPSERT).is(
                 UPSERT,
-                TERMINAL_EXPRESSION,
-                grammarBuilder.optional(TERMINAL_EXPRESSION)
+                PRIMARY_EXPRESSION,
+                grammarBuilder.optional(PRIMARY_EXPRESSION)
         );
-        
-    
+
     }
-    
+
     /**
      * Defines the rule for merge dml operation.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void dmlMerge(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DML_MERGE).is(
                 MERGE,
-                TERMINAL_EXPRESSION,
-                TERMINAL_EXPRESSION
+                PRIMARY_EXPRESSION,
+                PRIMARY_EXPRESSION
         );
     }
-    
+
     /**
-     * Defines dml operations such as upsert merge and insert,undelete,delete,update.
+     * Defines dml operations such as upsert merge and
+     * insert,undelete,delete,update.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void dmlOperations(LexerfulGrammarBuilder grammarBuilder) {
@@ -592,12 +417,6 @@ public class Statement {
                         DML_UPSERT,
                         DML_MERGE
                 )
-        
-        );
-        
-        grammarBuilder.rule(DML_OPERATIONS_SEMICOLON).is(
-                DML_OPERATIONS,
-                SEMICOLON
         );
     }
 }

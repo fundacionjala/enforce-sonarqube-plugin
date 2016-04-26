@@ -76,6 +76,7 @@ public enum ApexKeyword implements TokenType {
     FLOAT("float"),
     FOR("for"),
     GET("get"),
+    GLOBAL("global"),
     GOTO("goto"),
     GROUP("group"),
     HINT("hint"),
@@ -105,6 +106,7 @@ public enum ApexKeyword implements TokenType {
     OF("of"),
     OFFSET("offset"),
     OUTER("outer"),
+    OVERRIDE("override"),
     PACKAGE("package"),
     PARALLEL("parallel"),
     PRIVATE("private"),
@@ -125,6 +127,7 @@ public enum ApexKeyword implements TokenType {
     STRICTFP("strictfp"),
     SYNCHRONIZED("synchronized"),
     SWITCH("switch"),
+    TESTMETHOD("testmethod"),
     THIS("this"),
     TO_LABEL("tolabel"),
     TRIGGER("trigger"),
@@ -137,26 +140,13 @@ public enum ApexKeyword implements TokenType {
     UNDELETE("undelete"),
     UPDATE("update"),
     UPSERT("upsert"),
+    VIRTUAL("virtual"),
     VOID("void"),
     VOLATILE("volatile"),
     WHEN("when"),
     WHILE("while"),
     WITH("with"),
-    WITHOUT("without"),
-    
-    /**
-     * APEX ANNOTATIONS.
-     */
-    AURA_ENABLED("AuraEnabled"),
-    DEPRECATED("deprecated"),
-    FUTURE("future"),
-    INVOCABLE_METHOD("InvocableMethod"),
-    INVOCABLE_VARIABLE("InvocableVariable"),
-    IS_TEST("isTest"),
-    READ_ONLY("ReadOnly"),
-    REMOTE_ACTION("RemoteAction"),
-    TEST_SETUP("testSetup"),
-    TEST_VISIBLE("TestVisible");
+    WITHOUT("without");
 
     /**
      * Save the value with enums.

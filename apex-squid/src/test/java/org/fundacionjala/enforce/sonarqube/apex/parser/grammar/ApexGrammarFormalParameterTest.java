@@ -39,7 +39,7 @@ public class ApexGrammarFormalParameterTest extends ApexRuleTest {
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("int varName")
-                .matches("final boolean VarName");
+                .matches("integer varName")
+                .matches("final bool VarName");
     }
 }

@@ -39,16 +39,16 @@ public class ApexGrammarLocalVariableDeclarationTest extends ApexRuleTest {
     @Test
     public void testValidLocalVariableDeclaration() {
         assertThat(parser)
-                .matches("final int variable")
-                .matches("int variable,variable1")
-                .matches("int variable");
+                .matches("final integer variable")
+                .matches("integer variable,variable1")
+                .matches("integer variable");
     }
 
     @Test
     public void testInValidLocalVariableDeclaration() {
         assertThat(parser)
                 .notMatches("")
-                .notMatches("int final variable")
-                .notMatches("int final VAriable;");
+                .notMatches("integer final variable")
+                .notMatches("integer final VAriable;");
     }
 }

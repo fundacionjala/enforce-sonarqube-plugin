@@ -23,6 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,51 +31,42 @@ import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER_KEYWORD;
-
-public class ApexGrammarModifierKeywordTest extends ApexRuleTest {
+public class ApexGrammarModifiersTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(MODIFIER_KEYWORD);
+        setRootRule(MODIFIERS);
     }
 
     @Test
-    public void buildingModifierWithOnlyCasesLookahead() {
+    public void positiveBasicRules() {
         assertThat(parser)
-                .matches("static")
                 .matches("public")
+                .matches("static")
+                .matches("protected")
+                .matches("private")
+                .matches("global")
                 .matches("final")
                 .matches("abstract")
-                .matches("synchronized")
-                .matches("native")
                 .matches("transient")
-                .matches("volatile")
-                .matches("strictfp")
-                .matches("anotation");
+                .matches("virtual")
+                .matches("override")
+                .matches("testmethod");
     }
 
     @Test
-    public void buildingModifierDifferentCorrectCases() {
+    public void negativeRules() {
         assertThat(parser)
-                .matches("static")
-                .matches("public with sharing")
-                .matches("final without sharing")
-                .matches("abstract with sharing")
-                .matches("synchronized with sharing")
-                .matches("native with sharing")
-                .matches("transient with sharing");
-    }
-
-    @Test
-    public void buildingModifierDifferentIncorrectCases() {
-        assertThat(parser)
-                .notMatches("_")
-                .notMatches("static _")
-                .notMatches("public With sharing")
-                .notMatches("final  without Sharing")
-                .notMatches("  _abstract with sharing")
-                .notMatches("synchronized_with sharing")
-                .notMatches("  transient with sharing_  ");
+                .notMatches(" _ ")
+                .notMatches("P static")
+                .notMatches(" public_")
+                .notMatches(" _final")
+                .notMatches(" Abstract")
+                .notMatches(" Abstract")
+                .notMatches("gLobla")
+                .notMatches("OveRRivde")
+                .notMatches("_Transient")
+                .notMatches("Virtual_")
+                .notMatches("testMethossfd__");
     }
 }

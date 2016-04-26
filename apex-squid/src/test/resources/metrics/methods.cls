@@ -4,7 +4,7 @@ public with sharing class DraftArticle {
         String title = 'Article';
     }
 
-    public int multiple(int someNumber) {
+    public integer multiple(integer someNumber) {
         return 10 * someNumber;
     }
 

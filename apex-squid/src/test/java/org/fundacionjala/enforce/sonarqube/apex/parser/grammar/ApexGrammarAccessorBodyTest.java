@@ -40,8 +40,8 @@ public class ApexGrammarAccessorBodyTest extends ApexRuleTest {
     public void validAccessorBody() {
         assertThat(parser)
                 .matches("{}")
-                .matches("{final int transient;}")
-                .matches("{int validVariable;}");
+                .matches("{final integer transient;}")
+                .matches("{integer validVariable;}");
     }
 
     @Test
@@ -50,6 +50,6 @@ public class ApexGrammarAccessorBodyTest extends ApexRuleTest {
                 .notMatches("hi")
                 .notMatches("{}{}")
                 .notMatches("")
-                .notMatches("{int variable}");
+                .notMatches("{integer variable}");
     }
 }

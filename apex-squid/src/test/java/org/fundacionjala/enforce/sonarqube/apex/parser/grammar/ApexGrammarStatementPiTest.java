@@ -42,12 +42,12 @@ public class ApexGrammarStatementPiTest extends ApexRuleTest {
                 .matches("{}")
                 .matches(";")
                 .matches("if('anExpression')"
-                        + "{};")
+                        + "{}")
                 .matches("if('anExpression')"
-                        + "{};"
+                        + "{}"
                         + "else "
                         + "if('anotherExpression')"
-                        + "{};")
+                        + "{}")
                 .matches("while(trueExpression){}")
                 .matches("do {} while (trueExpression);")
                 .matches("break;")
@@ -55,7 +55,7 @@ public class ApexGrammarStatementPiTest extends ApexRuleTest {
                 .matches("return something;")
                 .matches("return this;")
                 .matches("throw someException;")
-                .matches("for(int addition = 0; doSomething; updateIterator){}")
+                .matches("for(integer addition = 0; doSomething; updateIterator){}")
                 .matches("for(Object current:listOfObjects){}")
                 .matches("try{} catch(Object variable){} finally{}")
                 .matches("insert primaryExpression;")
@@ -63,6 +63,6 @@ public class ApexGrammarStatementPiTest extends ApexRuleTest {
                 .matches("upsert primaryExpression;")
                 .matches("upsert primaryExpression primaryExpression;")
                 .matches("merge primaryExpression primaryExpression;");
-                
+
     }
 }

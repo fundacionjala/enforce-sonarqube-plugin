@@ -40,6 +40,7 @@ public class ApexGrammarPrimaryExpressionTest extends ApexRuleTest {
     public void positiveRules() {
         assertThat(parser)
                 .matches("anExpression")
+                .matches("null")
                 .matches("pExpression[sExpression]")
                 .matches("pExpression.sExpression")
                 .matches("pExpression(sExpression)")

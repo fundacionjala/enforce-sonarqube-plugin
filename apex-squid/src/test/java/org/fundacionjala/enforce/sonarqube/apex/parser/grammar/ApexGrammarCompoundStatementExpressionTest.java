@@ -23,26 +23,29 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import org.junit.Test;
-import org.junit.Before;
-
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import org.junit.Before;
+import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
-
-public class ApexGrammarCastingExpressionTest extends ApexRuleTest {
+public class ApexGrammarCompoundStatementExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(CASTING_EXPRESSION);
+        setRootRule(COMPOUND_STATEMENT_EXPRESSION);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("(int)MyVariable")
-                .matches("(MyObjecto)MyVariable");
+                .matches("new SomeType(someParam)");
+//                .matches("a.b()++;")
+//                .matches("x[1].size() = 2;")
+//                .matches("new SomeType(someParam).create()--;")
+//                .matches("x.y(){integer z = 3-2;}")
+//                .matches("new SomeType(someParam);")
+//                .matches("new SomeType(someParam){ integer var = this.that; }")
+//                .matches("System.assert(true);");
     }
 }

@@ -23,43 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMERIC_EXPRESSION;
-
-public class ApexGrammarNumericExpressionTest extends ApexRuleTest {
+public class ApexGrammarAnnotationTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(NUMERIC_EXPRESSION);
+        setRootRule(ANNOTATION);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("11-10")
-                .matches("22+22")
-                .matches("10*22")
-                .matches("100/20")
-                .matches("100%10");
+                .matches("@something")
+                .matches("@deprecated")
+                .matches("@isTest")
+                .matches("@CAPS");
     }
-
+    
     @Test
-    public void positiveRulesOperationsSimplePlus() {
+    public void negativeRules() {
         assertThat(parser)
-                .matches("10++")
-                .matches("A++");
-    }
-
-    @Test
-    public void positiveRulesOperationsSimpleMinus() {
-        assertThat(parser)
-                .matches("10--")
-                .matches("A--");
+                .notMatches("@public")
+                .notMatches("@override")
+                .notMatches("@is Test")
+                .notMatches("@1");
     }
 }

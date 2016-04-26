@@ -1,7 +1,7 @@
 public with sharing class DraftArticle extends AbstractArticle {
 
     @isTest public void testType() {
-        System.assert(trueExpression);
+        System.assert(true);
         System.assertEquals('nameExpression', 'nameExpression');
     }
 }

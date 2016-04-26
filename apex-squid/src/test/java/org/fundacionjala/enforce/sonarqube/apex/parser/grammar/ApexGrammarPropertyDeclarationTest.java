@@ -39,10 +39,10 @@ public class ApexGrammarPropertyDeclarationTest extends ApexRuleTest {
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("int prop {private get; set;}")
-                .matches("int prop {public get{return variable;}}")
-                .matches("int prop {set {int prop = 5;}}")
-                .matches("boolean prop {set;}");
+                .matches("integer prop {private get; set;}")
+                .matches("integer prop {public get{return variable;}}")
+                .matches("integer prop {set {integer prop = 5;}}")
+                .matches("Boolean prop {set;}");
     }
 
     @Test
@@ -51,10 +51,10 @@ public class ApexGrammarPropertyDeclarationTest extends ApexRuleTest {
                 //Without type
                 .notMatches("prop {get; set;}")
                 //without identifier
-                .notMatches("int {get; set;}")
+                .notMatches("integer {get; set;}")
                 //without semicolon
-                .notMatches("int prop {get set}")
+                .notMatches("integer prop {get set}")
                 //without braces
-                .notMatches("int prop [get; set;]");
+                .notMatches("integer prop [get; set;]");
     }
 }

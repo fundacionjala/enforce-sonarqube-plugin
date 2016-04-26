@@ -23,34 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_STATEMENT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
+public class ApexGrammarInitializerBlockStatementTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(STATEMENT_IF);
+    public void setUp() {
+        setRootRule(INITIALIZER_BLOCK_STATEMENT);
     }
 
     @Test
-    public void rulesIfElseStatement() {
+    public void testValidInitilizerBlockStatement() {
         assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int someNumber;}")
-                .matches("if(NAME){int someNumber=12;}else{'a';}");
-    }
-
-    @Test
-    public void rulesIfElseStatementCaseError() {
-        assertThat(parser)
-                .notMatches("if(NAME){intnumber=12;}")
-                .notMatches("if(NAME){intnumber=12;}else{'a';}");
+                .matches(";")
+                .matches("anyExpression;")
+                .matches("if(true){} else {}")
+                .matches("while(true){}")
+                .matches("do {} while(true);")
+                .matches("for(integer index = 0; index<10; index++){}")
+                .matches("for(integer currentNumber : numbers){}")
+                .matches("break;")
+                .matches("continue;")
+                .matches("return this;")
+                .matches("return someVariable;")
+                .matches("throw anyException;")
+                .matches("try{} catch(exception anyException){} finally {}");
     }
 }

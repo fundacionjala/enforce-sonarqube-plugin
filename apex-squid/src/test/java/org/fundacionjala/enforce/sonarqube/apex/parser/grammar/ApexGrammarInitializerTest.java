@@ -39,8 +39,8 @@ public class ApexGrammarInitializerTest extends ApexRuleTest {
     @Test
     public void testValidInitializer() {
         assertThat(parser)
-                .matches("static { int x;}")
-                .matches("{{{int x;}}}")
+                .matches("static { integer x;}")
+                .matches("{{{integer x;}}}")
                 .matches("static {{}}");
     }
 

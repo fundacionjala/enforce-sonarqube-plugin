@@ -23,34 +23,31 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION_PI;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
-
-public class ApexGrammarTypeDeclarationTest extends ApexRuleTest {
+public class ApexGrammarTypeDeclarationPiTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(TYPE_DECLARATION);
+        setRootRule(TYPE_DECLARATION_PI);
     }
 
     @Test
     public void positiveRulesForClass() {
         assertThat(parser)
-                .matches("public class MyClass{}")
                 .matches("public with sharing class MyClass{}")
                 .matches("private without sharing class MyClass{}")
-                .matches("public class MyClass implements YourClass{}")
-                .matches("public class MyClass extends YourClass{}")
+                .matches("public with sharing class MyClass implements YourClass{}")
+                .matches("public without sharing class MyClass extends YourClass{}")
                 .matches("public with sharing class MyClass implements YourClass{}")
                 .matches("static without sharing class MyClass implements YourClass{}")
                 .matches("public with sharing class MyClass extends YourClass{}")
-                .matches("static without sharing class MyClass extends YourClass{}");
+                .matches("public enum MyEnum {e1, e2}")
+                .matches("public static enum MyEnum {ENUM_VALUE, ANOTHER_ENUM_VALUE}");
     }
 
     @Test
@@ -71,12 +68,12 @@ public class ApexGrammarTypeDeclarationTest extends ApexRuleTest {
     @Test
     public void positiveRulesForInterface() {
         assertThat(parser)
-                .matches("public interface MyClass{}")
+                .matches("public with sharing interface MyClass{}")
                 .matches("public with sharing interface MyClass{}")
                 .matches("private without sharing interface MyClass{}")
-                .matches("public interface MyClass implements YourClass{}")
-                .matches("public interface MyClass extends YourClass{}")
                 .matches("public with sharing interface MyClass implements YourClass{}")
+                .matches("public without sharing interface MyClass extends YourClass{}")
+                .matches("public with sharing interface MyClass implements YourClass, OtherClass{}")
                 .matches("static without sharing interface MyClass implements YourClass{}")
                 .matches("public with sharing interface MyClass extends YourClass{}")
                 .matches("static without sharing interface MyClass extends YourClass{}");

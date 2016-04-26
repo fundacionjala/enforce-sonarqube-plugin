@@ -27,13 +27,16 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import org.sonar.squidbridge.checks.SquidCheck;
 
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
 /**
  * Verifies if a class or method is an annotation.
  */
 public abstract class AnnotationMethodCheck extends SquidCheck<Grammar> {
+    
+    static final String IS_TEST = "isTest";
+    
+    static final String DEPRECATED = "deprecated";
     
     /**
      * Analyzes if a node is test class or method.
@@ -42,7 +45,7 @@ public abstract class AnnotationMethodCheck extends SquidCheck<Grammar> {
      * @return the analysis result.
      */
     protected boolean isTest(AstNode astNode) {
-        return isAnnotation(astNode, ApexKeyword.IS_TEST);
+        return isAnnotation(astNode, IS_TEST);
     }
     
     /**
@@ -52,7 +55,7 @@ public abstract class AnnotationMethodCheck extends SquidCheck<Grammar> {
      * @return the analysis result.
      */
     protected boolean isDeprecated(AstNode astNode) {
-        return isAnnotation(astNode, ApexKeyword.DEPRECATED);
+        return isAnnotation(astNode, DEPRECATED);
     }
     
     /**
@@ -62,11 +65,11 @@ public abstract class AnnotationMethodCheck extends SquidCheck<Grammar> {
      * @param keyword to be found.
      * @return the analysis result.
      */
-    protected boolean isAnnotation(AstNode astNode, ApexKeyword keyword) {
+    protected boolean isAnnotation(AstNode astNode, String keyword) {
         boolean result = Boolean.FALSE;
         if (astNode.hasDirectChildren(ApexGrammarRuleKey.ANNOTATION)) {
             AstNode annotation = astNode.getFirstChild(ApexGrammarRuleKey.ANNOTATION);
-            result = annotation.hasDirectChildren(keyword);
+            result = annotation.getFirstChild(ApexGrammarRuleKey.NAME).getTokenValue().equals(keyword);
         }
         return result;
     }

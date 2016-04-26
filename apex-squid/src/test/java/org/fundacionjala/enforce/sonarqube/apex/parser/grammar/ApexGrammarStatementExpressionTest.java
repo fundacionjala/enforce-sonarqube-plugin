@@ -23,33 +23,36 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
-
-public class ApexGrammarWhileStatementTest extends ApexRuleTest {
+public class ApexGrammarStatementExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(WHILE_STATEMENT);
+        setRootRule(STATEMENT_EXPRESSION);
     }
 
     @Test
-    public void rulesWhileStament() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("while(trueExpression){}")
-                .matches("while(A)12;")
-                .matches("while(A){int someNumber=0;}");
+                .matches("++x")
+                .matches("--x")
+                .matches("++(a.b-c.d*5)")
+                .matches("x++")
+                .matches("(x.z()*y)--")
+                .matches("(x.z()) = (a.b(c, null))")
+                .matches("x.z()*= (4-2)/(2+y)");
     }
 
     @Test
-    public void rulesWhileStamentCaseError() {
+    public void negativeRules() {
         assertThat(parser)
-                .notMatches("while(A){intnumber=0;}");
+                .notMatches("x 1")
+                .notMatches("x**")
+                .notMatches("++");
     }
 }

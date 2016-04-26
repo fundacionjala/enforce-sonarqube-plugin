@@ -40,35 +40,35 @@ public class ApexGrammarClassOrInterfaceBodyTest extends ApexRuleTest {
     public void testValidClassOrInterfaceBody() {
         assertThat(parser)
                 .matches("")
-                .matches("public static int addition();"
-                        + "public int multiplication();")
+                .matches("public static integer addition();"
+                        + "public integer multiplication();")
                 .matches("with sharing class MyClass{}"
                         + "with sharing class MyClass{}")
-                .matches("static {int suma = 0;}")
+                .matches("static {integer suma = 0;}")
                 .matches("private string myString;")
-                .matches("private int myIntVariable;"
+                .matches("private integer myIntVariable;"
                         + "public MyClass() {"
-                        + "int myIntVariable = 6;"
+                        + "integer myIntVariable = 6;"
                         + "}"
-                        + "public int additition() {}")
-                .matches("public int Addition{get; set;}")
-                .matches("int prop;"
-                        + "public int Addition{get { return 3;}"
-                        + "                    set{int prop = 1;}}")
-                .matches("public int firstProperty { get; set;}"
-                        + "public int secondProperty { get; set;}")
-                .matches("public static int propertyWithParameters{"
+                        + "public integer additition() {}")
+                .matches("public integer Addition{get; set;}")
+                .matches("integer prop;"
+                        + "public integer Addition{get { return 3;}"
+                        + "                    set{integer prop = 1;}}")
+                .matches("public integer firstProperty { get; set;}"
+                        + "public integer secondProperty { get; set;}")
+                .matches("public static integer propertyWithParameters{"
                         + "get { return variable;}"
-                        + "set { int variable = 1;}}");
+                        + "set { integer variable = 1;}}");
     }
 
     @Test
     public void testInValidClassOrInterfaceBody() {
         assertThat(parser)
                 .notMatches("static public Class invalid")
-                .notMatches("private int noSemicolon")
-                .notMatches("public int wrongProperty {get set}")
-                .notMatches("private WrongConstructor int { }");
+                .notMatches("private integer noSemicolon")
+                .notMatches("public integer wrongProperty {get set}")
+                .notMatches("private WrongConstructor integer { }");
     }
 
 }

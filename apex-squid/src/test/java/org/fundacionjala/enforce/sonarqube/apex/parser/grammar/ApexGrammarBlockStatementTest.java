@@ -39,9 +39,9 @@ public class ApexGrammarBlockStatementTest extends ApexRuleTest {
     @Test
     public void testValidBlockStatement() {
         assertThat(parser)
-                .matches("int variable;")
+                .matches("integer variable;")
                 .matches("return null;")
-                .matches("final int transient = this;");
+                .matches("final integer transient = this;");
     }
 
     @Test

@@ -39,6 +39,7 @@ public class ApexGrammarArgumentsPiTest extends ApexRuleTest{
     public void testValidArguments() {
         assertThat(parser)
                 .matches("(argument)")
+                .matches("(argument, null)")
                 .matches("()");
 
     }

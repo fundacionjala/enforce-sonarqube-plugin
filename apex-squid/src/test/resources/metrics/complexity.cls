@@ -1,7 +1,7 @@
-public class Complex {
+public with sharing class Complex {
 
-    public int multiple(int someNumber) {
-        return 10 * someNumber;
+    public integer multiple(integer someNumber) {
+        return a;
     }
 
     public void clear() {

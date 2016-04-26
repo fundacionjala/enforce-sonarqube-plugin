@@ -42,7 +42,7 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
                 .matches("something () {"
                         + "this(blockstatement);"
                         + "}")
-                .matches("something (int something) {"
+                .matches("something (integer something) {"
                         + "super(blockstatement);"
                         + "}")
                 .matches("myClass () {"
@@ -50,13 +50,13 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
                 .matches("myClass (other otherClass) { "
                         + "super();"
                         + "}")
-                .matches("myConstructor (int parameter){}")
-                .matches("transient (int parameter) {super(parameter);}")
+                .matches("myConstructor (integer parameter){}")
+                .matches("transient (integer parameter) {super(parameter);}")
                 .matches("after (Class classParameter) {"
                         + "this();"
                         + "}")
                 .matches("data (ClassType parameter) {}")
-                .matches("group (int parameter) {super(parameter);}");
+                .matches("group (integer parameter) {super(parameter);}");
                 
     }
     

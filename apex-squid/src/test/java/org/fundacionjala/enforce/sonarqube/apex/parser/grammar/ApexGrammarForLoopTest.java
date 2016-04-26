@@ -39,17 +39,17 @@ public class ApexGrammarForLoopTest extends ApexRuleTest {
     @Test
     public void testValidForLoop() {
         assertThat(parser)
-                .matches("(int variable = 3; addition; expression){}")
+                .matches("(integer variable = 3; addition; expression){}")
                 .matches("(;;){}")
                 .matches("(; dosomething; updateExpression){}")
-                .matches("(int addition; addToAddition; updateExpression){}")
-                .matches("(int addition,multiplication; addBoth; updateExpression){}");
+                .matches("(integer addition; addToAddition; updateExpression){}")
+                .matches("(integer addition,multiplication; addBoth; updateExpression){}");
     }
 
     @Test
     public void testInvalidForLoop() {
         assertThat(parser)
-                .notMatches("int variable =3; doSomethin{}")
+                .notMatches("integer variable =3; doSomethin{}")
                 .notMatches("(;;)");
     }
 }

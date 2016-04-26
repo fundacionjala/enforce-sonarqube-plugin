@@ -29,9 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarForStatementPiTest extends ApexRuleTest{
-    
-   @Before
+public class ApexGrammarForStatementPiTest extends ApexRuleTest {
+
+    @Before
     public void init() {
         setRootRule(FOR_STATEMENT_PI);
     }
@@ -40,11 +40,14 @@ public class ApexGrammarForStatementPiTest extends ApexRuleTest{
     public void rulesForStament() {
         assertThat(parser)
                 .matches("for(Object myObject : listIntegers){ }")
-                .matches("for(int myObject:listIntegers){}")
-                .matches("for(double myObject:listDoubles){}")
-                .matches("for(boolean myObject:listBooleans){}")
-                .matches("for(int myVariable; doSomething; updateVariable){}")
-                .matches("for(int addition = 3; doSomething; updateAddition){}");
+                .matches("for(integer myObject:listIntegers){}")
+                .matches("for(doub myObject:listDoubles){}")
+                .matches("for(bool myObject:listBooleans){}")
+                .matches("for(integer myVariable; doSomething; updateVariable){}")
+                .matches("for(integer addition = 3; doSomething; updateAddition){}")
+                .matches("        for(Accts newAcct : listAccts){\n"
+                        + "           merge newAcct this.anotherAccount; \n"
+                        + "        }\n");
     }
 
     @Test
@@ -53,6 +56,6 @@ public class ApexGrammarForStatementPiTest extends ApexRuleTest{
                 .notMatches("for(ObjectMyObject:listIntegers){ }")
                 .notMatches("for(intMyObject:listIntegers){}")
                 .notMatches("for(doubleMyObject:listDoubles)intnumber;")
-                .notMatches("for(booleanMyObject:listBooleans){int number=i;}");
-    }    
+                .notMatches("for(booleanMyObject:listBooleans){integer number=i;}");
+    }
 }
