@@ -23,26 +23,31 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEXADECIMAL_FLOATING_POINT_LITERAL;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FLOATING_POINT_LITERAL_NUMBER;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarHexadecimalFloatingPointLiteralTest extends ApexRuleTest {
-
+public class ApexGrammarFloatingPointLiteralNumberTest extends ApexRuleTest{
+    
     @Before
     public void setUp() {
-        setRootRule(HEXADECIMAL_FLOATING_POINT_LITERAL);
+        setRootRule(FLOATING_POINT_LITERAL_NUMBER);
     }
-
+    
     @Test
-    public void testValidHexadecimalFloatingPointLiteral() {
+    public void testValidFloatingPointLiteralNumber() {
         assertThat(parser)
-                .matches("0x1234567890abcdef.p-12345F")
-                .matches("0X12354abcdep-12345F")
-                .matches("0x12345abce.1234abdcedfD")
-                .matches("0x112345ab.1235abdcep1235d");
+                .matches("1234545.6789e-12345")
+                .matches(".123345e-1235")
+                .matches("123123e232d")
+                .matches("12312345D") 
+                .matches("312345d")
+                .matches("0x1234567890abcdef.p-123456789F")
+                .matches("0x1234567890abcdef.abcdef1234567890")
+                .matches("0x123345ab.abcdep+123D");
     }
-
+    
+    
 }

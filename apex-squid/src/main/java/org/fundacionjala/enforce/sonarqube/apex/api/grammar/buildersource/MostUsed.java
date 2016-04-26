@@ -114,6 +114,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_FLOATING_POINT_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DOT_NUMBER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FLOATING_POINT_LITERAL_NUMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEXADECIMAL_EXPONENT_NUMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEXADECIMAL_FLOATING_POINT_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEX_LITERAL;
@@ -151,6 +152,7 @@ public class MostUsed {
         decimalFloatingPointLiteral(grammarBuilder);
         hexadecimalExponentNumber(grammarBuilder);
         hexadecimalFloatingPointLiteral(grammarBuilder);
+        floatingPointLiteralNumber(grammarBuilder);
         allowedKeywordsAsIdentifierForMethods(grammarBuilder);
     }
 
@@ -463,9 +465,18 @@ public class MostUsed {
     private static void hexadecimalFloatingPointLiteral(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(HEXADECIMAL_FLOATING_POINT_LITERAL).is(
                 NUMERIC,
-                grammarBuilder.zeroOrMore(HEXADECIMAL),
+                HEXADECIMAL,
                 grammarBuilder.optional(DOT),
                 grammarBuilder.optional(HEXADECIMAL_EXPONENT_NUMBER)
+        );
+    }
+    
+    private static void floatingPointLiteralNumber(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(FLOATING_POINT_LITERAL_NUMBER).is(
+                grammarBuilder.firstOf(
+                        HEXADECIMAL_FLOATING_POINT_LITERAL,
+                        DECIMAL_FLOATING_POINT_LITERAL
+                )
         );
     }
 }

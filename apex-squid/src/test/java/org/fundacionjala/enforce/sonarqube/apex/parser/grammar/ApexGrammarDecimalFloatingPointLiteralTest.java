@@ -39,12 +39,12 @@ public class ApexGrammarDecimalFloatingPointLiteralTest extends ApexRuleTest {
     @Test
     public void testValidDecimalFloatingPointLiteral() {
         assertThat(parser)
-                .matches("123123.23422e-32323")
-                .matches("123123.23422")
-                .matches(".23422e+123")
-                .matches(".23422")
-                .matches("123123e-23422")
-                .matches("123123e+23422")
-                .matches("123123");
+                .matches("123123.23422e-32323f")
+                .matches("123123.23422d")
+                .matches(".23422e+123f")
+                .matches(".23422f")
+                .matches("123123e-23422F")
+                .matches("123123e+23422F")
+                .matches("123123d");
     }
 }
