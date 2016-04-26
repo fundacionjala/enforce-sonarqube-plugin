@@ -40,14 +40,18 @@ public class ApexGrammarIfStatementTest extends ApexRuleTest {
     public void testValidIfStatement() {
         assertThat(parser)
                 .matches("if(anExpression)"
-                        + "{};")
+                        + "{}")
                 .matches("if(otherExpression)"
-                        + "{};"
+                        + "{}"
                         + "else "
                         + "if(anotherExpression)"
-                        + "{};")
+                        + "{}")
                 .matches("if(expression)"
-                        + "{};"
+                        + "{}"
+                        + "else "
+                        + "{}")
+                .matches("if(x==0)"
+                        + "{}"
                         + "else "
                         + "{}");
     }

@@ -36,6 +36,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCEPTION
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FLOAT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FUTURE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GLOBAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INVOCABLE_METHOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INVOCABLE_VARIABLE;
@@ -44,6 +45,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LONG;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MAP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NATIVE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OVERRIDE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PROTECTED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PUBLIC;
@@ -54,9 +56,11 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHORT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STRICTFP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SYNCHRONIZED;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TESTMETHOD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TEST_SETUP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TEST_VISIBLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VIRTUAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOLATILE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.AT;
@@ -72,6 +76,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.REFERENCE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
@@ -90,6 +95,7 @@ public class Type {
         type(grammarBuilder);
         annotation(grammarBuilder);
         modifier(grammarBuilder);
+        modifiers(grammarBuilder);
         typePi(grammarBuilder);
         referenceType(grammarBuilder);
         simpleType(grammarBuilder);
@@ -117,6 +123,24 @@ public class Type {
                         VOLATILE,
                         STRICTFP,
                         ANOTATION))
+        );
+    }
+
+    private static void modifiers(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(MODIFIERS).is(grammarBuilder.zeroOrMore(
+                grammarBuilder.firstOf(
+                        PUBLIC,
+                        STATIC,
+                        PROTECTED,
+                        PRIVATE,
+                        GLOBAL,
+                        FINAL,
+                        ABSTRACT,
+                        TRANSIENT,
+                        VIRTUAL,
+                        OVERRIDE,
+                        TESTMETHOD,
+                        ANNOTATION))
         );
     }
 

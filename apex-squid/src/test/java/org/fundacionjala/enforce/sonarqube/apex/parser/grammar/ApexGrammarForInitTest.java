@@ -39,16 +39,16 @@ public class ApexGrammarForInitTest extends ApexRuleTest {
     @Test
     public void testValidForInit() {
         assertThat(parser)
-                .matches("int addition = 3")
-                .matches("int division,anotherDivision")
-                .matches("final int division = 3")
+                .matches("integer addition = 3")
+                .matches("integer division,anotherDivision")
+                .matches("final integer division = 3")
                 .matches("variable,anotherOne");
     }
 
     @Test
     public void testInvalidForInit() {
         assertThat(parser)
-                .notMatches("int variable;")
-                .notMatches("int variable; anotherVariable;");
+                .notMatches("integer variable;")
+                .notMatches("integer variable; anotherVariable;");
     }
 }

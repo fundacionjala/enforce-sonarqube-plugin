@@ -42,9 +42,9 @@ public class ApexGrammarTest extends ApexRuleTest {
     @Test
     public void correctRuleBasic() {
         assertThat(parser)
-                .matches("public class MyClass {"
-                        + "public boolean MyMethod(){"
-                        + "int name=0;while(trueExpression){"
+                .matches("public with sharing class MyClass {"
+                        + "public bool MyMethod(){"
+                        + "integer name=0;while(trueExpression){"
                         + "insert accout;"
                         + "}"
                         + "}"
@@ -55,8 +55,8 @@ public class ApexGrammarTest extends ApexRuleTest {
     public void correctRuleMoreImplements() {
         assertThat(parser)
                 .matches("public with sharing class Class1 implements YourClass {"
-                        + "public void MyMethod(int myParameter){"
-                        + "int someNumber = myParameter;"
+                        + "public void MyMethod(integer myParameter){"
+                        + "integer someNumber = myParameter;"
                         + "}"
                         + "}");
     }
@@ -65,8 +65,8 @@ public class ApexGrammarTest extends ApexRuleTest {
     public void correctRuleMoreExtends() {
         assertThat(parser)
                 .matches("public with sharing class Class1 extends YourClass {"
-                        + "public int MyMethod(){"
-                        + "int someNumber = 0;"
+                        + "public integer MyMethod(){"
+                        + "integer someNumber = 0;"
                         + "}"
                         + "}");
     }
@@ -74,8 +74,8 @@ public class ApexGrammarTest extends ApexRuleTest {
     @Test
     public void correctRuleBasicVariable() {
         assertThat(parser)
-                .matches("public class MyClass {"
-                        + "int myVariable;"
+                .matches("public without sharing class MyClass {"
+                        + "integer myVariable;"
                         + "}");
     }
 
@@ -83,8 +83,8 @@ public class ApexGrammarTest extends ApexRuleTest {
     public void correctRuleMoreImplementsVariableAndMethod() {
         assertThat(parser)
                 .matches("public with sharing class Class1 implements YourClass {"
-                        + "public boolean my_Variable = trueExpression;"
-                        + "public boolean MyMethod(){}"
+                        + "public booleanN my_Variable = trueExpression;"
+                        + "public booleanN MyMethod(){}"
                         + "}");
     }
 
@@ -92,8 +92,42 @@ public class ApexGrammarTest extends ApexRuleTest {
     public void correctRuleMoreExtendsVariableAndMethod() {
         assertThat(parser)
                 .matches("public with sharing class Class1 extends YourClass{"
-                        + "private int my_Variable = 10;"
-                        + "public boolean MyMethod(){}"
+                        + "private integer my_Variable = 10;"
+                        + "public bool MyMethod(){}"
                         + "}");
+    }
+
+    @Test
+    public void enumTest() {
+        assertThat(parser)
+                .matches("public enum SomeEnum {\n"
+                        + "ENUM_VALUE, ANOTHER_ENUM_VALUE\n"
+                        + "}"
+                );
+    }
+
+    @Test
+    public void complexClassTest() {
+        assertThat(parser)
+                .matches("public with sharing class someClass extends YourClass\n"
+                        + "implements SomeInterface, SomeOtherInterface {\n"
+                        + "{string x = y = 3; integer c = 0;\n"
+                        + "object thisThing = this;"
+                        + "{integer z = x<=5 ? 5 : 4-v/5+x;}}\n"
+                        + "static {"
+                        + "boolean CONST = b = t&r^a||j!=null;}\n"
+                        + "protected abstract without sharing class subClass extends aClass {"
+                        + "protected list<integer> abstractMethod(list<integer> par1, integer par2){"
+                        + "if(x == 0){\n"
+//                        + "par1.add(par2);"
+                        + "}"
+//                        + "return par1;"
+                        + "}"
+                        + "}\n"
+//                        + "public with sharing interface anInterface implements otherInterface {"
+//                        + ""
+//                        + "}"
+                        + "}"
+                );
     }
 }

@@ -106,17 +106,6 @@ public class ApexGrammarVariableDeclaratorTest extends ApexRuleTest {
     }
 
     @Test
-    public void positiveRulesAssingInitializerSuper() {
-        assertThat(parser)
-                .matches("myVariable=super")
-                .matches("myVariable[]=super")
-                .matches("my_Variable[]=super")
-                .notMatches("myVariable_[]='super")
-                .notMatches("1myVariable=super")
-                .notMatches("1myVariable[]=super");
-    }
-
-    @Test
     public void positiveRulesAssingInitializerNumericExpresion() {
         assertThat(parser)
                 .matches("myVariable=2+2")

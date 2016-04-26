@@ -1,5 +1,6 @@
-public class AbstractArticle  {
+public with sharing class AbstractArticle  {
+
+public without sharing class DraftArticle extends AbstractArticle {
 }
 
-public class DraftArticle extends AbstractArticle {
 }

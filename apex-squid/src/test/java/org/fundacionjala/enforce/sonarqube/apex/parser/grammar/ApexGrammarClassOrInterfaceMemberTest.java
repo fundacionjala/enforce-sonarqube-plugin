@@ -53,7 +53,7 @@ public class ApexGrammarClassOrInterfaceMemberTest extends ApexRuleTest {
                 //a field
                 .matches("private static int field=3;")
                 //a method
-                .matches("public static void doSomething(int p1);")
+                .matches("public static void doSomething(integer p1);")
                 //a property
                 .matches("private string Prop {private get; set;}");
     }

@@ -57,6 +57,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_STATEMENT;
@@ -188,11 +189,11 @@ public class ApexAstScanner {
     private static void setMethodAnalyser(AstScanner.Builder<Grammar> builder) {
         builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
                 buildCallback(METHOD_IDENTIFIER, IS_CLASS),
-                METHOD_DECLARATION));
+                METHOD_DECLARATION_PI));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.METHODS)
-                .subscribeTo(METHOD_DECLARATION)
+                .subscribeTo(METHOD_DECLARATION_PI)
                 .build());
     }
 

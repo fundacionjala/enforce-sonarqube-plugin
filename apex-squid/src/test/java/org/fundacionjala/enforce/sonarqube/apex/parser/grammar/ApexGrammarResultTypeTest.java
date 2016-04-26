@@ -40,9 +40,10 @@ public class ApexGrammarResultTypeTest extends ApexRuleTest {
     public void positiveRules() {
         assertThat(parser)
                 .matches("void")
-                .matches("boolean")
+//                this cases should work when the old rules are deleted
+//                .matches("boolean")
+//                .matches("double")
                 .matches("string")
-                .matches("double")
-                .matches("int");
+                .matches("integer");
     }
 }

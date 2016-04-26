@@ -65,6 +65,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_FINAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_EACH_LOOP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_INIT;
@@ -296,7 +297,7 @@ public class Statement {
         grammarBuilder.rule(BLOCK_STATEMENT).is(
                 grammarBuilder.firstOf(
                         LOCAL_VARIABLE_DECLARATION_SEMICOLON,
-                        STATEMENT
+                        STATEMENT_PI
                 )
         );
 
@@ -350,10 +351,9 @@ public class Statement {
         grammarBuilder.rule(IF_STATEMENT).is(
                 IF,
                 LPAREN,
-                EXPRESSION,
+                EXPRESSION_PI,
                 RPAREN,
                 STATEMENT_PI,
-                SEMICOLON,
                 grammarBuilder.optional(
                         ELSE,
                         STATEMENT_PI
@@ -425,7 +425,7 @@ public class Statement {
     private static void returnStatementPi(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(RETURN_STATEMENT_PI).is(
                 RETURN,
-                grammarBuilder.firstOf(EXPRESSION, THIS),
+                grammarBuilder.firstOf(EXPRESSION_PI, THIS),
                 SEMICOLON
         );
     }
@@ -538,9 +538,11 @@ public class Statement {
                 )
         );
     }
-    
+
     /**
-     * Defines dml operation which is insert, delete, undelete,update operations.
+     * Defines dml operation which is insert, delete, undelete,update
+     * operations.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void dmlOperation(LexerfulGrammarBuilder grammarBuilder) {
@@ -551,12 +553,13 @@ public class Statement {
                         UNDELETE,
                         UPDATE
                 ),
-                TERMINAL_EXPRESSION                        
+                TERMINAL_EXPRESSION
         );
     }
-    
+
     /**
      * Defines the rule for upsert operation.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void dmlUpsert(LexerfulGrammarBuilder grammarBuilder) {
@@ -565,12 +568,12 @@ public class Statement {
                 TERMINAL_EXPRESSION,
                 grammarBuilder.optional(TERMINAL_EXPRESSION)
         );
-        
-    
+
     }
-    
+
     /**
      * Defines the rule for merge dml operation.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void dmlMerge(LexerfulGrammarBuilder grammarBuilder) {
@@ -580,9 +583,11 @@ public class Statement {
                 TERMINAL_EXPRESSION
         );
     }
-    
+
     /**
-     * Defines dml operations such as upsert merge and insert,undelete,delete,update.
+     * Defines dml operations such as upsert merge and
+     * insert,undelete,delete,update.
+     *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void dmlOperations(LexerfulGrammarBuilder grammarBuilder) {
@@ -592,9 +597,8 @@ public class Statement {
                         DML_UPSERT,
                         DML_MERGE
                 )
-        
         );
-        
+
         grammarBuilder.rule(DML_OPERATIONS_SEMICOLON).is(
                 DML_OPERATIONS,
                 SEMICOLON

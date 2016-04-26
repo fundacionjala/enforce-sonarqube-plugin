@@ -39,13 +39,13 @@ public class ApexGrammarMethodDeclarationPITest extends ApexRuleTest {
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("int isMethod(){}")
+                .matches("integer isMethod(){}")
                 .matches("void isMethod(){}")
-                .matches("boolean isMethod(int x, final boolean y){}")
-                .matches("string isMethod(boolean y){}")
-                .matches("float isMethod(int a, final int b, int c){}")
+                .matches("bool isMethod(integer x, final bool y){}")
+                .matches("string isMethod(bool y){}")
+                .matches("floatn isMethod(integer a, final integer b, integer c){}")
                 .matches("void isMethod();")
-                .matches("boolean isMethod(int x, final boolean y);")
-                .matches("boolean IsMethod(){intmyVariable;}");
+                .matches("bool isMethod(integer x, final bool y);")
+                .matches("bool IsMethod(){integer myVariable = 3;}");
     }
 }
