@@ -136,6 +136,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MAP_ASSIGN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_EXPRESSION;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -190,6 +193,8 @@ public class Expression {
         arrayInitializer(grammarBuilder);
         variableInitializer(grammarBuilder);
         mapValues(grammarBuilder);
+        compoundStatementExpression(grammarBuilder);
+        statementExpression(grammarBuilder);
     }
 
     /**
@@ -652,7 +657,8 @@ public class Expression {
                                 DOT,
                                 NAME
                         ),
-                        grammarBuilder.sequence(LPAREN, EXPRESSION_PI, RPAREN)
+                        grammarBuilder.sequence(LPAREN, EXPRESSION_PI, RPAREN),
+                        ALLOCATION_EXPRESSION
                 )
         );
     }
@@ -737,6 +743,33 @@ public class Expression {
                         EXPRESSION_PI,
                         MAP_ASSIGN,
                         EXPRESSION_PI))
+        );
+    }
+
+    public static void compoundStatementExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(COMPOUND_STATEMENT_EXPRESSION).is(
+                STATEMENT_EXPRESSION,
+                grammarBuilder.firstOf(BLOCK, SEMICOLON)
+        );
+    }
+
+    public static void statementExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(STATEMENT_EXPRESSION).is(
+                grammarBuilder.firstOf(
+                        PRE_INCREMENT_EXPRESSION,
+                        PRE_DECREMENT_EXPRESSION,
+                        grammarBuilder.sequence(
+                                PRIMARY_EXPRESSION,
+                                grammarBuilder.zeroOrMore(
+                                        grammarBuilder.firstOf(
+                                                grammarBuilder.sequence(PLUS, PLUS),
+                                                grammarBuilder.sequence(MINUS, MINUS),
+                                                grammarBuilder.sequence(ASSIGNMENT_OPERATOR,
+                                                        grammarBuilder.firstOf(EXPRESSION_PI, THIS))
+                                        )
+                                )
+                        )
+                )
         );
     }
 }

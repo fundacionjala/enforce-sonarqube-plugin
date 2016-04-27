@@ -63,7 +63,9 @@ public class ApexGrammarExpressionPiTest extends ApexRuleTest {
                 //with several types of Expressions
                 .matches("aBoolean = a == b | c != d && x.something || z == null")
                 .matches("var += a instanceof b ^ c && d instanceof SomeClass || f != null == 0")
-                .matches("var = x != null ? a&b&c||y : z|y||x");
+                .matches("var = x != null ? a&b&c||y : z|y||x")
+                .matches("x = new SomeType()")
+                .matches("x = new SomeType(p1, null, p2, 0)");
     }
     
     @Test
