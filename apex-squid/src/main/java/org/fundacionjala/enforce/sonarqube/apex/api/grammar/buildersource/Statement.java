@@ -54,6 +54,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BREAK_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONTINUE_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_MERGE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATION;
@@ -318,6 +319,7 @@ public class Statement {
                         BLOCK,
                         DML_OPERATIONS_SEMICOLON,
                         EMPTY_STATEMENT,
+                        COMPOUND_STATEMENT_EXPRESSION,
                         IF_STATEMENT,
                         WHILE_STATEMENT_PI,
                         DO_STATEMENT,
