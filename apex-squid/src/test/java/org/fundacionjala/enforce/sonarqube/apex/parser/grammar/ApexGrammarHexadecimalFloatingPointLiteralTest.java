@@ -39,10 +39,16 @@ public class ApexGrammarHexadecimalFloatingPointLiteralTest extends ApexRuleTest
     @Test
     public void testValidHexadecimalFloatingPointLiteral() {
         assertThat(parser)
-                .matches("0x1234567890abcdef.p-12345")
-                .matches("0X12354abcdep-12345")
-                .matches("0x12345abce.1234abdcedf")
-                .matches("0x112345ab.1235abdcep1235");
+                .matches("0x1234567890abcdefp-12345F")
+                .matches("0X12354abcdep-12345F")
+                .matches("0x12345abce.1234abdcedfD")
+                .matches("0x112345ab.1235abdcep1235d");
+    }
+    
+    @Test
+    public void testInvalidHexadecimalFloatingPointLiteral(){
+        assertThat(parser)
+                .notMatches("0x1235534327443.p-2734823f");
     }
 
 }

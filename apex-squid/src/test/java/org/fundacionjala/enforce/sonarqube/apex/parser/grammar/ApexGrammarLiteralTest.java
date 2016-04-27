@@ -39,16 +39,26 @@ public class ApexGrammarLiteralTest extends ApexRuleTest {
     @Test
     public void testValidLiteral() {
         assertThat(parser)
-                .matches("323")
+                .matches("323l")
+                .matches("323d")
+                .matches("1.1f")
+                .matches("0x123abcde.1235p212F")
+                .matches("1.2323e+12d")
+                .matches("0x123f")
+                .matches("0x123.432p-323")
                 .matches("'anyString'")
                 .matches("true")
                 .matches("false")
-                .matches("null");
+                .matches("null")
+                .matches("without")
+                .matches("limit");
     }
 
     @Test
     public void testInvalidLiteral() {
         assertThat(parser)
+                .notMatches("323l120x234abcd")
+                .notMatches("0x234234.p-234f")
                 .notMatches("True")
                 .notMatches("False")
                 .notMatches("NULL")

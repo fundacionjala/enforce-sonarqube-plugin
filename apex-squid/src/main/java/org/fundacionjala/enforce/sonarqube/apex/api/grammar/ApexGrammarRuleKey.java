@@ -97,6 +97,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     FIELD_DECLARATION,
     FIELD_DECLARATION_PI,
     FLOATING_DECIMAL,
+    FLOATING_POINT_LITERAL_NUMBER,
     FOR_EACH_LOOP,
     FOR_INIT,
     FOR_LOOP,
