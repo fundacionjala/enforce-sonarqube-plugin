@@ -180,7 +180,9 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void className(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CLASS_NAME).is(IDENTIFIER);
+        grammarBuilder.rule(CLASS_NAME).is(grammarBuilder.firstOf(
+                ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                SPECIAL_KEYWORDS_AS_IDENTIFIER));
     }
 
     /**
@@ -597,7 +599,7 @@ public class Declaration {
                 GET_SHARING_RULES,
                 MODIFIER,
                 TYPE_CLASS,
-                grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER, SPECIAL_KEYWORDS_AS_IDENTIFIER),
+                CLASS_NAME,
                 grammarBuilder.optional(EXTENDS_LIST),
                 grammarBuilder.optional(IMPLEMENTS_LIST),
                 LBRACE,

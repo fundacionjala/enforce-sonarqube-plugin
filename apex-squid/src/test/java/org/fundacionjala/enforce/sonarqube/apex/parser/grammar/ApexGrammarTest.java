@@ -130,4 +130,27 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "}"
                 );
     }
+
+    @Test
+    public void eTest() {
+        assertThat(parser)
+                .matches("public with sharing class Complex {\n"
+                        + "public integer multiple(integer someNumber) {\n"
+                        + "        return a;\n"
+                        + "    }\n"
+                        + "public void clear() {\n"
+                        + "    }"
+                        + "}"
+                );
+    }
+
+    @Test
+    public void esTest() {
+        assertThat(parser)
+                .matches("public with sharing class AbstractArticle  {\n"
+                        + "public without sharing class DraftArticle extends AbstractArticle {\n"
+                        + "}\n"
+                        + "}"
+                );
+    }
 }
