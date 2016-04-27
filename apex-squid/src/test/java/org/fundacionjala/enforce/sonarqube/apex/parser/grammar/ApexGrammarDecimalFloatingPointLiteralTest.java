@@ -43,6 +43,7 @@ public class ApexGrammarDecimalFloatingPointLiteralTest extends ApexRuleTest {
                 .matches("123123.23422d")
                 .matches(".23422e+123f")
                 .matches(".23422f")
+                .matches("123.123f")
                 .matches("123123e-23422F")
                 .matches("123123e+23422F")
                 .matches("123123d");

@@ -53,12 +53,12 @@ public class ApexLexer {
     /**
      * Stores an numeric pattern.
      */
-    private static final String NUMERIC_PATTERN = "(0([0-7]*)?|[1-9]\\d*)[lL|fF|dD]?";
+    private static final String NUMERIC_PATTERN = "(0([0-7]*)?|[1-9]\\d*([eE][+-]?[0-9]+)?)[lL|fF|dD]?";
     
     /**
      * Stores an hexadecimal pattern.
      */
-    private static final String HEXADECIMAL_PATTERN = "[Xx](([0-9a-fA-F]+[.]{1})?[0-9a-fA-F]+)[lL|fF|dD]?";
+    private static final String HEXADECIMAL_PATTERN = "[Xx](([0-9a-fA-F]+[.]?)?[0-9a-fA-F]+)([pP][+-]?[0-9]+)?[lL|fF|dD]?";
     
     /**
      * Stores a pattern to identify a black hole.

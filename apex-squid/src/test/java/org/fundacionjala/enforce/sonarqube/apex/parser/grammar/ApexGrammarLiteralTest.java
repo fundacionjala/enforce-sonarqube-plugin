@@ -40,6 +40,7 @@ public class ApexGrammarLiteralTest extends ApexRuleTest {
     public void testValidLiteral() {
         assertThat(parser)
                 .matches("323")
+                .matches("1")
                 .matches("'anyString'")
                 .matches("true")
                 .matches("false")

@@ -55,6 +55,6 @@ public class ApexGrammarPrimaryExpressionTest extends ApexRuleTest {
         assertThat(parser)
                 .notMatches("a..b")
                 .notMatches("a(b.)")
-                .notMatches(".3");
+                .notMatches("x.3");
     }
 }
