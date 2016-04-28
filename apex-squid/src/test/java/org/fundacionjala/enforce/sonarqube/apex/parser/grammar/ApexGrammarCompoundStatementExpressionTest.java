@@ -45,6 +45,7 @@ public class ApexGrammarCompoundStatementExpressionTest extends ApexRuleTest {
                 .matches("x.y(){integer z = 3-2;}")
                 .matches("new SomeType(someParam){"
                         + "integer var = this.that;"
-                        + "}");
+                        + "}")
+                .matches("System.assert(true);");
     }
 }

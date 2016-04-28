@@ -475,7 +475,7 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void methodDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(METHOD_DECLARATION_PI).is(grammarBuilder.zeroOrMore(ANNOTATION),
+        grammarBuilder.rule(METHOD_DECLARATION_PI).is(
                 RESULT_TYPE,
                 METHOD_IDENTIFIER,
                 FORMAL_PARAMETERS,
@@ -687,7 +687,7 @@ public class Declaration {
                 )
         );
         grammarBuilder.rule(DECLARATIONS_WITH_MODIFIERS).is(
-                MODIFIER,
+                MODIFIERS,
                 grammarBuilder.firstOf(METHOD_DECLARATION_PI,
                         PROPERTY_DECLARATION,
                         CLASS_OR_INTERFACE_DECLARATION,

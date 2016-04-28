@@ -232,9 +232,9 @@ public class Expression {
      */
     private static void argumentsList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ARGUMENTS_LIST).is(
-                grammarBuilder.firstOf(EXPRESSION, THIS),
+                grammarBuilder.firstOf(EXPRESSION_PI, THIS),
                 grammarBuilder.zeroOrMore(COMMA,
-                        grammarBuilder.firstOf(EXPRESSION, THIS))
+                        grammarBuilder.firstOf(EXPRESSION_PI, THIS))
         );
     }
 

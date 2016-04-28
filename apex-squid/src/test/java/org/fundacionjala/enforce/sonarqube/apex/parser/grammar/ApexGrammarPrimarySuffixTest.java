@@ -47,7 +47,7 @@ public class ApexGrammarPrimarySuffixTest extends ApexRuleTest {
                 .matches("()")
                 .matches("(parameter)")
                 .matches("(p1, p2, this)")
-                .matches("(1, null, super)");
+                .matches("(1, null)");
     }
 
     @Test

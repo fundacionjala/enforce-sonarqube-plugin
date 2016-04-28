@@ -1,6 +1,6 @@
 public with sharing class draftArticle extends AbstractArticle {
 
-    public int MyMethod () { 
+    public integer MyMethod () { 
         while(trueExpression){
             insert newAcct;
         }
@@ -16,7 +16,7 @@ public with sharing class draftArticle extends AbstractArticle {
 
     @deprecated    
     public void myInit(){
-        int max = 10;
+        integer max = 10;
     }
 }
 

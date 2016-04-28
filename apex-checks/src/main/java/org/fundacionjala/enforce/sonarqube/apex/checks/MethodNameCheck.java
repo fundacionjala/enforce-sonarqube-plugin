@@ -82,7 +82,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
     @Override
     public void init() {
         pattern = Pattern.compile(format);
-        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
     }
 
     /**
