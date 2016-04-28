@@ -159,7 +159,7 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "\n"
                         + "    public SomeClass () {\n"
                         + "        this.aVariable = super.thatVariable;\n"
-                        + "        super.doSomething();\n"
+                        + "        super.doSomething((aType)varToCast);\n"
                         + "        SomeStaticClass.doOtherThing(null, 0, anotherParam, AProperty);\n"
                         + "    }\n"
                         + "\n"
