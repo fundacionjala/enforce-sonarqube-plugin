@@ -129,17 +129,5 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "}"
                         + "}"
                 );
-    }
-
-    @Test
-    public void esTest() {
-        assertThat(parser)
-                .matches("public with sharing class DraftArticle extends AbstractArticle {\n"
-                        + "@isTest public void testType() {\n"
-                        + "        System.assert(((true)));\n"
-                        + "        System.assertEquals('nameExpression', 'nameExpression');\n"
-                        + "    }\n"
-                        + "}"
-                );
-    }
+    }    
 }

@@ -39,16 +39,16 @@ public class ApexGrammarForEachLoopTest extends ApexRuleTest {
     @Test
     public void testValidForEachLoop() {
         assertThat(parser)
-                .matches("(int variable: anotherVariable) {}")
-                .matches("(boolean trueExpression: anotherVariable) {}");
+                .matches("(integer variable: anotherVariable) {}")
+                .matches("(bool trueExpression: anotherVariable) {}");
     }
 
     @Test
     public void testInvalidForEachLoop() {
         assertThat(parser)
-                .notMatches("int variable;")
-                .notMatches("(int variable: anotherVariable {}")
-                .notMatches("int variable anotherVariable) {}")
+                .notMatches("integer variable;")
+                .notMatches("(integer variable: anotherVariable {}")
+                .notMatches("integer variable anotherVariable) {}")
                 .notMatches("somethingelse;");
     }
 }

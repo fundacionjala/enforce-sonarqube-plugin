@@ -597,7 +597,7 @@ public class Declaration {
     private static void classOrInterfaceDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CLASS_OR_INTERFACE_DECLARATION).is(
                 GET_SHARING_RULES,
-                MODIFIER,
+                MODIFIERS,
                 TYPE_CLASS,
                 CLASS_NAME,
                 grammarBuilder.optional(EXTENDS_LIST),

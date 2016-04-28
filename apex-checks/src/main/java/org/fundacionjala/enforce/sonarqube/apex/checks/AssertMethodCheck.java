@@ -37,6 +37,7 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 
 /**
  * Verifies if a test method contains invalid asserts.
@@ -80,7 +81,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
+        subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_MEMBER);
     }
 
     /**
@@ -91,9 +92,10 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void visitNode(AstNode astNode) {
-//        if (!isTest(astNode)) {
-//            return;
-//        }
+        AstNode modifierChild = astNode.getFirstDescendant(MODIFIERS);
+        if (!isTest(modifierChild)) {
+            return;
+        }
         List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.ARGUMENTSPI);
         expressions.stream().filter((expression) -> (isAssert(expression))).forEach((expression) -> {
             AstNode firstChild = expression.getFirstChild(ARGUMENTS_LIST);
@@ -116,9 +118,8 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
      * @return the analysis result.
      */
     private boolean isAssert(AstNode expression) {
-        AstNode parent = expression.getParent();
-        AstNode parent1 = parent.getParent();
-        List<AstNode> children = parent1.getChildren();
+        AstNode parent = expression.getParent().getParent();
+        List<AstNode> children = parent.getChildren();
         for (AstNode child : children) {
             List<AstNode> descendants = child.getDescendants(GenericTokenType.IDENTIFIER);
             for (AstNode descendant : descendants) {
