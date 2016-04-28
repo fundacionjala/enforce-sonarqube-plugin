@@ -115,7 +115,7 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "object thisThing = this;"
                         + "{integer z = x<=5 ? 5 : 4-v/5+x;}}\n"
                         + "static {"
-                        + "boolean CONST = b = t&r^a||j!=null;}\n"
+                        + "Boolean CONST = b = t&r^a||j!=null;}\n"
                         + "protected abstract without sharing class subClass extends aClass {"
                         + "protected list<integer> abstractMethod(list<integer> par1, integer par2){"
                         + "if(x == 0){\n"

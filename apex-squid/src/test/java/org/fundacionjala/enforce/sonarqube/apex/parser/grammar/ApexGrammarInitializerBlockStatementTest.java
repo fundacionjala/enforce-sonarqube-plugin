@@ -23,26 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import org.junit.Test;
-import org.junit.Before;
-
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import org.junit.Before;
+import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_STATEMENT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CASTING_EXPRESSION;
-
-public class ApexGrammarCastingExpressionTest extends ApexRuleTest {
+public class ApexGrammarInitializerBlockStatementTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(CASTING_EXPRESSION);
+    public void setUp() {
+        setRootRule(INITIALIZER_BLOCK_STATEMENT);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidInitilizerBlockStatement() {
         assertThat(parser)
-                .matches("(int)MyVariable")
-                .matches("(MyObjecto)MyVariable");
+                .matches(";")
+                .matches("anyExpression;")
+                .matches("if(true){} else {}")
+                .matches("while(true){}")
+                .matches("do {} while(true);")
+                .matches("for(integer index = 0; index<10; index++){}")
+                .matches("for(integer currentNumber : numbers){}")
+                .matches("break;")
+                .matches("continue;")
+                .matches("return this;")
+                .matches("return someVariable;")
+                .matches("throw anyException;")
+                .matches("try{} catch(exception anyException){} finally {}");
     }
 }

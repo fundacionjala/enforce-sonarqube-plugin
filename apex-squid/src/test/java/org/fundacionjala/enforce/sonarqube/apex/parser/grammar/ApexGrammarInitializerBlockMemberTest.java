@@ -39,9 +39,12 @@ public class ApexGrammarInitializerBlockMemberTest extends ApexRuleTest {
     @Test
     public void testValidInitializerBlockMember() {
         assertThat(parser)
-                .matches("{{int something;}}")
-                .matches("int variable;")
-                .matches("boolean booleanVariable;");
+                .matches("{{integer something;}}")
+                .matches("integer variable;")
+                .matches("Boolean booleanVariable;")
+                .matches("if(true) {}")
+                .matches("while(true) {}")
+                .matches(";");
     }
 
     @Test

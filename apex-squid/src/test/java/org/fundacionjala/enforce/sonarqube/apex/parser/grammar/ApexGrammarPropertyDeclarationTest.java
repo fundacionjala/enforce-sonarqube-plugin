@@ -42,7 +42,7 @@ public class ApexGrammarPropertyDeclarationTest extends ApexRuleTest {
                 .matches("integer prop {private get; set;}")
                 .matches("integer prop {public get{return variable;}}")
                 .matches("integer prop {set {integer prop = 5;}}")
-                .matches("boolean prop {set;}");
+                .matches("Boolean prop {set;}");
     }
 
     @Test

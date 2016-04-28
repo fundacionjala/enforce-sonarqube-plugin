@@ -38,8 +38,8 @@ public class ApexGrammarInitializerBlockTest extends ApexRuleTest{
     
     @Test
     public void testValidInitializerBlock() {
-        assertThat(parser).matches("{ { int x;"
-                + "int y; } }");
+        assertThat(parser).matches("{ { integer x;"
+                + "integer y; } }");
     }
     
     

@@ -40,8 +40,8 @@ public class ApexGrammarClassOrInterfaceMemberTest extends ApexRuleTest {
     public void positiveRules() {
         assertThat(parser)
                 //can be an initializer declaration (only static modifier allowed)
-                .matches("static {int a;}")
-                .matches("{int x=3; int y;}") 
+                .matches("static {integer a;}")
+                .matches("{integer x=3; integer y;}") 
                 //all the other kinds of member can have the other type of modifiers, and they can be:
                 //a class or an interface declaration
                 .matches("public without sharing class ClassName {}")
@@ -51,7 +51,7 @@ public class ApexGrammarClassOrInterfaceMemberTest extends ApexRuleTest {
                 //a constructor
                 .matches("protected ClassName() {}")
                 //a field
-                .matches("private static int field=3;")
+                .matches("private static integer field=3;")
                 //a method
                 .matches("public static void doSomething(integer p1);")
                 //a property

@@ -41,8 +41,8 @@ public class ApexGrammarForStatementPiTest extends ApexRuleTest{
         assertThat(parser)
                 .matches("for(Object myObject : listIntegers){ }")
                 .matches("for(integer myObject:listIntegers){}")
-                .matches("for(double myObject:listDoubles){}")
-                .matches("for(boolean myObject:listBooleans){}")
+                .matches("for(Double myObject:listDoubles){}")
+                .matches("for(Boolean myObject:listBooleans){}")
                 .matches("for(integer myVariable; doSomething; updateVariable){}")
                 .matches("for(integer addition = 3; doSomething; updateAddition){}");
     }

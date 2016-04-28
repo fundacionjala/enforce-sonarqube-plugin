@@ -39,10 +39,10 @@ public class ApexGrammarFieldDeclarationPiTest extends ApexRuleTest {
     @Test
     public void testValidFieldDeclaration() {
         assertThat(parser)
-                .matches("int myVariable;")
-                .matches("int addition,takeaway;")
-                .matches("boolean isActive = trueExpression;")
-                .matches("int addition = 0;")
+                .matches("integer myVariable;")
+                .matches("integer addition,takeaway;")
+                .matches("Boolean isActive = true;")
+                .matches("integer addition = 0;")
                 .matches("ClassType transient;")
                 .matches("Iterator iterator = iteratorParameter;");
     }

@@ -23,34 +23,50 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarIfElseStatementTest extends ApexRuleTest {
+public class ApexGrammarModifiersTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(STATEMENT_IF);
+        setRootRule(MODIFIERS);
     }
 
     @Test
-    public void rulesIfElseStatement() {
+    public void positiveBasicRules() {
         assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int someNumber;}")
-                .matches("if(NAME){int someNumber=12;}else{'a';}");
+                .matches("public")
+                .matches("static")
+                .matches("protected")
+                .matches("private")
+                .matches("global")
+                .matches("final")
+                .matches("abstract")
+                .matches("transient")
+                .matches("virtual")
+                .matches("override")
+                .matches("testmethod");
     }
 
     @Test
-    public void rulesIfElseStatementCaseError() {
+    public void negativeRules() {
         assertThat(parser)
-                .notMatches("if(NAME){intnumber=12;}")
-                .notMatches("if(NAME){intnumber=12;}else{'a';}");
+                .notMatches(" _ ")
+                .notMatches("P static")
+                .notMatches(" public_")
+                .notMatches(" _final")
+                .notMatches(" Abstract")
+                .notMatches(" Abstract")
+                .notMatches("gLobla")
+                .notMatches("OveRRivde")
+                .notMatches("_Transient")
+                .notMatches("Virtual_")
+                .notMatches("testMethossfd__");
     }
 }
