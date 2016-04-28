@@ -26,7 +26,6 @@ package org.fundacionjala.enforce.sonarqube.apex.checks;
 import java.util.List;
 
 import com.sonar.sslr.api.AstNode;
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -83,13 +82,13 @@ public class TestMethodCheck extends AnnotationMethodCheck {
         } else if (astNode.hasParent(ApexGrammarRuleKey.DECLARATIONS_WITH_MODIFIERS)) {
             modifierNode = astNode.getParent().getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
         }
-        if (!isAnnotation(modifierNode, ApexKeyword.IS_TEST)) {
+        if (!isAnnotation(modifierNode, IS_TEST)) {
             List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
             methods.stream().forEach((method) -> {
-                AstNode parent = method.getParent().getParent();
+                AstNode parent = method.getParent();
                 AstNode firstChild = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
                 if (isTest(firstChild)) {
-                    getContext().createLineViolation(this, methodMessage(astNode), method);
+                    getContext().createLineViolation(this, methodMessage(method), method);
                 }
             });
         }

@@ -26,21 +26,15 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ANOTATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AURA_ENABLED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BOOLEAN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BYTE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CHAR;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DEPRECATED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DOUBLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCEPTION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FLOAT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FUTURE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GLOBAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INVOCABLE_METHOD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INVOCABLE_VARIABLE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IS_TEST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LONG;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MAP;
@@ -49,16 +43,12 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OVERRIDE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PROTECTED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PUBLIC;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.READ_ONLY;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.REMOTE_ACTION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHORT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STRICTFP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SYNCHRONIZED;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TESTMETHOD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TEST_SETUP;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TEST_VISIBLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VIRTUAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
@@ -77,6 +67,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.REFERENCE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
@@ -152,18 +143,7 @@ public class Type {
     private static void annotation(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ANNOTATION).is(
                 AT,
-                grammarBuilder.firstOf(
-                        AURA_ENABLED,
-                        DEPRECATED,
-                        FUTURE,
-                        INVOCABLE_METHOD,
-                        INVOCABLE_VARIABLE,
-                        IS_TEST,
-                        READ_ONLY,
-                        REMOTE_ACTION,
-                        TEST_SETUP,
-                        TEST_VISIBLE
-                )
+                NAME
         );
     }
 

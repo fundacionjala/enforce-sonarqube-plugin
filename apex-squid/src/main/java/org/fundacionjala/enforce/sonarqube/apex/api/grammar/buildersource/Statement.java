@@ -373,7 +373,7 @@ public class Statement {
         grammarBuilder.rule(WHILE_STATEMENT_PI).is(
                 WHILE,
                 LPAREN,
-                EXPRESSION,
+                EXPRESSION_PI,
                 RPAREN,
                 STATEMENT_PI
         );
