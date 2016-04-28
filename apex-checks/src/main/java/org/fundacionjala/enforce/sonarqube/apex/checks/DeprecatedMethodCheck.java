@@ -79,7 +79,7 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode parent = astNode.getParent().getParent();
+        AstNode parent = astNode.getParent();
         AstNode modifiersNode = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
         AstNode blockNode = astNode.getFirstDescendant(ApexGrammarRuleKey.BLOCK);
         if (isDeprecated(modifiersNode) && !isEmptyBlock(blockNode)) {

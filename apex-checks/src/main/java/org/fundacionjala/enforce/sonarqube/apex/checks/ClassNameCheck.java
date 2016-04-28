@@ -92,7 +92,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.CLASS_NAME).getTokenValue();
+        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.NAME).getTokenValue();
         if (!pattern.matcher(className).matches()) {
             getContext().createLineViolation(this,
                     "Rename class \"{0}\" to match the regular expression {1}.", astNode, className, format);
