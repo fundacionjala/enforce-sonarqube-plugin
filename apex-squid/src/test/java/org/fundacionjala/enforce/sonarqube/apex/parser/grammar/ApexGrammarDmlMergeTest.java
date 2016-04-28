@@ -39,7 +39,8 @@ public class ApexGrammarDmlMergeTest extends ApexRuleTest {
     @Test
     public void rulesDmlMerge() {
         assertThat(parser)
-                .matches("merge primaryExpression optionalPrimaryExpression");
+                .matches("merge primaryExpression optionalPrimaryExpression")
+                .matches("merge newAcct super.oldAcct");
     }
 
     @Test

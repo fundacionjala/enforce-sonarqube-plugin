@@ -65,26 +65,33 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.CLASS_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION);
     }
 
     /**
-     * It is responsible for verifying whether the rule is met in the rule base. In the event that
-     * the rule is not correct, create message error.
+     * It is responsible for verifying whether the rule is met in the rule base.
+     * In the event that the rule is not correct, create message error.
      *
      * @param astNode It is the node that stores all the rules.
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (isTest(astNode)) {
-            return;
+        AstNode modifierNode = null;
+        if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION_PI)) {
+            modifierNode = astNode.getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
+        } else if (astNode.hasParent(ApexGrammarRuleKey.DECLARATIONS_WITH_MODIFIERS)) {
+            modifierNode = astNode.getParent().getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
         }
-        List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
-        methods.forEach(method -> {
-            if (isTest(method)) {
-                getContext().createLineViolation(this, methodMessage(astNode), method);
-            }
-        });
+        if (!isAnnotation(modifierNode, IS_TEST)) {
+            List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
+            methods.stream().forEach((method) -> {
+                AstNode parent = method.getParent();
+                AstNode firstChild = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
+                if (isTest(firstChild)) {
+                    getContext().createLineViolation(this, methodMessage(method), method);
+                }
+            });
+        }
     }
 
     /**

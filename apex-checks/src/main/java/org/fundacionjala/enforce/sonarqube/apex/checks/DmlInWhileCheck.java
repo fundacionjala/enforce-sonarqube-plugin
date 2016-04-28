@@ -61,7 +61,7 @@ public class DmlInWhileCheck extends DmlStatementCheck {
      * The variables are initialized and subscribe the base rule.
      */
     public DmlInWhileCheck() {
-        ruleKey = ApexGrammarRuleKey.WHILE_STATEMENT;
+        ruleKey = ApexGrammarRuleKey.WHILE_STATEMENT_PI;
         message = MESSAGE;
     }
 }

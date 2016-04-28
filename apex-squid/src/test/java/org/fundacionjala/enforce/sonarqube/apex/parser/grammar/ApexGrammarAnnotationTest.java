@@ -26,26 +26,31 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarCompoundStatementExpressionTest extends ApexRuleTest {
+public class ApexGrammarAnnotationTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(COMPOUND_STATEMENT_EXPRESSION);
+        setRootRule(ANNOTATION);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-//                .matches("new SomeType(someParam)");
-                .matches("a.b()++;")
-                .matches("x[1].size() = 2;")
-                .matches("new SomeType(someParam).create()--;")
-                .matches("x.y(){integer z = 3-2;}")
-                .matches("new SomeType(someParam);")
-                .matches("new SomeType(someParam){ integer var = thisExpression.that; }")
-                .matches("System.assert(true);");
+                .matches("@something")
+                .matches("@deprecated")
+                .matches("@isTest")
+                .matches("@CAPS");
+    }
+    
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches("@public")
+                .notMatches("@override")
+                .notMatches("@is Test")
+                .notMatches("@1");
     }
 }

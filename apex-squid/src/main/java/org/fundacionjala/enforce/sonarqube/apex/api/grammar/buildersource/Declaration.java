@@ -362,7 +362,7 @@ public class Declaration {
                 RBRACE
         );
     }
-
+    
     /**
      * Creates the rule that defines an enum body.
      *

@@ -1,4 +1,4 @@
-public with sharing class draftArticle extends AbstractArticle {
+public with sharing class someDraftArticle extends AbstractArticle {
 
     public integer MyMethod () { 
         while(trueExpression){
@@ -6,7 +6,7 @@ public with sharing class draftArticle extends AbstractArticle {
         }
 
         for(Accts newAcct : listAccts){
-           merge newAcct; 
+           merge newAcct super.oldAcct; 
         }
     }
 

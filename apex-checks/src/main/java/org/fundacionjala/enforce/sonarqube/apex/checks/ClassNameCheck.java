@@ -71,7 +71,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
     public String format = DEFAULT;
 
     /**
-     * Manages the patron of rule.
+     * Manages the pattern of rule.
      */
     private Pattern pattern = null;
 
@@ -81,7 +81,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
     @Override
     public void init() {
         pattern = Pattern.compile(format);
-        subscribeTo(ApexGrammarRuleKey.TYPE_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION);
     }
 
     /**

@@ -29,9 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarForStatementPiTest extends ApexRuleTest{
-    
-   @Before
+public class ApexGrammarForStatementPiTest extends ApexRuleTest {
+
+    @Before
     public void init() {
         setRootRule(FOR_STATEMENT_PI);
     }
@@ -44,7 +44,10 @@ public class ApexGrammarForStatementPiTest extends ApexRuleTest{
                 .matches("for(Double myObject:listDoubles){}")
                 .matches("for(Boolean myObject:listBooleans){}")
                 .matches("for(integer myVariable; doSomething; updateVariable){}")
-                .matches("for(integer addition = 3; doSomething; updateAddition){}");
+                .matches("for(integer addition = 3; doSomething; updateAddition){}")
+                .matches("        for(Accts newAcct : listAccts){\n"
+                        + "           merge newAcct this.anotherAccount; \n"
+                        + "        }\n");
     }
 
     @Test
