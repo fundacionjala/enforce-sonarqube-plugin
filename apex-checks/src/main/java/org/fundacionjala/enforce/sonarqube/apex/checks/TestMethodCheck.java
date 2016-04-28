@@ -34,6 +34,7 @@ import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 
 /**
  * Verifies if a class contains test methods.
@@ -65,21 +66,22 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.CLASS_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_MEMBER);
     }
 
     /**
-     * It is responsible for verifying whether the rule is met in the rule base. In the event that
-     * the rule is not correct, create message error.
+     * It is responsible for verifying whether the rule is met in the rule base.
+     * In the event that the rule is not correct, create message error.
      *
      * @param astNode It is the node that stores all the rules.
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (isTest(astNode)) {
+        AstNode modifierChild = astNode.getFirstDescendant(MODIFIERS);
+        if (!isTest(modifierChild)) {
             return;
         }
-        List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
+        List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
         methods.forEach(method -> {
             if (isTest(method)) {
                 getContext().createLineViolation(this, methodMessage(astNode), method);
