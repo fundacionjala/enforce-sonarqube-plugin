@@ -26,6 +26,7 @@ package org.fundacionjala.enforce.sonarqube.apex.checks;
 import java.util.List;
 
 import com.sonar.sslr.api.AstNode;
+import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -34,7 +35,6 @@ import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 
 /**
  * Verifies if a class contains test methods.
@@ -66,7 +66,7 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_MEMBER);
+        subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION);
     }
 
     /**
@@ -77,16 +77,22 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode modifierChild = astNode.getFirstDescendant(MODIFIERS);
-        if (!isTest(modifierChild)) {
-            return;
+        AstNode modifierNode = null;
+        if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION_PI)) {
+            modifierNode = astNode.getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
+        } else if (astNode.hasParent(ApexGrammarRuleKey.DECLARATIONS_WITH_MODIFIERS)) {
+            modifierNode = astNode.getParent().getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
         }
-        List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
-        methods.forEach(method -> {
-            if (isTest(method)) {
-                getContext().createLineViolation(this, methodMessage(astNode), method);
-            }
-        });
+        if (!isAnnotation(modifierNode, ApexKeyword.IS_TEST)) {
+            List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
+            methods.stream().forEach((method) -> {
+                AstNode parent = method.getParent().getParent();
+                AstNode firstChild = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
+                if (isTest(firstChild)) {
+                    getContext().createLineViolation(this, methodMessage(astNode), method);
+                }
+            });
+        }
     }
 
     /**

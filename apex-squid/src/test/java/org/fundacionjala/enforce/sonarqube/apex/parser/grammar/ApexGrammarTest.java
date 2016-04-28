@@ -129,5 +129,5 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "}"
                         + "}"
                 );
-    }    
+    }
 }
