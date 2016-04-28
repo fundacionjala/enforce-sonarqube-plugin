@@ -24,7 +24,6 @@
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
-import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CLASS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ENUM;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCEPTION;
@@ -53,10 +52,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ACCESSOR_DECLARATIONS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BREAK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_BODY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
@@ -65,20 +62,14 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IMPLEMENTS_LIST;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PROPERTY_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RESULT_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_CLASS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONTINUE_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_BODY;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ENUM_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK;
@@ -87,18 +78,24 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_INITIALIZER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
 
 /**
  * This class contains constructors for Declaration rules and its sub rules.
@@ -107,7 +104,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 public class Declaration {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
-        variableDeclaratorId(grammarBuilder);
         typeClass(grammarBuilder);
         extendsList(grammarBuilder);
         implementsList(grammarBuilder);
@@ -142,7 +138,7 @@ public class Declaration {
     }
 
     private static void typeDeclarationPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TYPE_DECLARATION_PI).is(
+        grammarBuilder.rule(TYPE_DECLARATION).is(
                 MODIFIERS,
                 grammarBuilder.firstOf(
                         CLASS_OR_INTERFACE_DECLARATION,
@@ -206,13 +202,12 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void constructorDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CONSTRUCTOR_DECLARATION_PI).is(
-                grammarBuilder.firstOf(
+        grammarBuilder.rule(CONSTRUCTOR_DECLARATION).is(grammarBuilder.firstOf(
                         ALLOWED_KEYWORDS_AS_IDENTIFIER,
                         SPECIAL_KEYWORDS_AS_IDENTIFIER),
                 FORMAL_PARAMETERS,
                 LBRACE,
-                grammarBuilder.optional(EXPLICIT_CONSTRUCTOR_INVOCATION_PI),
+                grammarBuilder.optional(EXPLICIT_CONSTRUCTOR_INVOCATION),
                 grammarBuilder.zeroOrMore(BLOCK_STATEMENT),
                 RBRACE
         );
@@ -224,22 +219,9 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void explicitConstructorInvocationPI(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(EXPLICIT_CONSTRUCTOR_INVOCATION_PI).is(
-                grammarBuilder.firstOf(THIS, SUPER),
-                ARGUMENTSPI,
+        grammarBuilder.rule(EXPLICIT_CONSTRUCTOR_INVOCATION).is(grammarBuilder.firstOf(THIS, SUPER),
+                ARGUMENTS,
                 SEMICOLON
-        );
-    }
-
-    /**
-     * It is responsible for creating the rule for identifying a variable.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void variableDeclaratorId(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(VARIABLE_DECLARATOR_ID).is(
-                IDENTIFIER,
-                grammarBuilder.optional(BRACKETS)
         );
     }
 
@@ -249,8 +231,7 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void propertyDeclaration(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(PROPERTY_DECLARATION).is(
-                TYPE_PI,
+        grammarBuilder.rule(PROPERTY_DECLARATION).is(TYPE,
                 grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER, SPECIAL_KEYWORDS_AS_IDENTIFIER),
                 LBRACE,
                 ACCESSOR_DECLARATIONS,
@@ -305,7 +286,7 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void methodDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(METHOD_DECLARATION_PI).is(
+        grammarBuilder.rule(METHOD_DECLARATION).is(
                 RESULT_TYPE,
                 METHOD_IDENTIFIER,
                 FORMAL_PARAMETERS,
@@ -319,8 +300,7 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void resultType(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(RESULT_TYPE).is(
-                grammarBuilder.firstOf(VOID, TYPE_PI)
+        grammarBuilder.rule(RESULT_TYPE).is(grammarBuilder.firstOf(VOID, TYPE)
         );
     }
 
@@ -342,8 +322,7 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void formalParameter(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FORMAL_PARAMETER).is(
-                grammarBuilder.optional(FINAL), TYPE_PI,
+        grammarBuilder.rule(FORMAL_PARAMETER).is(grammarBuilder.optional(FINAL), TYPE,
                 grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER,
                         SPECIAL_KEYWORDS_AS_IDENTIFIER)
         );
@@ -364,7 +343,7 @@ public class Declaration {
                 RBRACE
         );
     }
-    
+
     /**
      * Creates the rule that defines an enum body.
      *
@@ -389,12 +368,10 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void fieldDeclarationPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FIELD_DECLARATION_PI).is(
-                TYPE_PI,
-                VARIABLE_DECLARATOR_PI,
-                grammarBuilder.zeroOrMore(
-                        COMMA,
-                        VARIABLE_DECLARATOR_PI
+        grammarBuilder.rule(FIELD_DECLARATION).is(TYPE,
+                VARIABLE_DECLARATOR,
+                grammarBuilder.zeroOrMore(COMMA,
+                        VARIABLE_DECLARATOR
                 ),
                 SEMICOLON
         );
@@ -406,13 +383,15 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void variableDeclaratorPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(VARIABLE_DECLARATOR_PI).is(
+        grammarBuilder.rule(VARIABLE_DECLARATOR).is(
                 grammarBuilder.firstOf(
                         ALLOWED_KEYWORDS_AS_IDENTIFIER,
                         SPECIAL_KEYWORDS_AS_IDENTIFIER
                 ),
                 grammarBuilder.optional(
-                        grammarBuilder.sequence(ASSIGN, VARIABLE_INITIALIZER)
+                        grammarBuilder.sequence(
+                                ASSIGN,
+                                VARIABLE_INITIALIZER)
                 )
         );
     }
@@ -495,10 +474,8 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void initializerBlockMember(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(INITIALIZER_BLOCK_MEMBER).is(
-                grammarBuilder.firstOf(
-                        INITIALIZER_BLOCK,
-                        FIELD_DECLARATION_PI,
+        grammarBuilder.rule(INITIALIZER_BLOCK_MEMBER).is(grammarBuilder.firstOf(INITIALIZER_BLOCK,
+                        FIELD_DECLARATION,
                         INITIALIZER_BLOCK_STATEMENT,
                         SEMICOLON
                 )
@@ -506,19 +483,17 @@ public class Declaration {
     }
 
     private static void initializerBlockStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(INITIALIZER_BLOCK_STATEMENT).is(
-                grammarBuilder.firstOf(
-                        EMPTY_STATEMENT,
+        grammarBuilder.rule(INITIALIZER_BLOCK_STATEMENT).is(grammarBuilder.firstOf(EMPTY_STATEMENT,
                         grammarBuilder.sequence(STATEMENT_EXPRESSION, SEMICOLON),
                         IF_STATEMENT,
-                        WHILE_STATEMENT_PI,
+                        WHILE_STATEMENT,
                         DO_STATEMENT,
-                        FOR_STATEMENT_PI,
+                        FOR_STATEMENT,
                         BREAK_STATEMENT,
                         CONTINUE_STATEMENT,
-                        RETURN_STATEMENT_PI,
+                        RETURN_STATEMENT,
                         THROW_STATEMENT,
-                        TRY_STATEMENT_PI
+                        TRY_STATEMENT
                 )
         );
     }
@@ -529,17 +504,14 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void classOrInterfaceMember(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CLASS_OR_INTERFACE_MEMBER).is(
-                grammarBuilder.firstOf(
-                        INITIALIZER,
-                        grammarBuilder.sequence(
-                                MODIFIERS,
-                                grammarBuilder.firstOf(METHOD_DECLARATION_PI,
+        grammarBuilder.rule(CLASS_OR_INTERFACE_MEMBER).is(grammarBuilder.firstOf(INITIALIZER,
+                        grammarBuilder.sequence(MODIFIERS,
+                                grammarBuilder.firstOf(METHOD_DECLARATION,
                                         PROPERTY_DECLARATION,
                                         CLASS_OR_INTERFACE_DECLARATION,
                                         ENUM_DECLARATION,
-                                        CONSTRUCTOR_DECLARATION_PI,
-                                        FIELD_DECLARATION_PI
+                                        CONSTRUCTOR_DECLARATION,
+                                        FIELD_DECLARATION
                                 ))
                 )
         );
@@ -551,11 +523,10 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void localVariableDeclaration(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION).is(
-                grammarBuilder.optional(FINAL),
-                TYPE_PI,
-                VARIABLE_DECLARATOR_PI,
-                grammarBuilder.zeroOrMore(COMMA, VARIABLE_DECLARATOR_PI)
+        grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION).is(grammarBuilder.optional(FINAL),
+                TYPE,
+                VARIABLE_DECLARATOR,
+                grammarBuilder.zeroOrMore(COMMA, VARIABLE_DECLARATOR)
         );
     }
 }

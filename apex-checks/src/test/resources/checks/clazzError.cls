@@ -1,7 +1,7 @@
 public with sharing class someDraftArticle extends AbstractArticle {
 
     public integer MyMethod () { 
-        while(trueExpression){
+        while(true){
             insert newAcct;
         }
 

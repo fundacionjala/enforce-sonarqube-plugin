@@ -58,7 +58,7 @@ public class DmlInForCheck extends DmlStatementCheck {
     public static final String CHECK_KEY = "A1004";
 
     public DmlInForCheck() {
-        ruleKey = ApexGrammarRuleKey.FOR_STATEMENT_PI;
+        ruleKey = ApexGrammarRuleKey.FOR_STATEMENT;
         message = MESSAGE;
     }
 }

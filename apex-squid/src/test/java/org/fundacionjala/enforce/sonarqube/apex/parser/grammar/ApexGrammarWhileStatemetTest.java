@@ -23,37 +23,26 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 
-public class ApexGrammarTypePiTest extends ApexRuleTest {
+public class ApexGrammarWhileStatemetTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(TYPE_PI);
+    public void setUp() {
+        setRootRule(WHILE_STATEMENT);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidWhileStatementPI() {
         assertThat(parser)
-                .matches("integer")
-                .matches("string")
-                .matches("SomeClassType")
-                .matches("someothertype")
-                .matches("list<something>")
-                .matches("set<SomeClass>")
-                .matches("map<SomeKeyClass, SomeValueclass>");
-    }
-
-    @Test
-    public void positiveNestedRules() {
-        assertThat(parser)
-                .matches("list<set<list<thisThing>>>")
-                .matches("set<SomeClass[]>")
-                .matches("map<list<aThing>, Value>");
+                .matches("while(true)"
+                        + "{}")
+                .matches("while(something)"
+                        + "while(anotherthing)"
+                        + "{}");
     }
 }

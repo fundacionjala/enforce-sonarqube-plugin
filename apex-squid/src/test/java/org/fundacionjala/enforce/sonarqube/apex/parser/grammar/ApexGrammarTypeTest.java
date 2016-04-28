@@ -23,34 +23,37 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION_PI;
+
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarExplicitConstructorInvocationPiTest extends ApexRuleTest {
+public class ApexGrammarTypeTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(EXPLICIT_CONSTRUCTOR_INVOCATION_PI);
+        setRootRule(TYPE);
     }
 
     @Test
-    public void testValidExplicitConstrutorInvocations() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("this(something);")
-                .matches("super(something);")
-                .matches("super(k);");
+                .matches("integer")
+                .matches("string")
+                .matches("SomeClassType")
+                .matches("someothertype")
+                .matches("list<something>")
+                .matches("set<SomeClass>")
+                .matches("map<SomeKeyClass, SomeValueclass>");
     }
-    
+
     @Test
-    public void testInvalidExplicitConstructorInvocations() {
+    public void positiveNestedRules() {
         assertThat(parser)
-                .notMatches("This(something);")
-                .notMatches("super(wrong parameter);")
-                .notMatches("super(explicitWithoutSemicolon)")
-                .notMatches("super(two parameters);")
-                .notMatches("this(four parameters for this)");
+                .matches("list<set<list<thisThing>>>")
+                .matches("set<SomeClass[]>")
+                .matches("map<list<aThing>, Value>");
     }
 }

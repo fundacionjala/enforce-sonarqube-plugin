@@ -77,13 +77,11 @@ public class TestMethodCheck extends AnnotationMethodCheck {
     @Override
     public void visitNode(AstNode astNode) {
         AstNode modifierNode = null;
-        if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION_PI)) {
+        if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION)) {
             modifierNode = astNode.getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
-        } else if (astNode.hasParent(ApexGrammarRuleKey.DECLARATIONS_WITH_MODIFIERS)) {
-            modifierNode = astNode.getParent().getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
-        }
+        } 
         if (!isAnnotation(modifierNode, IS_TEST)) {
-            List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
+            List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
             methods.stream().forEach((method) -> {
                 AstNode parent = method.getParent();
                 AstNode firstChild = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);

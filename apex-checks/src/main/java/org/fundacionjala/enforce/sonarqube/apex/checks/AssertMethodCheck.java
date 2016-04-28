@@ -96,7 +96,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
         if (!isTest(modifierChild)) {
             return;
         }
-        List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.ARGUMENTSPI);
+        List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.ARGUMENTS);
         expressions.stream().filter((expression) -> (isAssert(expression))).forEach((expression) -> {
             AstNode firstChild = expression.getFirstChild(ARGUMENTS_LIST);
             String first = firstChild.getChildren().get(0).getTokenValue();

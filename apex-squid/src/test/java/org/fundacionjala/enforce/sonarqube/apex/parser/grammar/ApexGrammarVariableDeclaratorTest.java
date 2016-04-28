@@ -26,31 +26,29 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarFieldDeclarationPiTest extends ApexRuleTest {
+public class ApexGrammarVariableDeclaratorTest extends ApexRuleTest {
 
     @Before
     public void setUp() {
-        setRootRule(FIELD_DECLARATION_PI);
+        setRootRule(VARIABLE_DECLARATOR);
     }
 
     @Test
-    public void testValidFieldDeclaration() {
+    public void testValidVariableDeclarator() {
         assertThat(parser)
-                .matches("integer myVariable;")
-                .matches("integer addition,takeaway;")
-                .matches("Boolean isActive = true;")
-                .matches("integer addition = 0;")
-                .matches("ClassType transient;")
-                .matches("Iterator iterator = iteratorParameter;");
+                .matches("transient = this")
+                .matches("summ = 1")
+                .matches("group")
+                .matches("aNewVariableWithNoValue")
+                .matches("myVariable = this.that");
     }
-    
+
     @Test
-    public void testInvalidFieldDeclaration() {
+    public void testInvalidVariableDeclarator() {
         assertThat(parser)
-                .notMatches("char varCharMissingSemicolon")
-                .notMatches("ClassType missingValue =;");
+                .notMatches("");
     }
 }

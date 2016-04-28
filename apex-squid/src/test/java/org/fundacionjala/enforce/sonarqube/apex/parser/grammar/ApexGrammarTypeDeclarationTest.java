@@ -26,14 +26,14 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarTypeDeclarationPiTest extends ApexRuleTest {
+public class ApexGrammarTypeDeclarationTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(TYPE_DECLARATION_PI);
+        setRootRule(TYPE_DECLARATION);
     }
 
     @Test

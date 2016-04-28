@@ -23,30 +23,29 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_ID;
-
-public class ApexGrammarVariableDeclaratorIdTest extends ApexRuleTest {
+public class ApexGrammarMethodDeclarationTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(VARIABLE_DECLARATOR_ID);
+        setRootRule(METHOD_DECLARATION);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("myVariable")
-                .matches("myVariable[]")
-                .matches("my_Variable[]")
-                .notMatches("myVariable_[]")
-                .notMatches("1myVariable")
-                .notMatches("1myVariable[]");
+                .matches("integer isMethod(){}")
+                .matches("void isMethod(){}")
+                .matches("bool isMethod(integer x, final bool y){}")
+                .matches("string isMethod(bool y){}")
+                .matches("floatn isMethod(integer a, final integer b, integer c){}")
+                .matches("void isMethod();")
+                .matches("bool isMethod(integer x, final bool y);")
+                .matches("bool IsMethod(){integer myVariable = 3;}");
     }
 }
