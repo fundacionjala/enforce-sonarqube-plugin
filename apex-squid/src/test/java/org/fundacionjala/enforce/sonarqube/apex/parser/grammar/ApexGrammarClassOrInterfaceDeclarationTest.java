@@ -56,12 +56,6 @@ public class ApexGrammarClassOrInterfaceDeclarationTest extends ApexRuleTest {
         assertThat(parser)
                 .notMatches("class1MyClass{}")
                 .notMatches("Interface MyClass{}")
-                //should fail when you have no with or without sharing
-                .notMatches("interface MyClass{}")
-                .notMatches("class MyClass{}")
-                .notMatches("with InterfaceMyClass{}")
-                .notMatches("without InterfaceMyClass{}")
-                .notMatches("sharing InterfaceMyClass{}")
                 //should fail when extends and iterfaces aren't correctly declared
                 .notMatches("with sharing _classMyClassextendsYourClass{}")
                 .notMatches("with sharing class-MyClass implements YourClass{}")

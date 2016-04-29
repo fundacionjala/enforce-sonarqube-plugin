@@ -40,7 +40,7 @@ public class ApexGrammarGenericTypeTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("<SomeType>")
                 .matches("<SomeType, SomeOtherType>")
-                .matches("<list<set<someType>>>");
+                .matches("<List<set<someType>>>");
     }
 
     @Test

@@ -45,8 +45,8 @@ public class ApexGrammarCastExpressionTest extends ApexRuleTest {
                 .matches("(someType) --+-++5")
                 .matches("(someType) --!+x")
                 .matches("(string[]) x")
-                .matches("(list<someType>) x")
-                .matches("(map<integer, string>) x");
+                .matches("(List<someType>) x")
+                .matches("(Map<integer, string>) x");
     }
 
     @Test

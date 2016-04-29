@@ -47,7 +47,7 @@ public class ApexGrammarUnaryExpressionNotPlusMinusTest extends ApexRuleTest {
                 //with cast expression
                 .matches("(someType) var")
                 .matches("(someType) -!+-var")
-                .matches("(list<someType>) var")
+                .matches("(List<someType>) var")
                 .matches("(someType[]) var")
                 //with primary expression
                 .matches("var")

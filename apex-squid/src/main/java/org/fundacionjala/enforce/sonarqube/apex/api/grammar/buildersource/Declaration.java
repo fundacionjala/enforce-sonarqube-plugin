@@ -201,8 +201,8 @@ public class Declaration {
      */
     private static void constructorDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONSTRUCTOR_DECLARATION).is(grammarBuilder.firstOf(
-                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
-                        SPECIAL_KEYWORDS_AS_IDENTIFIER),
+                ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                SPECIAL_KEYWORDS_AS_IDENTIFIER),
                 FORMAL_PARAMETERS,
                 LBRACE,
                 grammarBuilder.optional(EXPLICIT_CONSTRUCTOR_INVOCATION),
@@ -434,10 +434,12 @@ public class Declaration {
      */
     private static void getSharingRules(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(GET_SHARING_RULES).is(
-                grammarBuilder.firstOf(
-                        WITHOUT,
-                        WITH),
-                SHARING
+                grammarBuilder.optional(
+                        grammarBuilder.firstOf(
+                                WITHOUT,
+                                WITH),
+                        SHARING
+                )
         );
     }
 
@@ -474,26 +476,26 @@ public class Declaration {
      */
     private static void initializerBlockMember(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INITIALIZER_BLOCK_MEMBER).is(grammarBuilder.firstOf(INITIALIZER_BLOCK,
-                        FIELD_DECLARATION,
-                        INITIALIZER_BLOCK_STATEMENT,
-                        SEMICOLON
-                )
+                FIELD_DECLARATION,
+                INITIALIZER_BLOCK_STATEMENT,
+                SEMICOLON
+        )
         );
     }
 
     private static void initializerBlockStatement(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INITIALIZER_BLOCK_STATEMENT).is(grammarBuilder.firstOf(EMPTY_STATEMENT,
-                        grammarBuilder.sequence(STATEMENT_EXPRESSION, SEMICOLON),
-                        IF_STATEMENT,
-                        WHILE_STATEMENT,
-                        DO_STATEMENT,
-                        FOR_STATEMENT,
-                        BREAK_STATEMENT,
-                        CONTINUE_STATEMENT,
-                        RETURN_STATEMENT,
-                        THROW_STATEMENT,
-                        TRY_STATEMENT
-                )
+                grammarBuilder.sequence(STATEMENT_EXPRESSION, SEMICOLON),
+                IF_STATEMENT,
+                WHILE_STATEMENT,
+                DO_STATEMENT,
+                FOR_STATEMENT,
+                BREAK_STATEMENT,
+                CONTINUE_STATEMENT,
+                RETURN_STATEMENT,
+                THROW_STATEMENT,
+                TRY_STATEMENT
+        )
         );
     }
 
@@ -504,15 +506,15 @@ public class Declaration {
      */
     private static void classOrInterfaceMember(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CLASS_OR_INTERFACE_MEMBER).is(grammarBuilder.firstOf(INITIALIZER,
-                        grammarBuilder.sequence(MODIFIERS,
-                                grammarBuilder.firstOf(METHOD_DECLARATION,
-                                        PROPERTY_DECLARATION,
-                                        CLASS_OR_INTERFACE_DECLARATION,
-                                        ENUM_DECLARATION,
-                                        CONSTRUCTOR_DECLARATION,
-                                        FIELD_DECLARATION
-                                ))
-                )
+                grammarBuilder.sequence(MODIFIERS,
+                        grammarBuilder.firstOf(METHOD_DECLARATION,
+                                PROPERTY_DECLARATION,
+                                CLASS_OR_INTERFACE_DECLARATION,
+                                ENUM_DECLARATION,
+                                CONSTRUCTOR_DECLARATION,
+                                FIELD_DECLARATION
+                        ))
+        )
         );
     }
 

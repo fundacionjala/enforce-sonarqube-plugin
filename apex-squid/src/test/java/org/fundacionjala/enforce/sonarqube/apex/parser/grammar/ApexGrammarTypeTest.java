@@ -44,16 +44,16 @@ public class ApexGrammarTypeTest extends ApexRuleTest {
                 .matches("string")
                 .matches("SomeClassType")
                 .matches("someothertype")
-                .matches("list<something>")
+                .matches("List<something>")
                 .matches("set<SomeClass>")
-                .matches("map<SomeKeyClass, SomeValueclass>");
+                .matches("Map<SomeKeyClass, SomeValueclass>");
     }
 
     @Test
     public void positiveNestedRules() {
         assertThat(parser)
-                .matches("list<set<list<thisThing>>>")
+                .matches("List<set<List<thisThing>>>")
                 .matches("set<SomeClass[]>")
-                .matches("map<list<aThing>, Value>");
+                .matches("Map<List<aThing>, Value>");
     }
 }

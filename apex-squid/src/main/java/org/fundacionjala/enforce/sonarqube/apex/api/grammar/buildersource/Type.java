@@ -42,6 +42,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VIRTUAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.AT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
@@ -153,7 +154,13 @@ public class Type {
         grammarBuilder.rule(CLASS_OR_INTERFACE_TYPE).is(
                 grammarBuilder.firstOf(
                         ALLOWED_KEYWORDS_AS_IDENTIFIER,
-                        SPECIAL_KEYWORDS_AS_IDENTIFIER));
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER),
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.sequence(DOT,
+                                grammarBuilder.firstOf(
+                                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                        SPECIAL_KEYWORDS_AS_IDENTIFIER))
+                ));
     }
 
     private static void genericType(LexerfulGrammarBuilder grammarBuilder) {
