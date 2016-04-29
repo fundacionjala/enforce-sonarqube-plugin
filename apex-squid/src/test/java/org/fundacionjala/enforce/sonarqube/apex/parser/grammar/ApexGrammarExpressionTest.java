@@ -26,14 +26,14 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 
-public class ApexGrammarExpressionPiTest extends ApexRuleTest {
+public class ApexGrammarExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(EXPRESSION_PI);
+        setRootRule(EXPRESSION);
     }
 
     @Test
@@ -42,9 +42,9 @@ public class ApexGrammarExpressionPiTest extends ApexRuleTest {
                 .matches("1")
                 .matches("a")
                 .matches("someIdentifier")
-//                TODO: uncomment this when the old rules are deleted and it should work
-//                .matches("this")
-//                .matches("super")
+                //                TODO: uncomment this when the old rules are deleted and it should work
+                //                .matches("this")
+                //                .matches("super")
                 .matches("null")
                 .matches("1009")
                 //with assignmentOperators
@@ -53,8 +53,8 @@ public class ApexGrammarExpressionPiTest extends ApexRuleTest {
                 .matches("count += 4")
                 //with conditional expression
                 .matches("thisValue ? 0 : 1")
-//                TODO: uncomment this when the old rules are deleted and it should work
-//                .matches("x = somethingTrue ? this : null")
+                //                TODO: uncomment this when the old rules are deleted and it should work
+                //                .matches("x = somethingTrue ? this : null")
                 .matches("y += question ? 1 : 10")
                 //with AND and OR expressions
                 .matches("a || b")
@@ -67,7 +67,7 @@ public class ApexGrammarExpressionPiTest extends ApexRuleTest {
                 .matches("x = new SomeType()")
                 .matches("x = new SomeType(p1, null, p2, 0)");
     }
-    
+
     @Test
     public void negativeRules() {
         assertThat(parser)

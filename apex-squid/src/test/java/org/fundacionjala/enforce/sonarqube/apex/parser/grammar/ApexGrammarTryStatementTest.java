@@ -23,31 +23,33 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarVariableDeclaratorPitest extends ApexRuleTest {
-    
+public class ApexGrammarTryStatementTest extends ApexRuleTest {
+
     @Before
     public void setUp() {
-        setRootRule(VARIABLE_DECLARATOR_PI);
+        setRootRule(TRY_STATEMENT);
     }
-    
+
     @Test
-    public void testValidVariableDeclarator() {
+    public void testValidTryStatement() {
         assertThat(parser)
-                .matches("transient = this")
-                .matches("summ = 1")
-                .matches("group")
-                .matches("aNewVariableWithNoValue");
+                .matches("try{} catch(Object exceptionObject){}")
+                .matches("try{} catch(Object exceptionObject){} catch(Object anotherException){}")
+                .matches("try{} catch(Object exceptionObject){} finally {}");
     }
-    
+
     @Test
-    public void testInvalidVariableDeclarator() {
+    public void testInvalidTryStatement() {
         assertThat(parser)
-                .notMatches("");
+                .notMatches("try{}{}")
+                .notMatches("try{} catch{}")
+                .notMatches("try catch")
+                .notMatches("try {} catch(){finally{}}");
     }
 }

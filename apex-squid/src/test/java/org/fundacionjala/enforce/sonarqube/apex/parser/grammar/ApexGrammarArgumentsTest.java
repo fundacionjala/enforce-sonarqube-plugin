@@ -26,43 +26,32 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Test;
 import org.junit.Before;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarStatementPiTest extends ApexRuleTest {
+public class ApexGrammarArgumentsTest extends ApexRuleTest {
 
     @Before
-    public void setUp() {
-        setRootRule(STATEMENT_PI);
+    public void init() {
+        setRootRule(ARGUMENTS);
     }
 
     @Test
-    public void testValidStatementPi() {
+    public void testValidArguments() {
         assertThat(parser)
-                .matches("{}")
-                .matches(";")
-                .matches("if('anExpression')"
-                        + "{}")
-                .matches("if('anExpression')"
-                        + "{}"
-                        + "else "
-                        + "if('anotherExpression')"
-                        + "{}")
-                .matches("while(trueExpression){}")
-                .matches("do {} while (trueExpression);")
-                .matches("break;")
-                .matches("continue;")
-                .matches("return something;")
-                .matches("return this;")
-                .matches("throw someException;")
-                .matches("for(integer addition = 0; doSomething; updateIterator){}")
-                .matches("for(Object current:listOfObjects){}")
-                .matches("try{} catch(Object variable){} finally{}")
-                .matches("insert primaryExpression;")
-                .matches("delete primaryExpression;")
-                .matches("upsert primaryExpression;")
-                .matches("upsert primaryExpression primaryExpression;")
-                .matches("merge primaryExpression primaryExpression;");
+                .matches("(argument)")
+                .matches("(argument, null)")
+                .matches("()");
 
     }
+
+    @Test
+    public void testInvalidArguments() {
+        assertThat(parser)
+                .notMatches("")
+                .notMatches(")(")
+                .notMatches("argumentOutOfParenthesis()");
+
+    }
+
 }

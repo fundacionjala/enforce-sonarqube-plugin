@@ -110,7 +110,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BOOLEAN_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_FLOATING_POINT_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_LITERAL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DOT_NUMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FLOATING_POINT_LITERAL_NUMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEXADECIMAL_FLOATING_POINT_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.HEX_LITERAL;
@@ -119,8 +118,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NULL_LITERAL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMBER_DOT_NUMBER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NUMBER_EXPONENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.OCTAL_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STRING_LITERAL_STRING;
@@ -408,24 +405,16 @@ public class MostUsed {
     private static void decimalFloatingPointLiteral(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DECIMAL_FLOATING_POINT_LITERAL).is(
                 grammarBuilder.firstOf(
-                        NUMBER_DOT_NUMBER,
-                        DOT_NUMBER,
-                        NUMBER_EXPONENT)
-        );
-
-        grammarBuilder.rule(NUMBER_DOT_NUMBER).is(
-                grammarBuilder.oneOrMore(NUMERIC),
-                DOT,
-                NUMERIC
-        );
-
-        grammarBuilder.rule(DOT_NUMBER).is(
-                DOT,
-                grammarBuilder.oneOrMore(NUMERIC)
-        );
-
-        grammarBuilder.rule(NUMBER_EXPONENT).is(
-                NUMERIC
+                        grammarBuilder.sequence(
+                                grammarBuilder.oneOrMore(NUMERIC),
+                                DOT,
+                                NUMERIC
+                        ),
+                        grammarBuilder.sequence(
+                                DOT,
+                                grammarBuilder.oneOrMore(NUMERIC)
+                        ),
+                        NUMERIC)
         );
     }
 

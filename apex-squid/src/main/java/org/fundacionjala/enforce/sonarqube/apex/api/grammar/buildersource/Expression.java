@@ -77,7 +77,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOCATION_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTSPI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARRAY_DIMS_AND_INITS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARRAY_INITIALIZER;
@@ -89,13 +88,11 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EQUALITY_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXCLUSIVE_OR_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INSTANCE_OF_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LITERAL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_INITIAL_COLLECTION_VALUES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MAP_VALUES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MULTIPLICATIVE_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
@@ -108,9 +105,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RELATIONAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RESULT_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SHIFT_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_INITIAL_COLLECTION_VALUES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.UNARY_EXPRESSION_NOT_PLUS_MINUS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_INITIALIZER;
@@ -118,6 +113,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.MAP_AS
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 
 /**
  * This class contains constructors for Expression rules and its sub rules.
@@ -167,7 +165,7 @@ public class Expression {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void argumentsPI(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(ARGUMENTSPI).is(
+        grammarBuilder.rule(ARGUMENTS).is(
                 LPAREN,
                 grammarBuilder.optional(ARGUMENTS_LIST),
                 RPAREN
@@ -180,10 +178,9 @@ public class Expression {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void argumentsList(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(ARGUMENTS_LIST).is(
-                grammarBuilder.firstOf(EXPRESSION_PI, THIS),
+        grammarBuilder.rule(ARGUMENTS_LIST).is(grammarBuilder.firstOf(EXPRESSION, THIS),
                 grammarBuilder.zeroOrMore(COMMA,
-                        grammarBuilder.firstOf(EXPRESSION_PI, THIS))
+                        grammarBuilder.firstOf(EXPRESSION, THIS))
         );
     }
 
@@ -197,10 +194,8 @@ public class Expression {
     }
 
     public static void expressionPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(EXPRESSION_PI).is(
-                CONDITIONAL_EXPRESSION,
-                grammarBuilder.optional(
-                        grammarBuilder.sequence(ASSIGNMENT_OPERATOR, EXPRESSION_PI))
+        grammarBuilder.rule(EXPRESSION).is(CONDITIONAL_EXPRESSION,
+                grammarBuilder.optional(grammarBuilder.sequence(ASSIGNMENT_OPERATOR, EXPRESSION))
         );
     }
 
@@ -224,13 +219,11 @@ public class Expression {
     }
 
     public static void conditionalExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CONDITIONAL_EXPRESSION).is(
-                CONDITIONAL_OR_EXPRESSION,
-                grammarBuilder.optional(
-                        grammarBuilder.sequence(QUESTION,
-                                EXPRESSION_PI,
+        grammarBuilder.rule(CONDITIONAL_EXPRESSION).is(CONDITIONAL_OR_EXPRESSION,
+                grammarBuilder.optional(grammarBuilder.sequence(QUESTION,
+                                EXPRESSION,
                                 COLON,
-                                EXPRESSION_PI))
+                                EXPRESSION))
         );
     }
 
@@ -292,12 +285,9 @@ public class Expression {
     }
 
     public static void instanceOfExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(INSTANCE_OF_EXPRESSION).is(
-                RELATIONAL_EXPRESSION,
-                grammarBuilder.optional(
-                        grammarBuilder.sequence(
-                                INSTANCEOF,
-                                TYPE_PI))
+        grammarBuilder.rule(INSTANCE_OF_EXPRESSION).is(RELATIONAL_EXPRESSION,
+                grammarBuilder.optional(grammarBuilder.sequence(INSTANCEOF,
+                                TYPE))
         );
     }
 
@@ -317,7 +307,8 @@ public class Expression {
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
                                 grammarBuilder.firstOf(MLT, MGTEQU),
-                                ADDITIVE_EXPRESSION))
+                                ADDITIVE_EXPRESSION)
+                )
         );
     }
 
@@ -373,10 +364,8 @@ public class Expression {
     }
 
     public static void castExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CAST_EXPRESSION).is(
-                grammarBuilder.firstOf(
-                        grammarBuilder.sequence(LPAREN, TYPE_PI, RPAREN, UNARY_EXPRESSION),
-                        grammarBuilder.sequence(LPAREN, TYPE_PI, RPAREN, UNARY_EXPRESSION_NOT_PLUS_MINUS)
+        grammarBuilder.rule(CAST_EXPRESSION).is(grammarBuilder.firstOf(grammarBuilder.sequence(LPAREN, TYPE, RPAREN, UNARY_EXPRESSION),
+                        grammarBuilder.sequence(LPAREN, TYPE, RPAREN, UNARY_EXPRESSION_NOT_PLUS_MINUS)
                 )
         );
     }
@@ -389,19 +378,15 @@ public class Expression {
     }
 
     public static void primarySuffix(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(PRIMARY_SUFFIX).is(
-                grammarBuilder.firstOf(
-                        grammarBuilder.sequence(LBRACKET, EXPRESSION_PI, RBRACKET),
+        grammarBuilder.rule(PRIMARY_SUFFIX).is(grammarBuilder.firstOf(grammarBuilder.sequence(LBRACKET, EXPRESSION, RBRACKET),
                         grammarBuilder.sequence(DOT,
                                 ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS),
-                        ARGUMENTSPI)
+                        ARGUMENTS)
         );
     }
 
     public static void primaryPrefix(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(PRIMARY_PREFIX).is(
-                grammarBuilder.firstOf(
-                        LITERAL,
+        grammarBuilder.rule(PRIMARY_PREFIX).is(grammarBuilder.firstOf(LITERAL,
                         grammarBuilder.sequence(RESULT_TYPE, DOT, CLASS),
                         NAME,
                         grammarBuilder.sequence(
@@ -409,7 +394,7 @@ public class Expression {
                                 DOT,
                                 NAME
                         ),
-                        grammarBuilder.sequence(LPAREN, EXPRESSION_PI, RPAREN),
+                        grammarBuilder.sequence(LPAREN, EXPRESSION, RPAREN),
                         ALLOCATION_EXPRESSION
                 )
         );
@@ -425,43 +410,30 @@ public class Expression {
     }
 
     public static void allocationExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(ALLOCATION_EXPRESSION).is(
-                NEW, grammarBuilder.firstOf(
-                        grammarBuilder.sequence(CLASS_OR_INTERFACE_TYPE,
+        grammarBuilder.rule(ALLOCATION_EXPRESSION).is(NEW, grammarBuilder.firstOf(grammarBuilder.sequence(CLASS_OR_INTERFACE_TYPE,
                                 grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
-                                        grammarBuilder.sequence(ARGUMENTSPI,
+                                        grammarBuilder.sequence(ARGUMENTS,
                                                 grammarBuilder.optional(LBRACE, RBRACE)))),
-                        grammarBuilder.sequence(
-                                grammarBuilder.firstOf(LIST, SET, ITERATOR),
+                        grammarBuilder.sequence(grammarBuilder.firstOf(LIST, SET, ITERATOR),
                                 GENERIC_TYPE,
-                                grammarBuilder.firstOf(ARGUMENTSPI,
+                                grammarBuilder.firstOf(ARGUMENTS,
                                         grammarBuilder.sequence(
                                                 LBRACE,
-                                                SIMPLE_INITIAL_COLLECTION_VALUES,
+                                                grammarBuilder.optional(ARGUMENTS_LIST),
                                                 RBRACE))),
                         grammarBuilder.sequence(MAP, GENERIC_TYPE,
-                                grammarBuilder.firstOf(ARGUMENTSPI,
+                                grammarBuilder.firstOf(ARGUMENTS,
                                         grammarBuilder.sequence(LBRACE,
-                                                MAP_INITIAL_COLLECTION_VALUES,
+                                                grammarBuilder.optional(MAP_VALUES),
                                                 RBRACE)
                                 )
                         )
                 )
         );
-
-        grammarBuilder.rule(SIMPLE_INITIAL_COLLECTION_VALUES).is(
-                grammarBuilder.optional(ARGUMENTS_LIST)
-        );
-
-        grammarBuilder.rule(MAP_INITIAL_COLLECTION_VALUES).is(
-                grammarBuilder.optional(MAP_VALUES)
-        );
     }
 
     public static void arrayDimsAndInits(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(ARRAY_DIMS_AND_INITS).is(
-                grammarBuilder.firstOf(
-                        grammarBuilder.sequence(LBRACKET, EXPRESSION_PI, RBRACKET),
+        grammarBuilder.rule(ARRAY_DIMS_AND_INITS).is(grammarBuilder.firstOf(grammarBuilder.sequence(LBRACKET, EXPRESSION, RBRACKET),
                         grammarBuilder.sequence(BRACKETS, LBRACE, ARRAY_INITIALIZER, RBRACE)
                 )
         );
@@ -479,22 +451,20 @@ public class Expression {
     public static void variableInitializer(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(VARIABLE_INITIALIZER).is(
                 grammarBuilder.firstOf(
-                        THIS,
-                        EXPRESSION_PI
+                        EXPRESSION,
+                        THIS
                 )
         );
     }
 
     public static void mapValues(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(MAP_VALUES).is(grammarBuilder.sequence(
-                EXPRESSION_PI,
+        grammarBuilder.rule(MAP_VALUES).is(grammarBuilder.sequence(EXPRESSION,
                 MAP_ASSIGN,
-                EXPRESSION_PI),
-                grammarBuilder.zeroOrMore(grammarBuilder.sequence(
-                        COMMA,
-                        EXPRESSION_PI,
+                EXPRESSION),
+                grammarBuilder.zeroOrMore(grammarBuilder.sequence(COMMA,
+                        EXPRESSION,
                         MAP_ASSIGN,
-                        EXPRESSION_PI))
+                        EXPRESSION))
         );
     }
 
@@ -506,18 +476,13 @@ public class Expression {
     }
 
     public static void statementExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(STATEMENT_EXPRESSION).is(
-                grammarBuilder.firstOf(
-                        PRE_INCREMENT_EXPRESSION,
+        grammarBuilder.rule(STATEMENT_EXPRESSION).is(grammarBuilder.firstOf(PRE_INCREMENT_EXPRESSION,
                         PRE_DECREMENT_EXPRESSION,
-                        grammarBuilder.sequence(
-                                PRIMARY_EXPRESSION,
-                                grammarBuilder.zeroOrMore(
-                                        grammarBuilder.firstOf(
-                                                grammarBuilder.sequence(PLUS, PLUS),
+                        grammarBuilder.sequence(PRIMARY_EXPRESSION,
+                                grammarBuilder.zeroOrMore(grammarBuilder.firstOf(grammarBuilder.sequence(PLUS, PLUS),
                                                 grammarBuilder.sequence(MINUS, MINUS),
                                                 grammarBuilder.sequence(ASSIGNMENT_OPERATOR,
-                                                        grammarBuilder.firstOf(EXPRESSION_PI, THIS))
+                                                        grammarBuilder.firstOf(EXPRESSION, THIS))
                                         )
                                 )
                         )

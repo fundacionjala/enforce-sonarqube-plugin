@@ -26,14 +26,14 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
-    
+public class ApexGrammarConstructorDeclarationTest extends ApexRuleTest {
+
     @Before
     public void init() {
-        setRootRule(CONSTRUCTOR_DECLARATION_PI);
+        setRootRule(CONSTRUCTOR_DECLARATION);
     }
 
     @Test
@@ -57,12 +57,12 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
                         + "}")
                 .matches("data (ClassType parameter) {}")
                 .matches("group (integer parameter) {super(parameter);}");
-                
+
     }
-    
+
     @Test
     public void testInvalidConstructorDeclarations() {
-                assertThat(parser)
+        assertThat(parser)
                 .notMatches("myClass)( {"
                         + "this(blockstatement);"
                         + "}")
@@ -74,7 +74,7 @@ public class ApexGrammarConstructorDeclarationPITest extends ApexRuleTest{
                 .notMatches("myClass(lowercaselasstype otherClass) { "
                         + "super()"
                         + "}");
-                
+
     }
-    
+
 }

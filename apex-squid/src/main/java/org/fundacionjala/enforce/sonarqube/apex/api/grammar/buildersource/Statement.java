@@ -60,24 +60,22 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_UPSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_EACH_LOOP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_INIT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_LOOP;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION_SEMICOLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRIMARY_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_PI;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATORS_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR_PI;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
 
 /**
  * This class contains constructors for Statement rules and its sub rules.
@@ -113,16 +111,12 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void blockStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(BLOCK_STATEMENT).is(
-                grammarBuilder.firstOf(
-                        LOCAL_VARIABLE_DECLARATION_SEMICOLON,
-                        STATEMENT_PI
+        grammarBuilder.rule(BLOCK_STATEMENT).is(grammarBuilder.firstOf(grammarBuilder.sequence(
+                                LOCAL_VARIABLE_DECLARATION,
+                                SEMICOLON
+                        ),
+                        STATEMENT
                 )
-        );
-
-        grammarBuilder.rule(LOCAL_VARIABLE_DECLARATION_SEMICOLON).is(
-                LOCAL_VARIABLE_DECLARATION,
-                SEMICOLON
         );
     }
 
@@ -132,21 +126,19 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void statementPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(STATEMENT_PI).is(
-                grammarBuilder.firstOf(
-                        BLOCK,
+        grammarBuilder.rule(STATEMENT).is(grammarBuilder.firstOf(BLOCK,
                         grammarBuilder.sequence(DML_OPERATIONS, SEMICOLON),
                         EMPTY_STATEMENT,
                         COMPOUND_STATEMENT_EXPRESSION,
                         IF_STATEMENT,
-                        WHILE_STATEMENT_PI,
+                        WHILE_STATEMENT,
                         DO_STATEMENT,
-                        FOR_STATEMENT_PI,
+                        FOR_STATEMENT,
                         BREAK_STATEMENT,
                         CONTINUE_STATEMENT,
-                        RETURN_STATEMENT_PI,
+                        RETURN_STATEMENT,
                         THROW_STATEMENT,
-                        TRY_STATEMENT_PI
+                        TRY_STATEMENT
                 )
         );
     }
@@ -168,15 +160,13 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void ifStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(IF_STATEMENT).is(
-                IF,
+        grammarBuilder.rule(IF_STATEMENT).is(IF,
                 LPAREN,
-                EXPRESSION_PI,
+                EXPRESSION,
                 RPAREN,
-                STATEMENT_PI,
-                grammarBuilder.optional(
-                        ELSE,
-                        STATEMENT_PI
+                STATEMENT,
+                grammarBuilder.optional(ELSE,
+                        STATEMENT
                 )
         );
     }
@@ -187,12 +177,11 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void whileStatementPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(WHILE_STATEMENT_PI).is(
-                WHILE,
+        grammarBuilder.rule(WHILE_STATEMENT).is(WHILE,
                 LPAREN,
-                EXPRESSION_PI,
+                EXPRESSION,
                 RPAREN,
-                STATEMENT_PI
+                STATEMENT
         );
     }
 
@@ -202,12 +191,11 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter
      */
     private static void doStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(DO_STATEMENT).is(
-                DO,
-                STATEMENT_PI,
+        grammarBuilder.rule(DO_STATEMENT).is(DO,
+                STATEMENT,
                 WHILE,
                 LPAREN,
-                EXPRESSION_PI,
+                EXPRESSION,
                 RPAREN,
                 SEMICOLON
         );
@@ -243,9 +231,8 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void returnStatementPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(RETURN_STATEMENT_PI).is(
-                RETURN,
-                grammarBuilder.firstOf(EXPRESSION_PI, THIS),
+        grammarBuilder.rule(RETURN_STATEMENT).is(RETURN,
+                grammarBuilder.firstOf(EXPRESSION, THIS),
                 SEMICOLON
         );
     }
@@ -256,9 +243,8 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void throwStatement(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(THROW_STATEMENT).is(
-                THROW,
-                EXPRESSION_PI,
+        grammarBuilder.rule(THROW_STATEMENT).is(THROW,
+                EXPRESSION,
                 SEMICOLON
         );
     }
@@ -269,14 +255,13 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void forEachLoop(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FOR_EACH_LOOP).is(
-                LPAREN,
-                TYPE_PI,
+        grammarBuilder.rule(FOR_EACH_LOOP).is(LPAREN,
+                TYPE,
                 ALLOWED_KEYWORDS_AS_IDENTIFIER,
                 COLON,
-                EXPRESSION_PI,
+                EXPRESSION,
                 RPAREN,
-                STATEMENT_PI
+                STATEMENT
         );
     }
 
@@ -286,21 +271,14 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void forInit(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FOR_INIT).is(
-                grammarBuilder.firstOf(
-                        LOCAL_VARIABLE_DECLARATION,
-                        VARIABLE_DECLARATORS_PI
+        grammarBuilder.rule(FOR_INIT).is(grammarBuilder.firstOf(LOCAL_VARIABLE_DECLARATION,
+                        grammarBuilder.sequence(VARIABLE_DECLARATOR,
+                                grammarBuilder.zeroOrMore(COMMA,
+                                        VARIABLE_DECLARATOR
+                                )
+                        )
                 )
         );
-
-        grammarBuilder.rule(VARIABLE_DECLARATORS_PI).is(
-                VARIABLE_DECLARATOR_PI,
-                grammarBuilder.zeroOrMore(
-                        COMMA,
-                        VARIABLE_DECLARATOR_PI
-                )
-        );
-
     }
 
     /**
@@ -309,15 +287,14 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void forLoop(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FOR_LOOP).is(
-                LPAREN,
+        grammarBuilder.rule(FOR_LOOP).is(LPAREN,
                 grammarBuilder.optional(FOR_INIT),
                 SEMICOLON,
-                grammarBuilder.optional(EXPRESSION_PI),
+                grammarBuilder.optional(EXPRESSION),
                 SEMICOLON,
-                grammarBuilder.optional(EXPRESSION_PI),
+                grammarBuilder.optional(EXPRESSION),
                 RPAREN,
-                STATEMENT_PI
+                STATEMENT
         );
     }
 
@@ -327,7 +304,7 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void forStatementPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FOR_STATEMENT_PI).is(
+        grammarBuilder.rule(FOR_STATEMENT).is(
                 FOR,
                 grammarBuilder.firstOf(
                         FOR_EACH_LOOP,
@@ -342,7 +319,7 @@ public class Statement {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void tryStatementPi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TRY_STATEMENT_PI).is(
+        grammarBuilder.rule(TRY_STATEMENT).is(
                 TRY,
                 BLOCK,
                 grammarBuilder.oneOrMore(

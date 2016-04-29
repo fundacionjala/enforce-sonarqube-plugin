@@ -26,23 +26,31 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarWhileStatemetPiTest extends ApexRuleTest {
+public class ApexGrammarExplicitConstructorInvocationTest extends ApexRuleTest {
 
     @Before
-    public void setUp() {
-        setRootRule(WHILE_STATEMENT_PI);
+    public void init() {
+        setRootRule(EXPLICIT_CONSTRUCTOR_INVOCATION);
     }
 
     @Test
-    public void testValidWhileStatementPI() {
+    public void testValidExplicitConstrutorInvocations() {
         assertThat(parser)
-                .matches("while(trueExpression)"
-                        + "{}")
-                .matches("while(something)"
-                        + "while(anotherthing)"
-                        + "{}");
+                .matches("this(something);")
+                .matches("super(something);")
+                .matches("super(k);");
+    }
+
+    @Test
+    public void testInvalidExplicitConstructorInvocations() {
+        assertThat(parser)
+                .notMatches("This(something);")
+                .notMatches("super(wrong parameter);")
+                .notMatches("super(explicitWithoutSemicolon)")
+                .notMatches("super(two parameters);")
+                .notMatches("this(four parameters for this)");
     }
 }

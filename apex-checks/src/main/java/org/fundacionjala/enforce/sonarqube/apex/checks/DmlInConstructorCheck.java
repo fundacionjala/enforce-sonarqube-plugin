@@ -61,7 +61,7 @@ public class DmlInConstructorCheck extends DmlStatementCheck {
      * The variables are initialized and subscribe the base rule.
      */
     public DmlInConstructorCheck() {
-        ruleKey = ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION_PI;
+        ruleKey = ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
         message = MESSAGE;
     }
 }

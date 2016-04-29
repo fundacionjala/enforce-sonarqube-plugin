@@ -26,26 +26,29 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarMethodDeclarationPITest extends ApexRuleTest {
+public class ApexGrammarVariableDeclaratorTest extends ApexRuleTest {
 
     @Before
-    public void init() {
-        setRootRule(METHOD_DECLARATION_PI);
+    public void setUp() {
+        setRootRule(VARIABLE_DECLARATOR);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidVariableDeclarator() {
         assertThat(parser)
-                .matches("integer isMethod(){}")
-                .matches("void isMethod(){}")
-                .matches("bool isMethod(integer x, final bool y){}")
-                .matches("string isMethod(bool y){}")
-                .matches("floatn isMethod(integer a, final integer b, integer c){}")
-                .matches("void isMethod();")
-                .matches("bool isMethod(integer x, final bool y);")
-                .matches("bool IsMethod(){integer myVariable = 3;}");
+                .matches("transient = this")
+                .matches("summ = 1")
+                .matches("group")
+                .matches("aNewVariableWithNoValue")
+                .matches("myVariable = this.that");
+    }
+
+    @Test
+    public void testInvalidVariableDeclarator() {
+        assertThat(parser)
+                .notMatches("");
     }
 }

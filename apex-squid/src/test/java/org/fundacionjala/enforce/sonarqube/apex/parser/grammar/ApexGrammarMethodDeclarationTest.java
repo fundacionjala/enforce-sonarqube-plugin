@@ -26,31 +26,26 @@ package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarFieldDeclarationPiTest extends ApexRuleTest {
+public class ApexGrammarMethodDeclarationTest extends ApexRuleTest {
 
     @Before
-    public void setUp() {
-        setRootRule(FIELD_DECLARATION_PI);
+    public void init() {
+        setRootRule(METHOD_DECLARATION);
     }
 
     @Test
-    public void testValidFieldDeclaration() {
+    public void positiveRules() {
         assertThat(parser)
-                .matches("integer myVariable;")
-                .matches("integer addition,takeaway;")
-                .matches("Boolean isActive = true;")
-                .matches("integer addition = 0;")
-                .matches("ClassType transient;")
-                .matches("Iterator iterator = iteratorParameter;");
-    }
-    
-    @Test
-    public void testInvalidFieldDeclaration() {
-        assertThat(parser)
-                .notMatches("char varCharMissingSemicolon")
-                .notMatches("ClassType missingValue =;");
+                .matches("integer isMethod(){}")
+                .matches("void isMethod(){}")
+                .matches("bool isMethod(integer x, final bool y){}")
+                .matches("string isMethod(bool y){}")
+                .matches("floatn isMethod(integer a, final integer b, integer c){}")
+                .matches("void isMethod();")
+                .matches("bool isMethod(integer x, final bool y);")
+                .matches("bool IsMethod(){integer myVariable = 3;}");
     }
 }

@@ -54,7 +54,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.REFERENCE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_PI;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 
 /**
  * This class contains constructors for Type rules and its sub rules.
@@ -108,19 +108,16 @@ public class Type {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void typePi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TYPE_PI).is(grammarBuilder.firstOf(
-                REFERENCE_TYPE,
-                grammarBuilder.sequence(
-                        MAP,
+        grammarBuilder.rule(TYPE).is(grammarBuilder.firstOf(REFERENCE_TYPE,
+                grammarBuilder.sequence(MAP,
                         LT,
-                        TYPE_PI,
+                        TYPE,
                         COMMA,
-                        TYPE_PI,
+                        TYPE,
                         GT),
-                grammarBuilder.sequence(
-                        grammarBuilder.firstOf(LIST, SET, ITERATOR),
+                grammarBuilder.sequence(grammarBuilder.firstOf(LIST, SET, ITERATOR),
                         LT,
-                        TYPE_PI,
+                        TYPE,
                         GT)
         ));
     }
@@ -160,10 +157,9 @@ public class Type {
     }
 
     private static void genericType(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(GENERIC_TYPE).is(
-                LT,
-                TYPE_PI,
-                grammarBuilder.optional(COMMA, TYPE_PI),
+        grammarBuilder.rule(GENERIC_TYPE).is(LT,
+                TYPE,
+                grammarBuilder.optional(COMMA, TYPE),
                 GT
         );
     }

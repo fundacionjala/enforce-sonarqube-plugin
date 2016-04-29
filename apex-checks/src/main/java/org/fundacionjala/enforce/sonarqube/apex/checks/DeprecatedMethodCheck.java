@@ -68,7 +68,7 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION_PI);
+        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
     }
 
     /**
