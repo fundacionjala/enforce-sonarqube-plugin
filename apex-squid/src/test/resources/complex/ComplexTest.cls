@@ -4,7 +4,7 @@ private class ComplexTest
     private class WebServiceMockImpl implements WebServiceMock 
 	{
 		public void doInvoke(
-			Object stub, Object request, Map<String, Object> response,
+			Object stub, Object request, map<String, Object> response,
 			String endpoint, String soapAction, String requestName,
 			String responseNS, String responseName, String responseType) 
 		{

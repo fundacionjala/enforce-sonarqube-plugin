@@ -8,7 +8,7 @@ public with sharing class ComplexClass
 	public PageReference constructResponse()
 	{
 		try {
-			List<Node> nodes = new List<Node>();
+			list<Node> nodes = new list<Node>();
 			String node = ApexPages.currentPage().getParameters().get('node');
 			if(node=='root')
 			{
@@ -26,7 +26,7 @@ public with sharing class ComplexClass
 			else
 			{
 				MetadataService.MetadataPort service = MetadataServiceExamples.createService();		
-				List<MetadataService.ListMetadataQuery> queries = new List<MetadataService.ListMetadataQuery>();		
+				list<MetadataService.ListMetadataQuery> queries = new list<MetadataService.ListMetadataQuery>();		
 				MetadataService.ListMetadataQuery query = new MetadataService.ListMetadataQuery();
 				query.type_x = node;
 				queries.add(query);		
@@ -41,7 +41,7 @@ public with sharing class ComplexClass
 			Data = JSON.serialize(nodes);			
 		}
 		catch (Exception e) {
-			Data = JSON.serialize(new List<Node> { new FolderNode('error', e.getMessage(), false, null) });	
+			Data = JSON.serialize(new list<Node> { new FolderNode('error', e.getMessage(), false, null) });	
 		}
 		return null;	
 	}
@@ -54,12 +54,12 @@ public with sharing class ComplexClass
 		public boolean leaf;
 		public boolean checked;
 		public boolean expanded;
-		public List<Node> children;			
+		public list<Node> children;			
 	}
 	
 	public class FolderNode extends Node
 	{
-		public FolderNode(String id, String text, boolean expanded, List<Node> children)
+		public FolderNode(String id, String text, boolean expanded, list<Node> children)
 		{	
 			this.id = id;
 			this.text = text;

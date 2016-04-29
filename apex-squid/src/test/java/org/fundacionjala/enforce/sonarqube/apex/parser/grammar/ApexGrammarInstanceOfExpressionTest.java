@@ -43,8 +43,8 @@ public class ApexGrammarInstanceOfExpressionTest extends ApexRuleTest {
                 .matches("a")
                 .matches("someExpression")
                 .matches("thisThing instanceof someType")
-                .matches("thisThing instanceof List<someType>")
-                .matches("thisThing instanceof Map<someKey, someType>")
+                .matches("thisThing instanceof list<someType>")
+                .matches("thisThing instanceof map<someKey, someType>")
                 //with nested Relational Expressions
                 .matches("a < b")
                 .matches("a >= b instanceof SomeClass")

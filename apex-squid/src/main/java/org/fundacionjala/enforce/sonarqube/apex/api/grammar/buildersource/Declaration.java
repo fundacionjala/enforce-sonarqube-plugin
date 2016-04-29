@@ -85,6 +85,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_ERASURE_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPLICIT_CONSTRUCTOR_INVOCATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION;
@@ -107,26 +109,26 @@ public class Declaration {
         typeClass(grammarBuilder);
         extendsList(grammarBuilder);
         implementsList(grammarBuilder);
-        typeDeclarationPi(grammarBuilder);
+        typeDeclaration(grammarBuilder);
         methodName(grammarBuilder);
         propertyDeclaration(grammarBuilder);
         accessor(grammarBuilder);
         accessorBody(grammarBuilder);
         accessorDeclaration(grammarBuilder);
         accessorDeclarations(grammarBuilder);
-        methodDeclarationPI(grammarBuilder);
+        methodDeclaration(grammarBuilder);
         resultType(grammarBuilder);
         formalParameters(grammarBuilder);
         formalParameter(grammarBuilder);
-        constructorDeclarationPI(grammarBuilder);
-        explicitConstructorInvocationPI(grammarBuilder);
+        constructorDeclaration(grammarBuilder);
+        explicitConstructorInvocation(grammarBuilder);
         classOrInterfaceDeclaration(grammarBuilder);
         getSharingRules(grammarBuilder);
         enumDeclaration(grammarBuilder);
         enumBody(grammarBuilder);
         initializerBlockStatement(grammarBuilder);
-        fieldDeclarationPi(grammarBuilder);
-        variableDeclaratorPi(grammarBuilder);
+        fieldDeclaration(grammarBuilder);
+        variableDeclarator(grammarBuilder);
         initializer(grammarBuilder);
         initializerBlock(grammarBuilder);
         initializerBlockMember(grammarBuilder);
@@ -135,7 +137,7 @@ public class Declaration {
         classOrInterfaceBody(grammarBuilder);
     }
 
-    private static void typeDeclarationPi(LexerfulGrammarBuilder grammarBuilder) {
+    private static void typeDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE_DECLARATION).is(
                 MODIFIERS,
                 grammarBuilder.firstOf(
@@ -152,8 +154,8 @@ public class Declaration {
     private static void implementsList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(IMPLEMENTS_LIST).is(
                 IMPLEMENTS,
-                NAME,
-                grammarBuilder.zeroOrMore(COMMA, NAME)
+                CLASS_OR_INTERFACE_ERASURE_TYPE,
+                grammarBuilder.zeroOrMore(COMMA, CLASS_OR_INTERFACE_ERASURE_TYPE)
         );
     }
 
@@ -165,7 +167,7 @@ public class Declaration {
     private static void extendsList(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXTENDS_LIST).is(
                 EXTENDS,
-                grammarBuilder.firstOf(EXCEPTION, NAME)
+                grammarBuilder.firstOf(EXCEPTION, CLASS_OR_INTERFACE_TYPE)
         );
     }
 
@@ -199,7 +201,7 @@ public class Declaration {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void constructorDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
+    private static void constructorDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONSTRUCTOR_DECLARATION).is(grammarBuilder.firstOf(
                 ALLOWED_KEYWORDS_AS_IDENTIFIER,
                 SPECIAL_KEYWORDS_AS_IDENTIFIER),
@@ -216,7 +218,7 @@ public class Declaration {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void explicitConstructorInvocationPI(LexerfulGrammarBuilder grammarBuilder) {
+    private static void explicitConstructorInvocation(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXPLICIT_CONSTRUCTOR_INVOCATION).is(grammarBuilder.firstOf(THIS, SUPER),
                 ARGUMENTS,
                 SEMICOLON
@@ -283,7 +285,7 @@ public class Declaration {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void methodDeclarationPI(LexerfulGrammarBuilder grammarBuilder) {
+    private static void methodDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(METHOD_DECLARATION).is(
                 RESULT_TYPE,
                 METHOD_IDENTIFIER,
@@ -320,7 +322,9 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void formalParameter(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(FORMAL_PARAMETER).is(grammarBuilder.optional(FINAL), TYPE,
+        grammarBuilder.rule(FORMAL_PARAMETER).is(
+                grammarBuilder.optional(FINAL),
+                TYPE,
                 grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER,
                         SPECIAL_KEYWORDS_AS_IDENTIFIER)
         );
@@ -365,7 +369,7 @@ public class Declaration {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void fieldDeclarationPi(LexerfulGrammarBuilder grammarBuilder) {
+    private static void fieldDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_DECLARATION).is(TYPE,
                 VARIABLE_DECLARATOR,
                 grammarBuilder.zeroOrMore(COMMA,
@@ -380,7 +384,7 @@ public class Declaration {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void variableDeclaratorPi(LexerfulGrammarBuilder grammarBuilder) {
+    private static void variableDeclarator(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(VARIABLE_DECLARATOR).is(
                 grammarBuilder.firstOf(
                         ALLOWED_KEYWORDS_AS_IDENTIFIER,

@@ -47,14 +47,14 @@ public class ApexGrammarAllocationExpressionTest extends ApexRuleTest {
                 .matches("new SomeType[5-2*4/y]")
                 .matches("new SomeType[a.b().c[1]]")
                 .matches("new SomeType[]{1, 2, x, y, this}")
-                .matches("new List<SomeType>()")
-                .matches("new Iterator<set<someType>>()")
+                .matches("new list<SomeType>()")
+                .matches("new iterator<set<someType>>()")
                 .matches("new set<SomeType>(p1, 3, null, this)")
                 .matches("new set<SomeType>{}")
-                .matches("new Map<K, V>()")
-                .matches("new Map<K, V>{}")
-                .matches("new Map<K, V>(1, 2 , x, y)")
-                .matches("new Map<K, V>{k1 => 2 , x => y}");
+                .matches("new map<K, V>()")
+                .matches("new map<K, V>{}")
+                .matches("new map<K, V>(1, 2 , x, y)")
+                .matches("new map<K, V>{k1 => 2 , x => y}");
     }
 
     @Test

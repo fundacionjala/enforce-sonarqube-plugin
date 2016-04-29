@@ -131,7 +131,7 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "\n"
                         + "    protected abstract without sharing class subClass extends aClass {\n"
                         + "\n"
-                        + "        protected List<integer> abstractMethod(List<integer> par1, integer par2) {\n"
+                        + "        protected list<integer> abstractMethod(list<integer> par1, integer par2) {\n"
                         + "            if (x == 0) {\n"
                         + "                par1.add(par2);\n"
                         + "            }\n"
@@ -168,36 +168,43 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "        SomeStaticClass.doOtherThing(null, 0, anotherParam, AProperty);\n"
                         + "    }\n"
                         + "\n"
-                        + "    public SomeClass (List<Map<AKeyType, AValueType>> mapsList, integer aParam) {\n"
+                        + "    public SomeClass (list<map<AKeyType, AValueType>> mapsList, integer aParam) {\n"
                         + "        while (!mapsList.isEmpty()) {\n"
                         + "                mapsList.remove(mapsList.get(aParam));\n"
                         + "        }\n"
                         + "    }\n"
                         + "\n"
                         + "    @someAnnotation\n"
-                        + "    public global static void aMethodWithLoops(List<integer> collection) {\n"
+                        + "    public global static void aMethodWithLoops(list<integer> collection) {\n"
                         + "        for(integer i = ((x%2 == 0)? 0 : 1); (i/5) <= 10; i++) {\n"
                         + "                doSomething(i);\n"
                         + "        }\n"
                         + "        for(integer item : collection) {\n"
                         + "                doSomeOtherThing(item);\n"
                         + "        }\n"
-                        + "        Map<Key, Valu> aMap = new Map<Key, Valu>{0 => a, 1 =>b, 2=>(c<d ? c:d)};\n"
+                        + "        map<Key, Valu> aMap = new map<Key, Valu>{0 => a, 1 =>b, 2=>(c<d ? c:d)};\n"
                         + "    }\n"
                         + "}"
                 );
     }
 
     @Test
-    public void complexExternalClassesTest() throws IOException {
+    public void complexExternalClassTest() throws IOException {
         String fileToString = readFileToString("src/test/resources/complex/ComplexClass.cls",
                 StandardCharsets.UTF_8);
         assertThat(parser).matches(fileToString);
     }
     
     @Test
-    public void complexExternalTestClassesTest() throws IOException {
+    public void complexExternalTestClassTest() throws IOException {
         String fileToString = readFileToString("src/test/resources/complex/ComplexTest.cls",
+                StandardCharsets.UTF_8);
+        assertThat(parser).matches(fileToString);
+    }
+    
+    @Test
+    public void complexExternalViatraClassTest() throws IOException {
+        String fileToString = readFileToString("src/test/resources/complex/ComplexClassViatra.cls",
                 StandardCharsets.UTF_8);
         assertThat(parser).matches(fileToString);
     }

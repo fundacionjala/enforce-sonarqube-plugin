@@ -51,6 +51,7 @@ public class ApexGrammarExtendsListTest extends ApexRuleTest {
     public void positiveRules() {
         assertThat(parser)
                 .matches("extends MyClass")
+                .matches("extends MyClass.AType")
                 .matches("extends exception")
                 .matches("extends MyClass1");
     }
