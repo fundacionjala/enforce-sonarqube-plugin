@@ -33,7 +33,8 @@ public enum ApexTokenType implements TokenType {
 
     NEW_LINE,
     STRING,
-    NUMERIC;
+    NUMERIC,
+    HEXADECIMAL;
 
     @Override
     public String getName() {

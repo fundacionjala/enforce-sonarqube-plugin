@@ -71,7 +71,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
     public String format = DEFAULT;
 
     /**
-     * Manages the patron of rule.
+     * Manages the pattern of rule.
      */
     private Pattern pattern = null;
 
@@ -81,7 +81,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
     @Override
     public void init() {
         pattern = Pattern.compile(format);
-        subscribeTo(ApexGrammarRuleKey.TYPE_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION);
     }
 
     /**
@@ -92,7 +92,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.CLASS_NAME).getTokenValue();
+        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.NAME).getTokenValue();
         if (!pattern.matcher(className).matches()) {
             getContext().createLineViolation(this,
                     "Rename class \"{0}\" to match the regular expression {1}.", astNode, className, format);

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.GenericTokenType;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -35,6 +36,8 @@ import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 
 /**
  * Verifies if a test method contains invalid asserts.
@@ -78,7 +81,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_MEMBER);
     }
 
     /**
@@ -89,20 +92,20 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (!isTest(astNode)) {
+        AstNode modifierChild = astNode.getFirstDescendant(MODIFIERS);
+        if (!isTest(modifierChild)) {
             return;
         }
         List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.ARGUMENTS);
-        expressions.forEach(expression -> {
-            if (isAssert(expression)) {
-                String first = getValue(expression, 0);
-                if (Objects.equals(first, "true")) {
-                    getContext().createLineViolation(this, ASSERT_MESSAGE, expression);
-                } else {
-                    String second = getValue(expression, SECOND_ARGUMENT);
-                    if (Objects.equals(first, second)) {
-                        getContext().createLineViolation(this, ASSERT_EQUALS_MESSAGE, expression);
-                    }
+        expressions.stream().filter((expression) -> (isAssert(expression))).forEach((expression) -> {
+            AstNode firstChild = expression.getFirstChild(ARGUMENTS_LIST);
+            String first = firstChild.getChildren().get(0).getTokenValue();
+            if (Objects.equals(first, "true")) {
+                getContext().createLineViolation(this, ASSERT_MESSAGE, expression);
+            } else {
+                String second = firstChild.getChildren().get(2).getTokenValue();
+                if (Objects.equals(first, second)) {
+                    getContext().createLineViolation(this, ASSERT_EQUALS_MESSAGE, expression);
                 }
             }
         });
@@ -115,20 +118,16 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
      * @return the analysis result.
      */
     private boolean isAssert(AstNode expression) {
-        AstNode parent = expression.getParent();
-        return parent.getTokenValue().matches("assert(Equals)?");
-    }
-
-    /**
-     * Returns the token value from a requested index.
-     *
-     * @param expression current expression.
-     * @param index requested index.
-     * @return the value.
-     */
-    private String getValue(AstNode expression, int index) {
-        List<AstNode> arguments = expression.getChildren();
-        return (arguments.size() < index) ? null
-                : arguments.get(index).getTokenValue();
+        AstNode parent = expression.getParent().getParent();
+        List<AstNode> children = parent.getChildren();
+        for (AstNode child : children) {
+            List<AstNode> descendants = child.getDescendants(GenericTokenType.IDENTIFIER);
+            for (AstNode descendant : descendants) {
+                if (descendant.getTokenValue().matches("assert(Equals)?")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
