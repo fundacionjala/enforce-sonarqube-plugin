@@ -190,7 +190,14 @@ public class ApexGrammarTest extends ApexRuleTest {
 
     @Test
     public void complexExternalClassesTest() throws IOException {
-        String fileToString = readFileToString("src/test/resources/complex/MetadataDataController.cls",
+        String fileToString = readFileToString("src/test/resources/complex/ComplexClass.cls",
+                StandardCharsets.UTF_8);
+        assertThat(parser).matches(fileToString);
+    }
+    
+    @Test
+    public void complexExternalTestClassesTest() throws IOException {
+        String fileToString = readFileToString("src/test/resources/complex/ComplexTest.cls",
                 StandardCharsets.UTF_8);
         assertThat(parser).matches(fileToString);
     }

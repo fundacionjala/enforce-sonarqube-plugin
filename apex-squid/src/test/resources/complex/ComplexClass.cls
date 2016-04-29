@@ -1,4 +1,4 @@
-public with sharing class MetadataDataController 
+public with sharing class ComplexClass 
 {
 	private static final Integer METADATA_API_VERSION = 
 		Integer.valueOf(new MetadataService.MetadataPort().endpoint_x.substringAfterLast('/'));

@@ -39,6 +39,7 @@ public class ApexGrammarReturnStatementTest extends ApexRuleTest {
     @Test
     public void testValidReturnStatement() {
         assertThat(parser)
+                .matches("return;")
                 .matches("return something;")
                 .matches("return this;");
     }
