@@ -42,11 +42,13 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VIRTUAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.AT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_ERASURE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
@@ -65,10 +67,11 @@ public class Type {
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         annotation(grammarBuilder);
         modifiers(grammarBuilder);
-        typePi(grammarBuilder);
+        type(grammarBuilder);
         referenceType(grammarBuilder);
         simpleType(grammarBuilder);
         classOrInterfaceType(grammarBuilder);
+        classOrInterfaceErasureType(grammarBuilder);
         genericType(grammarBuilder);
     }
 
@@ -107,15 +110,17 @@ public class Type {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void typePi(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(TYPE).is(grammarBuilder.firstOf(REFERENCE_TYPE,
+    private static void type(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(TYPE).is(grammarBuilder.firstOf(
+                REFERENCE_TYPE,
                 grammarBuilder.sequence(MAP,
                         LT,
                         TYPE,
                         COMMA,
                         TYPE,
                         GT),
-                grammarBuilder.sequence(grammarBuilder.firstOf(LIST, SET, ITERATOR),
+                grammarBuilder.sequence(
+                        grammarBuilder.firstOf(LIST, SET, ITERATOR),
                         LT,
                         TYPE,
                         GT)
@@ -153,7 +158,30 @@ public class Type {
         grammarBuilder.rule(CLASS_OR_INTERFACE_TYPE).is(
                 grammarBuilder.firstOf(
                         ALLOWED_KEYWORDS_AS_IDENTIFIER,
-                        SPECIAL_KEYWORDS_AS_IDENTIFIER));
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER),
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.sequence(DOT,
+                                grammarBuilder.firstOf(
+                                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                        SPECIAL_KEYWORDS_AS_IDENTIFIER))
+                ));
+    }
+
+    private static void classOrInterfaceErasureType(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(CLASS_OR_INTERFACE_ERASURE_TYPE).is(
+                CLASS_OR_INTERFACE_TYPE,
+                grammarBuilder.optional(
+                        grammarBuilder.sequence(
+                                LT,
+                                TYPE,
+                                grammarBuilder.zeroOrMore(
+                                        COMMA,
+                                        TYPE
+                                ),
+                                GT
+                        )
+                )
+        );
     }
 
     private static void genericType(LexerfulGrammarBuilder grammarBuilder) {

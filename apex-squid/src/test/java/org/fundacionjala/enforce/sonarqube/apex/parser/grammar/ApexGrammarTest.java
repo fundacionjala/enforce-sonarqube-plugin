@@ -23,6 +23,11 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -181,5 +186,32 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "    }\n"
                         + "}"
                 );
+    }
+
+    @Test
+    public void complexExternalClassTest() throws IOException {
+        String fileToString = readFileToString("src/test/resources/complex/ComplexClass.cls",
+                StandardCharsets.UTF_8);
+        assertThat(parser).matches(fileToString);
+    }
+    
+    @Test
+    public void complexExternalTestClassTest() throws IOException {
+        String fileToString = readFileToString("src/test/resources/complex/ComplexTest.cls",
+                StandardCharsets.UTF_8);
+        assertThat(parser).matches(fileToString);
+    }
+    
+    @Test
+    public void complexExternalViatraClassTest() throws IOException {
+        String fileToString = readFileToString("src/test/resources/complex/ComplexClassViatra.cls",
+                StandardCharsets.UTF_8);
+        assertThat(parser).matches(fileToString);
+    }
+
+    private String readFileToString(String path, Charset encoding)
+            throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
     }
 }

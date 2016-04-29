@@ -40,6 +40,7 @@ public class ApexGrammarAllocationExpressionTest extends ApexRuleTest {
     public void positiveRules() {
         assertThat(parser)
                 .matches("new SomeType()")
+                .matches("new AnotherClass.SomeType()")
                 .matches("new SomeType(p1, p2, 0, null)")
                 .matches("new SomeType(p1, p2) {}")
                 .matches("new SomeType[5]")

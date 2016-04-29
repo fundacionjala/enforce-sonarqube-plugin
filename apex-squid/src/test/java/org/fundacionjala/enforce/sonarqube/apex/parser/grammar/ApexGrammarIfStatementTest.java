@@ -53,6 +53,10 @@ public class ApexGrammarIfStatementTest extends ApexRuleTest {
                 .matches("if(x==0)"
                         + "{}"
                         + "else "
-                        + "{}");
+                        + "{}")
+                .matches("if(a instanceof b)\n"
+                        + " a.doSomething(0);\n"
+                        + "else \n"
+                        + "b.doSomething(1);");
     }
 }
