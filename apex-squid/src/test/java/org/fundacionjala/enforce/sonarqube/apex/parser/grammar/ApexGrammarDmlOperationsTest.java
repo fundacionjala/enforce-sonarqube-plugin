@@ -41,6 +41,8 @@ public class ApexGrammarDmlOperationsTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("insert primaryExpression")
                 .matches("delete primaryExpression")
+                .matches("undelete primaryExpression")
+                .matches("update primaryExpression")
                 .matches("upsert primaryExpression")
                 .matches("upsert primaryExpression primaryExpression")
                 .matches("merge primaryExpression primaryExpression");

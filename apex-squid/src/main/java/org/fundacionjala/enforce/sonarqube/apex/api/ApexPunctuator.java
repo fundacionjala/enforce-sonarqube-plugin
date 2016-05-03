@@ -34,8 +34,6 @@ public enum ApexPunctuator implements TokenType {
 
     /**
      * SEPARATORS.
-     *//**
-     * SEPARATORS.
      */
     LPAREN("("),
     RPAREN(")"),

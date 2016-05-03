@@ -50,6 +50,8 @@ public class ApexGrammarConditionalOrExpressionTest extends ApexRuleTest {
                 .matches("a && b || c")
                 .matches("thisThing && thatThing || aThing && anotherThing")
                 .matches("a.b || x.y")
-                .matches("a.b || x.y");
+                .matches("a.b || x.y")
+                .matches("x != null || x > 0 || x instanceof something")
+                .matches("true || 0 < x <= y || (x%2 == 0) && x != null");
     }
 }

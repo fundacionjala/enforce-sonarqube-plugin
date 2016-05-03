@@ -134,7 +134,6 @@ public class MostUsed {
         block(grammarBuilder);
         name(grammarBuilder);
         decimalLiteral(grammarBuilder);
-        allowedKeywordsAsIdentifierForMethods(grammarBuilder);
         hexLiteral(grammarBuilder);
         octalLiteral(grammarBuilder);
         integerLiteralNumber(grammarBuilder);

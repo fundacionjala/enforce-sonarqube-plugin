@@ -132,8 +132,6 @@ public class Declaration {
         initializer(grammarBuilder);
         initializerBlock(grammarBuilder);
         initializerBlockMember(grammarBuilder);
-        classOrInterfaceDeclaration(grammarBuilder);
-        getSharingRules(grammarBuilder);
         localVariableDeclaration(grammarBuilder);
         classOrInterfaceMember(grammarBuilder);
         classOrInterfaceBody(grammarBuilder);
