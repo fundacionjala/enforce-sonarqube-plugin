@@ -41,7 +41,8 @@ public class ApexGrammarArgumentsTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("(argument)")
                 .matches("(argument, null)")
-                .matches("()");
+                .matches("()")
+                .matches("(UPPERcaseArgument)");
 
     }
 

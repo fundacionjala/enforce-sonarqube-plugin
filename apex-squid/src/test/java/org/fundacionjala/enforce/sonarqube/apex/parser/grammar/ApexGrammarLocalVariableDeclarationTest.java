@@ -42,7 +42,8 @@ public class ApexGrammarLocalVariableDeclarationTest extends ApexRuleTest {
                 .matches("final integer variable")
                 .matches("integer variable,variable1")
                 .matches("integer variable")
-                .matches("final integer variable = this.that");
+                .matches("final integer variable = this.that")
+                .matches("Boolean CONSTANT = true");
     }
 
     @Test

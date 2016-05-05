@@ -43,7 +43,9 @@ public class ApexGrammarSpecialKeywordsAsIdentifierTest extends ApexRuleTest {
                 .matches("offset")
                 .matches("data")
                 .matches("group")
-                .matches("limit");
+                .matches("limit")
+                //mix of uppercasse and lowercasse
+                .matches("withOUT");
     }
 
     @Test
@@ -52,8 +54,6 @@ public class ApexGrammarSpecialKeywordsAsIdentifierTest extends ApexRuleTest {
                 .notMatches("otherKeywordsThanThespecifiedOnes")
                 .notMatches("spaces between keywords")
                 //empty keyword
-                .notMatches("")
-                //mix of uppercasse and lowercasse
-                .notMatches("withOUT");
+                .notMatches("");
     }
 }

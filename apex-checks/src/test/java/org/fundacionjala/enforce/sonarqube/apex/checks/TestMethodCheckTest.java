@@ -46,7 +46,7 @@ public class TestMethodCheckTest {
     @Test
     public void testEmptyFile() {
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .next().atLine(3).withMessage("The \"testType\" method corresponds to a test class.")
+                .next().atLine(3).withMessage("The \"TEstType\" method corresponds to a test class.")
                 .noMore();
     }
 }

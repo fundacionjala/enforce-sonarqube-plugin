@@ -47,7 +47,8 @@ public class ApexGrammarArrayInitializerTest extends ApexRuleTest {
                 .matches("x.y.z(p1, p2, 3).w[1-3].v")
                 .matches("this")
                 .matches("1, 2, 3, x, y, z")
-                .matches("0, (x-3 + (4*y)), this");
+                .matches("0, (x-3 + (4*y)), this")
+                .matches("A,B,C,e,d");
     }
 
     @Test

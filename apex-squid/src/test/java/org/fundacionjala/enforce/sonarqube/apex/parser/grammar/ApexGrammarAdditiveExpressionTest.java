@@ -46,7 +46,8 @@ public class ApexGrammarAdditiveExpressionTest extends ApexRuleTest {
                 .matches("x - y + z + 0")
                 //with nested Multiplicative Expressions
                 .matches("a * b / c")
-                .matches("a*b + c/d - e%f");
+                .matches("a*b + c/d - e%f")
+                .matches("SOMEexpresSION");
     }
 
     @Test

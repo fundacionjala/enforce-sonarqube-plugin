@@ -40,7 +40,11 @@ public class ApexGrammarAccessorTest extends ApexRuleTest {
     public void positiveRules() {
         assertThat(parser)
                 .matches("get")
-                .matches("set");
+                .matches("set")
+                .matches("GET")
+                .matches("SET")
+                .matches("gEt")
+                .matches("Set");
     }
     
     @Test
@@ -48,12 +52,8 @@ public class ApexGrammarAccessorTest extends ApexRuleTest {
         assertThat(parser)
                 .notMatches("other")
                 .notMatches("something")
-                .notMatches("GET")
-                .notMatches("SET")
                 .notMatches("Teg")
-                .notMatches("23")
-                .notMatches("gEt")
-                .notMatches("Set");
+                .notMatches("23");
         
     }
 

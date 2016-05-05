@@ -52,7 +52,7 @@ public class ApexGrammarConstructorDeclarationTest extends ApexRuleTest {
                         + "}")
                 .matches("myConstructor (integer parameter){}")
                 .matches("transient (integer parameter) {super(parameter);}")
-                .matches("after (Class classParameter) {"
+                .matches("after (MYClass classParameter) {"
                         + "this();"
                         + "}")
                 .matches("data (ClassType parameter) {}")

@@ -44,6 +44,7 @@ public class ApexGrammarForStatementTest extends ApexRuleTest {
                 .matches("for(Double myObject:listDoubles){}")
                 .matches("for(Boolean myObject:listBooleans){}")
                 .matches("for(integer myVariable; doSomething; updateVariable){}")
+                .matches("FOR(integer MYVARIABLE; dOsOMETHING; updaTEVARIABLE){}")
                 .matches("for(integer addition = 3; doSomething; updateAddition){}")
                 .matches("        for(Accts newAcct : listAccts){\n"
                         + "           merge newAcct this.anotherAccount; \n"

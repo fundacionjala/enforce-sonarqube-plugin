@@ -41,13 +41,13 @@ public class ApexGrammarExplicitConstructorInvocationTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("this(something);")
                 .matches("super(something);")
-                .matches("super(k);");
+                .matches("super(k);")
+                .matches("This(something);");
     }
 
     @Test
     public void testInvalidExplicitConstructorInvocations() {
         assertThat(parser)
-                .notMatches("This(something);")
                 .notMatches("super(wrong parameter);")
                 .notMatches("super(explicitWithoutSemicolon)")
                 .notMatches("super(two parameters);")

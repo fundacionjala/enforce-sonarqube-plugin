@@ -42,7 +42,8 @@ public class ApexGrammarAnnotationTest extends ApexRuleTest {
                 .matches("@something")
                 .matches("@deprecated")
                 .matches("@isTest")
-                .matches("@CAPS");
+                .matches("@CAPS")
+                .matches("@SOMEAnotation");
     }
     
     @Test

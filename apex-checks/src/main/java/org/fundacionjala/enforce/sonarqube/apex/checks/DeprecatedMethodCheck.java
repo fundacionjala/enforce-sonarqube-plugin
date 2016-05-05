@@ -85,7 +85,7 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
         if (isDeprecated(modifiersNode) && !isEmptyBlock(blockNode)) {
             AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER);
             getContext().createLineViolation(this, String.format(MESSAGE,
-                    method.getTokenValue()), method);
+                    method.getTokenOriginalValue()), method);
         }
     }
 

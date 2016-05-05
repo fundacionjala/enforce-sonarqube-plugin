@@ -51,21 +51,20 @@ public class ApexGrammarModifiersTest extends ApexRuleTest {
                 .matches("transient")
                 .matches("virtual")
                 .matches("override")
+                .matches("Abstract")
                 .matches("testmethod");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
+                .notMatches("_Transient")
                 .notMatches(" _ ")
                 .notMatches("P static")
                 .notMatches(" public_")
                 .notMatches(" _final")
-                .notMatches(" Abstract")
-                .notMatches(" Abstract")
                 .notMatches("gLobla")
                 .notMatches("OveRRivde")
-                .notMatches("_Transient")
                 .notMatches("Virtual_")
                 .notMatches("testMethossfd__");
     }

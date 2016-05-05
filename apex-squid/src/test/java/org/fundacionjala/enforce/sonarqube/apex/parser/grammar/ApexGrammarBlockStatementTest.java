@@ -41,14 +41,14 @@ public class ApexGrammarBlockStatementTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("integer variable;")
                 .matches("return null;")
-                .matches("final integer transient = this;");
+                .matches("final integer transient = this;")
+                .matches("REturn null;");
     }
 
     @Test
     public void testInValidBlockStatement() {
         assertThat(parser)
-                .notMatches("")
-                .notMatches("REturn null;");
+                .notMatches("");
     }
 
 }

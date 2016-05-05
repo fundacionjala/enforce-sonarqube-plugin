@@ -55,7 +55,7 @@ public class ApexGrammarClassOrInterfaceDeclarationTest extends ApexRuleTest {
     public void negativeRules() {
         assertThat(parser)
                 .notMatches("class1MyClass{}")
-                .notMatches("Interface MyClass{}")
+                .matches("Interface MyClass{}")
                 //should fail when extends and iterfaces aren't correctly declared
                 .notMatches("with sharing _classMyClassextendsYourClass{}")
                 .notMatches("with sharing class-MyClass implements YourClass{}")

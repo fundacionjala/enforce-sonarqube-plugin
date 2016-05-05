@@ -55,7 +55,10 @@ public class ApexGrammarAllowedKeywordsAsIdentifierTest extends ApexRuleTest {
                 .matches("last")
                 .matches("category")
                 .matches("network")
-                .matches("iterator");
+                .matches("iterator")
+                .matches("RETURNING")
+                .matches("AFter")
+                .matches("TOlabel");
     }
     
     @Test

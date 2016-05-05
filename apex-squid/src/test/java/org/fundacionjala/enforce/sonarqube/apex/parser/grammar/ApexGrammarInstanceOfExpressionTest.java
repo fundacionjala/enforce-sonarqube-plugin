@@ -48,15 +48,15 @@ public class ApexGrammarInstanceOfExpressionTest extends ApexRuleTest {
                 //with nested Relational Expressions
                 .matches("a < b")
                 .matches("a >= b instanceof SomeClass")
-                .matches("a < b <= c instanceof SomeClass");
+                .matches("a < b <= c instanceof SomeClass")
+                .matches(" a instanceOf b")
+                .matches(" a InstanceOf b");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
                 .notMatches(" a instance of b")
-                .notMatches(" a instanceOf b")
-                .notMatches(" a InstanceOf b")
                 .notMatches(" a instanceof 3");
     }
 }

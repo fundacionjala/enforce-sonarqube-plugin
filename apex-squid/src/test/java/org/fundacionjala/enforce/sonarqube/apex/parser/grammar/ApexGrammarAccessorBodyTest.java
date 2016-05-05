@@ -41,7 +41,8 @@ public class ApexGrammarAccessorBodyTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("{}")
                 .matches("{final integer transient;}")
-                .matches("{integer validVariable;}");
+                .matches("{integer validVariable;}")
+                .matches("{iNTEger mixedCASSEVAriable;}");
     }
 
     @Test

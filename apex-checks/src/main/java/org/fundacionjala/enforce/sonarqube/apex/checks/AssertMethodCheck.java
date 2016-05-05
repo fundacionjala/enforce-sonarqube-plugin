@@ -99,11 +99,11 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
         List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.ARGUMENTS);
         expressions.stream().filter((expression) -> (isAssert(expression))).forEach((expression) -> {
             AstNode firstChild = expression.getFirstChild(ARGUMENTS_LIST);
-            String first = firstChild.getChildren().get(0).getTokenValue();
+            String first = firstChild.getChildren().get(0).getTokenOriginalValue();
             if (Objects.equals(first, "true")) {
                 getContext().createLineViolation(this, ASSERT_MESSAGE, expression);
             } else {
-                String second = firstChild.getChildren().get(2).getTokenValue();
+                String second = firstChild.getChildren().get(2).getTokenOriginalValue();
                 if (Objects.equals(first, second)) {
                     getContext().createLineViolation(this, ASSERT_EQUALS_MESSAGE, expression);
                 }
@@ -123,7 +123,7 @@ public class AssertMethodCheck extends AnnotationMethodCheck {
         for (AstNode child : children) {
             List<AstNode> descendants = child.getDescendants(GenericTokenType.IDENTIFIER);
             for (AstNode descendant : descendants) {
-                if (descendant.getTokenValue().matches("assert(Equals)?")) {
+                if (descendant.getTokenOriginalValue().matches("assert(Equals)?")) {
                     return true;
                 }
             }

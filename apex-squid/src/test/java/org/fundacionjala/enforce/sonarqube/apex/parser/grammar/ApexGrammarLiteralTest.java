@@ -51,7 +51,11 @@ public class ApexGrammarLiteralTest extends ApexRuleTest {
                 .matches("false")
                 .matches("null")
                 .matches("without")
-                .matches("limit");
+                .matches("limit")
+                .matches("True")
+                .matches("False")
+                .matches("NULL")
+                .matches("nuLL");
     }
 
     @Test
@@ -59,10 +63,6 @@ public class ApexGrammarLiteralTest extends ApexRuleTest {
         assertThat(parser)
                 .notMatches("323l120x234abcd")
                 .notMatches("0x234234.p-234f")
-                .notMatches("True")
-                .notMatches("False")
-                .notMatches("NULL")
-                .notMatches("nuLL")
                 .notMatches("nul");
     }
 }

@@ -48,7 +48,8 @@ public class ApexGrammarArrayDimsAndInitsTest extends ApexRuleTest {
                 .matches("[]{}")
                 .matches("[]{1,2,3,X,Y,Z,'x','y',this}")
                 .matches("[]{a.b(p1).c(), x.y[0].z[4-3*x]}")
-                .matches("[]{this}");
+                .matches("[]{this}")
+                .matches("[]{THIS}");
     }
 
     @Test

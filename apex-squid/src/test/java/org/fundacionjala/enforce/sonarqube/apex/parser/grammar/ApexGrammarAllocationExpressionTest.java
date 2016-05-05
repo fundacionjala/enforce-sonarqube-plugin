@@ -54,7 +54,8 @@ public class ApexGrammarAllocationExpressionTest extends ApexRuleTest {
                 .matches("new map<K, V>()")
                 .matches("new map<K, V>{}")
                 .matches("new map<K, V>(1, 2 , x, y)")
-                .matches("new map<K, V>{k1 => 2 , x => y}");
+                .matches("new map<K, V>{k1 => 2 , x => y}")
+                .matches("new SOMEtype()");
     }
 
     @Test
