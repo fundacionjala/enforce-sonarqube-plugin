@@ -57,6 +57,8 @@ public class ApexGrammarIfStatementTest extends ApexRuleTest {
                 .matches("if(a instanceof b)\n"
                         + " a.doSomething(0);\n"
                         + "else \n"
-                        + "b.doSomething(1);");
+                        + "b.doSomething(1);")
+                .matches("IF(a INSTANCEOF b)"
+                        + "a.doSOMETHING(0);");
     }
 }

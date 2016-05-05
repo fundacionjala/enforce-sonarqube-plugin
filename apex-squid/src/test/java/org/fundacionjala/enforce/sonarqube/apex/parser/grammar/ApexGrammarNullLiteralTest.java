@@ -39,14 +39,14 @@ public class ApexGrammarNullLiteralTest extends ApexRuleTest {
     @Test
     public void testValidNullLiteral() {
         assertThat(parser)
-                .matches("null");
+                .matches("null")
+                .matches("NULL")
+                .matches("nuLL");
     }
 
     @Test
     public void testInvalidNullLiteral() {
         assertThat(parser)
-                .notMatches("NULL")
-                .notMatches("nuLL")
                 .notMatches("nul");
     }
 }

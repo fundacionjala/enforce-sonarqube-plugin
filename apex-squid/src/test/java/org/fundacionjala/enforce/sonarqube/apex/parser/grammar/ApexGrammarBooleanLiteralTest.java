@@ -40,14 +40,16 @@ public class ApexGrammarBooleanLiteralTest extends ApexRuleTest {
     public void testValidBooleanLiteral() {
         assertThat(parser)
                 .matches("true")
-                .matches("false");
+                .matches("false")
+                .matches("TRue")
+                .matches("False");
     }
 
     @Test
     public void testInvalidBooleanLiteral() {
         assertThat(parser)
-                .notMatches("TRue")
-                .notMatches("False")
-                .notMatches("falSes");
+                .notMatches("falSes")
+                .notMatches("trues")
+                .notMatches("");
     }
 }

@@ -85,7 +85,7 @@ public class ApexLexer {
                 .withChannel(regexp(ApexTokenType.STRING, STRING_PATTERN))
                 .withChannel(regexp(ApexTokenType.HEXADECIMAL, HEXADECIMAL_PATTERN))
                 .withChannel(new IdentifierAndKeywordChannel(KEYWORD,
-                        Boolean.TRUE, ApexKeyword.values()))
+                        Boolean.FALSE, ApexKeyword.values()))
                 .withChannel(new PunctuatorChannel(ApexPunctuator.values()))
                 .withChannel(new BlackHoleChannel(BLACK_HOLE))
                 .build();

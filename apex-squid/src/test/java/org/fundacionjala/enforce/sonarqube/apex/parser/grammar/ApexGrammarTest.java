@@ -126,7 +126,7 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "    }\n"
                         + "\n"
                         + "    static {\n"
-                        + "        boolean CONST = b = t & r ^ a || j != null;\n"
+                        + "        Boolean CONSTANT = b = t & r ^ a || j != null;\n"
                         + "    }\n"
                         + "\n"
                         + "    protected abstract without sharing class subClass extends aClass {\n"

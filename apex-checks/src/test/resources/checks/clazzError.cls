@@ -1,6 +1,6 @@
 public with sharing class someDraftArticle extends AbstractArticle {
 
-    public integer MyMethod () { 
+    public integer MYmeThod () { 
         while(true){
             insert newAcct;
         }
@@ -15,8 +15,12 @@ public with sharing class someDraftArticle extends AbstractArticle {
     }
 
     @deprecated    
-    public void myInit(){
+    public void myINIT(){
         integer max = 10;
+    }
+
+    public deleteArticle(){
+            DELETE newAcct;
     }
 }
 

@@ -43,7 +43,10 @@ public class ApexGrammarAccessorDeclarationsTest extends ApexRuleTest {
                         + "public set;")
                 .matches("protected final get; \n"
                         + "public static set;")
-                .matches("public set;");
+                .matches("public set;")
+                .matches("public GET;")
+                .matches("priVATe set; \n"
+                        + "pubLIC gET;");
     }
     
     @Test

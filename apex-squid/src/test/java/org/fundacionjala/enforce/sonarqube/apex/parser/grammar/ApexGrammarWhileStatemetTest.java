@@ -43,6 +43,9 @@ public class ApexGrammarWhileStatemetTest extends ApexRuleTest {
                         + "{}")
                 .matches("while(something)"
                         + "while(anotherthing)"
-                        + "{}");
+                        + "{}")
+                .matches("WHILE(TRUE){"
+                        + ""
+                        + "}");
     }
 }

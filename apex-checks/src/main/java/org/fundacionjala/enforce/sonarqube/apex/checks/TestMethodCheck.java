@@ -100,6 +100,6 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      */
     private String methodMessage(AstNode astNode) {
         AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER);
-        return String.format(MESSAGE, method.getTokenValue());
+        return String.format(MESSAGE, method.getTokenOriginalValue());
     }
 }

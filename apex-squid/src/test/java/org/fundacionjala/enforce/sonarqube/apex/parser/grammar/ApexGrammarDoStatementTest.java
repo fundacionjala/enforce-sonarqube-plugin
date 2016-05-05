@@ -39,8 +39,9 @@ public class ApexGrammarDoStatementTest extends ApexRuleTest {
     @Test
     public void testValidDoStatement() {
         assertThat(parser)
-                .matches("do {} while (trueExpression);")
-                .matches("do do{} while (trueExpression); while (trueExpression);");
+                .matches("do {} while (true);")
+                .matches("do do{} while (true); while (trueExpression);")
+                .matches("DO{}while(TRUE);");
     }
 
     @Test

@@ -60,7 +60,7 @@ public class DmlStatementCheck extends SquidCheck<Grammar> {
     public void visitNode(AstNode astNode) {
         if (astNode.hasDescendant(ApexGrammarRuleKey.DML_OPERATIONS)) {
             getContext().createLineViolation(this, String.format(message,
-                    astNode.getFirstDescendant(ApexGrammarRuleKey.DML_OPERATIONS).getTokenValue()), astNode);
+                    astNode.getFirstDescendant(ApexGrammarRuleKey.DML_OPERATIONS).getTokenOriginalValue()), astNode);
         }
     }
 }

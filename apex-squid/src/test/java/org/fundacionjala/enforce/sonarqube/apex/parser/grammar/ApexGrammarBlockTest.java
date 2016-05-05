@@ -38,7 +38,11 @@ public class ApexGrammarBlockTest extends ApexRuleTest {
 
     @Test
     public void testValidBlock() {
-        assertThat(parser).matches("{ integer variable;}");
+        assertThat(parser).matches("{ integer variable;}")
+                .matches("{iNTEger variable;}")
+                .matches("{boolean variable;}")
+                .matches("{DOUBLe value;}")
+                .matches("{string variableString;}");
     }
 
     @Test
