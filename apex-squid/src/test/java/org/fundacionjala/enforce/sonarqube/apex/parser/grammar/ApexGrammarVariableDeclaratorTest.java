@@ -23,132 +23,32 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
-import static org.sonar.sslr.tests.Assertions.assertThat;
-
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarVariableDeclaratorTest extends ApexRuleTest {
 
     @Before
-    public void init() {
+    public void setUp() {
         setRootRule(VARIABLE_DECLARATOR);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidVariableDeclarator() {
         assertThat(parser)
-                .matches("myVariable")
-                .matches("myVariable[]")
-                .matches("my_Variable[]")
-                .notMatches("myVariable_[]")
-                .notMatches("1myVariable")
-                .notMatches("1myVariable[]");
+                .matches("transient = this")
+                .matches("summ = 1")
+                .matches("group")
+                .matches("aNewVariableWithNoValue")
+                .matches("myVariable = this.that");
     }
 
     @Test
-    public void positiveRulesAssingInitializerNumeric() {
+    public void testInvalidVariableDeclarator() {
         assertThat(parser)
-                .matches("myVariable=1")
-                .matches("myVariable[]=98")
-                .matches("my_Variable[]=88")
-                .notMatches("myVariable_[]=5")
-                .notMatches("1myVariable=4")
-                .notMatches("1myVariable[]=56");
-    }
-
-    @Test
-    public void positiveRulesAssingInitializerCharacter() {
-        assertThat(parser)
-                .matches("myVariable='A'")
-                .matches("myVariable[]='B'")
-                .matches("my_Variable[]='z'")
-                .notMatches("myVariable_[]='5'")
-                .notMatches("1myVariable=a")
-                .notMatches("1myVariable[]=56");
-    }
-
-    @Test
-    public void positiveRulesAssingInitializerString() {
-        assertThat(parser)
-                .matches("myVariable='MiName'")
-                .matches("myVariable[]='BASE'")
-                .matches("my_Variable[]='zero'")
-                .notMatches("myVariable_[]='5'")
-                .notMatches("1myVariable=a")
-                .notMatches("1myVariable[]=56");
-    }
-
-    @Test
-    public void positiveRulesAssingInitializerNull() {
-        assertThat(parser)
-                .matches("myVariable=null")
-                .matches("myVariable[]=null")
-                .matches("my_Variable[]=null")
-                .notMatches("myVariable_[]='null")
-                .notMatches("1myVariable=null")
-                .notMatches("1myVariable[]=null");
-    }
-
-    @Test
-    public void positiveRulesAssingInitializerThis() {
-        assertThat(parser)
-                .matches("myVariable=this")
-                .matches("myVariable[]=this")
-                .matches("my_Variable[]=this")
-                .notMatches("myVariable_[]='this")
-                .notMatches("1myVariable=this")
-                .notMatches("1myVariable[]=this");
-    }
-
-    @Test
-    public void positiveRulesAssingInitializerSuper() {
-        assertThat(parser)
-                .matches("myVariable=super")
-                .matches("myVariable[]=super")
-                .matches("my_Variable[]=super")
-                .notMatches("myVariable_[]='super")
-                .notMatches("1myVariable=super")
-                .notMatches("1myVariable[]=super");
-    }
-
-    @Test
-    public void positiveRulesAssingInitializerNumericExpresion() {
-        assertThat(parser)
-                .matches("myVariable=2+2")
-                .matches("myVariable[]=10-3")
-                .matches("my_Variable[]=4*3")
-                .matches("my_Variable[]=10/5")
-                .matches("my_Variable[]=10%2")
-                .notMatches("myVariable_[]=10+3")
-                .notMatches("1myVariable=4*8")
-                .notMatches("1myVariable[]=3-9");
-    }
-
-    @Test
-    public void positiveRulesOperationsSimpleMinus() {
-        assertThat(parser)
-                .matches("myVariable=2>2")
-                .matches("myVariable[]=10>3")
-                .matches("my_Variable[]=4*3")
-                .matches("my_Variable[]=10/5")
-                .matches("my_Variable[]=10%2")
-                .notMatches("myVariable_[]=10+3")
-                .notMatches("1myVariable=4*8")
-                .notMatches("1myVariable[]=3-9");
-    }
-
-    @Test
-    public void positiveRulesStringExpression() {
-        assertThat(parser)
-                .matches("myVariable=MyName")
-                .matches("myVariable[]=MYVARIBLE")
-                .notMatches("myVariable_[]=10+3")
-                .notMatches("1myVariable=4*8")
-                .notMatches("1myVariable[]=3-9");
+                .notMatches("");
     }
 }

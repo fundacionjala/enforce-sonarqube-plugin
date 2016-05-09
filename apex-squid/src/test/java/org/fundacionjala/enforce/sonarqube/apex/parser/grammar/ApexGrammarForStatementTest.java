@@ -23,11 +23,9 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
@@ -39,20 +37,26 @@ public class ApexGrammarForStatementTest extends ApexRuleTest {
     }
 
     @Test
-    public void RulesForStament() {
+    public void rulesForStament() {
         assertThat(parser)
-                .matches("for(Object MyObject : listIntegers){ }")
-                .matches("for(int MyObject:listIntegers){}")
-                .matches("for(double MyObject:listDoubles)intnumber;")
-                .matches("for(boolean MyObject:listBooleans){int number=i;}");
+                .matches("for(Object myObject : listIntegers){ }")
+                .matches("for(integer myObject:listIntegers){}")
+                .matches("for(Double myObject:listDoubles){}")
+                .matches("for(Boolean myObject:listBooleans){}")
+                .matches("for(integer myVariable; doSomething; updateVariable){}")
+                .matches("FOR(integer MYVARIABLE; dOsOMETHING; updaTEVARIABLE){}")
+                .matches("for(integer addition = 3; doSomething; updateAddition){}")
+                .matches("        for(Accts newAcct : listAccts){\n"
+                        + "           merge newAcct this.anotherAccount; \n"
+                        + "        }\n");
     }
 
     @Test
-    public void RulesForStamentCaseError() {
+    public void rulesForStamentCaseError() {
         assertThat(parser)
                 .notMatches("for(ObjectMyObject:listIntegers){ }")
                 .notMatches("for(intMyObject:listIntegers){}")
                 .notMatches("for(doubleMyObject:listDoubles)intnumber;")
-                .notMatches("for(booleanMyObject:listBooleans){int number=i;}");
+                .notMatches("for(booleanMyObject:listBooleans){integer number=i;}");
     }
 }

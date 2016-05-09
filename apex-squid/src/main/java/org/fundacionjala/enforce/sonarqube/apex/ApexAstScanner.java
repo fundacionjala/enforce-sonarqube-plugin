@@ -52,15 +52,14 @@ import org.sonar.squidbridge.metrics.LinesVisitor;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexMetric;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexParser;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT_IF;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TERMINAL_STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
 
 /**
@@ -162,9 +161,8 @@ public class ApexAstScanner {
             METHOD_DECLARATION,
             WHILE_STATEMENT,
             FOR_STATEMENT,
-            STATEMENT_IF,
-            RETURN_STATEMENT,
-            DML_STATEMENT
+            IF_STATEMENT,
+            RETURN_STATEMENT
         };
         builder.withSquidAstVisitor(ComplexityVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.COMPLEXITY)
@@ -176,7 +174,7 @@ public class ApexAstScanner {
                 .build());
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.STATEMENTS)
-                .subscribeTo(TERMINAL_STATEMENT)
+                .subscribeTo(STATEMENT)
                 .build());
     }
 
@@ -187,7 +185,7 @@ public class ApexAstScanner {
      */
     private static void setMethodAnalyser(AstScanner.Builder<Grammar> builder) {
         builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
-                buildCallback(METHOD_NAME, IS_CLASS),
+                buildCallback(METHOD_IDENTIFIER, IS_CLASS),
                 METHOD_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
@@ -203,12 +201,12 @@ public class ApexAstScanner {
      */
     private static void setClassesAnalyser(AstScanner.Builder<Grammar> builder) {
         builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
-                buildCallback(CLASS_NAME, !IS_CLASS),
-                CLASS_DECLARATION));
+                buildCallback(NAME, !IS_CLASS),
+                CLASS_OR_INTERFACE_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
                 .setMetricDef(ApexMetric.CLASSES)
-                .subscribeTo(CLASS_DECLARATION)
+                .subscribeTo(CLASS_OR_INTERFACE_DECLARATION)
                 .build());
     }
 

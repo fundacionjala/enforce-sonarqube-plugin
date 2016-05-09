@@ -51,6 +51,6 @@ public class MethodNameCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), methodNameCheck);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(3).withMessage(
-                "Rename method \"MyMethod\" to match the regular expression ^[a-z][a-zA-Z0-9]+$.");
+                "Rename method \"MYmeThod\" to match the regular expression ^[a-z][a-zA-Z0-9]+$.");
     }
 }

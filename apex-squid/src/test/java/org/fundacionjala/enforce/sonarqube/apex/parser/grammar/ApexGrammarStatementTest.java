@@ -23,96 +23,46 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
-import static org.sonar.sslr.tests.Assertions.assertThat;
-
+import org.junit.Test;
+import org.junit.Before;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarStatementTest extends ApexRuleTest {
 
     @Before
-    public void init() {
+    public void setUp() {
         setRootRule(STATEMENT);
     }
 
     @Test
-    public void RulesDmlStament() {
+    public void testValidStatementPi() {
         assertThat(parser)
-                .matches("insert newAcct;")
-                .matches("update myAcct;")
-                .matches("upsert acctList;")
-                .matches("delete doomedAccts;")
-                .matches("undelete savedAccts;");
-    }
+                .matches("{}")
+                .matches(";")
+                .matches("if('anExpression')"
+                        + "{}")
+                .matches("if('anExpression')"
+                        + "{}"
+                        + "else "
+                        + "if('anotherExpression')"
+                        + "{}")
+                .matches("while(trueExpression){}")
+                .matches("do {} while (trueExpression);")
+                .matches("break;")
+                .matches("continue;")
+                .matches("return something;")
+                .matches("return this;")
+                .matches("throw someException;")
+                .matches("for(integer addition = 0; doSomething; updateIterator){}")
+                .matches("for(Object current:listOfObjects){}")
+                .matches("try{} catch(Object variable){} finally{}")
+                .matches("insert primaryExpression;")
+                .matches("delete primaryExpression;")
+                .matches("upsert primaryExpression;")
+                .matches("upsert primaryExpression primaryExpression;")
+                .matches("merge primaryExpression primaryExpression;");
 
-    @Test
-    public void RulesForStament() {
-        assertThat(parser)
-                .matches("for(Object MyObject : listIntegers){ }")
-                .matches("for(int MyObject:listIntegers){}")
-                .matches("for(double MyObject:listDoubles)intnumber;")
-                .matches("for(boolean MyObject:listBooleans){int number=i;}");
-    }
-
-    @Test
-    public void RulesIfElseStatement() {
-        assertThat(parser)
-                .matches("if(NAME){}")
-                .matches("if(NAME){}else{}")
-                .matches("if(NAME)12;")
-                .matches("if(NAME)12;else'a';")
-                .matches("if(NAME){int number;}")
-                .matches("if(NAME){int number=12;}else{'a';}");
-    }
-
-    @Test
-    public void RulesTryCatchStament() {
-        assertThat(parser)
-                .matches("try{}catch(Exception ex){}")
-                .matches("try{int number=0;}catch(Exception ex){char message=ex.message;}");
-    }
-
-    @Test
-    public void RulesWhileStament() {
-        assertThat(parser)
-                .matches("while(true){}")
-                .matches("while(A)12;")
-                .matches("while(A){int number=0;}");
-    }
-
-    @Test
-    public void RulesReturnStament() {
-        assertThat(parser)
-                .matches("return true;")
-                .matches("return 0;")
-                .matches("return null;");
-    }
-
-    @Test
-    public void RulesVariableDeclaration() {
-        assertThat(parser)
-                .matches("int myVariable;")
-                .matches("private double myVariable[];")
-                .matches("public boolean my_Variable[];");
-    }
-
-    @Test
-    public void RulesExpression() {
-        assertThat(parser)
-                .matches("1;")
-                .matches("12;")
-                .matches("1009;")
-                .matches("'A';")
-                .matches("'B';")
-                .matches("'c';")
-                .matches("'z';")
-                .matches("'TIPE';")
-                .matches("'name';")
-                .matches("'myVariable';")
-                .matches("'zA';");
     }
 }

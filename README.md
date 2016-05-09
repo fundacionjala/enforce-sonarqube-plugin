@@ -1,5 +1,9 @@
 [![Build Status](https://travis-ci.org/fundacionjala/enforce-sonarqube-plugin.svg)](https://travis-ci.org/fundacionjala/enforce-sonarqube-plugin) [![license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/master/LICENSE)
 
+# Note: The current version is a functional prototype of a Apex plugin for SonarQube.
+The prototype has support for a subset of Apex language grammar, that means there might be errors during analysis of Apex classes.
+The support for the whole grammar (Apex classes, triggers and SOQL support) is in progress, and hopefully be ready (grammars and rules ) by end of June 2016.
+
 # Enforce Sonarqube Plugin
 ## Description
 
