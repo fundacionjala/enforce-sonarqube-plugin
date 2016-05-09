@@ -8,7 +8,7 @@ public       with
     public      int     MyMethod() {
         Account a = new Account();
         for(Accts newAcct : listAccts){
-	    if (badCon.Department == 'Finance') {
+	    if (badCon.Department == 'zFinance') {
 	        Object description = 'New description';
 	    }
 	    update badCon;
