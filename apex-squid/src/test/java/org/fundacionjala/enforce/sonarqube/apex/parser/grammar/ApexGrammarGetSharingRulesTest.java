@@ -29,10 +29,6 @@ import org.junit.Test;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GET_SHARING_RULES;
 
-/**
- *
- * @author vicente_rodriguez
- */
 public class ApexGrammarGetSharingRulesTest extends ApexRuleTest {
 
     @Before
