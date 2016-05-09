@@ -25,6 +25,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCEPTION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GLOBAL;

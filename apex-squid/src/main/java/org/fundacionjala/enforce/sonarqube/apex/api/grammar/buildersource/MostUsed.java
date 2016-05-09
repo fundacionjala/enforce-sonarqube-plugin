@@ -70,6 +70,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NETWORK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NUMBER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OF;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OFFSET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OUTER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PACKAGE;
@@ -96,6 +97,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPDATE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPSERT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHEN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRUE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITHOUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LBRACE;
@@ -201,8 +203,8 @@ public class MostUsed {
         grammarBuilder.rule(ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS).is(
                 grammarBuilder.firstOf(
                         IDENTIFIER,
-                        //                        SOQL_DATE_LITERAL,
-                        //                        SOQL_NDATE_LITERAL,
+//                        SOQL_DATE_LITERAL,
+//                        SOQL_NDATE_LITERAL,
                         ARRAY,
                         EXCEPTION,
                         INT,

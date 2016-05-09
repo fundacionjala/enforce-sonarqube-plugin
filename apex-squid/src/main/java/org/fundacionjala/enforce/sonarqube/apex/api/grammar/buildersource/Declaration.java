@@ -35,6 +35,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INTERFACE
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SHARING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SUPER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VOID;
@@ -75,6 +76,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_MEMBER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GET_SHARING_RULES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.INITIALIZER_BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
@@ -132,8 +134,8 @@ public class Declaration {
         initializer(grammarBuilder);
         initializerBlock(grammarBuilder);
         initializerBlockMember(grammarBuilder);
-        classOrInterfaceMember(grammarBuilder);
         localVariableDeclaration(grammarBuilder);
+        classOrInterfaceMember(grammarBuilder);
         classOrInterfaceBody(grammarBuilder);
     }
 
@@ -417,7 +419,6 @@ public class Declaration {
                 CLASS_OR_INTERFACE_BODY,
                 RBRACE
         );
-
     }
 
     /**
