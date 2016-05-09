@@ -64,9 +64,7 @@ public class ApexGrammarAllowedKeywordsAsIdentifierTest extends ApexRuleTest {
     @Test
     public void testInvalidKeywordsAsIdentifier() {
         assertThat(parser)
-                //empty string
                 .notMatches("")
-                //empty string with spaces
                 .notMatches("   ");
     }
 

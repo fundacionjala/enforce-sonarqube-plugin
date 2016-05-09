@@ -1,3 +1,5 @@
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
+
 /*
  * The MIT License
  *
@@ -25,36 +27,29 @@
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
 import static org.sonar.sslr.tests.Assertions.assertThat;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_AND_EXPRESSION;
 
-public class ApexGrammarConditionalAndExpressionTest extends ApexRuleTest {
+public class ApexGrammarGenericTypeTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(CONDITIONAL_AND_EXPRESSION);
+        setRootRule(GENERIC_TYPE);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("3")
-                .matches("a")
-                .matches("someExpression")
-                .matches("thisThing && thatThing")
-                .matches("5 && 6 && 7")
-                .matches("a.b && x.y")
-                //with nested INCLUSIVE_OR expression
-                .matches("a | b")
-                .matches("a | b | c && d && e | f");
+                .matches("<SomeType>")
+                .matches("<SomeType, SomeOtherType>")
+                .matches("<list<set<someType>>>");
     }
-    
+
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches(" a b &&")
-                .notMatches(" a !& b")
-                .notMatches(" a &| b")
-                .notMatches(" a || b");
+                .notMatches("<someType")
+                .notMatches("<sometype,>")
+                .notMatches("<>");
     }
 }

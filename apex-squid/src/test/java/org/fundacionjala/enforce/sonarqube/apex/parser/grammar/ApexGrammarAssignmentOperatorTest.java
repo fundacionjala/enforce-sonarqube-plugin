@@ -1,3 +1,6 @@
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
+
+
 /*
  * The MIT License
  *
@@ -21,33 +24,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.sonar.sslr.tests.Assertions.assertThat;
 
-public class ApexGrammarGenericTypeTest extends ApexRuleTest {
+public class ApexGrammarAssignmentOperatorTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(GENERIC_TYPE);
+        setRootRule(ASSIGNMENT_OPERATOR);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("<SomeType>")
-                .matches("<SomeType, SomeOtherType>")
-                .matches("<list<set<someType>>>");
+                .matches("=")
+                .matches("/=")
+                .matches("-=")
+                .matches("+=")
+                .matches("%=")
+                .matches("*=")
+                .matches("<<=")
+                .matches(">>>=")
+                .matches("&=")
+                .matches("^=")
+                .matches("|=");
     }
 
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("<someType")
-                .notMatches("<sometype,>")
-                .notMatches("<>");
+                .notMatches("==")
+                .notMatches("===")
+                .notMatches("/ =");
     }
 }

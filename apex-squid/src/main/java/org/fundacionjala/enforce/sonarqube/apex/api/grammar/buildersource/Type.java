@@ -25,10 +25,10 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCEPTION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GLOBAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MAP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OVERRIDE;
@@ -166,7 +166,12 @@ public class Type {
                                         SPECIAL_KEYWORDS_AS_IDENTIFIER))
                 ));
     }
-
+    
+    /**
+     * Rule that defines what can be used as an "implements" parameter type.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void classOrInterfaceErasureType(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CLASS_OR_INTERFACE_ERASURE_TYPE).is(
                 CLASS_OR_INTERFACE_TYPE,
@@ -184,6 +189,11 @@ public class Type {
         );
     }
 
+    /**
+     * Rule that defines the generic type for allocationExpressions.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
     private static void genericType(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(GENERIC_TYPE).is(LT,
                 TYPE,

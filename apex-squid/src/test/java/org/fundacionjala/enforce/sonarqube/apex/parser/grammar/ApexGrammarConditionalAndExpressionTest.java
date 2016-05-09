@@ -1,3 +1,4 @@
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 /*
  * The MIT License
@@ -22,40 +23,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ASSIGNMENT_OPERATOR;
 import static org.sonar.sslr.tests.Assertions.assertThat;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_AND_EXPRESSION;
 
-public class ApexGrammarAssignmentOperatorTest extends ApexRuleTest {
+public class ApexGrammarConditionalAndExpressionTest extends ApexRuleTest {
 
     @Before
     public void init() {
-        setRootRule(ASSIGNMENT_OPERATOR);
+        setRootRule(CONDITIONAL_AND_EXPRESSION);
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("=")
-                .matches("/=")
-                .matches("-=")
-                .matches("+=")
-                .matches("%=")
-                .matches("*=")
-                .matches("<<=")
-                .matches(">>>=")
-                .matches("&=")
-                .matches("^=")
-                .matches("|=");
+                .matches("3")
+                .matches("a")
+                .matches("someExpression")
+                .matches("thisThing && thatThing")
+                .matches("5 && 6 && 7")
+                .matches("a.b && x.y")
+                //with nested INCLUSIVE_OR expression
+                .matches("a | b")
+                .matches("a | b | c && d && e | f");
     }
-
+    
     @Test
     public void negativeRules() {
         assertThat(parser)
-                .notMatches("==")
-                .notMatches("===")
-                .notMatches("/ =");
+                .notMatches(" a b &&")
+                .notMatches(" a !& b")
+                .notMatches(" a &| b")
+                .notMatches(" a || b");
     }
 }
