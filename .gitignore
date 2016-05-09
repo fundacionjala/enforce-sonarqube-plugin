@@ -13,3 +13,6 @@ hs_err_pid*
 
 # Maven multi module
 */target/
+
+# Sonar Files
+.sonar/*

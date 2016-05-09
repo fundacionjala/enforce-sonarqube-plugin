@@ -1,0 +1,20 @@
+<p>
+    The DML statement, can not be inside a while loop
+</p>
+
+<h2>Noncompliant Code Example</h2>
+
+<pre>
+while(true) {
+    merge newAcct;
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+while(true) {
+    ...
+}
+merge newAcct; 
+</pre>
