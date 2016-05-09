@@ -1,6 +1,6 @@
 public class _DraftArticle {
 
-    public int MyMethod () { 
+    public integer MyMethod () { 
         return 0;
     }
 }

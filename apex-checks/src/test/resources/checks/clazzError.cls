@@ -1,12 +1,12 @@
-public with sharing class draftArticle extends AbstractArticle {
+public with sharing class someDraftArticle extends AbstractArticle {
 
-    public int MyMethod () { 
+    public integer MYmeThod () { 
         while(true){
             insert newAcct;
         }
 
         for(Accts newAcct : listAccts){
-           merge newAcct; 
+           merge newAcct super.oldAcct; 
         }
     }
 
@@ -15,8 +15,12 @@ public with sharing class draftArticle extends AbstractArticle {
     }
 
     @deprecated    
-    public void myInit(){
-        int max = 10;
+    public void myINIT(){
+        integer max = 10;
+    }
+
+    public deleteArticle(){
+            DELETE newAcct;
     }
 }
 

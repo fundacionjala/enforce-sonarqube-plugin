@@ -93,7 +93,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        String methodName = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_NAME).getTokenValue();
+        String methodName = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue();
         if (!pattern.matcher(methodName).matches()) {
             getContext().createLineViolation(this,
                     "Rename method \"{0}\" to match the regular expression {1}.", astNode, methodName, format);

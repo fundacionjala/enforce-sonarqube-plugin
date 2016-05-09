@@ -43,14 +43,16 @@ public class ApexGrammarExtendsListTest extends ApexRuleTest {
     public void negativeRulesMergeType() {
         assertThat(parser)
                 .notMatches("extendMyClass")
-                .notMatches("Extends _MyClass1")
                 .notMatches("_extends_MyClass1");
     }
 
     @Test
     public void positiveRules() {
         assertThat(parser)
+                .matches("Extends _MyClass1")
                 .matches("extends MyClass")
+                .matches("extends MyClass.AType")
+                .matches("extends exception")
                 .matches("extends MyClass1");
     }
 }
