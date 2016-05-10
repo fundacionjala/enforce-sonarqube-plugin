@@ -40,11 +40,20 @@ public class ApexGrammarTypeClassTest extends ApexRuleTest {
     }
 
     @Test
-    public void checkingRules() {
+    public void checkingPositiveRules() {
         assertThat(parser)
                 .matches("class")
                 .matches("interface")
-                .notMatches("Class")
-                .notMatches("Interface");
+                .matches("Class")
+                .matches("Interface");
+    }
+    
+    @Test
+    public void checkingNegativeRules() {
+        assertThat(parser)
+                .notMatches("clas")
+                .notMatches("inteface")
+                .notMatches("cass")
+                .notMatches("interfase");
     }
 }

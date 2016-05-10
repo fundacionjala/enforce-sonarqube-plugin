@@ -27,10 +27,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
-import static org.sonar.sslr.tests.Assertions.assertThat;
-
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarTypeTest extends ApexRuleTest {
 
@@ -42,14 +40,20 @@ public class ApexGrammarTypeTest extends ApexRuleTest {
     @Test
     public void positiveRules() {
         assertThat(parser)
-                .matches("boolean")
-                .matches("int")
-                .matches("short")
-                .matches("long")
-                .matches("char")
-                .matches("float")
-                .matches("byte")
-                .matches("List")
-                .matches("Map");
+                .matches("integer")
+                .matches("string")
+                .matches("SomeClassType")
+                .matches("someothertype")
+                .matches("list<something>")
+                .matches("set<SomeClass>")
+                .matches("map<SomeKeyClass, SomeValueclass>");
+    }
+
+    @Test
+    public void positiveNestedRules() {
+        assertThat(parser)
+                .matches("list<set<list<thisThing>>>")
+                .matches("set<SomeClass[]>")
+                .matches("map<list<aThing>, Value>");
     }
 }

@@ -79,10 +79,13 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (isDeprecated(astNode) && !isEmptyBlock(astNode)) {
-            AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_NAME);
+        AstNode parent = astNode.getParent();
+        AstNode modifiersNode = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
+        AstNode blockNode = astNode.getFirstDescendant(ApexGrammarRuleKey.BLOCK);
+        if (isDeprecated(modifiersNode) && !isEmptyBlock(blockNode)) {
+            AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER);
             getContext().createLineViolation(this, String.format(MESSAGE,
-                    method.getTokenValue()), method);
+                    method.getTokenOriginalValue()), method);
         }
     }
 
@@ -93,7 +96,6 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      * @return the analysis result.
      */
     private boolean isEmptyBlock(AstNode astNode) {
-        AstNode statement = astNode.getFirstDescendant(ApexGrammarRuleKey.STATEMENT_BLOCK);
-        return statement.getNumberOfChildren() == EMPTY_BLOCK;
+        return astNode.getNumberOfChildren() == EMPTY_BLOCK;
     }
 }

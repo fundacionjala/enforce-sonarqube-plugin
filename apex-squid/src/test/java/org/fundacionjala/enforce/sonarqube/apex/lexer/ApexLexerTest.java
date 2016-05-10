@@ -30,12 +30,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.base.Charsets;
-import com.sonar.sslr.api.GenericTokenType;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.impl.Lexer;
+import static com.sonar.sslr.test.lexer.LexerMatchers.hasOriginalToken;
 
 import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType;
 
@@ -58,11 +57,11 @@ public class ApexLexerTest {
     public void testVerifiesTokensOfTheHeadOfAClass() {
         file = new File("src/test/resources/lexer/HeadOfAClass.cls");
         tokens = lexer.lex(file);
-        assertThat(tokens, hasToken("public", ApexKeyword.PUBLIC));
-        assertThat(tokens, hasToken("with", ApexKeyword.WITH));
-        assertThat(tokens, hasToken("sharing", ApexKeyword.SHARING));
-        assertThat(tokens, hasToken("class", ApexKeyword.CLASS));
-        assertThat(tokens, hasToken("Class1", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("Public"));
+        assertThat(tokens, hasOriginalToken("with"));
+        assertThat(tokens, hasOriginalToken("SHARING"));
+        assertThat(tokens, hasOriginalToken("class"));
+        assertThat(tokens, hasOriginalToken("Class1"));
         assertThat(tokens, hasToken("{", ApexPunctuator.LBRACE));
         assertThat(tokens, hasToken("}", ApexPunctuator.RBRACE));
     }
@@ -71,8 +70,8 @@ public class ApexLexerTest {
     public void testVerifiesTokensOfTheConstructorMethod() {
         file = new File("src/test/resources/lexer/ConstructorMethod.cls");
         tokens = lexer.lex(file);
-        assertThat(tokens, hasToken("public", ApexKeyword.PUBLIC));
-        assertThat(tokens, hasToken("Class1", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("public"));
+        assertThat(tokens, hasOriginalToken("Class1"));
         assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
         assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
         assertThat(tokens, hasToken("{", ApexPunctuator.LBRACE));
@@ -83,20 +82,20 @@ public class ApexLexerTest {
     public void testVerifiesTokensOfTheMethod() {
         file = new File("src/test/resources/lexer/Method.cls");
         tokens = lexer.lex(file);
-        assertThat(tokens, hasToken("public", ApexKeyword.PUBLIC));
-        assertThat(tokens, hasToken("void", ApexKeyword.VOID));
-        assertThat(tokens, hasToken("pow", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("public"));
+        assertThat(tokens, hasOriginalToken("void"));
+        assertThat(tokens, hasOriginalToken("pow"));
         assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
-        assertThat(tokens, hasToken("int", ApexKeyword.INT));
-        assertThat(tokens, hasToken("number", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("int"));
+        assertThat(tokens, hasOriginalToken("number"));
         assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
         assertThat(tokens, hasToken("{", ApexPunctuator.LBRACE));
-        assertThat(tokens, hasToken("return", ApexKeyword.RETURN));
-        assertThat(tokens, hasToken("Math", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("return"));
+        assertThat(tokens, hasOriginalToken("Math"));
         assertThat(tokens, hasToken(".", ApexPunctuator.DOT));
-        assertThat(tokens, hasToken("pow", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("pow"));
         assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
-        assertThat(tokens, hasToken("number", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("number"));
         assertThat(tokens, hasToken(",", ApexPunctuator.COMMA));
         assertThat(tokens, hasToken("2", ApexTokenType.NUMERIC));
         assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
@@ -108,11 +107,12 @@ public class ApexLexerTest {
     public void testVerifiesTokensWhenAVariableIsInstantiated() {
         file = new File("src/test/resources/lexer/InstanceVariable.cls");
         tokens = lexer.lex(file);
-        assertThat(tokens, hasToken("Account", GenericTokenType.IDENTIFIER));
-        assertThat(tokens, hasToken("a", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("Account"));
+        assertThat(tokens, hasOriginalToken("a"));
         assertThat(tokens, hasToken("=", ApexPunctuator.ASSIGN));
-        assertThat(tokens, hasToken("new", ApexKeyword.NEW));
+        assertThat(tokens, hasOriginalToken("new"));
         assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
+        assertThat(tokens, hasOriginalToken("Account"));
         assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
         assertThat(tokens, hasToken(";", ApexPunctuator.SEMICOLON));
     }
@@ -121,11 +121,11 @@ public class ApexLexerTest {
     public void testVerifiesTokensWhenAVariableIsAssigned() {
         file = new File("src/test/resources/lexer/AssignVariable.cls");
         tokens = lexer.lex(file);
-        assertThat(tokens, hasToken("a", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("a"));
         assertThat(tokens, hasToken(".", ApexPunctuator.DOT));
-        assertThat(tokens, hasToken("CustomField1__c", GenericTokenType.IDENTIFIER));
+        assertThat(tokens, hasOriginalToken("CustomField1__c"));
         assertThat(tokens, hasToken("=", ApexPunctuator.ASSIGN));
-        assertThat(tokens, hasToken("'value'", ApexTokenType.STRING));
+        assertThat(tokens, hasToken("\'value\'", ApexTokenType.STRING));
         assertThat(tokens, hasToken(";", ApexPunctuator.SEMICOLON));
     }
 }

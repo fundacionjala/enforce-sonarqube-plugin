@@ -28,11 +28,11 @@ import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Declaration;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Expression;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Keyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Statement;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.Type;
 import static com.sonar.sslr.api.GenericTokenType.EOF;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.APEX_GRAMMAR;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.MostUsed;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
 
 /**
@@ -55,16 +55,16 @@ public class ApexGrammar {
     public static Grammar create() {
         LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
 
+        MostUsed.create(grammarBuilder);
+
         Expression.create(grammarBuilder);
-        
+
         Type.create(grammarBuilder);
 
-        Keyword.create(grammarBuilder);
-        
         Statement.create(grammarBuilder);
-        
+
         Declaration.create(grammarBuilder);
-        
+
         grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION, EOF);
         grammarBuilder.setRootRule(APEX_GRAMMAR);
         return grammarBuilder.build();

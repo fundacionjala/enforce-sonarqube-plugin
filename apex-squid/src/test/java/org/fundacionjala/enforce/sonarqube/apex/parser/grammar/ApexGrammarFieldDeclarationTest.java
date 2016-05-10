@@ -23,35 +23,34 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import org.junit.Test;
-import org.junit.Before;
-
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
-import static org.sonar.sslr.tests.Assertions.assertThat;
-
+import org.junit.Before;
+import org.junit.Test;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarFieldDeclarationTest extends ApexRuleTest {
 
     @Before
-    public void init() {
+    public void setUp() {
         setRootRule(FIELD_DECLARATION);
     }
 
     @Test
-    public void positiveRules() {
+    public void testValidFieldDeclaration() {
         assertThat(parser)
-                .matches("public MyClass(){}")
-                .matches("public boolean MyMethod(){}")
-                .matches("int myVariable;")
-                .matches("char myVariable=newChar();")
-                .matches("private double myVariable[];")
-                .matches("public boolean my_Variable[];")
-                .matches("int myVariable = 1;")
-                .matches("public double myVariable[]=98;")
-                .matches("char myVariable = 'A';")
-                .matches("public char myVariable[]='B';")
-                .matches("private char my_Variable[]='z';");
+                .matches("integer myVariable;")
+                .matches("integer addition,takeaway;")
+                .matches("Boolean isActive = true;")
+                .matches("integer addition = 0;")
+                .matches("ClassType transient;")
+                .matches("Iterator iterator = iteratorParameter;");
+    }
+
+    @Test
+    public void testInvalidFieldDeclaration() {
+        assertThat(parser)
+                .notMatches("char varCharMissingSemicolon")
+                .notMatches("ClassType missingValue =;");
     }
 }
