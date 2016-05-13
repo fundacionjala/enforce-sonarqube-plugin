@@ -1,0 +1,30 @@
+<p>
+    It's bad practice to hard code Id's.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+
+<pre>
+public void method (ID newRecordID) {
+    for (Account current : listOfcounts){
+        if (current.getId == '34345446546546a') {
+
+        }
+    }
+    method('3266sd35435sd6a');
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+public void method (ID newRecordID) {
+    for (Account current : listOfcounts){
+        if (current.getId == newRecordID) {
+
+        }
+    }
+    
+    otherMethod(newRecordID);
+}
+</pre>
