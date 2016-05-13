@@ -68,6 +68,7 @@ public class CheckList {
                 DmlInWhileCheck.class,
                 LineLengthCheck.class,
                 MethodNameCheck.class,
-                TestMethodCheck.class);
+                TestMethodCheck.class,
+                AsyncMethodsCheck.class);
     }
 }
