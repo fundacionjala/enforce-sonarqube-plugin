@@ -23,52 +23,28 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import java.util.List;
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
+import java.io.File;
+import org.junit.Test;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
-import com.google.common.collect.ImmutableList;
+public class HarcodingIdsInVariablesCheckTest {
 
-/**
- * Builds a list of custom checks.
- */
-public class CheckList {
+    private static final String FIRST_VARIABLE_ERROR = "The \"recordId\" variable has hard-coded lines";
+    private static final String SECOND_VARIABLE_ERROR = "The \"secondRecord\" variable has hard-coded lines";
+    private SourceFile sourceFile;
 
-    /**
-     * Stores the sonarqube profile name.
-     */
-    public static final String SONAR_WAY_PROFILE = "Sonar way";
+    @Test
+    public void testHardcodedIdsInVariables() {
+        File file = new File("src/test/resources/checks/HarcodedIdsInVariables.cls");
+        HardcodingIdsCheck check = new HardcodingIdsCheck();
+        sourceFile = scanFile(file, check);
 
-    /**
-     * Stores the sonarqube repository name.
-     */
-    public static final String REPOSITORY_NAME = "SonarQube";
-
-    /**
-     * Stores the Apex's repository key.
-     */
-    public static final String REPOSITORY_KEY = "apex";
-
-    /**
-     * Default constructor.
-     */
-    private CheckList() {
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .next().atLine(3).withMessage(FIRST_VARIABLE_ERROR)
+                .next().atLine(5).withMessage(SECOND_VARIABLE_ERROR)
+                .noMore();
     }
 
-    /**
-     * Builds and returns the custom checks to create Apex's rules.
-     *
-     * @return the list of the checks.
-     */
-    public static List<Class> getChecks() {
-        return ImmutableList.<Class>of(
-                AssertMethodCheck.class,
-                ClassNameCheck.class,
-                DeprecatedMethodCheck.class,
-                DmlInConstructorCheck.class,
-                DmlInForCheck.class,
-                DmlInWhileCheck.class,
-                LineLengthCheck.class,
-                MethodNameCheck.class,
-                TestMethodCheck.class,
-                HardcodingIdsCheck.class);
-    }
 }
