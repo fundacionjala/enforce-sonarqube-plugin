@@ -61,7 +61,10 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
      * Value of the annotation future, which this check looks for.
      */
     private final String FUTURE = "future";
-
+    
+    /**
+     * The list of method declarations within the class.
+     */
     private List<AstNode> methods;
 
     /**
@@ -105,7 +108,13 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
             }
         }
     }
-
+    
+    /**
+     * Determines if a method is Async by looking for the "@future" amongst it's annotations.
+     * @param astNode the node of the loop statement.
+     * @param methodName the name of the method.
+     * @return True if the method has the "@future" annotation.
+     */
     private boolean methodIsAsync(AstNode astNode, String methodName) {
         AstNode firstAncestor = astNode.getFirstAncestor(ApexGrammarRuleKey.TYPE_DECLARATION);
         loadMethods(firstAncestor);
@@ -129,7 +138,11 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
         }
         return false;
     }
-
+    
+    /**
+     * Performs a lazy loading of the list of method declarations within the class.
+     * @param ancestor The ancestor node that "contains" the method declarations.
+     */
     private void loadMethods(AstNode ancestor) {
         if(methods == null) {
             methods = ancestor.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
