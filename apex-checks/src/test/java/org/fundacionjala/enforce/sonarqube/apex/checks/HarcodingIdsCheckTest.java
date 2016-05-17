@@ -45,7 +45,7 @@ public class HarcodingIdsCheckTest {
     @Test
     public void testHardcodedIdsInVariables() {
         String filePath = "src/test/resources/checks/HarcodedIdsInVariables.cls";
-        scanFilesWithCheck(filePath, new HardcodingIdsCheck());
+        scanFilesWithCheck(filePath, new HardcodingIdsCheckInVariables());
 
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(3).withMessage(FIRST_VARIABLE_ERROR)
@@ -56,7 +56,7 @@ public class HarcodingIdsCheckTest {
     @Test
     public void testHardcodedIdsInMethodsAndConstructors() {
         String filePath = "src/test/resources/checks/hardcodingIdsInMethodsAndConstructors.cls";
-        scanFilesWithCheck(filePath, new HardcodingIdsInMethodsAndConstructorscheck());
+        scanFilesWithCheck(filePath, new HardcodingIdsInMethodsAndConstructorsCheck());
 
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(4).withMessage(FIRST_EXPRESSION_ERROR_MESSAGE)

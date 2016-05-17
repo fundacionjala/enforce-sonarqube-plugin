@@ -39,7 +39,7 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 @Rule(
-        key = MethodNameCheck.CHECK_KEY,
+        key = HardcodingIdsInMethodsAndConstructorsCheck.CHECK_KEY,
         priority = Priority.MAJOR,
         name = "ID's should not be hardcoded",
         tags = Tags.CONVENTION
@@ -47,7 +47,7 @@ import org.sonar.squidbridge.checks.SquidCheck;
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("1min")
 @ActivatedByDefault
-public class HardcodingIdsInMethodsAndConstructorscheck extends SquidCheck<Grammar> {
+public class HardcodingIdsInMethodsAndConstructorsCheck extends SquidCheck<Grammar> {
 
     /**
      * Stores a message template.
@@ -57,7 +57,7 @@ public class HardcodingIdsInMethodsAndConstructorscheck extends SquidCheck<Gramm
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1011";
+    public static final String CHECK_KEY = "A1010";
 
     @Override
     public void init() {
