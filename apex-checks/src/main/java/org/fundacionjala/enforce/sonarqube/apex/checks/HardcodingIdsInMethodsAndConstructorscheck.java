@@ -23,12 +23,13 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_INITIALIZER;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+import java.util.LinkedList;
 import java.util.List;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STRING_LITERAL_STRING;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
@@ -46,52 +47,54 @@ import org.sonar.squidbridge.checks.SquidCheck;
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("1min")
 @ActivatedByDefault
-public class HardcodingIdsCheck extends SquidCheck<Grammar> {
+public class HardcodingIdsInMethodsAndConstructorscheck extends SquidCheck<Grammar> {
 
     /**
      * Stores a message template.
      */
-    public static final String MESSAGE = "The \"%s\" variable has hard-coded lines";
+    public static final String MESSAGE = "Line %d contains hard-coded value %s";
 
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1010";
+    public static final String CHECK_KEY = "A1011";
 
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.VARIABLE_DECLARATOR);
+        subscribeTo(CONSTRUCTOR_DECLARATION, METHOD_DECLARATION);
     }
 
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode astParent = astNode.getParent();
-        List<AstNode> typeChildren = astParent.getChildren(TYPE);
-        typeChildren.stream()
-                .filter((currentNode) -> 
-                        (currentNode .getTokenOriginalValue()
-                                .matches("ID|id|Id|iD")))
-                .forEach((_item) -> {
-            checkValue(astNode.getChildren(VARIABLE_INITIALIZER));
-            _item.getName();
-                });
-    }
-    
-    /**
-     * Checks if one of the given nodes values from the list matches the RegEx
-     * for ID's.
-     * @param astNodes the list of nodes to be analyzed.
-     */
-    private void checkValue(List<AstNode> astNodes) {
-        astNodes.stream().forEach((current) -> {
-            String astNodeValue = current.getTokenOriginalValue();
-            if (astNodeValue.matches("(')[a-zA-Z0-9]{15,18}(')")) {
-                AstNode fieldDeclaration = current.getParent()
-                        .getFirstDescendant(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER);
+        List<AstNode> hardCodedLines = lookFor(astNode);
+        if (!hardCodedLines.isEmpty()) {
+            hardCodedLines.stream().forEach((hardCodedNode) -> {
+                int hardCodedLineIndex = hardCodedNode.getTokenLine();
+                String hardCodedValue = hardCodedNode.getTokenOriginalValue();
                 getContext().createLineViolation(this, String.format(MESSAGE,
-                        fieldDeclaration.getTokenOriginalValue()), fieldDeclaration);
-            }
-        });
+                        hardCodedLineIndex, hardCodedValue), hardCodedLineIndex);
+            });
+        }
+    }
+
+    /**
+     * Look for an string literal string node and then it compares this token
+     * with a regex to proof it contains a hard-coded ID.
+     * @param astNode initial node.
+     * @return a list of nodes which contains hard-coded values.
+     */
+    private List<AstNode> lookFor(AstNode astNode) {
+        List<AstNode> hardCodedNodes = new LinkedList<>();
+        List<AstNode> foundNodes = astNode.getDescendants(STRING_LITERAL_STRING);
+        foundNodes.stream().filter((expressionNode) 
+                -> (expressionNode.getTokenOriginalValue()
+                        .matches("(')[a-zA-Z0-9]{15,18}(')"))).forEach((expressionNode) 
+                        -> { 
+                            hardCodedNodes.add(expressionNode);
+                            }
+        );
+        
+        return hardCodedNodes;
     }
 
 }
