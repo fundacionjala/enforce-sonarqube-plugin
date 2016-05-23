@@ -21,50 +21,67 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
-import java.util.List;
+import java.util.regex.Pattern;
 
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
+import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
+import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 
 /**
- * Verifies if a class contains test methods.
+ * Verification of the name of the class.
  */
 @Rule(
-        key = TestMethodCheck.CHECK_KEY,
+        key = ClassNameCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "Test methods incorrectly located",
-        description = "Test methods should be written in a test class",
+        name = "Class names should comply with a naming convention",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("6min")
+@SqaleConstantRemediation("1min")
 @ActivatedByDefault
-public class TestMethodCheck extends AnnotationMethodCheck {
-
-    /**
-     * Stores a message template.
-     */
-    public static final String MESSAGE = "The \"%s\" method corresponds to a test class.";
+public class ClassNameCheck extends SquidCheck<Grammar> {
 
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1007";
+    public static final String CHECK_KEY = "A1001";
+
+    /**
+     * The structure must have the name of the method.
+     */
+    private static final String DEFAULT = "^[A-Z_][a-zA-Z0-9]+$";
+
+    @RuleProperty(
+            key = "format",
+            defaultValue = "" + DEFAULT)
+    /**
+     * Stores the format for the rule.
+     */
+    public String format = DEFAULT;
+
+    /**
+     * Manages the pattern of rule.
+     */
+    private Pattern pattern = null;
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
+        pattern = Pattern.compile(format);
         subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION);
     }
 
@@ -76,30 +93,10 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode modifierNode = null;
-        if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION)) {
-            modifierNode = astNode.getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
-        } 
-        if (!isAnnotation(modifierNode, IS_TEST)) {
-            List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
-            methods.stream().forEach((method) -> {
-                AstNode parent = method.getParent();
-                AstNode firstChild = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
-                if (isTest(firstChild)) {
-                    getContext().createLineViolation(this, methodMessage(method), method);
-                }
-            });
+        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.NAME).getTokenOriginalValue();
+        if (!pattern.matcher(className).matches()) {
+            getContext().createLineViolation(this,
+                    "Rename class \"{0}\" to match the regular expression {1}.", astNode, className, format);
         }
-    }
-
-    /**
-     * Returns the method message.
-     *
-     * @param astNode current node.
-     * @return the message.
-     */
-    private String methodMessage(AstNode astNode) {
-        AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER);
-        return String.format(MESSAGE, method.getTokenOriginalValue());
     }
 }

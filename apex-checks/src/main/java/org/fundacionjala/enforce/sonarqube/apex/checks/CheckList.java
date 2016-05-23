@@ -23,6 +23,15 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.MethodNameCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.DeprecatedMethodCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.TestMethodCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.DmlInForCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.AssertMethodCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.DmlInConstructorCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.DmlInWhileCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.LineLengthCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.ClassNameCheck;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;

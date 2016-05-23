@@ -23,6 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.AssertMethodCheck;
 import java.io.File;
 
 import org.junit.Before;

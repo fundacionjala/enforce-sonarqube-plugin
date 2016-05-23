@@ -21,81 +21,83 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
+
+import java.util.regex.Pattern;
 
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
+import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
+import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 
 /**
- * This class checks that a deprecated method does not contain lines of code.
+ * Verification of the name of the method in a class.
  */
 @Rule(
-        key = DeprecatedMethodCheck.CHECK_KEY,
-        priority = Priority.INFO,
-        name = "Deprecated code should be removed eventually",
-        description = "Prevent the body of a method contains deprecated code lines",
-        tags = Tags.OBSOLETE
+        key = MethodNameCheck.CHECK_KEY,
+        priority = Priority.MINOR,
+        name = "Method names should comply with a naming convention",
+        tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("1min")
 @ActivatedByDefault
-public class DeprecatedMethodCheck extends AnnotationMethodCheck {
-
-    /**
-     * Stores a message template.
-     */
-    public static final String MESSAGE = "The \"%s\" method is deprecated, suggest deleting the contents of the method";
+public class MethodNameCheck extends SquidCheck<Grammar> {
 
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1006";
+    public static final String CHECK_KEY = "A1002";
 
     /**
-     * Stores the number of elements for empty block counting the start and end brace.
+     * The structure must have the name of the method.
      */
-    public static final int EMPTY_BLOCK = 2;
+    private static final String DEFAULT = "^[a-z][a-zA-Z0-9]+$";
+
+    @RuleProperty(
+            key = "format",
+            defaultValue = "" + DEFAULT)
+
+    /**
+     * Stores the format for the rule.
+     */
+    public String format = DEFAULT;
+
+    /**
+     * Manages the patron of rule.
+     */
+    private Pattern pattern = null;
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
+        pattern = Pattern.compile(format);
         subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
     }
 
     /**
-     * It is responsible for verifying whether the rule is met in the rule base. In the event that
-     * the rule is not correct, create message error.
+     * It is responsible for verifying whether the rule is met in the rule base.
+     * In the event that the rule is not correct, create message error.
      *
      * @param astNode It is the node that stores all the rules.
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode parent = astNode.getParent();
-        AstNode modifiersNode = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
-        AstNode blockNode = astNode.getFirstDescendant(ApexGrammarRuleKey.BLOCK);
-        if (isDeprecated(modifiersNode) && !isEmptyBlock(blockNode)) {
-            AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER);
-            getContext().createLineViolation(this, String.format(MESSAGE,
-                    method.getTokenOriginalValue()), method);
+        String methodName = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue();
+        if (!pattern.matcher(methodName).matches()) {
+            getContext().createLineViolation(this,
+                    "Rename method \"{0}\" to match the regular expression {1}.", astNode, methodName, format);
         }
-    }
-
-    /**
-     * Checks if the node represents a empty statement block.
-     *
-     * @param astNode to be analyzed.
-     * @return the analysis result.
-     */
-    private boolean isEmptyBlock(AstNode astNode) {
-        return astNode.getNumberOfChildren() == EMPTY_BLOCK;
     }
 }

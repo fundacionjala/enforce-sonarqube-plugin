@@ -21,47 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
-import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
+
+import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 
-/**
- * Check for a DML is not within a "while".
- */
-@Rule(
-        key = DmlInWhileCheck.CHECK_KEY,
-        priority = Priority.CRITICAL,
-        name = "\"while\" loop should not have DML statement",
-        description = "DML statement in a while",
-        tags = Tags.BUG
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("5min")
-@ActivatedByDefault
-public class DmlInWhileCheck extends DmlStatementCheck {
+public class DmlStatementCheck extends SquidCheck<Grammar> {
 
     /**
      * Stores a message template.
      */
-    private static final String MESSAGE = "The DML statement \"%s\", can not be inside a while loop";
+    protected String message;
 
     /**
-     * It is the code of the rule for the plugin.
+     * Stores the rule to subscribe.
      */
-    public static final String CHECK_KEY = "A1003";
+    protected ApexGrammarRuleKey ruleKey;
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
-    public DmlInWhileCheck() {
-        ruleKey = ApexGrammarRuleKey.WHILE_STATEMENT;
-        message = MESSAGE;
+    @Override
+    public void init() {
+        subscribeTo(ruleKey);
+    }
+
+    /**
+     * It is responsible for verifying whether the rule is met in the rule base.
+     * In the event that the rule is not correct, create message error.
+     *
+     * @param astNode It is the node that stores all the rules.
+     */
+    @Override
+    public void visitNode(AstNode astNode) {
+        if (astNode.hasDescendant(ApexGrammarRuleKey.DML_OPERATIONS)) {
+            getContext().createLineViolation(this, String.format(message,
+                    astNode.getFirstDescendant(ApexGrammarRuleKey.DML_OPERATIONS).getTokenOriginalValue()), astNode);
+        }
     }
 }

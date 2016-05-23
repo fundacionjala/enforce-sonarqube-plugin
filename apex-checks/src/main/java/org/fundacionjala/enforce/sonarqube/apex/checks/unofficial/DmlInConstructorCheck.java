@@ -21,46 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
-
-import org.sonar.squidbridge.checks.SquidCheck;
+import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.check.Priority;
+import org.sonar.check.Rule;
+import org.sonar.squidbridge.annotations.ActivatedByDefault;
+import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
+import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 
-public class DmlStatementCheck extends SquidCheck<Grammar> {
+/**
+ * Check for a DML is not within a "Constructor".
+ */
+@Rule(
+        key = DmlInConstructorCheck.CHECK_KEY,
+        priority = Priority.CRITICAL,
+        name = "Constructor method should not have DML statement",
+        description = "DML statement in a constructor",
+        tags = Tags.BUG
+)
+@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
+@SqaleConstantRemediation("5min")
+@ActivatedByDefault
+public class DmlInConstructorCheck extends DmlStatementCheck {
 
     /**
      * Stores a message template.
      */
-    protected String message;
+    private static final String MESSAGE = "The DML statement \"%s\", can not be inside a constructor";
 
     /**
-     * Stores the rule to subscribe.
+     * It is the code of the rule for the plugin.
      */
-    protected ApexGrammarRuleKey ruleKey;
+    public static final String CHECK_KEY = "A1005";
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
-    @Override
-    public void init() {
-        subscribeTo(ruleKey);
-    }
-
-    /**
-     * It is responsible for verifying whether the rule is met in the rule base.
-     * In the event that the rule is not correct, create message error.
-     *
-     * @param astNode It is the node that stores all the rules.
-     */
-    @Override
-    public void visitNode(AstNode astNode) {
-        if (astNode.hasDescendant(ApexGrammarRuleKey.DML_OPERATIONS)) {
-            getContext().createLineViolation(this, String.format(message,
-                    astNode.getFirstDescendant(ApexGrammarRuleKey.DML_OPERATIONS).getTokenOriginalValue()), astNode);
-        }
+    public DmlInConstructorCheck() {
+        ruleKey = ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
+        message = MESSAGE;
     }
 }

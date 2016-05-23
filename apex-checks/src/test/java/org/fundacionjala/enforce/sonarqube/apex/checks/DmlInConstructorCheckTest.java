@@ -23,6 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.DmlInConstructorCheck;
 import java.io.File;
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 import org.junit.Test;

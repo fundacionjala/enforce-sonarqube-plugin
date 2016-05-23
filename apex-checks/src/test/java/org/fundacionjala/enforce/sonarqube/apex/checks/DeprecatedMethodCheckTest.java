@@ -23,6 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.DeprecatedMethodCheck;
 import java.io.File;
 
 import org.junit.Test;

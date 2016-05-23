@@ -23,6 +23,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.LineLengthCheck;
 import java.io.File;
 import org.junit.Before;
 import org.junit.Test;

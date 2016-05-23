@@ -21,47 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
+import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
 
 /**
- * Check for a DML is not within a "Constructor".
+ * This class defines the maximum number of the lines.
  */
 @Rule(
-        key = DmlInConstructorCheck.CHECK_KEY,
-        priority = Priority.CRITICAL,
-        name = "Constructor method should not have DML statement",
-        description = "DML statement in a constructor",
-        tags = Tags.BUG
+        key = LineLengthCheck.CHECK_KEY,
+        priority = Priority.MINOR,
+        name = "Lines should not be too long",
+        tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("5min")
+@SqaleConstantRemediation("1min")
 @ActivatedByDefault
-public class DmlInConstructorCheck extends DmlStatementCheck {
+public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
 
     /**
-     * Stores a message template.
+     * Identifier key of the class.
      */
-    private static final String MESSAGE = "The DML statement \"%s\", can not be inside a constructor";
+    public static final String CHECK_KEY = "LineLength";
 
     /**
-     * It is the code of the rule for the plugin.
+     * Maximum number of line length.
      */
-    public static final String CHECK_KEY = "A1005";
+    public static final int MAXIMAL_LINE_LENGTH = 80;
 
     /**
-     * The variables are initialized and subscribe the base rule.
+     * Returns the default number line length.
+     *
+     * @return the line number.
      */
-    public DmlInConstructorCheck() {
-        ruleKey = ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION;
-        message = MESSAGE;
+    @Override
+    public int getMaximumLineLength() {
+        return MAXIMAL_LINE_LENGTH;
     }
 }

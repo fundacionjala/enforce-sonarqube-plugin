@@ -21,48 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
-import com.sonar.sslr.api.Grammar;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
+
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 
 /**
- * This class defines the maximum number of the lines.
+ * Check for a DML is not within a "while".
  */
 @Rule(
-        key = LineLengthCheck.CHECK_KEY,
-        priority = Priority.MINOR,
-        name = "Lines should not be too long",
-        tags = Tags.CONVENTION
+        key = DmlInWhileCheck.CHECK_KEY,
+        priority = Priority.CRITICAL,
+        name = "\"while\" loop should not have DML statement",
+        description = "DML statement in a while",
+        tags = Tags.BUG
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("1min")
+@SqaleConstantRemediation("5min")
 @ActivatedByDefault
-public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
+public class DmlInWhileCheck extends DmlStatementCheck {
 
     /**
-     * Identifier key of the class.
+     * Stores a message template.
      */
-    public static final String CHECK_KEY = "LineLength";
+    private static final String MESSAGE = "The DML statement \"%s\", can not be inside a while loop";
 
     /**
-     * Maximum number of line length.
+     * It is the code of the rule for the plugin.
      */
-    public static final int MAXIMAL_LINE_LENGTH = 80;
+    public static final String CHECK_KEY = "A1003";
 
     /**
-     * Returns the default number line length.
-     *
-     * @return the line number.
+     * The variables are initialized and subscribe the base rule.
      */
-    @Override
-    public int getMaximumLineLength() {
-        return MAXIMAL_LINE_LENGTH;
+    public DmlInWhileCheck() {
+        ruleKey = ApexGrammarRuleKey.WHILE_STATEMENT;
+        message = MESSAGE;
     }
 }
