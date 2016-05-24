@@ -35,6 +35,7 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.ClassNameCheck
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck;
 
 /**
  * Builds a list of custom checks.
@@ -77,6 +78,7 @@ public class CheckList {
                 DmlInWhileCheck.class,
                 LineLengthCheck.class,
                 MethodNameCheck.class,
-                TestMethodCheck.class);
+                TestMethodCheck.class,
+                TestClassCheck.class);
     }
 }
