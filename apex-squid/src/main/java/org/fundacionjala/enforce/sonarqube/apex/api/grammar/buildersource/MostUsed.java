@@ -108,6 +108,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BOOLEAN_LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMMON_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_FLOATING_POINT_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DECIMAL_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FLOATING_POINT_LITERAL_NUMBER;
@@ -145,6 +146,7 @@ public class MostUsed {
         hexadecimalFloatingPointLiteral(grammarBuilder);
         floatingPointLiteralNumber(grammarBuilder);
         allowedKeywordsAsIdentifierForMethods(grammarBuilder);
+        commonIdentifier(grammarBuilder);
     }
 
     /**
@@ -430,6 +432,15 @@ public class MostUsed {
                 grammarBuilder.firstOf(
                         HEXADECIMAL_FLOATING_POINT_LITERAL,
                         DECIMAL_FLOATING_POINT_LITERAL
+                )
+        );
+    }
+    
+    private static void commonIdentifier(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(COMMON_IDENTIFIER).is(
+                grammarBuilder.firstOf(
+                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER
                 )
         );
     }

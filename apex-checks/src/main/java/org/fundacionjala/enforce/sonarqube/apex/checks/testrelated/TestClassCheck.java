@@ -62,7 +62,7 @@ public class TestClassCheck extends SquidCheck<Grammar> {
     /**
      * Identifier of the annotation.
      */
-    private final String IS_TEST = "ISTEST";
+    public static final String IS_TEST = "ISTEST";
     
     /**
      * Constant used to see if the name of the class has the word test in it.
@@ -107,7 +107,7 @@ public class TestClassCheck extends SquidCheck<Grammar> {
      * @param astNode the declaration to be checked.
      * @return true if the @isTest annotation is amongst the modifiers.
      */
-    private boolean hasTestAnnotation(AstNode astNode) {
+    public static boolean hasTestAnnotation(AstNode astNode) {
         AstNode modifiers = astNode.getParent().getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
         if (modifiers.hasDescendant(ApexGrammarRuleKey.ANNOTATION)) {
             List<AstNode> annotations = modifiers.getDescendants(ApexGrammarRuleKey.ANNOTATION);

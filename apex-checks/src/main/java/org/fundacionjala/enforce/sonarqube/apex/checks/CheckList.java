@@ -79,6 +79,7 @@ public class CheckList {
                 LineLengthCheck.class,
                 MethodNameCheck.class,
                 TestMethodCheck.class,
-                TestClassCheck.class);
+                TestClassCheck.class,
+                TestMethodCheck.class);
     }
 }

@@ -53,9 +53,9 @@ import org.fundacionjala.enforce.sonarqube.apex.api.ApexMetric;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexParser;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMMON_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
@@ -201,7 +201,7 @@ public class ApexAstScanner {
      */
     private static void setClassesAnalyser(AstScanner.Builder<Grammar> builder) {
         builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
-                buildCallback(NAME, !IS_CLASS),
+                buildCallback(COMMON_IDENTIFIER, !IS_CLASS),
                 CLASS_OR_INTERFACE_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
