@@ -36,6 +36,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodInTestClassCheck;
 
 /**
  * Builds a list of custom checks.
@@ -80,6 +81,6 @@ public class CheckList {
                 MethodNameCheck.class,
                 TestMethodCheck.class,
                 TestClassCheck.class,
-                TestMethodCheck.class);
+                TestMethodInTestClassCheck.class);
     }
 }
