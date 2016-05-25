@@ -57,9 +57,15 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
      * It is the code of the rule for the plugin.
      */
     public static final String CHECK_KEY = "A1022";
-
+    
+    /**
+    * Node that represents the class where the test method is declared. Meant to be lazy loaded.
+    */
     private AstNode classDeclaration;
-
+    
+    /**
+     * The identifier node of the class. Meant to be lazy loaded.
+     */
     private AstNode className;
 
     /**
@@ -95,7 +101,12 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
             }
         }
     }
-
+    
+    /**
+     * Lazy load the classDeclaration property.
+     * @param astNode The node of the method of which the class declaration is obtained. 
+     * @return the classDeclaration value.
+     */
     private AstNode getClassDeclaration(AstNode astNode) {
         if (classDeclaration == null) {
             classDeclaration = astNode.getFirstAncestor(ApexGrammarRuleKey.TYPE_DECLARATION)
@@ -103,7 +114,11 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
         }
         return classDeclaration;
     }
-
+    
+    /**
+     * Lazy load the className property.
+     * @return The node identifier of the class.
+     */
     private AstNode getClassName() {
         if (className == null) {
             className = classDeclaration.getFirstChild(ApexGrammarRuleKey.COMMON_IDENTIFIER);
