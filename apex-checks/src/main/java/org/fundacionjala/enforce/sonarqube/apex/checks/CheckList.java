@@ -69,6 +69,8 @@ public class CheckList {
                 LineLengthCheck.class,
                 MethodNameCheck.class,
                 TestMethodCheck.class,
-                HardcodingIdsCheckInVariables.class);
+                HardcodingIdsCheckInVariables.class,
+                HardcodingIdsInMethodsAndConstructorsCheck.class,
+                TestAssertionsAndTestMethodKeywordCheck.class);
     }
 }
