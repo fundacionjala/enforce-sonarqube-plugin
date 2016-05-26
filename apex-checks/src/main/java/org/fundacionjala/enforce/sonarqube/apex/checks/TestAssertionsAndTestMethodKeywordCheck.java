@@ -58,7 +58,7 @@ public class TestAssertionsAndTestMethodKeywordCheck extends SquidCheck<Grammar>
 
     private static final String SYSTEM_PATTERN = "(?i)System";
 
-    public static final String CHECK_KEY = "A1011";
+    public static final String CHECK_KEY = "A1012";
 
     @Override
     public void init() {
