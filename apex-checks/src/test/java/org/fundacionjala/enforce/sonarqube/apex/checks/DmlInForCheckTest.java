@@ -2,8 +2,10 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
+
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.DmlInForCheck;
 import org.junit.Test;
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;

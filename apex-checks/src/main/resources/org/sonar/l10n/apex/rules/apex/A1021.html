@@ -1,0 +1,46 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+The @isTest annotations is used to define a class as a test class, so it should only be used for classes and not interfaces or enums. 
+
+Also, if a class is named with the word "test" it suggests this is a test class, so it should either have the @isTest annotation or be renamed. 
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<p>
+private class MyTest {     _// missing annotation @isTest._
+}
+@isTest
+class MyTest {    _// missing modifier access._
+}
+
+@isTest
+public enum MyTest { _//@isTest annotation should not be used for enums_
+}
+
+@isTest
+public interface MyTest { _//@isTest annotation should not be used for interfaces_
+}
+</p>
+
+<h2>Compliant Solution</h2>
+<p>
+@isTest
+private class MyTest {
+...
+}
+
+@isTest
+public class MyTest  {
+&nbsp;&nbsp;&nbsp;&nbsp;public void testMyTest() {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// some assertion.
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}
+</p>
+<pre>
+class MyClass:
+	...
+</pre>
