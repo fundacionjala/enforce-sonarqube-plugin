@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+It's bad practice to hard code Id's.
+
+</p>
+
+<h2>Noncompliant Code Example</h2>
+
+<pre>
+Id recordId = '46621ag815616516aw'
+
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+ID recordId;
+...
+public void method (Id newRecordId) {
+    recordId = newRecordId;
+}
+...
+</pre>
+

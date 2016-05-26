@@ -23,13 +23,15 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
-import java.io.File;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.squidbridge.api.SourceFile;
-import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
+
+import java.io.File;
+
+import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
 public class TestMethodInTestClassCheckTest {
 
