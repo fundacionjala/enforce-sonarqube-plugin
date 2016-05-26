@@ -56,7 +56,7 @@ public class HardcodingIdsCheckInVariables extends SquidCheck<Grammar> {
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1009";
+    public static final String CHECK_KEY = "A1010";
 
     @Override
     public void init() {

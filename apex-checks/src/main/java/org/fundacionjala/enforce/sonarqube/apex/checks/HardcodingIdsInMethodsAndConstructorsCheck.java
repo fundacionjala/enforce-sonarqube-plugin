@@ -57,7 +57,7 @@ public class HardcodingIdsInMethodsAndConstructorsCheck extends SquidCheck<Gramm
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1010";
+    public static final String CHECK_KEY = "A1011";
 
     @Override
     public void init() {
