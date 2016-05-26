@@ -1,62 +1,14 @@
 /*
- * The MIT License
- *
- * Copyright 2016 Fundacion Jala.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) Fundacion Jala. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ABSTRACT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCEPTION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINAL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GLOBAL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ITERATOR;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIST;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MAP;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OVERRIDE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PRIVATE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PROTECTED;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.PUBLIC;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SET;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.STATIC;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TESTMETHOD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRANSIENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.VIRTUAL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.AT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ANNOTATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BRACKETS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_ERASURE_TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GENERIC_TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.REFERENCE_TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
 
 /**
  * This class contains constructors for Type rules and its sub rules.
