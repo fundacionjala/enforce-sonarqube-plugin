@@ -5,12 +5,13 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import com.sonar.sslr.api.Grammar;
-import java.io.File;
 import org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner;
 import org.junit.Test;
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 import org.sonar.squidbridge.checks.SquidCheck;
+
+import java.io.File;
 
 public class HarcodingIdsCheckTest {
 

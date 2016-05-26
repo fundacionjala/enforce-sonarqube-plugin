@@ -2,9 +2,12 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
+
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import com.google.common.collect.ImmutableList;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.*;
 
 import java.util.List;
 
@@ -50,6 +53,7 @@ public class CheckList {
                 LineLengthCheck.class,
                 MethodNameCheck.class,
                 TestMethodCheck.class,
+                TestClassCheck.class,
                 AsyncMethodsCheck.class,
                 HardcodingIdsCheckInVariables.class,
                 HardcodingIdsInMethodsAndConstructorsCheck.class,

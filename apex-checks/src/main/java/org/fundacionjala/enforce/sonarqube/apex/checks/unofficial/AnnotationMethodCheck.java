@@ -2,7 +2,8 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-package org.fundacionjala.enforce.sonarqube.apex.checks;
+
+package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
