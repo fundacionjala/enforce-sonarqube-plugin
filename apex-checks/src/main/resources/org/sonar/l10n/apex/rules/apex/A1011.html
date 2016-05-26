@@ -1,63 +1,30 @@
 <p>
-    You must write at least one assertion and your method should have 
-    testMethod keyword.
+    It's bad practice to hard code Id's.
 </p>
 
 <h2>Noncompliant Code Example</h2>
 
 <pre>
-@isTest
-public class SampleTest() {
-    static testMethod void someTestMethod() {
-    //a block of code, without System.assert 
+public void method (ID newRecordID) {
+    for (Account current : listOfcounts){
+        if (current.getId == '34345446546546a') {
+
+        }
     }
+    method('3266sd35435sd6a');
 }
-
-</pre>
-
-<pre>
-@isTest
-public class SampleTest() {
-    static void someTestMethod() {
-    //block of code.
-    System.assert(something); // this is a test context.
-    }
-}
-
 </pre>
 
 <h2>Compliant Solution</h2>
 
 <pre>
-@isTest
-public class SampleTest() {
-    static testMethod void someTestMethod() {
-    ...
-    System.assert(something);
-    }
+public void method (ID newRecordID) {
+    for (Account current : listOfcounts){
+        if (current.getId == newRecordID) {
 
-    ...
-
-    static testMethod void someTestMethod() {
-    ...
-    System.assertEquals(something, otherThing, 'message');
+        }
     }
+    
+    otherMethod(newRecordID);
 }
 </pre>
-
-<pre>
-public class SampleTest() {
-    static testMethod void someTestMethod() {
-    ...
-    System.assert(something);
-    }
-
-    ...
-
-    static testMethod void someTestMethod() {
-    ...
-    System.assertEquals(something, otherThing, 'message');
-    }
-}
-</pre>
-
