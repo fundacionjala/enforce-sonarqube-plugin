@@ -1,81 +1,14 @@
 /*
- * The MIT License
- *
- * Copyright 2016 Fundacion Jala.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) Fundacion Jala. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BREAK;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CATCH;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CONTINUE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DELETE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DO;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ELSE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FINALLY;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FOR;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IF;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INSERT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.MERGE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.RETURN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THIS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.THROW;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.TRY;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UNDELETE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPDATE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.UPSERT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHILE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COLON;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.SEMICOLON;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BLOCK_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BREAK_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONTINUE_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_MERGE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_OPERATIONS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DML_UPSERT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.DO_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EMPTY_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_EACH_LOOP;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_INIT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_LOOP;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.PRIMARY_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.THROW_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRY_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
 
 /**
  * This class contains constructors for Statement rules and its sub rules.
