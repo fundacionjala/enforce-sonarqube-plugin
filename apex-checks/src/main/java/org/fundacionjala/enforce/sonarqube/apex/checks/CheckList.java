@@ -69,6 +69,8 @@ public class CheckList {
                 LineLengthCheck.class,
                 MethodNameCheck.class,
                 TestMethodCheck.class,
-                AsyncMethodsCheck.class);
+                AsyncMethodsCheck.class,
+                HardcodingIdsCheckInVariables.class,
+                HardcodingIdsInMethodsAndConstructorsCheck.class);
     }
 }
