@@ -6,6 +6,7 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -32,7 +33,7 @@ public class DmlInWhileCheck extends DmlStatementCheck {
     /**
      * Stores a message template.
      */
-    private static final String MESSAGE = "The DML statement \"%s\", can not be inside a while loop";
+    private static final String MESSAGE = ChecksBundle.getStringFromBundle("DmlInWhileCheckMessage");
 
     /**
      * It is the code of the rule for the plugin.

@@ -33,6 +33,6 @@ public class DmlInWhileCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInWhile);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
                 next().atLine(4).withMessage(
-                "The DML statement \"insert\", can not be inside a while loop");
+                "The DML statement \"insert\", can not be inside a while loop.");
     }
 }

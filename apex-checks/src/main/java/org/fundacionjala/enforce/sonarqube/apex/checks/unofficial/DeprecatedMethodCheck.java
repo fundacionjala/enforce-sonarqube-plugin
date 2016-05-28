@@ -7,6 +7,7 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import com.sonar.sslr.api.AstNode;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -33,7 +34,7 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
     /**
      * Stores a message template.
      */
-    public static final String MESSAGE = "The \"%s\" method is deprecated, suggest deleting the contents of the method";
+    public static final String MESSAGE = ChecksBundle.getStringFromBundle("DeprecatedMethodCheckMessage");
 
     /**
      * It is the code of the rule for the plugin.

@@ -33,6 +33,6 @@ public class DmlInForCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInFor);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
                 next().atLine(8).withMessage(
-                "The DML statement \"merge\", can not be inside a for loop");
+                "The DML statement \"merge\", can not be inside a for loop.");
     }
 }

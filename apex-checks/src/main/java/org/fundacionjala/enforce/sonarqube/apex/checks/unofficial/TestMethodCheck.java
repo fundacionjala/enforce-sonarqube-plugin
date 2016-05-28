@@ -7,6 +7,7 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import com.sonar.sslr.api.AstNode;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -35,7 +36,7 @@ public class TestMethodCheck extends AnnotationMethodCheck {
     /**
      * Stores a message template.
      */
-    public static final String MESSAGE = "The \"%s\" method corresponds to a test class.";
+    public static final String MESSAGE = ChecksBundle.getStringFromBundle("TestMethodCheckMessage");
 
     /**
      * It is the code of the rule for the plugin.

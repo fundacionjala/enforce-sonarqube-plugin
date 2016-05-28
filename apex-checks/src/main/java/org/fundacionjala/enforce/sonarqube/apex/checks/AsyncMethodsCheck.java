@@ -2,6 +2,7 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
+
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import com.sonar.sslr.api.AstNode;
@@ -81,9 +82,10 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
                                 ? method.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER) : method;
                         String methodName = methodIdentifier.getTokenValue();
                         if (methodIsAsync(astNode, methodName)) {
+                            String message = ChecksBundle.getStringFromBundle("AsyncMethodsCheckMessage");
                             getContext().createLineViolation(this,
-                                    "Method \"{0}\" is Async, should not be called withing a loop.",
-                                    method, methodIdentifier.getTokenOriginalValue());
+                                    message, method, 
+                                    methodIdentifier.getTokenOriginalValue());
                         }
                     }
                 }
