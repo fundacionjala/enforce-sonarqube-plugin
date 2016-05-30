@@ -22,8 +22,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 @Rule(
         key = DeprecatedMethodCheck.CHECK_KEY,
         priority = Priority.INFO,
-        name = "Deprecated code should be removed eventually",
-        description = "Prevent the body of a method contains deprecated code lines",
         tags = Tags.OBSOLETE
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)

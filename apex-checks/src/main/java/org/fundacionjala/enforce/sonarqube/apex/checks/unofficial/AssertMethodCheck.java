@@ -29,8 +29,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 @Rule(
         key = AssertMethodCheck.CHECK_KEY,
         priority = Priority.MINOR,
-        name = "\"assert\" should not have the argument \"true\"",
-        description = "It's bad practice to use incorrectly assert methods",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)

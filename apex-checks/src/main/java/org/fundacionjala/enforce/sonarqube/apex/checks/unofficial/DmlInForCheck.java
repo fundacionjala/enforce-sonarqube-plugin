@@ -21,8 +21,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 @Rule(
         key = DmlInForCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "\"for\" loop should not have DML statement",
-        description = "DML statement in a for",
         tags = Tags.BUG
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)

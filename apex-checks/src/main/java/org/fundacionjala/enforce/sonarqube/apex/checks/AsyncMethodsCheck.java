@@ -25,9 +25,6 @@ import java.util.List;
 @Rule(
         key = AsyncMethodsCheck.CHECK_KEY,
         priority = Priority.INFO,
-        name = "An async method should not be invoked within a loop.",
-        description = "An async method, which is declared with an \"@future\" annotation, should not"
-        + "be called or invoked within a block of code inside a loop statement (for, while, do while).",
         tags = Tags.OBSOLETE
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.SYNCHRONIZATION_RELIABILITY)

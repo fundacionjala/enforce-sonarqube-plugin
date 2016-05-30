@@ -21,8 +21,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 @Rule(
         key = DmlInConstructorCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "Constructor method should not have DML statement",
-        description = "DML statement in a constructor",
         tags = Tags.BUG
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)

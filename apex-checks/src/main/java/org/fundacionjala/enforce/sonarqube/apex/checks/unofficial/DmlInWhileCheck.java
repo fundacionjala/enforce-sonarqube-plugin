@@ -21,8 +21,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 @Rule(
         key = DmlInWhileCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "\"while\" loop should not have DML statement",
-        description = "DML statement in a while",
         tags = Tags.BUG
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)

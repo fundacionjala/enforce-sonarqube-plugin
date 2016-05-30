@@ -27,10 +27,6 @@ import java.util.List;
 @Rule(
         key = TestClassCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "\"@Test\" annotation should only be used for proper test classes",
-        description = "\"@Test\" annotation is used to indicate when a class represents a test class, so"
-        + "it should be used only for classes (not enums or interfaces) and said class should be "
-        + "either public or private",
         tags = Tags.CONFUSING
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.MODULARITY)

@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 @Rule(
         key = ClassNameCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "Class names should comply with a naming convention",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)

@@ -24,8 +24,6 @@ import java.util.List;
 @Rule(
         key = TestMethodCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "Test methods incorrectly located",
-        description = "Test methods should be written in a test class",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)

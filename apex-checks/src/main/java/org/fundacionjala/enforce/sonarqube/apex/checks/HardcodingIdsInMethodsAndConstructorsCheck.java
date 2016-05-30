@@ -23,7 +23,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 @Rule(
         key = HardcodingIdsInMethodsAndConstructorsCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "ID's should not be hardcoded",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
