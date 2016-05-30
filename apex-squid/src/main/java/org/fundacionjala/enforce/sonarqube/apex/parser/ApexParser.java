@@ -8,6 +8,7 @@ package org.fundacionjala.enforce.sonarqube.apex.parser;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
 import org.fundacionjala.enforce.sonarqube.apex.ApexConfiguration;
+import org.fundacionjala.enforce.sonarqube.apex.SquidBundle;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexGrammar;
 import org.fundacionjala.enforce.sonarqube.apex.lexer.ApexLexer;
 
@@ -19,7 +20,7 @@ public class ApexParser {
     /**
      * Stores an error message when configuration is null.
      */
-    private static final String ERROR_MESSAGE = "ApexConfiguration can't be null";
+    private static final String ERROR_MESSAGE = SquidBundle.getStringFromBundle("parser.messages.error");
 
     /**
      * Default constructor.
