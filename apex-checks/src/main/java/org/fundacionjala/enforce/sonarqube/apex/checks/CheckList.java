@@ -58,6 +58,7 @@ public class CheckList {
                 HardcodingIdsCheckInVariables.class,
                 HardcodingIdsInMethodsAndConstructorsCheck.class,
                 TestClassCheck.class,
-                TestMethodInTestClassCheck.class);
+                TestMethodInTestClassCheck.class,
+                TestAssertionsAndTestMethodKeywordCheck.class);
     }
 }
