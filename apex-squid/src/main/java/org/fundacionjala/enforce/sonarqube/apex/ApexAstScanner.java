@@ -161,7 +161,7 @@ public class ApexAstScanner {
      */
     private static void setClassesAnalyser(AstScanner.Builder<Grammar> builder) {
         builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
-                buildCallback(NAME, !IS_CLASS),
+                buildCallback(COMMON_IDENTIFIER, !IS_CLASS),
                 CLASS_OR_INTERFACE_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
