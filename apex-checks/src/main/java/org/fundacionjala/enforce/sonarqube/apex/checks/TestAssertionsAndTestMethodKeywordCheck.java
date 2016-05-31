@@ -21,17 +21,12 @@ import org.sonar.squidbridge.checks.SquidCheck;
 @Rule(
         key = TestAssertionsAndTestMethodKeywordCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "Test methods should have assertions and testMethod keyword.",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.UNIT_TESTS)
 @SqaleConstantRemediation("3min")
 @ActivatedByDefault
 public class TestAssertionsAndTestMethodKeywordCheck extends SquidCheck<Grammar> {
-
-    private static final String ASSERTION_ERROR = "Test method at line %d should have at least one assertion";
-
-    private static final String TEST_METHOD_KEYWORD_ERROR = "Test method in line %d must have testMethod keyword";
 
     private static final String SYSTEM_ASSERT_PATTERN = "(?i)system\\.assert(notequals|equals)?";
 
@@ -53,11 +48,11 @@ public class TestAssertionsAndTestMethodKeywordCheck extends SquidCheck<Grammar>
         boolean hasAssertion = hasAssertion(nameNodes);
         if (hasTestMethodKeyword && !hasAssertion) {
             getContext().createLineViolation(this,
-                    String.format(ASSERTION_ERROR, astNode.getTokenLine()), astNode);
+                    String.format(ChecksBundle.getStringFromBundle("AssertionError"), astNode.getTokenLine()), astNode);
         }
         if (!hasTestMethodKeyword && hasAssertion) {
             getContext().createLineViolation(this,
-                    String.format(TEST_METHOD_KEYWORD_ERROR, astNode.getTokenLine()), astNode);
+                    String.format(ChecksBundle.getStringFromBundle("TestMethodKeywordError"), astNode.getTokenLine()), astNode);
         }
     }
 

@@ -33,10 +33,10 @@ public class TestAssertionsAndTestMethodKeywordCheckTest {
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next()
                 .atLine(3)
-                .withMessage("Test method at line 3 should have at least one assertion")
+                .withMessage("Test method at line 3 should have at least one assertion.")
                 .next()
                 .atLine(54)
-                .withMessage("Test method in line 54 must have testMethod keyword")
+                .withMessage("Test method in line 54 must have testMethod keyword.")
                 .noMore();
     }
 
