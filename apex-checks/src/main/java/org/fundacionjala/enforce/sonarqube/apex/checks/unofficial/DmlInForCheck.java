@@ -6,6 +6,7 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -20,8 +21,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 @Rule(
         key = DmlInForCheck.CHECK_KEY,
         priority = Priority.CRITICAL,
-        name = "\"for\" loop should not have DML statement",
-        description = "DML statement in a for",
         tags = Tags.BUG
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
@@ -32,7 +31,7 @@ public class DmlInForCheck extends DmlStatementCheck {
     /**
      * Stores a message template.
      */
-    private static final String MESSAGE = "The DML statement \"%s\", can not be inside a for loop";
+    private static final String MESSAGE = ChecksBundle.getStringFromBundle("DmlInForCheckMessage");
 
     /**
      * It is the code of the rule for the plugin.

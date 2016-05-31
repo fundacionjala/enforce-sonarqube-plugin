@@ -33,8 +33,8 @@ public class DmlInConstructorCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), dmlCheckInConstructor);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
                 next().atLine(13).withMessage(
-                "The DML statement \"insert\", can not be inside a constructor")
+                "The DML statement \"insert\", can not be inside a constructor.")
                 .next().atLine(22).withMessage(
-                "The DML statement \"DELETE\", can not be inside a constructor");
+                "The DML statement \"DELETE\", can not be inside a constructor.");
     }
 }
