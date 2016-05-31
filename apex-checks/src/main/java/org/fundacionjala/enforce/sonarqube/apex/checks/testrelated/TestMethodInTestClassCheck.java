@@ -9,6 +9,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -26,9 +27,6 @@ import java.util.List;
 @Rule(
         key = TestMethodInTestClassCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "A testMethod should not be declared or implemented in a class that isn't a test",
-        description = "A method that has the \"testMethod\" modifier should only be declared or implemented"
-        + "in a class defined as a test class (with the \"@isTest\" annotation)",
         tags = Tags.CONFUSING
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.MODULARITY)
@@ -76,9 +74,7 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
                             .getFirstChild(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
                             ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
                     getContext().createLineViolation(this,
-                            "The method \"{0}\" is marked as a testMethod but it"
-                            + " is not in a test class, move it to a proper class or add the \"@isTest\" annotation"
-                            + "to the class \"{1}\"",
+                            ChecksBundle.getStringFromBundle("TestMethodsCheckMessage"),
                             astNode, methodName.getTokenOriginalValue(), getClassName().getTokenOriginalValue());
                 }
             }

@@ -48,10 +48,10 @@ public class TestMethodInTestClassCheckTest {
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(3).withMessage("The method \"aTestMethod\" is marked as a testMethod but it"
                         + " is not in a test class, move it to a proper class or add the \"@isTest\" annotation"
-                        + "to the class \"SomeClass\"")
+                        + " to the class \"SomeClass\".")
                 .next().atLine(7).withMessage("The method \"anotherTestMethod\" is marked as a testMethod but it"
                         + " is not in a test class, move it to a proper class or add the \"@isTest\" annotation"
-                        + "to the class \"SomeClass\"")
+                        + " to the class \"SomeClass\".")
                 .noMore();
     }
 }
