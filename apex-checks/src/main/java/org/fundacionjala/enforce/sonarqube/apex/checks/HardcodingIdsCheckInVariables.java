@@ -24,7 +24,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 @Rule(
         key = HardcodingIdsCheckInVariables.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "ID's should not be hardcoded",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
@@ -33,14 +32,19 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 public class HardcodingIdsCheckInVariables extends SquidCheck<Grammar> {
 
     /**
-     * Stores a message template.
-     */
-    public static final String MESSAGE = "The \"%s\" variable has hard-coded lines";
-
-    /**
      * It is the code of the rule for the plugin.
      */
     public static final String CHECK_KEY = "A1010";
+    
+    /**
+     * Regular expression of the pattern that matches an apex id.
+     */
+    public static final String ID_PATTERN = "(')[a-zA-Z0-9]{15,18}(')";
+    
+    /**
+     * Stores a message template.
+     */
+    private final String MESSAGE = ChecksBundle.getStringFromBundle("IdsInVariablesCheckMessage");
 
     @Override
     public void init() {
@@ -69,7 +73,7 @@ public class HardcodingIdsCheckInVariables extends SquidCheck<Grammar> {
     private void checkValue(List<AstNode> astNodes) {
         astNodes.stream().forEach((current) -> {
             String astNodeValue = current.getTokenOriginalValue();
-            if (astNodeValue.matches("(')[a-zA-Z0-9]{15,18}(')")) {
+            if (astNodeValue.matches(ID_PATTERN)) {
                 AstNode fieldDeclaration = current.getParent()
                         .getFirstDescendant(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER);
                 getContext().createLineViolation(this, String.format(MESSAGE,

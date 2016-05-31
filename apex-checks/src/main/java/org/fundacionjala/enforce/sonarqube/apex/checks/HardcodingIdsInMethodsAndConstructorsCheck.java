@@ -23,7 +23,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 @Rule(
         key = HardcodingIdsInMethodsAndConstructorsCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "ID's should not be hardcoded",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
@@ -32,15 +31,15 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 public class HardcodingIdsInMethodsAndConstructorsCheck extends SquidCheck<Grammar> {
 
     /**
-     * Stores a message template.
-     */
-    public static final String MESSAGE = "Line %d contains hard-coded value %s";
-
-    /**
      * It is the code of the rule for the plugin.
      */
     public static final String CHECK_KEY = "A1011";
 
+    /**
+     * Stores a message template.
+     */
+    private final String MESSAGE = ChecksBundle.getStringFromBundle("HardcodingIdsInMethodsCheck");
+    
     @Override
     public void init() {
         subscribeTo(CONSTRUCTOR_DECLARATION, METHOD_DECLARATION);
@@ -70,7 +69,7 @@ public class HardcodingIdsInMethodsAndConstructorsCheck extends SquidCheck<Gramm
         List<AstNode> foundNodes = astNode.getDescendants(STRING_LITERAL_STRING);
         foundNodes.stream().filter((expressionNode) 
                 -> (expressionNode.getTokenOriginalValue()
-                        .matches("(')[a-zA-Z0-9]{15,18}(')"))).forEach((expressionNode) 
+                        .matches(HardcodingIdsCheckInVariables.ID_PATTERN))).forEach((expressionNode) 
                         -> { 
                             hardCodedNodes.add(expressionNode);
                             }

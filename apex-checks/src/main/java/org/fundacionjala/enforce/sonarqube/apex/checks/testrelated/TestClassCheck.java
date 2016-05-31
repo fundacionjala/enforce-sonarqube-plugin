@@ -9,6 +9,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -26,10 +27,6 @@ import java.util.List;
 @Rule(
         key = TestClassCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "\"@Test\" annotation should only be used for proper test classes",
-        description = "\"@Test\" annotation is used to indicate when a class represents a test class, so"
-        + "it should be used only for classes (not enums or interfaces) and said class should be "
-        + "either public or private",
         tags = Tags.CONFUSING
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.MODULARITY)
@@ -51,6 +48,10 @@ public class TestClassCheck extends SquidCheck<Grammar> {
      * Constant used to see if the name of the class has the word test in it.
      */
     private final String TEST = "TEST";
+    
+    private final String ANNOTATION_MESSAGE = ChecksBundle.getStringFromBundle("TestClassCheckAnnotationMessage");
+    
+    private final String NAME_MESSAGE = ChecksBundle.getStringFromBundle("TestClassCheckNameMessage");
 
     /**
      * The variables are initialized and subscribe the base rule.
@@ -74,13 +75,12 @@ public class TestClassCheck extends SquidCheck<Grammar> {
             if (astNode.is(ApexGrammarRuleKey.ENUM_DECLARATION)
                     || astNode.getFirstDescendant(ApexGrammarRuleKey.TYPE_CLASS).hasDirectChildren(ApexKeyword.INTERFACE)) {
                 getContext().createLineViolation(this,
-                        "The \"@isTest\" annotation should be used only for classes, remove it from the declaration of \"{0}\".",
+                        ANNOTATION_MESSAGE,
                         astNode, identifier.getTokenOriginalValue());
             }
         } else if (identifier.getTokenValue().contains(TEST)) {
             getContext().createLineViolation(this,
-                        "The name of the class \"{0}\" suggests this is a test class, either add an @isTest annotation"
-                                + "or change the name of the class.",
+                        NAME_MESSAGE,
                         astNode, identifier.getTokenOriginalValue());
         }
     }

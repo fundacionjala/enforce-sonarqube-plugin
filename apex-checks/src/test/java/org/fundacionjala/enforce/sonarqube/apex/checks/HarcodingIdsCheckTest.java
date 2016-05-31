@@ -16,12 +16,12 @@ import java.io.File;
 
 public class HarcodingIdsCheckTest {
 
-    private static final String FIRST_VARIABLE_ERROR = "The \"recordId\" variable has hard-coded lines";
-    private static final String SECOND_VARIABLE_ERROR = "The \"secondRecord\" variable has hard-coded lines";
-    private static final String FIRST_EXPRESSION_ERROR_MESSAGE = "Line 4 contains hard-coded value '4654134167168118'";
-    private static final String SECOND_EXPRESSION_ERROR_MESSAGE = "Line 11 contains hard-coded value '65469451346546135'";
-    private static final String THIRD_EXPRESSION_ERROR_MESSAGE = "Line 9 contains hard-coded value '546546455454654AWB'";
-    private static final String FOURTH_EXPRESSION_ERROR_MESSAGE = "Line 15 contains hard-coded value '554546546465456'";
+    private static final String FIRST_VARIABLE_ERROR = "The \"recordId\" variable has hard-coded lines.";
+    private static final String SECOND_VARIABLE_ERROR = "The \"secondRecord\" variable has hard-coded lines.";
+    private static final String FIRST_EXPRESSION_ERROR_MESSAGE = "Line 4 contains hard-coded value '4654134167168118'.";
+    private static final String SECOND_EXPRESSION_ERROR_MESSAGE = "Line 11 contains hard-coded value '65469451346546135'.";
+    private static final String THIRD_EXPRESSION_ERROR_MESSAGE = "Line 9 contains hard-coded value '546546455454654AWB'.";
+    private static final String FOURTH_EXPRESSION_ERROR_MESSAGE = "Line 15 contains hard-coded value '554546546465456'.";
     
     private SourceFile sourceFile;
     
