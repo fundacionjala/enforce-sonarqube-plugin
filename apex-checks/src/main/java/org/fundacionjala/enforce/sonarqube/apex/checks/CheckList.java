@@ -6,6 +6,7 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import com.google.common.collect.ImmutableList;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.SeeAllDataTestCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodInTestClassCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.*;
@@ -59,6 +60,7 @@ public class CheckList {
                 HardcodingIdsInMethodsAndConstructorsCheck.class,
                 TestClassCheck.class,
                 TestMethodInTestClassCheck.class,
-                TestAssertionsAndTestMethodKeywordCheck.class);
+                TestAssertionsAndTestMethodKeywordCheck.class,
+                SeeAllDataTestCheck.class);
     }
 }

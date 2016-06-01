@@ -26,7 +26,12 @@ public class ApexGrammarAnnotationTest extends ApexRuleTest {
                 .matches("@deprecated")
                 .matches("@isTest")
                 .matches("@CAPS")
-                .matches("@SOMEAnotation");
+                .matches("@SOMEAnotation")
+                .matches("@annotationWithEmptyParam()")
+                .matches("@annotationWithParam(p1 = a.something)")
+                .matches("@SOMEAnotation (p1 = 3"
+                        + " p2 = 'someString')")
+                .matches("@isTest(seeAllData = true)");
     }
     
     @Test
