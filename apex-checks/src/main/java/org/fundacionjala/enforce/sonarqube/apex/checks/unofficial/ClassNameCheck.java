@@ -8,6 +8,7 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -26,7 +27,6 @@ import java.util.regex.Pattern;
 @Rule(
         key = ClassNameCheck.CHECK_KEY,
         priority = Priority.MAJOR,
-        name = "Class names should comply with a naming convention",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
@@ -43,6 +43,8 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
      * The structure must have the name of the method.
      */
     private static final String DEFAULT = "^[A-Z_][a-zA-Z0-9]+$";
+    
+    private static String MESSAGE = ChecksBundle.getStringFromBundle("ClassNameCheckMessage");
 
     @RuleProperty(
             key = "format",
@@ -74,10 +76,10 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.NAME).getTokenOriginalValue();
+        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.COMMON_IDENTIFIER).getTokenOriginalValue();
         if (!pattern.matcher(className).matches()) {
             getContext().createLineViolation(this,
-                    "Rename class \"{0}\" to match the regular expression {1}.", astNode, className, format);
+                    MESSAGE, astNode, className, format);
         }
     }
 }

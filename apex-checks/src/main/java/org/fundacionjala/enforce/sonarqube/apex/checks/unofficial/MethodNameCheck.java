@@ -8,6 +8,7 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -26,7 +27,6 @@ import java.util.regex.Pattern;
 @Rule(
         key = MethodNameCheck.CHECK_KEY,
         priority = Priority.MINOR,
-        name = "Method names should comply with a naming convention",
         tags = Tags.CONVENTION
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
@@ -42,7 +42,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
     /**
      * The structure must have the name of the method.
      */
-    private static final String DEFAULT = "^[a-z][a-zA-Z0-9]+$";
+    private final String DEFAULT = "^[a-z][a-zA-Z0-9]+$";
 
     @RuleProperty(
             key = "format",
@@ -52,12 +52,14 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
      * Stores the format for the rule.
      */
     public String format = DEFAULT;
+    
+    private final String MESSAGE = ChecksBundle.getStringFromBundle("MethodNameCheckMessage");
 
     /**
      * Manages the patron of rule.
      */
     private Pattern pattern = null;
-
+    
     /**
      * The variables are initialized and subscribe the base rule.
      */
@@ -78,7 +80,7 @@ public class MethodNameCheck extends SquidCheck<Grammar> {
         String methodName = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue();
         if (!pattern.matcher(methodName).matches()) {
             getContext().createLineViolation(this,
-                    "Rename method \"{0}\" to match the regular expression {1}.", astNode, methodName, format);
+                    MESSAGE, astNode, methodName, format);
         }
     }
 }

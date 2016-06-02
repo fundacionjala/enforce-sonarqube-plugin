@@ -322,7 +322,7 @@ public class Declaration {
                 GET_SHARING_RULES,
                 MODIFIERS,
                 TYPE_CLASS,
-                NAME,
+                COMMON_IDENTIFIER,
                 grammarBuilder.optional(EXTENDS_LIST),
                 grammarBuilder.optional(IMPLEMENTS_LIST),
                 LBRACE,
