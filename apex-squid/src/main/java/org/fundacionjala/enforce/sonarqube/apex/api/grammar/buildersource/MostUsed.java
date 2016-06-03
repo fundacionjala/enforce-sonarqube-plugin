@@ -2,16 +2,17 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
-import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
+
+import static com.sonar.sslr.api.GenericTokenType.EOF;
+import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 
 /**
  * This class contains constructors for most used rules and its sub rules.
@@ -19,10 +20,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
  */
 public class MostUsed {
 
-    public static void create(LexerfulGrammarBuilder grammarBuilder) {
+    public static void create(LexerfulGrammarBuilder grammarBuilder, boolean errorRecoveryEnabled) {
         allowedKeywordsAsIdentifier(grammarBuilder);
         specialKeywordsAsIdentifier(grammarBuilder);
-        block(grammarBuilder);
+        block(grammarBuilder, errorRecoveryEnabled);
         name(grammarBuilder);
         decimalLiteral(grammarBuilder);
         hexLiteral(grammarBuilder);
@@ -93,8 +94,8 @@ public class MostUsed {
         grammarBuilder.rule(ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS).is(
                 grammarBuilder.firstOf(
                         IDENTIFIER,
-//                        SOQL_DATE_LITERAL,
-//                        SOQL_NDATE_LITERAL,
+                        //                        SOQL_DATE_LITERAL,
+                        //                        SOQL_NDATE_LITERAL,
                         ARRAY,
                         EXCEPTION,
                         INT,
@@ -168,12 +169,25 @@ public class MostUsed {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void block(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(BLOCK).is(
-                LBRACE,
-                grammarBuilder.zeroOrMore(BLOCK_STATEMENT),
-                RBRACE
-        );
+    private static void block(LexerfulGrammarBuilder grammarBuilder, boolean errorRecoveryEnabled) {
+        if (errorRecoveryEnabled) {
+            grammarBuilder.rule(RECOVERED_STATEMENT).is(
+                    grammarBuilder.anyTokenButNot(
+                            grammarBuilder.firstOf(BLOCK_STATEMENT, RBRACE, EOF))
+            );
+            grammarBuilder.rule(BLOCK).is(
+                    LBRACE,
+                    grammarBuilder.zeroOrMore(
+                            grammarBuilder.firstOf(BLOCK_STATEMENT, RECOVERED_STATEMENT)),
+                    RBRACE
+            );
+        } else {
+            grammarBuilder.rule(BLOCK).is(
+                    LBRACE,
+                    grammarBuilder.zeroOrMore(BLOCK_STATEMENT),
+                    RBRACE
+            );
+        }
     }
 
     /**
@@ -325,7 +339,7 @@ public class MostUsed {
                 )
         );
     }
-    
+
     private static void commonIdentifier(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(COMMON_IDENTIFIER).is(
                 grammarBuilder.firstOf(

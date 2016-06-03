@@ -42,4 +42,28 @@ public class ApexGrammarClassOrInterfaceMemberTest extends ApexRuleTest {
                 .matches("@someAnnotation\n"
                         + "public global static void aMethodWithLoops(list<integer> collection) {}");
     }
+    
+    @Test
+    public void positiveRecoveredRules() {
+//        assertThat(parser)
+//                //can be an initializer declaration (only static modifier allowed)
+//                .matches("static {integer wrong a;}");
+//                .matches("{integer x=3; integer y;}") 
+//                //all the other kinds of member can have the other type of modifiers, and they can be:
+//                //a class or an interface declaration
+//                .matches("public without sharing class ClassName {}")
+//                .matches("private with sharing interface iClassName {}")
+//                //an enum declaration
+//                .matches("public enum EnumName{A,B}")
+//                //a constructor
+//                .matches("protected ClassName() {}")
+//                //a field
+//                .matches("private static integer field=3;")
+//                //a method
+//                .matches("public static void doSomething(integer p1);")
+//                //a property
+//                .matches("private string Prop {private get; set;}")
+//                .matches("@someAnnotation\n"
+//                        + "public global static void aMethodWithLoops(list<integer> collection) {}");
+    }
 }
