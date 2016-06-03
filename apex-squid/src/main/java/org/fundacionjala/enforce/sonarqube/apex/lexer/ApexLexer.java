@@ -5,6 +5,8 @@
 
 package org.fundacionjala.enforce.sonarqube.apex.lexer;
 
+import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.ANY_CHAR;
+import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.commentRegexp;
 import com.sonar.sslr.impl.Lexer;
 import com.sonar.sslr.impl.channel.BlackHoleChannel;
 import com.sonar.sslr.impl.channel.IdentifierAndKeywordChannel;
@@ -41,6 +43,10 @@ public class ApexLexer {
      */
     private static final String HEXADECIMAL_PATTERN = "[Xx]((\\p{XDigit}+[.]?)?\\p{XDigit}+)([pP][+-]?\\d+)?[lL|fF|dD]?";
     
+    private static final String SINGLE_LINE_PATTERN = "//[^\\n\\r]*+";
+    
+    private static final String MULTI_LINE_PATTERN = "/\\*" + ANY_CHAR + "*?\\*\\/";
+    
     /**
      * Stores a pattern to identify a black hole.
      */
@@ -62,6 +68,8 @@ public class ApexLexer {
         return Lexer.builder()
                 .withCharset(config.getCharset())
                 .withFailIfNoChannelToConsumeOneCharacter(Boolean.TRUE)
+                .withChannel(commentRegexp(SINGLE_LINE_PATTERN))
+                .withChannel(commentRegexp(MULTI_LINE_PATTERN))
                 .withChannel(regexp(ApexTokenType.NUMERIC, NUMERIC_PATTERN))
                 .withChannel(regexp(ApexTokenType.STRING, STRING_PATTERN))
                 .withChannel(regexp(ApexTokenType.HEXADECIMAL, HEXADECIMAL_PATTERN))

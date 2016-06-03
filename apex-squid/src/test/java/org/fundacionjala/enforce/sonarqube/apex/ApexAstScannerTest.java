@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex;
 
 import com.google.common.base.Charsets;
@@ -34,7 +33,7 @@ public class ApexAstScannerTest {
     public void testTheNumberOfScannedFiles() {
         AstScanner<Grammar> scanner = ApexAstScanner.create(apexConfiguration);
         scanner.scanFiles(ImmutableList.of(
-                new File("src/test/resources/metrics/functions.cls"),
+                new File("src/test/resources/metrics/methods.cls"),
                 new File("src/test/resources/metrics/lines.cls")));
         SourceProject project = buildProject(scanner);
         assertThat(project.getInt(ApexMetric.FILES)).isEqualTo(2);
@@ -74,6 +73,13 @@ public class ApexAstScannerTest {
     public void testTheNumberOfScannedComplexity() {
         sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/complexity.cls"));
         assertThat(sourceFile.getInt(ApexMetric.COMPLEXITY)).isEqualTo(3);
+    }
+
+    @Test
+    public void testTheNumberOfScannedComments() {
+        sourceFile = ApexAstScanner.scanFile(new File("src/test/resources/metrics/comments.cls"));
+        assertThat(sourceFile.getInt(ApexMetric.CLASSES)).isEqualTo(1);
+        assertThat(sourceFile.getInt(ApexMetric.COMMENT_LINES)).isEqualTo(9);
     }
 
     private SourceProject buildProject(AstScanner<Grammar> scanner) {
