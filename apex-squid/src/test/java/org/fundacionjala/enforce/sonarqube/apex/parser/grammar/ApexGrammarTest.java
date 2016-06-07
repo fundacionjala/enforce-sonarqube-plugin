@@ -188,6 +188,7 @@ public class ApexGrammarTest extends ApexRuleTest {
                 );
     }
 
+    //SAD DOESNT WORKS
     @Test
     public void complexExternalClassTest() throws IOException {
         String fileToString = readFileToString("src/test/resources/complex/ComplexClass.cls",
@@ -202,6 +203,7 @@ public class ApexGrammarTest extends ApexRuleTest {
         assertThat(parser).matches(fileToString);
     }
     
+    //SAD DOESNT WORKS
     @Test
     public void complexExternalViatraClassTest() throws IOException {
         String fileToString = readFileToString("src/test/resources/complex/ComplexClassViatra.cls",

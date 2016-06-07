@@ -50,7 +50,7 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 //with assignmentOperators
                 .matches("x = 5")
                 .matches("x = y = 2")
-                .matches("count += 4")
+                .matches("counter += 4")
                 //with conditional expression
                 .matches("thisValue ? 0 : 1")
                 //                TODO: uncomment this when the old rules are deleted and it should work

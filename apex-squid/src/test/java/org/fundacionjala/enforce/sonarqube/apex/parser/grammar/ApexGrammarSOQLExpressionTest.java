@@ -21,35 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fundacionjala.enforce.sonarqube.apex.api;
+package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.TokenType;
+import org.junit.Test;
+import org.junit.Before;
 
-/**
- * Enum save a custom type of Apex.
- */
-public enum ApexTokenType implements TokenType {
+import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 
-    NEW_LINE,
-    STRING,
-    NUMERIC,
-    HEXADECIMAL,
-    LETTER,
-    DIGIT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SOQL_EXPRESSION;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
-    @Override
-    public String getName() {
-        return name();
+public class ApexGrammarSOQLExpressionTest extends ApexRuleTest {
+/*
+    @Before
+    public void init() {
+        setRootRule(SOQL_EXPRESSION);
     }
 
-    @Override
-    public String getValue() {
-        return name();
+    @Test
+    public void positiveRules_SOQLExpresion() {
+        assertThat(parser)
+                .matches("Database.query(SELECT dato FROM table1 LIMIT 5000)")
+                .matches("[SELECT dato FROM table1 LIMIT 5000]");
     }
-
-    @Override
-    public boolean hasToBeSkippedFromAst(AstNode an) {
-        return Boolean.FALSE;
-    }
+    
+    @Test
+    public void negativeRules_SOQLExpresion() {
+        assertThat(parser)
+                .notMatches("SELECTdato")
+                .notMatches("SELECTfield1,field2")
+                .notMatches("SELECT dato FROM table1 LIMIT ")
+                .notMatches("SELECT dato FROM table1");
+    }*/
 }

@@ -43,7 +43,7 @@ public class ApexLexer {
     /**
      * Stores a pattern to identify a keyword.
      */
-    private static final String KEYWORD = "(_{0,2}[a-zA-Z][a-zA-Z0-9]*)+";
+    private static final String IDENTIFIER_PATTERN = "(_{0,2}[a-zA-Z][a-zA-Z0-9]*)+";
 
     /**
      * Stores a pattern to identify a String.
@@ -84,7 +84,7 @@ public class ApexLexer {
                 .withChannel(regexp(ApexTokenType.NUMERIC, NUMERIC_PATTERN))
                 .withChannel(regexp(ApexTokenType.STRING, STRING_PATTERN))
                 .withChannel(regexp(ApexTokenType.HEXADECIMAL, HEXADECIMAL_PATTERN))
-                .withChannel(new IdentifierAndKeywordChannel(KEYWORD,
+                .withChannel(new IdentifierAndKeywordChannel(IDENTIFIER_PATTERN,
                         Boolean.FALSE, ApexKeyword.values()))
                 .withChannel(new PunctuatorChannel(ApexPunctuator.values()))
                 .withChannel(new BlackHoleChannel(BLACK_HOLE))

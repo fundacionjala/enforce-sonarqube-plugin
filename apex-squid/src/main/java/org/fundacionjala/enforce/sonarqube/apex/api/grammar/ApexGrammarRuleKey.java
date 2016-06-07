@@ -141,5 +141,42 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     UNARY_EXPRESSION_NOT_PLUS_MINUS,
     VARIABLE_DECLARATOR,
     VARIABLE_INITIALIZER,
-    WHILE_STATEMENT;
+    WHILE_STATEMENT,
+    
+    /**
+     * SOQL Keys
+     * 
+     */
+    SOQL_NAME,
+    NAME_CHAR,
+    SOQL_EXPRESSION,
+    SOQL_STATEMENT,
+    DATABASE_STATEMENT,
+    QUERY_EXPRESSION,
+    //Select Notations
+    SELECT_SENTENCE,
+    COUNT_EXPR,
+    FIELD,
+    //From Notations
+    FROM_SENTENCE,
+    ALIASSTATEMENT,
+    //With Notations
+    WITH_SENTENCE,
+    //Where Notations
+    WHERE_SENTENCE,
+    CONDITIONAL_SOQL_EXPRESSION,
+    OPERATORS,
+    SIMPLE_EXPRESSION,
+    AND_SOQL_EXPRESSION,
+    OR_SOQL_EXPRESSION,
+    FILTERING_EXPRESSION,
+    FIELD_EXPRESSION,
+    LIKE_EXPRESSION,
+    //Limit Notations
+    LIMIT_SENTENCE,
+    //Order Notations
+    ORDER_BY_SENTENCE,
+    //Group Notations
+    GROUP_BY_SENTENCE,
+    GROUP_BY_TYPES;
 }
