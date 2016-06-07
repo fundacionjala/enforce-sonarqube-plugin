@@ -1,66 +1,25 @@
 /*
- * The MIT License
- *
- * Copyright 2016 Fundacion Jala.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) Fundacion Jala. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
 package org.fundacionjala.enforce.sonarqube.apex;
-
-import java.io.File;
-import java.util.Collection;
 
 import com.google.common.base.Charsets;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
-import org.sonar.squidbridge.AstScanner;
-import org.sonar.squidbridge.CommentAnalyser;
-import org.sonar.squidbridge.SourceCodeBuilderCallback;
-import org.sonar.squidbridge.SourceCodeBuilderVisitor;
-import org.sonar.squidbridge.SquidAstVisitor;
-import org.sonar.squidbridge.SquidAstVisitorContextImpl;
-import org.sonar.squidbridge.api.SourceClass;
-import org.sonar.squidbridge.api.SourceCode;
-import org.sonar.squidbridge.api.SourceFile;
-import org.sonar.squidbridge.api.SourceFunction;
-import org.sonar.squidbridge.api.SourceProject;
-import org.sonar.squidbridge.indexer.QueryByType;
-import org.sonar.squidbridge.metrics.CommentsVisitor;
-import org.sonar.squidbridge.metrics.ComplexityVisitor;
-import org.sonar.squidbridge.metrics.CounterVisitor;
-import org.sonar.squidbridge.metrics.LinesOfCodeVisitor;
-import org.sonar.squidbridge.metrics.LinesVisitor;
-
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexMetric;
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexParser;
+import org.sonar.squidbridge.*;
+import org.sonar.squidbridge.api.*;
+import org.sonar.squidbridge.indexer.QueryByType;
+import org.sonar.squidbridge.metrics.*;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.IF_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FOR_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.RETURN_STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHILE_STATEMENT;
+import java.io.File;
+import java.util.Collection;
+
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
 
 /**
  * Utility class in order to scan a file and generate {@link SourceFile}
@@ -71,17 +30,17 @@ public class ApexAstScanner {
      * Stores an error message when there is more than one sourceFile.
      */
     private static final String ONE_SOURCE_FILE
-            = "Only one SourceFile was expected whereas %d has been returned.";
+            = SquidBundle.getStringFromBundle("scanner.messages.onefile");
 
     /**
      * Stores an error message when not found a file.
      */
-    private static final String FILE_NOT_FOUND = "File '%s' not found.";
+    private static final String FILE_NOT_FOUND = SquidBundle.getStringFromBundle("scanner.messages.notfound");
 
     /**
      * Stores a project name.
      */
-    private static final String PROJECT_NAME = "Apex Project";
+    private static final String PROJECT_NAME = SquidBundle.getStringFromBundle("scanner.projectName");
 
     /**
      * Stores a key pattern.
@@ -168,8 +127,9 @@ public class ApexAstScanner {
                 .setMetricDef(ApexMetric.COMPLEXITY)
                 .subscribeTo(complexityAstNodeType)
                 .build());
-        builder.withSquidAstVisitor(CommentsVisitor.<Grammar>builder().withCommentMetric(ApexMetric.COMMENT_LINES)
-                .withNoSonar(true)
+        builder.withSquidAstVisitor(CommentsVisitor.<Grammar>builder()
+                .withCommentMetric(ApexMetric.COMMENT_LINES)
+                .withNoSonar(Boolean.TRUE)
                 .withIgnoreHeaderComment(config.getIgnoreHeaderComments())
                 .build());
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
@@ -201,7 +161,7 @@ public class ApexAstScanner {
      */
     private static void setClassesAnalyser(AstScanner.Builder<Grammar> builder) {
         builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
-                buildCallback(NAME, !IS_CLASS),
+                buildCallback(COMMON_IDENTIFIER, !IS_CLASS),
                 CLASS_OR_INTERFACE_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()

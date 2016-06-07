@@ -1,0 +1,51 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+    An async method, which is declared with an "@future" annotation, should not
+    be called or invoked within a block of code inside a loop statement (for, while, do while).
+</p>
+
+<h2>Noncompliant Code Example</h2>
+
+<pre>
+public with sharing class AsyncMethodClass {
+        
+        ...
+        for(Accts newAcct : listAccts){
+            ...
+            newAcct.doSomething();
+            execAsyncMethod();
+            ...
+        }
+        ...
+    
+    @future
+    public void execAsyncMethod(){
+        ...
+    }
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+public with sharing class AsyncMethodClass {
+        
+        ...
+        for(Accts newAcct : listAccts){
+            ...
+            newAcct.doSomething();
+            ...
+        }
+        execAsyncMethod();
+        ...
+    
+    @future
+    public void execAsyncMethod(){
+        ...
+    }
+}
+</pre>

@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+TestMethods should be declared only in test classes to maintain the code more organized and well-split
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<p>
+public with sharing SomeClass {
+...
+public testMethod void someTestMethod() {...} // this isn't a test class, so it shouldn't have a test method
+}
+</p>
+<pre>
+class MyClass:
+	...
+</pre>
