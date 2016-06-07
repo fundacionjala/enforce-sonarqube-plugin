@@ -26,7 +26,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 import com.sonar.sslr.api.GenericTokenType;
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import static jdk.nashorn.internal.parser.TokenKind.KEYWORD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AND;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AND_SOQL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ASC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BY;
@@ -51,10 +51,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LAST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIKE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHERE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIMIT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NOT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NOT_SOQL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULLS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OFFSET;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OR;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OR_SOQL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ORDER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ROLLUP;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
@@ -109,7 +109,7 @@ public class SOQLExpressions {
         simpleExpression(grammarBuilder);
         filteringExpressions(grammarBuilder);
         operatorToComparisson(grammarBuilder);
-        conditionalExpression(grammarBuilder);
+        conditionalSOQLExpression(grammarBuilder);
         andSOQLExpression(grammarBuilder);
         orSOQLExpression(grammarBuilder);
         limitSentence(grammarBuilder);
@@ -248,7 +248,7 @@ public class SOQLExpressions {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void conditionalExpression(LexerfulGrammarBuilder grammarBuilder) {
+    private static void conditionalSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONDITIONAL_SOQL_EXPRESSION).is(
                 grammarBuilder.firstOf(
                         AND_SOQL_EXPRESSION,
@@ -296,7 +296,7 @@ public class SOQLExpressions {
     private static void filteringExpressions(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FILTERING_EXPRESSION).is(
                 SOQL_NAME,
-                grammarBuilder.optional(NOT),
+                grammarBuilder.optional(NOT_SOQL),
                 grammarBuilder.firstOf(
                         IN,
                         INCLUDES,
@@ -333,7 +333,7 @@ public class SOQLExpressions {
      */
     private static void andSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(AND_SOQL_EXPRESSION).is(
-                AND, SIMPLE_EXPRESSION);
+                AND_SOQL, SIMPLE_EXPRESSION);
     }
 
     /**
@@ -344,7 +344,7 @@ public class SOQLExpressions {
      */
     private static void orSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(OR_SOQL_EXPRESSION).is(
-                OR, SIMPLE_EXPRESSION);
+                OR_SOQL, SIMPLE_EXPRESSION);
     }
 
     /**

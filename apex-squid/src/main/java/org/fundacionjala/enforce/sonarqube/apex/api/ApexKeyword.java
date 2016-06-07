@@ -139,9 +139,9 @@ public enum ApexKeyword implements TokenType {
     USING("USING"),//Pending to implement
     //Where Notations
     WHERE("WHERE"),
-    NOT("NOT"),
-    AND("AND"),
-    OR("OR"),
+    NOT_SOQL("NOT"),
+    AND_SOQL("AND"),
+    OR_SOQL("OR"),
     IN("IN"),
     INCLUDES("includes"),
     EXCLUDES("excludes"),
