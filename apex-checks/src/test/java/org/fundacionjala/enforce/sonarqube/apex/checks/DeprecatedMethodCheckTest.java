@@ -33,6 +33,6 @@ public class DeprecatedMethodCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), deprecatedMethodCheck);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
                 next().atLine(18).withMessage(
-                "The \"myINIT\" method is deprecated, suggest deleting the contents of the method");
+                "The \"myINIT\" method is deprecated, suggest deleting the contents of the method.");
     }
 }

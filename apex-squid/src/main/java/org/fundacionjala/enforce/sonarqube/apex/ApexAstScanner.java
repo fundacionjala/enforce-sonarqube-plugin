@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex;
 
 import com.google.common.base.Charsets;
@@ -31,17 +30,17 @@ public class ApexAstScanner {
      * Stores an error message when there is more than one sourceFile.
      */
     private static final String ONE_SOURCE_FILE
-            = "Only one SourceFile was expected whereas %d has been returned.";
+            = SquidBundle.getStringFromBundle("scanner.messages.onefile");
 
     /**
      * Stores an error message when not found a file.
      */
-    private static final String FILE_NOT_FOUND = "File '%s' not found.";
+    private static final String FILE_NOT_FOUND = SquidBundle.getStringFromBundle("scanner.messages.notfound");
 
     /**
      * Stores a project name.
      */
-    private static final String PROJECT_NAME = "Apex Project";
+    private static final String PROJECT_NAME = SquidBundle.getStringFromBundle("scanner.projectName");
 
     /**
      * Stores a key pattern.
@@ -128,8 +127,9 @@ public class ApexAstScanner {
                 .setMetricDef(ApexMetric.COMPLEXITY)
                 .subscribeTo(complexityAstNodeType)
                 .build());
-        builder.withSquidAstVisitor(CommentsVisitor.<Grammar>builder().withCommentMetric(ApexMetric.COMMENT_LINES)
-                .withNoSonar(true)
+        builder.withSquidAstVisitor(CommentsVisitor.<Grammar>builder()
+                .withCommentMetric(ApexMetric.COMMENT_LINES)
+                .withNoSonar(Boolean.TRUE)
                 .withIgnoreHeaderComment(config.getIgnoreHeaderComments())
                 .build());
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()
@@ -161,7 +161,7 @@ public class ApexAstScanner {
      */
     private static void setClassesAnalyser(AstScanner.Builder<Grammar> builder) {
         builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<>(
-                buildCallback(NAME, !IS_CLASS),
+                buildCallback(COMMON_IDENTIFIER, !IS_CLASS),
                 CLASS_OR_INTERFACE_DECLARATION));
 
         builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder()

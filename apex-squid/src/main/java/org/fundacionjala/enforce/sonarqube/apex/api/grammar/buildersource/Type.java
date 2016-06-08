@@ -54,7 +54,11 @@ public class Type {
     private static void annotation(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ANNOTATION).is(
                 AT,
-                NAME
+                NAME,
+                grammarBuilder.optional(
+                        grammarBuilder.sequence(LPAREN,
+                                grammarBuilder.zeroOrMore(EXPRESSION),
+                                RPAREN))
         );
     }
 

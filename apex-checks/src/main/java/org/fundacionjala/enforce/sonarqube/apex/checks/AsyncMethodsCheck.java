@@ -2,6 +2,7 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
+
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import com.sonar.sslr.api.AstNode;
@@ -24,9 +25,6 @@ import java.util.List;
 @Rule(
         key = AsyncMethodsCheck.CHECK_KEY,
         priority = Priority.INFO,
-        name = "An async method should not be invoked within a loop.",
-        description = "An async method, which is declared with an \"@future\" annotation, should not"
-        + "be called or invoked within a block of code inside a loop statement (for, while, do while).",
         tags = Tags.OBSOLETE
 )
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.SYNCHRONIZATION_RELIABILITY)
@@ -81,9 +79,10 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
                                 ? method.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER) : method;
                         String methodName = methodIdentifier.getTokenValue();
                         if (methodIsAsync(astNode, methodName)) {
+                            String message = ChecksBundle.getStringFromBundle("AsyncMethodsCheckMessage");
                             getContext().createLineViolation(this,
-                                    "Method \"{0}\" is Async, should not be called withing a loop.",
-                                    method, methodIdentifier.getTokenOriginalValue());
+                                    message, method, 
+                                    methodIdentifier.getTokenOriginalValue());
                         }
                     }
                 }

@@ -2,6 +2,7 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
+
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
 import org.junit.After;
@@ -55,7 +56,7 @@ public class TestClassCheckTest {
     public void testFailingTestClassName() throws Exception {
         sourceFile = scanFile(new File("src/test/resources/checks/testClassCheckBadName.cls"), testClassCheck);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .next().atLine(2).withMessage("The name of the class \"SomeClassTest\" suggests this is a test class, either add an @isTest annotation"
-                                + "or change the name of the class.");
+                .next().atLine(2).withMessage("The name of the class \"SomeClassTest\" suggests this is a test class, either add an \"@isTest\" annotation"
+                                + " or change the name of the class.");
     }
 }

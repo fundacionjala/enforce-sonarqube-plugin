@@ -36,6 +36,7 @@ public class MostUsed {
         hexadecimalFloatingPointLiteral(grammarBuilder);
         floatingPointLiteralNumber(grammarBuilder);
         allowedKeywordsAsIdentifierForMethods(grammarBuilder);
+        commonIdentifier(grammarBuilder);
     }
 
     /**
@@ -321,6 +322,15 @@ public class MostUsed {
                 grammarBuilder.firstOf(
                         HEXADECIMAL_FLOATING_POINT_LITERAL,
                         DECIMAL_FLOATING_POINT_LITERAL
+                )
+        );
+    }
+    
+    private static void commonIdentifier(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(COMMON_IDENTIFIER).is(
+                grammarBuilder.firstOf(
+                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER
                 )
         );
     }
