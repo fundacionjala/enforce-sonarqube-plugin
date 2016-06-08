@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.SeeAllDataTestCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodInTestClassCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodsParametersCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.*;
 
 import java.util.List;
@@ -61,6 +62,7 @@ public class CheckList {
                 TestClassCheck.class,
                 TestMethodInTestClassCheck.class,
                 TestAssertionsAndTestMethodKeywordCheck.class,
-                SeeAllDataTestCheck.class);
+                SeeAllDataTestCheck.class,
+                TestMethodsParametersCheck.class);
     }
 }
