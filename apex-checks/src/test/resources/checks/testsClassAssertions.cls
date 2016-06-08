@@ -71,4 +71,11 @@ public class sampleTestMethod {
         }
     }
 
+    public static testMethod void testMethodWithParameters(String someParameter) {
+        integer variable = 0;
+        test.startTest();
+        variable = 1;
+        test.stopTest();
+        System.assertEquals(1 , variable);
+    }
 }
