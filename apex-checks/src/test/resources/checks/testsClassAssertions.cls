@@ -78,4 +78,30 @@ public class sampleTestMethod {
         test.stopTest();
         System.assertEquals(1 , variable);
     }
+
+    public static testMethod void testMethodWithNoBooleanValueOnAssert() {
+        integer variable = 0;
+        test.startTest();
+        variable = 1;
+        test.stopTest();
+        integer variable = new Integer();
+        string message = 'error';
+        System.assert(variable, message);
+    }
+
+    public static testMethod void testMethodWithExpressionValueOnAssert() {
+        integer variable = 0;
+        test.startTest();
+        variable = 1;
+        test.stopTest();
+        System.assert(4-2/5);
+    }
+ 
+   public static testMethod void testMethodWithBooleanValueOnAssert() {
+        integer variable = 0;
+        test.startTest();
+        variable = 1;
+        test.stopTest();
+        System.assert(variable == 1);
+    }
 }

@@ -23,32 +23,22 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
-import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
-import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
-import static org.fundacionjala.enforce.sonarqube.apex.utils.MethodChecksUtils.hasTestMethodKeyword;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
-import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
+import java.util.List;
+import org.sonar.sslr.ast.AstSelect;
 import org.sonar.squidbridge.checks.SquidCheck;
-@Rule(
-        key = TestMethodsParametersCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        tags = Tags.CONVENTION
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.UNIT_TESTS)
-@SqaleConstantRemediation("1min")
-@ActivatedByDefault
-public class TestMethodsParametersCheck extends SquidCheck<Grammar> {
 
-    public static final String CHECK_KEY = "A1024";
-        
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.utils.MethodChecksUtils.hasAssertion;
+
+public class BooleanParamentersOnAssertCheck extends SquidCheck<Grammar> {
+
+    private static final String SYSTEM_ASSERT = "System.assert";
+
     @Override
     public void init() {
         subscribeTo(METHOD_DECLARATION);
@@ -56,12 +46,24 @@ public class TestMethodsParametersCheck extends SquidCheck<Grammar> {
 
     @Override
     public void visitNode(AstNode astNode) {
-        if(hasTestMethodKeyword(astNode.getParent()) 
-                && !astNode.getDescendants(FORMAL_PARAMETER).isEmpty()) {
-            getContext().createLineViolation(this,
-                    ChecksBundle.getStringFromBundle("TestMethodParametersError"),
-                    astNode, astNode.getTokenLine());
-            
+        List<AstNode> statements = astNode.getDescendants(STATEMENT);
+        for (AstNode statement : statements) {
+            boolean hasAssertion = hasAssertion(statement.getDescendants(NAME), SYSTEM_ASSERT);
+            if (hasAssertion && !hasBooleanVariable(statement)) {
+
+            }
         }
     }
+
+    boolean hasBooleanVariable(AstNode statement) {
+        AstSelect arguments = statement.select().descendants(ARGUMENTS_LIST);
+       
+        for (AstNode currentNode : arguments) {
+            if (currentNode.getTokenOriginalValue().matches("")) {
+                
+            }
+        }
+        return false;
+    }
+
 }
