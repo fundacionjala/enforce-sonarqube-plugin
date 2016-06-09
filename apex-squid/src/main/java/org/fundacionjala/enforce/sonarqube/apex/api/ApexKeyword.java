@@ -128,7 +128,6 @@ public enum ApexKeyword implements TokenType {
       /**
      * SOQL ANNOTATIONS.
      */
-    DATABASE("Database"),
     QUERY("query"),
     //Select Notations
     SELECT("SELECT"),
