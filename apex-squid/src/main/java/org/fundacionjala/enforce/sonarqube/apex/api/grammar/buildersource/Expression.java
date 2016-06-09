@@ -289,7 +289,8 @@ public class Expression {
                                 NAME
                         ),
                         grammarBuilder.sequence(LPAREN, EXPRESSION, RPAREN),
-                        ALLOCATION_EXPRESSION
+                        ALLOCATION_EXPRESSION,
+                        grammarBuilder.sequence(LBRACKET, QUERY_EXPRESSION, RBRACKET)
                 )
         );
     }

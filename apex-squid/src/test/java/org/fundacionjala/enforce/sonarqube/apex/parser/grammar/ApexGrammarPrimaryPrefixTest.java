@@ -39,7 +39,8 @@ public class ApexGrammarPrimaryPrefixTest extends ApexRuleTest {
                 .matches("(4-3*x-y+--+-z-2)")
                 .matches("(null)")
                 .matches("(x = z = 3-5)")
-                .matches("(x ? y : z)");
+                .matches("(x ? y : z)")
+                .matches("[SELECT dato FROM table1 LIMIT 5000]");
     }
 
     @Test

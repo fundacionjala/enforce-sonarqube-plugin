@@ -2,17 +2,17 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
+
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.*;
+import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.SOQLExpressions;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
 import com.sonar.sslr.api.Grammar;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
-import org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource.SOQLExpressions;
-
 import static com.sonar.sslr.api.GenericTokenType.EOF;
 
 /**
