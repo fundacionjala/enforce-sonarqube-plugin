@@ -2,11 +2,12 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+import java.util.ArrayList;
+import java.util.List;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.Priority;
@@ -17,8 +18,8 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 /**
- * Visits all the instances where the parser had to skip tokens because of a probable
- * parsing error and creates a message for them.
+ * Visits all the instances where the parser had to skip tokens because of a
+ * probable parsing error and creates a message for them.
  */
 @Rule(
         key = ErrorRecoveryCheck.CHECK_KEY,
@@ -29,18 +30,22 @@ import org.sonar.squidbridge.checks.SquidCheck;
 @SqaleConstantRemediation("2min")
 @ActivatedByDefault
 public class ErrorRecoveryCheck extends SquidCheck<Grammar> {
+
     /**
      * It is the code of the rule for the plugin.
      */
     public static final String CHECK_KEY = "R1001";
-    
+
     private final String MESSAGE = ChecksBundle.getStringFromBundle("RecoveryCheckMessage");
-    
+
+    private List<Integer> errors;
+
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
+        errors = new ArrayList<>();
         subscribeTo(ApexGrammarRuleKey.RECOVERED_MEMBER,
                 ApexGrammarRuleKey.RECOVERED_STATEMENT);
     }
@@ -53,6 +58,9 @@ public class ErrorRecoveryCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        getContext().createLineViolation(this, MESSAGE, astNode);
+        if (!errors.contains(astNode.getTokenLine())) {
+            errors.add(astNode.getTokenLine());
+            getContext().createLineViolation(this, MESSAGE, astNode);
+        }
     }
 }

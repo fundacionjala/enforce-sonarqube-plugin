@@ -13,6 +13,7 @@ import org.sonar.squidbridge.api.SourceFile;
 import java.io.File;
 
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
+import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
 public class ErrorRecoveryCheckTest {
     
@@ -28,5 +29,9 @@ public class ErrorRecoveryCheckTest {
     public void testFileWithErrors() {
         sourceFile = scanFile(new File("src/test/resources/checks/recoveryClass.cls"), check);
         Assert.assertFalse(sourceFile.getCheckMessages().isEmpty());
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .next().atLine(8).withMessage("Parsing error found, the block was skipped during the analysis.")
+                .next().atLine(16).withMessage("Parsing error found, the block was skipped during the analysis.")
+                .noMore();
     }
 }
