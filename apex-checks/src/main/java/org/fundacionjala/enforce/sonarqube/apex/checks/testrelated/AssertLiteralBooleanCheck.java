@@ -33,7 +33,7 @@ public class AssertLiteralBooleanCheck extends SquidCheck<Grammar> {
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "A1024";
+    public static final String CHECK_KEY = "A1025";
 
     /**
      * Display message of the check.

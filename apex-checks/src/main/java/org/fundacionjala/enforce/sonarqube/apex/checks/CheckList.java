@@ -8,6 +8,7 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertLiteral
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.SeeAllDataTestCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodInTestClassCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodsParametersCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.*;
 
 import java.util.List;
@@ -63,6 +64,7 @@ public class CheckList {
                 TestMethodInTestClassCheck.class,
                 TestAssertionsAndTestMethodKeywordCheck.class,
                 SeeAllDataTestCheck.class,
-                AssertLiteralBooleanCheck.class);
+                AssertLiteralBooleanCheck.class,
+                TestMethodsParametersCheck.class);
     }
 }

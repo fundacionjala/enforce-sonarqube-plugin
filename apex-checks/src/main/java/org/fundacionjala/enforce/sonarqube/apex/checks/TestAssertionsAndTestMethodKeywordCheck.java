@@ -83,7 +83,7 @@ public class TestAssertionsAndTestMethodKeywordCheck extends SquidCheck<Grammar>
      * @return a boolean value, returns true if there is a testMethod keyword or
      * false otherwise.
      */
-    boolean hasTestMethodKeyword(AstNode astNode) {
+    public static boolean hasTestMethodKeyword(AstNode astNode) {
         boolean hasAnnotation = false;
         List<AstNode> modifiersChildren = astNode.getChildren(MODIFIERS);
         for (AstNode modifier : modifiersChildren) {
