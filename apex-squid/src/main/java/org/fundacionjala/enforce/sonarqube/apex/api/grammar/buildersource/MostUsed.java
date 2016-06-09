@@ -175,9 +175,6 @@ public class MostUsed {
                     grammarBuilder.anyTokenButNot(
                             grammarBuilder.firstOf(BLOCK_STATEMENT, RBRACE, EOF, SEMICOLON))
             );
-            grammarBuilder.rule(RECOVERED_STATEMENTS).is(
-                    grammarBuilder.zeroOrMore(RECOVERED_STATEMENT)
-            );
             grammarBuilder.rule(BLOCK).is(
                     LBRACE,
                     grammarBuilder.zeroOrMore(

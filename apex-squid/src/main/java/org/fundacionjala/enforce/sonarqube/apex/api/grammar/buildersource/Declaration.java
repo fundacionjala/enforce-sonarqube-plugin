@@ -24,7 +24,7 @@ public class Declaration {
         extendsList(grammarBuilder);
         implementsList(grammarBuilder);
         methodName(grammarBuilder);
-        propertyDeclaration(grammarBuilder, errorRecoveryEnabled);
+        propertyDeclaration(grammarBuilder);
         accessor(grammarBuilder);
         accessorBody(grammarBuilder);
         accessorDeclaration(grammarBuilder);
@@ -144,20 +144,12 @@ public class Declaration {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void propertyDeclaration(LexerfulGrammarBuilder grammarBuilder, boolean errorRecoveryEnabled) {
-        if (errorRecoveryEnabled) {
-            grammarBuilder.rule(PROPERTY_DECLARATION).is(TYPE,
-                    grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER, SPECIAL_KEYWORDS_AS_IDENTIFIER),
-                    LBRACE,
-                    ACCESSOR_DECLARATIONS,
-                    RBRACE);
-        } else {
-            grammarBuilder.rule(PROPERTY_DECLARATION).is(TYPE,
-                    grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER, SPECIAL_KEYWORDS_AS_IDENTIFIER),
-                    LBRACE,
-                    ACCESSOR_DECLARATIONS,
-                    RBRACE);
-        }
+    private static void propertyDeclaration(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(PROPERTY_DECLARATION).is(TYPE,
+                grammarBuilder.firstOf(ALLOWED_KEYWORDS_AS_IDENTIFIER, SPECIAL_KEYWORDS_AS_IDENTIFIER),
+                LBRACE,
+                ACCESSOR_DECLARATIONS,
+                RBRACE);
     }
 
     /**
@@ -352,9 +344,6 @@ public class Declaration {
                     grammarBuilder.anyTokenButNot(
                             grammarBuilder.firstOf(
                                     CLASS_OR_INTERFACE_MEMBER, RBRACE, EOF))
-            );
-            grammarBuilder.rule(RECOVERED_MEMBERS).is(
-                    grammarBuilder.zeroOrMore(RECOVERED_MEMBER)
             );
             grammarBuilder.rule(CLASS_OR_INTERFACE_BODY).is(
                     grammarBuilder.zeroOrMore(
