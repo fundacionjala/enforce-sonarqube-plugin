@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+Test methods must have no arguments.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+@isTest
+public with sharing SomeTestClass {
+    public testMethod void someTestMethod(String param) {...}
+}
+</pre>
+
+<h2>Compliant solution</h2>
+<pre>
+@isTest
+public with sharing SomeTestClass {
+    public testMethod void someTestMethod() {...}
+}
+</pre>
