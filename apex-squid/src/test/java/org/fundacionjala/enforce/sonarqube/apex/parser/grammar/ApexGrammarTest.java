@@ -195,15 +195,30 @@ public class ApexGrammarTest extends ApexRuleTest {
                 StandardCharsets.UTF_8);
         assertThat(parser).matches(fileToString);
     }
-
+    
     @Test
-    public void recoveryTest() {
+    public void recoveryDeclarationTest() {
         assertThat(parser)
-                .matches("public class SomeClass {\n"
-                        + "public class wrong ClassName {}"
+                .matches("public with sharing class RecoveryClass  {\n"
+                        + "    public class class InnerClass(){\n"
+                        + "        doSomething();\n"
+                        + "    }\n"
+                        + "    private void someMthd(integer p1, p2)"
                         + "}");
     }
-    
+
+    @Test
+    public void recoveryStatementTest() {
+        assertThat(parser)
+                .matches("public with sharing class RecoveryClass  {\n"
+                        + "    public void someMethod(){\n"
+                        + "        doSomething();\n"
+                        + "        wrongMethod);\n"
+                        + "        doOtherThing(x);\n"
+                        + "    }\n"
+                        + "}");
+    }
+
     @Test
     public void recoveryTestFile() throws IOException {
         String fileToString = readFileToString("src/test/resources/complex/ComplexClassWithErrors.cls",

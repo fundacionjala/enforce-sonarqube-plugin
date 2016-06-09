@@ -173,7 +173,10 @@ public class MostUsed {
         if (errorRecoveryEnabled) {
             grammarBuilder.rule(RECOVERED_STATEMENT).is(
                     grammarBuilder.anyTokenButNot(
-                            grammarBuilder.firstOf(BLOCK_STATEMENT, RBRACE, EOF))
+                            grammarBuilder.firstOf(BLOCK_STATEMENT, RBRACE, EOF, SEMICOLON))
+            );
+            grammarBuilder.rule(RECOVERED_STATEMENTS).is(
+                    grammarBuilder.zeroOrMore(RECOVERED_STATEMENT)
             );
             grammarBuilder.rule(BLOCK).is(
                     LBRACE,

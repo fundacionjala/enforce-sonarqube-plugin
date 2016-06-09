@@ -353,6 +353,9 @@ public class Declaration {
                             grammarBuilder.firstOf(
                                     CLASS_OR_INTERFACE_MEMBER, RBRACE, EOF))
             );
+            grammarBuilder.rule(RECOVERED_MEMBERS).is(
+                    grammarBuilder.zeroOrMore(RECOVERED_MEMBER)
+            );
             grammarBuilder.rule(CLASS_OR_INTERFACE_BODY).is(
                     grammarBuilder.zeroOrMore(
                             grammarBuilder.firstOf(CLASS_OR_INTERFACE_MEMBER, RECOVERED_MEMBER)

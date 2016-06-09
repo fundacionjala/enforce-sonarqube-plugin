@@ -43,7 +43,8 @@ public with sharing class ComplexClass
 			Data = JSON.serialize(nodes);			
 		}
 		catch (Exception e) {
-			Data = JSON.serialize(new List<Node> { new FolderNode('error', e.getMessage(), false, null) });	
+			Data = JSON.serialize(new List<Node> { new FolderNode('error', e.getMessage(), false, null) });
+                        return . 
 		}
 		return null;	
 	}
