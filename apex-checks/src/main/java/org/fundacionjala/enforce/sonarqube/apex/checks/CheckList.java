@@ -2,10 +2,9 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import com.google.common.collect.ImmutableList;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertLiteralBooleanCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.SeeAllDataTestCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodInTestClassCheck;
@@ -13,6 +12,8 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodsPa
 import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.*;
 
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Builds a list of custom checks.
@@ -64,6 +65,7 @@ public class CheckList {
                 TestMethodInTestClassCheck.class,
                 TestAssertionsAndTestMethodKeywordCheck.class,
                 SeeAllDataTestCheck.class,
+                AssertLiteralBooleanCheck.class,
                 TestMethodsParametersCheck.class);
     }
 }
