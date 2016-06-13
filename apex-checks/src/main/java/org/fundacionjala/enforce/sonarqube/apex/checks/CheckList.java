@@ -14,6 +14,7 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.*;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertMessageCheck;
 
 /**
  * Builds a list of custom checks.
@@ -65,6 +66,7 @@ public class CheckList {
                 TestAssertionsAndTestMethodKeywordCheck.class,
                 SeeAllDataTestCheck.class,
                 AssertLiteralBooleanCheck.class,
-                TestMethodsParametersCheck.class);
+                TestMethodsParametersCheck.class,
+                AssertMessageCheck.class);
     }
 }
