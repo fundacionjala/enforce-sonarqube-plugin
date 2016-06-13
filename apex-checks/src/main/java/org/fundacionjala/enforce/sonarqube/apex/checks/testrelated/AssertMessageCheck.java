@@ -90,17 +90,15 @@ public class AssertMessageCheck extends SquidCheck<Grammar> {
             }
         }
     }
-    
+
     /**
      * Checks the last item of the arguments list to see if it's a message.
+     *
      * @param arguments the list of arguments of the assert method.
      * @return true if the last argument is a message.
      */
     private boolean hasMessage(List<AstNode> arguments) {
-        if (arguments.get(arguments.size() - VALUE_OF_ONE).hasDescendant(ApexGrammarRuleKey.STRING_LITERAL_STRING)) {
-            return true;
-        }
-        return false;
+        return arguments.get(arguments.size() - VALUE_OF_ONE).hasDescendant(ApexGrammarRuleKey.STRING_LITERAL_STRING);
     }
 
 }
