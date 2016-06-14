@@ -1,0 +1,13 @@
+{
+  "title" : "Test methods should have assertions and testMethod keyword.",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "3min"
+  },
+  "sqaleSubCharac": "UNIT_TESTS",
+  "tags": [
+    "convention"
+  ],
+  "defaultSeverity": "Major"
+}

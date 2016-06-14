@@ -1,0 +1,13 @@
+{
+  "title" : "ID's should not be hard-coded in methods or constructors.",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "1min"
+  },
+  "sqaleSubCharac": "READABILITY",
+  "tags": [
+    "convention"
+  ],
+  "defaultSeverity": "Major"
+}

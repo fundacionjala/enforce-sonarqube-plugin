@@ -1,0 +1,14 @@
+{
+  "title" : "Using an assert statement with a literal boolean is a bad practice.",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "1min"
+  },
+  "sqaleSubCharac": "LOGIC_RELIABILITY",
+  "tags": [
+    "convention"
+  ],
+  "defaultSeverity": "Major"
+}
+
