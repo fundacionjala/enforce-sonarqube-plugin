@@ -20,10 +20,10 @@ import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
  */
 public class MostUsed {
 
-    public static void create(LexerfulGrammarBuilder grammarBuilder, boolean errorRecoveryEnabled) {
+    public static void create(LexerfulGrammarBuilder grammarBuilder) {
         allowedKeywordsAsIdentifier(grammarBuilder);
         specialKeywordsAsIdentifier(grammarBuilder);
-        block(grammarBuilder, errorRecoveryEnabled);
+        block(grammarBuilder);
         name(grammarBuilder);
         decimalLiteral(grammarBuilder);
         hexLiteral(grammarBuilder);
@@ -169,25 +169,17 @@ public class MostUsed {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void block(LexerfulGrammarBuilder grammarBuilder, boolean errorRecoveryEnabled) {
-        if (errorRecoveryEnabled) {
-            grammarBuilder.rule(RECOVERED_STATEMENT).is(
-                    grammarBuilder.anyTokenButNot(
-                            grammarBuilder.firstOf(BLOCK_STATEMENT, RBRACE, EOF, SEMICOLON))
-            );
-            grammarBuilder.rule(BLOCK).is(
-                    LBRACE,
-                    grammarBuilder.zeroOrMore(
-                            grammarBuilder.firstOf(BLOCK_STATEMENT, RECOVERED_STATEMENT)),
-                    RBRACE
-            );
-        } else {
-            grammarBuilder.rule(BLOCK).is(
-                    LBRACE,
-                    grammarBuilder.zeroOrMore(BLOCK_STATEMENT),
-                    RBRACE
-            );
-        }
+    private static void block(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RECOVERED_STATEMENT).is(
+                grammarBuilder.anyTokenButNot(
+                        grammarBuilder.firstOf(BLOCK_STATEMENT, RBRACE, EOF, SEMICOLON))
+        );
+        grammarBuilder.rule(BLOCK).is(
+                LBRACE,
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.firstOf(BLOCK_STATEMENT, RECOVERED_STATEMENT)),
+                RBRACE
+        );
     }
 
     /**

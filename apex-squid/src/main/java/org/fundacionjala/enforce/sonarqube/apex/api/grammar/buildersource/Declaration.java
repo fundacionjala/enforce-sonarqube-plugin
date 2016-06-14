@@ -18,7 +18,7 @@ import static com.sonar.sslr.api.GenericTokenType.EOF;
  */
 public class Declaration {
 
-    public static void create(LexerfulGrammarBuilder grammarBuilder, boolean errorRecoveryEnabled) {
+    public static void create(LexerfulGrammarBuilder grammarBuilder) {
         typeDeclaration(grammarBuilder);
         typeClass(grammarBuilder);
         extendsList(grammarBuilder);
@@ -47,7 +47,7 @@ public class Declaration {
         initializerBlockMember(grammarBuilder);
         localVariableDeclaration(grammarBuilder);
         classOrInterfaceMember(grammarBuilder);
-        classOrInterfaceBody(grammarBuilder, errorRecoveryEnabled);
+        classOrInterfaceBody(grammarBuilder);
     }
 
     private static void typeDeclaration(LexerfulGrammarBuilder grammarBuilder) {
@@ -338,23 +338,17 @@ public class Declaration {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void classOrInterfaceBody(LexerfulGrammarBuilder grammarBuilder, boolean recoveredDeclarationEnabled) {
-        if (recoveredDeclarationEnabled) {
-            grammarBuilder.rule(RECOVERED_MEMBER).is(
-                    grammarBuilder.anyTokenButNot(
-                            grammarBuilder.firstOf(
-                                    CLASS_OR_INTERFACE_MEMBER, RBRACE, EOF))
-            );
-            grammarBuilder.rule(CLASS_OR_INTERFACE_BODY).is(
-                    grammarBuilder.zeroOrMore(
-                            grammarBuilder.firstOf(CLASS_OR_INTERFACE_MEMBER, RECOVERED_MEMBER)
-                    )
-            );
-        } else {
-            grammarBuilder.rule(CLASS_OR_INTERFACE_BODY).is(
-                    grammarBuilder.zeroOrMore(CLASS_OR_INTERFACE_MEMBER)
-            );
-        }
+    private static void classOrInterfaceBody(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RECOVERED_MEMBER).is(
+                grammarBuilder.anyTokenButNot(
+                        grammarBuilder.firstOf(
+                                CLASS_OR_INTERFACE_MEMBER, RBRACE, EOF))
+        );
+        grammarBuilder.rule(CLASS_OR_INTERFACE_BODY).is(
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.firstOf(CLASS_OR_INTERFACE_MEMBER, RECOVERED_MEMBER)
+                )
+        );
     }
 
     /**

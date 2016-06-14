@@ -29,13 +29,12 @@ public class ApexGrammar {
      * It is the main method of grammar. Here all other grammars are
      * constructed.
      *
-     * @param errorRecoveryEnabled error recovery status
      * @return the grammar
      */
-    public static Grammar create(boolean errorRecoveryEnabled) {
+    public static Grammar create() {
         LexerfulGrammarBuilder grammarBuilder = LexerfulGrammarBuilder.create();
 
-        MostUsed.create(grammarBuilder, errorRecoveryEnabled);
+        MostUsed.create(grammarBuilder);
 
         Expression.create(grammarBuilder);
 
@@ -43,7 +42,7 @@ public class ApexGrammar {
 
         Statement.create(grammarBuilder);
 
-        Declaration.create(grammarBuilder, errorRecoveryEnabled);
+        Declaration.create(grammarBuilder);
 
         grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION, EOF);
 
