@@ -123,7 +123,39 @@ public enum ApexKeyword implements TokenType {
     WHEN("when"),
     WHILE("while"),
     WITH("with"),
-    WITHOUT("without");
+    WITHOUT("without"),
+    
+      /**
+     * SOQL ANNOTATIONS.
+     */
+    QUERY("query"),
+    //Select Notations
+    SELECT("SELECT"),
+    COUNT("COUNT"),
+    //From Notations
+    FROM("FROM"),
+    AS("AS"),
+    USING("USING"),//Pending to implement
+    //Where Notations
+    WHERE("WHERE"),
+    NOT_SOQL("NOT"),
+    AND_SOQL("AND"),
+    OR_SOQL("OR"),
+    IN("IN"),
+    INCLUDES("includes"),
+    EXCLUDES("excludes"),
+    LIKE("LIKE"),
+    //Limit Notations
+    //Order Notations
+    ORDER("ORDER"),
+    BY("BY"),
+    ASC("ASC"),
+    DES("DESC"),
+    NULLS("NULLS"),
+    //Group Notations
+    ROLLUP("ROLLUP"),
+    CUBE("CUBE")
+    ;
 
     /**
      * Save the value with enums.
