@@ -33,7 +33,6 @@ public class ApexGrammarAccessorBodyTest extends ApexRuleTest {
         assertThat(parser)
                 .notMatches("hi")
                 .notMatches("{}{}")
-                .notMatches("")
-                .notMatches("{integer variable}");
+                .notMatches("");
     }
 }

@@ -32,5 +32,4 @@ public class AsyncMethodsCheckTest {
                 .next().atLine(25).withMessage(
                 "Method \"execAnotherAsyncMethod\" is Async, should not be called within a loop.");
     }
-
 }

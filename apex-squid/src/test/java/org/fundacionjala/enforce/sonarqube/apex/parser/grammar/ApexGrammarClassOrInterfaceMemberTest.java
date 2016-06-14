@@ -42,4 +42,17 @@ public class ApexGrammarClassOrInterfaceMemberTest extends ApexRuleTest {
                 .matches("@someAnnotation\n"
                         + "public global static void aMethodWithLoops(list<integer> collection) {}");
     }
+    
+    @Test
+    public void negativeRules() {
+        assertThat(parser)
+                .notMatches("public without sharing without class ClassName {}")
+                .notMatches("private with sharing interface iClassName name {}")
+                .notMatches("publics enum EnumName{A,B}")
+                .notMatches("private static integer field=3%;")
+                .notMatches("public static void doSomething(integerp1);")
+                .notMatches("private string Pr op {private get; set;}")
+                .notMatches("@someAnnotation\n"
+                        + "public global static void aMethodWithLoops(list<<integer> collection) {}");
+    }
 }
