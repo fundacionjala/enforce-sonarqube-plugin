@@ -51,34 +51,48 @@ public class ApexRulesDefinition implements RulesDefinition {
         repository.done();
     }
 
+    /**
+     * Loads HTML descriptions and meta data from JSON file to checks.
+     *
+     * @param ruleClass Class type of given rule.
+     * @param repository current repository.
+     */
     @VisibleForTesting
     protected void newRule(Class<?> ruleClass, NewRepository repository) {
         org.sonar.check.Rule ruleAnnotation = AnnotationUtils.getAnnotation(ruleClass, org.sonar.check.Rule.class);
         if (ruleAnnotation == null) {
-            throw new IllegalArgumentException("No Rule annotation was found on " + ruleClass);
+            throw new IllegalArgumentException(
+                    String.format("No Rule annotation was found on %s", ruleClass));
         }
         String ruleKey = ruleAnnotation.key();
         if (StringUtils.isEmpty(ruleKey)) {
-            throw new IllegalArgumentException("No key is defined in Rule annotation of " + ruleClass);
+            throw new IllegalArgumentException(
+                    String.format("No key is defined in Rule annotation of %s", ruleClass));
         }
         NewRule rule = repository.rule(ruleKey);
         if (rule == null) {
-            throw new IllegalStateException("No rule was created for " + ruleClass + " in " + repository.key());
+            throw new IllegalStateException(
+                    String.format("No rule was created for %s in %s", ruleClass, repository.key()));
         }
-
         addHtmlDescription(rule, rule.key());
         addMetadata(rule, rule.key());
     }
 
+    /**
+     * Adds checks necessary information from JSON file.
+     *
+     * @param rule the new rule to add the information.
+     * @param metadataKey rule key.
+     */
     private void addMetadata(NewRule rule, String metadataKey) {
-        URL resource = ExternalDescriptionLoader.class.getResource(RESOURCE_BASE_PATH + "/" + metadataKey + ".json");
+        URL resource = ExternalDescriptionLoader.class.getResource(String.format("%s/%s.json", RESOURCE_BASE_PATH, metadataKey));
         if (resource != null) {
             RuleMetatada metadata = gson.fromJson(readResource(resource), RuleMetatada.class);
             rule.setName(metadata.title);
             rule.setSeverity(metadata.defaultSeverity.toUpperCase());
             rule.addTags(metadata.tags);
             rule.setStatus(RuleStatus.valueOf(metadata.status.toUpperCase()));
-            rule.setDebtSubCharacteristic(metadata.sqaleSubCharac);
+            rule.setDebtSubCharacteristic(metadata.sqaleSubCharacteristic);
             if (metadata.remediation != null) {
                 rule.setDebtRemediationFunction(metadata.remediation.remediationFunction(rule.debtRemediationFunctions()));
                 rule.setEffortToFixDescription(metadata.remediation.linearDesc);
@@ -86,21 +100,36 @@ public class ApexRulesDefinition implements RulesDefinition {
         }
     }
 
+    /**
+     * Adds the HTML description for the new rule given the rule and its key.
+     *
+     * @param rule the new rule to add HTML description.
+     * @param metadataKey new rule key.
+     */
     private static void addHtmlDescription(NewRule rule, String metadataKey) {
-        URL resource = ApexRulesDefinition.class.getResource(RESOURCE_BASE_PATH + "/" + metadataKey + ".html");
+        URL resource = ApexRulesDefinition.class.getResource(String.format("%s/%s.html", RESOURCE_BASE_PATH, metadataKey));
         if (resource != null) {
             rule.setHtmlDescription(readResource(resource));
         }
     }
 
+    /**
+     * Reads the given resource if it can be, otherwise throws an exception
+     *
+     * @param resource to read from
+     * @return a String value which results of reading resource.
+     */
     private static String readResource(URL resource) {
         try {
             return Resources.toString(resource, Charsets.UTF_8);
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to read: " + resource, e);
+        } catch (IOException ioException) {
+            throw new IllegalStateException(String.format("Failed to read: %s", resource), ioException);
         }
     }
 
+    /**
+     * Checks Json file template.
+     */
     private static class RuleMetatada {
 
         String title;
@@ -108,7 +137,7 @@ public class ApexRulesDefinition implements RulesDefinition {
         @Nullable
         Remediation remediation;
 
-        String sqaleSubCharac;
+        String sqaleSubCharacteristic;
         String[] tags;
         String defaultSeverity;
     }

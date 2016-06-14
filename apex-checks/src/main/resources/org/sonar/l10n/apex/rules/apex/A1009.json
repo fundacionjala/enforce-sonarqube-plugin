@@ -1,14 +1,13 @@
 {
-  "title" : "An async method should not be invoked within a loop.",
-  "status": "ready",
-  "remediation": {
-    "func": "Constant\/Issue",
-    "constantCost": "5min"
-  },
-  "sqaleSubCharac": "SYNCHRONIZATION_RELIABILITY",
-  "tags": [
-    "obsolete"
-  ],
-  "defaultSeverity": "Info"
+    "title": "An async method should not be invoked within a loop.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "5min"
+    },
+    "sqaleSubCharac": "SYNCHRONIZATION_RELIABILITY",
+    "tags": [
+        "obsolete"
+    ],
+    "defaultSeverity": "Info"
 }
-

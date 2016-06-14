@@ -1,15 +1,13 @@
 {
-  "title" : "It's recommendable to pass a failure message when using an assertion.",
-  "status": "ready",
-  "remediation": {
-    "func": "Constant\/Issue",
-    "constantCost": "2min"
-  },
-  "sqaleSubCharac": "READABILITY",
-  "tags": [
-    "convention"
-  ],
-  "defaultSeverity": "Major"
+    "title": "It's recommendable to pass a failure message when using an assertion.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "2min"
+    },
+    "sqaleSubCharac": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Major"
 }
-
-

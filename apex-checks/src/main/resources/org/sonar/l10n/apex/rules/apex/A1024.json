@@ -1,14 +1,13 @@
 {
-  "title" : "Test methods must have no arguments",
-  "status": "ready",
-  "remediation": {
-    "func": "Constant\/Issue",
-    "constantCost": "1min"
-  },
-  "sqaleSubCharac": "UNIT_TESTS",
-  "tags": [
-    "convention"
-  ],
-  "defaultSeverity": "Major"
+    "title": "Test methods must have no arguments",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "1min"
+    },
+    "sqaleSubCharac": "UNIT_TESTS",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Major"
 }
-

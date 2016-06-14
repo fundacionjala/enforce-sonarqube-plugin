@@ -1,15 +1,13 @@
 {
-  "title" : "Constructor method should not have DML statement.",
-  "status": "ready",
-  "remediation": {
-    "func": "Constant\/Issue",
-    "constantCost": "5min"
-  },
-  "sqaleSubCharac": "READABILITY",
-  "tags": [
-    "bug"
-  ],
-  "defaultSeverity": "Critical"
+    "title": "Constructor method should not have DML statement.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "5min"
+    },
+    "sqaleSubCharac": "READABILITY",
+    "tags": [
+        "bug"
+    ],
+    "defaultSeverity": "Critical"
 }
-
-

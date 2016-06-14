@@ -4,8 +4,6 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.rules;
 
-
-
 import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +23,6 @@ public class ApexRulesDefinitionTest {
     @Before
     public void setUp() {
         rulesDefinition = new ApexRulesDefinition();
-
     }
 
     @Test
@@ -41,32 +38,33 @@ public class ApexRulesDefinitionTest {
     }
 
     @Test
-    public void test_invalid_checks() throws Exception {
+    public void testInvalidChecks() throws Exception {
         RulesDefinition.Context context = new RulesDefinition.Context();
         RulesDefinition.NewRepository newRepository = context.createRepository("test", "java");
         newRepository.createRule("cardinality");
         newRepository.createRule("A1005");
         try {
             rulesDefinition.newRule(CheckWithNoAnnotation.class, newRepository);
-        } catch (IllegalArgumentException iae) {
-            assertThat(iae).hasMessage("No Rule annotation was found on class " + CheckWithNoAnnotation.class.getName());
+        } catch (IllegalArgumentException illegaArgumentException) {
+            assertThat(illegaArgumentException)
+                    .hasMessage(String.format("No Rule annotation was found on class %s", CheckWithNoAnnotation.class.getName()));
         }
 
         try {
             rulesDefinition.newRule(EmptyRuleKey.class, newRepository);
-        } catch (IllegalArgumentException iae) {
-            assertThat(iae).hasMessage("No key is defined in Rule annotation of class " + EmptyRuleKey.class.getName());
+        } catch (IllegalArgumentException illegaArgumentException) {
+            assertThat(illegaArgumentException)
+                    .hasMessage(String.format("No key is defined in Rule annotation of class %s", EmptyRuleKey.class.getName()));
         }
 
         try {
             rulesDefinition.newRule(UnregisteredRule.class, newRepository);
-        } catch (IllegalStateException ise) {
-            assertThat(ise).hasMessage("No rule was created for class " + UnregisteredRule.class.getName() + " in test");
+        } catch (IllegalStateException illegalStateException) {
+            assertThat(illegalStateException)
+                    .hasMessage(String.format("No rule was created for class %s in test", UnregisteredRule.class.getName()));
         }
-
         // no metadata defined, does not fail on registration of rule
         rulesDefinition.newRule(CorrectRule.class, newRepository);
-
     }
 
     private class CheckWithNoAnnotation implements CodeVisitor {
