@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
@@ -25,8 +24,8 @@ public class ApexGrammarClassOrInterfaceBodyTest extends ApexRuleTest {
                 .matches("")
                 .matches("public static integer addition();"
                         + "public integer multiplication();")
-                .matches("with sharing class MyClass{}"
-                        + "with sharing class MyClass{}")
+                .matches("public with sharing class MyClass{}"
+                        + "with sharing class MyOtherClass{}")
                 .matches("static {integer suma = 0;}")
                 .matches("private string myString;")
                 .matches("private integer myIntVariable;"
@@ -42,16 +41,26 @@ public class ApexGrammarClassOrInterfaceBodyTest extends ApexRuleTest {
                         + "public integer secondProperty { get; set;}")
                 .matches("public static integer propertyWithParameters{"
                         + "get { return variable;}"
-                        + "set { integer variable = 1;}}");
+                        + "set { integer variable = 1;}}")
+                .matches("public class SomeClass {\n"
+                        + "public class InnerClassName {}"
+                        + "}");
     }
-
+    
     @Test
-    public void testInValidClassOrInterfaceBody() {
+    public void testValidClassOrInterfaceBodyWithRecovery() {
         assertThat(parser)
-                .notMatches("static public Class invalid")
-                .notMatches("private integer noSemicolon")
-                .notMatches("public integer wrongProperty {get set}")
-                .notMatches("private WrongConstructor integer { }");
+                .matches(" % ")
+                .matches("static public Class invalid {}")
+                .matches("private integer noSemicolon")
+                .matches("public integer wrongProperty {get set")
+                .matches("private WrongConstructor integer { }")
+                .matches("public static integer addition();"
+                        + "public integer multiplication();"
+                        + "somethingisWrongHEre) "
+                        + "public void division(){}")
+                .matches("public class SomeClass {\n"
+                        + "public class wrong ClassName {}"
+                        + "}");
     }
-
 }
