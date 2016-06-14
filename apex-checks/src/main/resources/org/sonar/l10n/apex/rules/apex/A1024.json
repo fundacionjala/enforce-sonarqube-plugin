@@ -5,7 +5,7 @@
         "func": "Constant\/Issue",
         "constantCost": "1min"
     },
-    "sqaleSubCharac": "UNIT_TESTS",
+    "sqaleSubCharacteristic": "UNIT_TESTS",
     "tags": [
         "convention"
     ],

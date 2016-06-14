@@ -5,7 +5,7 @@
         "func": "Constant\/Issue",
         "constantCost": "1min"
     },
-    "sqaleSubCharac": "DATA_RELIABILITY",
+    "sqaleSubCharacteristic": "DATA_RELIABILITY",
     "tags": [
         "security"
     ],
