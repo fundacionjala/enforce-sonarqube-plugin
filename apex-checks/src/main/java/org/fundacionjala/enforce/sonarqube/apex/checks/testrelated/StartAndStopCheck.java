@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
 import com.sonar.sslr.api.AstNode;
@@ -38,14 +37,17 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
      * It is the code of the rule for the plugin.
      */
     public static final String CHECK_KEY = "A1027";
-    
+
     private final String MESSAGE = ChecksBundle.getStringFromBundle("StartAndStopCheckMessage");
+    
+    private AstNode secondCall;
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
+        secondCall = null;
         subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
     }
 
@@ -57,6 +59,7 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
+        List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.PRIMARY_EXPRESSION);
         
     }
 }
