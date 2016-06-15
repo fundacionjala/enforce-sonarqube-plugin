@@ -23,32 +23,23 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
+import org.sonar.check.Rule;
+import org.sonar.squidbridge.checks.SquidCheck;
+
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FORMAL_PARAMETER;
-import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
-import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
-import static org.fundacionjala.enforce.sonarqube.apex.utils.MethodChecksUtils.hasTestMethodKeyword;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
-import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.checks.SquidCheck;
-@Rule(
-        key = TestMethodsParametersCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        tags = Tags.CONVENTION
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.UNIT_TESTS)
-@SqaleConstantRemediation("1min")
-@ActivatedByDefault
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.checks.TestAssertionsAndTestMethodKeywordCheck.hasTestMethodKeyword;
+
+@Rule(key = TestMethodsParametersCheck.CHECK_KEY)
 public class TestMethodsParametersCheck extends SquidCheck<Grammar> {
 
     public static final String CHECK_KEY = "A1024";
-        
+
     @Override
     public void init() {
         subscribeTo(METHOD_DECLARATION);
@@ -56,12 +47,12 @@ public class TestMethodsParametersCheck extends SquidCheck<Grammar> {
 
     @Override
     public void visitNode(AstNode astNode) {
-        if(hasTestMethodKeyword(astNode.getParent()) 
+        if (hasTestMethodKeyword(astNode.getParent())
                 && !astNode.getDescendants(FORMAL_PARAMETER).isEmpty()) {
             getContext().createLineViolation(this,
                     ChecksBundle.getStringFromBundle("TestMethodParametersError"),
                     astNode, astNode.getTokenLine());
-            
+
         }
     }
 }

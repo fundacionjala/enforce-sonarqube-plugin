@@ -1,0 +1,13 @@
+{
+    "title": "An \"assert\" statement should not be passed the argument \"true\".",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "6min"
+    },
+    "sqaleSubCharacteristic": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Minor"
+}

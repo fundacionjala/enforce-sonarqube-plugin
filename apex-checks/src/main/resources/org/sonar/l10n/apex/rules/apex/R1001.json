@@ -1,0 +1,13 @@
+{
+    "title": "Parsing error.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "2min"
+    },
+    "sqaleSubCharacteristic": "SYNCHRONIZATION_RELIABILITY",
+    "tags": [
+        "bug"
+    ],
+    "defaultSeverity": "Info"
+}

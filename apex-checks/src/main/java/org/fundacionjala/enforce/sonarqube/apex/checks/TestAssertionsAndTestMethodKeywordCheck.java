@@ -4,30 +4,19 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
+import java.util.List;
+
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
-import java.util.List;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
 import static org.fundacionjala.enforce.sonarqube.apex.utils.MethodChecksUtils.hasAssertion;
 import static org.fundacionjala.enforce.sonarqube.apex.utils.MethodChecksUtils.hasTestMethodKeyword;
 
-@Rule(
-        key = TestAssertionsAndTestMethodKeywordCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        tags = Tags.CONVENTION
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.UNIT_TESTS)
-@SqaleConstantRemediation("3min")
-@ActivatedByDefault
+@Rule(key = TestAssertionsAndTestMethodKeywordCheck.CHECK_KEY)
 public class TestAssertionsAndTestMethodKeywordCheck extends SquidCheck<Grammar> {
 
     public static final String SYSTEM_ASSERT_PATTERN = "(?i)system\\.assert(notequals|equals)?";
