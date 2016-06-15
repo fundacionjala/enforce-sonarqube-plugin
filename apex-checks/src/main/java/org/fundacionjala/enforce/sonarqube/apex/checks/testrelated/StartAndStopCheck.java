@@ -4,33 +4,20 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
-import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import java.util.List;
 
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
+
 /**
  * Verifies that only testStart and testStop are only used once in a testMethod.
  */
-@Rule(
-        key = StartAndStopCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        tags = Tags.CONFUSING
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.MODULARITY)
-@SqaleConstantRemediation("5min")
-@ActivatedByDefault
+@Rule(key = StartAndStopCheck.CHECK_KEY)
 public class StartAndStopCheck extends SquidCheck<Grammar> {
 
     /**
@@ -39,7 +26,7 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
     public static final String CHECK_KEY = "A1027";
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("StartAndStopCheckMessage");
-    
+
     private AstNode secondCall;
 
     /**
@@ -60,6 +47,6 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
         List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.PRIMARY_EXPRESSION);
-        
+
     }
 }

@@ -1,0 +1,13 @@
+{
+    "title": "Test methods incorrectly located.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "6min"
+    },
+    "sqaleSubCharacteristic": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Major"
+}

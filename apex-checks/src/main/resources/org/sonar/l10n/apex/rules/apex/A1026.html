@@ -1,0 +1,26 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+Passing the assertion a message that will display in case of failure makes the tests easier to fix and understand.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+@isTest
+public static testMethod void someTestMethod {
+...
+System.assert(a.equals(expected));
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+<pre>
+@isTest
+public static testMethod void someTestMethod {
+...
+System.assert(a.equals(expected), 'The value of a is supposed to be equal to expected');
+}
+</pre>

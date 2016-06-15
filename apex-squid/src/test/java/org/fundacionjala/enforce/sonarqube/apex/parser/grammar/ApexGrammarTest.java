@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
@@ -23,6 +22,13 @@ public class ApexGrammarTest extends ApexRuleTest {
     @Before
     public void init() {
         setRootRule(APEX_GRAMMAR);
+    }
+
+    @Test
+    public void correctRuleSimpleClass() {
+        assertThat(parser)
+                .matches("public class ClassName {"
+                        + "}");
     }
 
     @Test
@@ -69,8 +75,8 @@ public class ApexGrammarTest extends ApexRuleTest {
     public void correctRuleMoreImplementsVariableAndMethod() {
         assertThat(parser)
                 .matches("public with sharing class Class1 implements YourClass {"
-                        + "public booleanN my_Variable = trueExpression;"
-                        + "public booleanN MyMethod(){}"
+                        + "public boolean my_Variable = trueExpression;"
+                        + "public boolean MyMethod(){}"
                         + "}");
     }
 
@@ -175,17 +181,47 @@ public class ApexGrammarTest extends ApexRuleTest {
                 StandardCharsets.UTF_8);
         assertThat(parser).matches(fileToString);
     }
-    
+
     @Test
     public void complexExternalTestClassTest() throws IOException {
         String fileToString = readFileToString("src/test/resources/complex/ComplexTest.cls",
                 StandardCharsets.UTF_8);
         assertThat(parser).matches(fileToString);
     }
-    
+
     @Test
     public void complexExternalViatraClassTest() throws IOException {
         String fileToString = readFileToString("src/test/resources/complex/ComplexClassViatra.cls",
+                StandardCharsets.UTF_8);
+        assertThat(parser).matches(fileToString);
+    }
+    
+    @Test
+    public void recoveryDeclarationTest() {
+        assertThat(parser)
+                .matches("public with sharing class RecoveryClass  {\n"
+                        + "    public class class InnerClass(){\n"
+                        + "        doSomething();\n"
+                        + "    }\n"
+                        + "    private void someMthd(integer p1, p2)"
+                        + "}");
+    }
+
+    @Test
+    public void recoveryStatementTest() {
+        assertThat(parser)
+                .matches("public with sharing class RecoveryClass  {\n"
+                        + "    public void someMethod(){\n"
+                        + "        doSomething();\n"
+                        + "        wrongMethod);\n"
+                        + "        doOtherThing(x);\n"
+                        + "    }\n"
+                        + "}");
+    }
+
+    @Test
+    public void recoveryTestFile() throws IOException {
+        String fileToString = readFileToString("src/test/resources/complex/ComplexClassWithErrors.cls",
                 StandardCharsets.UTF_8);
         assertThat(parser).matches(fileToString);
     }

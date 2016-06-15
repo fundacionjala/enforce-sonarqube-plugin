@@ -2,55 +2,42 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
+import java.util.List;
+
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
-import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
-import java.util.List;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
 
 /**
  * Verifies that only the proper classes are tagged as tests.
  */
-@Rule(
-        key = TestClassCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        tags = Tags.CONFUSING
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.MODULARITY)
-@SqaleConstantRemediation("5min")
-@ActivatedByDefault
+@Rule(key = TestClassCheck.CHECK_KEY)
 public class TestClassCheck extends SquidCheck<Grammar> {
 
     /**
      * It is the code of the rule for the plugin.
      */
     public static final String CHECK_KEY = "A1021";
-    
+
     /**
      * Identifier of the annotation.
      */
     public static final String IS_TEST = "ISTEST";
-    
+
     /**
      * Constant used to see if the name of the class has the word test in it.
      */
     private final String TEST = "TEST";
-    
+
     private final String ANNOTATION_MESSAGE = ChecksBundle.getStringFromBundle("TestClassCheckAnnotationMessage");
-    
+
     private final String NAME_MESSAGE = ChecksBundle.getStringFromBundle("TestClassCheckNameMessage");
 
     /**
@@ -80,13 +67,15 @@ public class TestClassCheck extends SquidCheck<Grammar> {
             }
         } else if (identifier.getTokenValue().contains(TEST)) {
             getContext().createLineViolation(this,
-                        NAME_MESSAGE,
-                        astNode, identifier.getTokenOriginalValue());
+                    NAME_MESSAGE,
+                    astNode, identifier.getTokenOriginalValue());
         }
     }
-    
+
     /**
-     * Determines whether or not a declarations has the @isTest annotation amongst its modifiers.
+     * Determines whether or not a declarations has the @isTest annotation
+     * amongst its modifiers.
+     *
      * @param astNode the declaration to be checked.
      * @return true if the @isTest annotation is amongst the modifiers.
      */

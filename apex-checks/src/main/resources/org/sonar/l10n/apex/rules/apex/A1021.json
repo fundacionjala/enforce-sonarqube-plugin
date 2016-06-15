@@ -1,0 +1,13 @@
+{
+    "title": "\"@Test\" annotation should only be used for proper test classes.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "5min"
+    },
+    "sqaleSubCharacteristic": "MODULARITY",
+    "tags": [
+        "confusing"
+    ],
+    "defaultSeverity": "Major"
+}
