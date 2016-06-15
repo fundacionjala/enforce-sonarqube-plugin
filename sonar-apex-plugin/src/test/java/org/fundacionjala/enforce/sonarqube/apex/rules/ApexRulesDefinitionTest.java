@@ -63,7 +63,6 @@ public class ApexRulesDefinitionTest {
             assertThat(illegalStateException)
                     .hasMessage(String.format("No rule was created for class %s in test", UnregisteredRule.class.getName()));
         }
-        // no metadata defined, does not fail on registration of rule
         rulesDefinition.newRule(CorrectRule.class, newRepository);
     }
 
