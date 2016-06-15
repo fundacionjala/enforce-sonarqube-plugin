@@ -2,31 +2,17 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import com.sonar.sslr.api.AstNode;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
-import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 /**
  * This class checks that a deprecated method does not contain lines of code.
  */
-@Rule(
-        key = DeprecatedMethodCheck.CHECK_KEY,
-        priority = Priority.INFO,
-        tags = Tags.OBSOLETE
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("1min")
-@ActivatedByDefault
+@Rule(key = DeprecatedMethodCheck.CHECK_KEY)
 public class DeprecatedMethodCheck extends AnnotationMethodCheck {
 
     /**
@@ -40,7 +26,8 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
     public static final String CHECK_KEY = "A1006";
 
     /**
-     * Stores the number of elements for empty block counting the start and end brace.
+     * Stores the number of elements for empty block counting the start and end
+     * brace.
      */
     public static final int EMPTY_BLOCK = 2;
 
@@ -53,8 +40,8 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
     }
 
     /**
-     * It is responsible for verifying whether the rule is met in the rule base. In the event that
-     * the rule is not correct, create message error.
+     * It is responsible for verifying whether the rule is met in the rule base.
+     * In the event that the rule is not correct, create message error.
      *
      * @param astNode It is the node that stores all the rules.
      */

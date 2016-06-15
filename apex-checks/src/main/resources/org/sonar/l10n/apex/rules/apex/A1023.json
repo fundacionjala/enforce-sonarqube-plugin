@@ -1,0 +1,13 @@
+{
+    "title": "\"(seeAllData = true)\" should not be passed to the \"@isTest\" annotation.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "1min"
+    },
+    "sqaleSubCharacteristic": "DATA_RELIABILITY",
+    "tags": [
+        "security"
+    ],
+    "defaultSeverity": "Major"
+}

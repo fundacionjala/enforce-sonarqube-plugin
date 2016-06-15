@@ -4,29 +4,17 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
+import java.util.List;
+
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
-import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
-import java.util.List;
 
-@Rule(
-        key = AssertMessageCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        tags = Tags.CONVENTION
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("2min")
-@ActivatedByDefault
+@Rule(key = AssertMessageCheck.CHECK_KEY)
 public class AssertMessageCheck extends SquidCheck<Grammar> {
 
     /**

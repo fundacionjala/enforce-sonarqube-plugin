@@ -4,31 +4,21 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
+
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
 
 /**
  * Visits all the instances where the parser had to skip tokens because of a
  * probable parsing error and creates a message for them.
  */
-@Rule(
-        key = ErrorRecoveryCheck.CHECK_KEY,
-        priority = Priority.INFO,
-        tags = Tags.BUG
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.SYNCHRONIZATION_RELIABILITY)
-@SqaleConstantRemediation("2min")
-@ActivatedByDefault
+@Rule(key = ErrorRecoveryCheck.CHECK_KEY)
 public class ErrorRecoveryCheck extends SquidCheck<Grammar> {
 
     /**
