@@ -2,6 +2,7 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
+
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
@@ -26,12 +27,26 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
     public static final String CHECK_KEY = "A1027";
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("StartAndStopCheckMessage");
-
+    
+    /**
+     * Keyword for the first part of the expression.
+     */
     private final String TEST = "TEST";
 
+    /**
+     * One of the Keywords for the second part of the expression.
+     */
     private final String START = "STARTTEST";
 
+    /**
+     * One of the Keywords for the second part of the expression.
+     */
     private final String STOP = "STOPTEST";
+    
+    /**
+     * 
+     */
+    private final int MAX_ALLOWED_INSTANCES = 1;
 
     /**
      * The variables are initialized and subscribe the base rule.
@@ -59,7 +74,7 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
             if (isTestMethodCall(expression, STOP)) {
                 stopCalls++;
             }
-            if (startCalls > 1 || stopCalls > 1) {
+            if (startCalls > MAX_ALLOWED_INSTANCES || stopCalls > MAX_ALLOWED_INSTANCES) {
                 getContext().createLineViolation(this,
                         MESSAGE, astNode, 
                         astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue());
@@ -67,7 +82,13 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
             }
         }
     }
-
+    
+    /**
+     * Verifies if the expression is a sequence of test.startTest or test.stopTest
+     * @param expression 
+     * @param keyword
+     * @return true if the expression is the right sequence
+     */
     private boolean isTestMethodCall(AstNode expression, String keyword) {
         AstNode name = expression.getFirstDescendant(ApexGrammarRuleKey.NAME);
         if (name != null) {
