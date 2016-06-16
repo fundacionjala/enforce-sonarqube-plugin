@@ -44,7 +44,7 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
     private final String STOP = "STOPTEST";
     
     /**
-     * 
+     * Maximum of allowed instances of the specified method calls.
      */
     private final int MAX_ALLOWED_INSTANCES = 1;
 
