@@ -27,14 +27,17 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("StartAndStopCheckMessage");
 
-    private AstNode secondCall;
+    private final String TEST = "TEST";
+
+    private final String START = "STARTTEST";
+
+    private final String STOP = "STOPTEST";
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
     public void init() {
-        secondCall = null;
         subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
     }
 
@@ -46,7 +49,34 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
+        int startCalls = 0;
+        int stopCalls = 0;
         List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.PRIMARY_EXPRESSION);
+        for (AstNode expression : expressions) {
+            if (isTestMethodCall(expression, START)) {
+                startCalls++;
+            }
+            if (isTestMethodCall(expression, STOP)) {
+                stopCalls++;
+            }
+            if (startCalls > 1 || stopCalls > 1) {
+                getContext().createLineViolation(this,
+                        MESSAGE, astNode, 
+                        astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue());
+                return;
+            }
+        }
+    }
 
+    private boolean isTestMethodCall(AstNode expression, String keyword) {
+        AstNode name = expression.getFirstDescendant(ApexGrammarRuleKey.NAME);
+        if (name != null) {
+            AstNode first = name.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
+            AstNode last = name.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
+            return first != null && last != null
+                    && first.getTokenValue().equals(TEST)
+                    && last.getTokenValue().matches(keyword);
+        }
+        return false;
     }
 }

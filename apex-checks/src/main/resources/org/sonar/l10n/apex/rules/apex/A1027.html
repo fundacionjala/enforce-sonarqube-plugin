@@ -4,15 +4,21 @@
   -->
 
 <p>
-Passing the assertion a message that will display in case of failure makes the tests easier to fix and understand.
+"test.startTest()" and "test.stopTest()" methods should only be called once each inside a testMethod.
 </p>
 
 <h2>Noncompliant Code Example</h2>
 <pre>
 @isTest
 public static testMethod void someTestMethod {
-...
-System.assert(a.equals(expected));
+    test.startTest();
+    ...
+    System.assert(a.equals(expected));
+    test.stopTest();
+    test.startTest();
+    ...
+    System.assert(b.notEquals(expected));
+    test.stopTest();
 }
 </pre>
 
@@ -20,7 +26,10 @@ System.assert(a.equals(expected));
 <pre>
 @isTest
 public static testMethod void someTestMethod {
-...
-System.assert(a.equals(expected), 'The value of a is supposed to be equal to expected');
+    test.startTest();
+    ...
+    System.assert(a.equals(expected));
+    System.assert(b.notEquals(expected));
+    test.stopTest();
 }
 </pre>

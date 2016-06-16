@@ -28,12 +28,11 @@ public class AssertMessageCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/assertWithMessageTestClass.cls"), check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(11).withMessage("Test method \"anotherTestMethod\" is calling an assertion,"
-                        + " it is recommendable to pass a message in case of test failure.")
+                + " it is recommendable to pass a message in case of test failure.")
                 .next().atLine(12).withMessage("Test method \"anotherTestMethod\" is calling an assertion,"
-                        + " it is recommendable to pass a message in case of test failure.")
+                + " it is recommendable to pass a message in case of test failure.")
                 .next().atLine(13).withMessage("Test method \"anotherTestMethod\" is calling an assertion,"
-                        + " it is recommendable to pass a message in case of test failure.")
+                + " it is recommendable to pass a message in case of test failure.")
                 .noMore();
     }
-
 }
