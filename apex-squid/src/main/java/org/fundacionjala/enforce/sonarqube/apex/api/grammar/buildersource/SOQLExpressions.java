@@ -96,7 +96,6 @@ public class SOQLExpressions {
         orderBySentence(grammarBuilder);
         groupBySentence(grammarBuilder);
         groupByTypesSentence(grammarBuilder);
-
     }
 
     /**
@@ -112,7 +111,7 @@ public class SOQLExpressions {
                         UNDERSCORE
                 ));
     }
-    
+
     /**
      * It is responsible for setting the rule for SOQL_NAME.
      *
@@ -123,7 +122,7 @@ public class SOQLExpressions {
                 IDENTIFIER,
                 grammarBuilder.zeroOrMore(NAME_CHAR));
     }
-    
+
     /**
      * It is responsible for setting the rule for query.
      *
@@ -149,7 +148,7 @@ public class SOQLExpressions {
         grammarBuilder.rule(SELECT_SENTENCE).is(
                 SELECT, grammarBuilder.firstOf(COUNT_EXPR, FIELD),
                 grammarBuilder.zeroOrMore(
-                        COMMA, 
+                        COMMA,
                         grammarBuilder.firstOf(COUNT_EXPR, FIELD)),
                 grammarBuilder.zeroOrMore(COMMA, LPAREN, QUERY_EXPRESSION, RPAREN));
     }
@@ -261,10 +260,10 @@ public class SOQLExpressions {
      */
     private static void fieldExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_EXPRESSION).is(
-                SOQL_NAME, 
-                OPERATORS, 
+                SOQL_NAME,
+                OPERATORS,
                 grammarBuilder.firstOf(
-                        STRING, 
+                        STRING,
                         NUMERIC));
     }
 
@@ -285,9 +284,7 @@ public class SOQLExpressions {
                 grammarBuilder.firstOf(SOQL_NAME, QUERY_EXPRESSION),
                 grammarBuilder.zeroOrMore(COMMA, SOQL_NAME),
                 RPAREN
-    
-
-    );
+        );
     }
 
     /**

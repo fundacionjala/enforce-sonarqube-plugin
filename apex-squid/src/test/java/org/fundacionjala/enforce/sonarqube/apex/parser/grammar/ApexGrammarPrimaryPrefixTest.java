@@ -25,8 +25,6 @@ public class ApexGrammarPrimaryPrefixTest extends ApexRuleTest {
                 .matches("1")
                 .matches("true")
                 .matches("false")
-//                TODO: uncomment this when the old rules are deleted and it should work
-//                .matches("this")
                 .matches("'something'")
                 .matches("someIdentifier")
                 .matches("a.b.c")
