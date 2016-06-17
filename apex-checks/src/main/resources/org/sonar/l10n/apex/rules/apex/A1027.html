@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+"test.startTest()" and "test.stopTest()" methods should only be called once each inside a testMethod.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+@isTest
+public static testMethod void someTestMethod {
+    test.startTest();
+    ...
+    System.assert(a.equals(expected));
+    test.stopTest();
+    test.startTest();
+    ...
+    System.assert(b.notEquals(expected));
+    test.stopTest();
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+<pre>
+@isTest
+public static testMethod void someTestMethod {
+    test.startTest();
+    ...
+    System.assert(a.equals(expected));
+    System.assert(b.notEquals(expected));
+    test.stopTest();
+}
+</pre>
