@@ -28,17 +28,6 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
     public static final String CHECK_KEY = "A1022";
 
     /**
-     * Node that represents the class where the test method is declared. Meant
-     * to be lazy loaded.
-     */
-    private AstNode classDeclaration;
-
-    /**
-     * The identifier node of the class. Meant to be lazy loaded.
-     */
-    private AstNode className;
-
-    /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
@@ -54,7 +43,8 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (!TestClassCheck.hasTestAnnotation(getClassDeclaration(astNode))) {
+        AstNode classDeclaration = getClassDeclaration(astNode);
+        if (!TestClassCheck.hasTestAnnotation(classDeclaration)) {
             AstNode member = astNode.getParent();
             List<AstNode> modifiers = member.getFirstChild(ApexGrammarRuleKey.MODIFIERS).getChildren();
             for (AstNode modifier : modifiers) {
@@ -64,36 +54,22 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
                                     ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
                     getContext().createLineViolation(this,
                             ChecksBundle.getStringFromBundle("TestMethodsCheckMessage"),
-                            astNode, methodName.getTokenOriginalValue(), getClassName().getTokenOriginalValue());
+                            astNode, methodName.getTokenOriginalValue(), 
+                            classDeclaration.getFirstChild(ApexGrammarRuleKey.COMMON_IDENTIFIER).getTokenOriginalValue());
                 }
             }
         }
     }
 
     /**
-     * Lazy load the classDeclaration property.
+     * Loads the classDeclaration node.
      *
      * @param astNode The node of the method of which the class declaration is
      * obtained.
      * @return the classDeclaration value.
      */
     private AstNode getClassDeclaration(AstNode astNode) {
-        if (classDeclaration == null) {
-            classDeclaration = astNode.getFirstAncestor(ApexGrammarRuleKey.TYPE_DECLARATION)
-                    .getFirstChild(ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION);
-        }
-        return classDeclaration;
-    }
-
-    /**
-     * Lazy load the className property.
-     *
-     * @return The node identifier of the class.
-     */
-    private AstNode getClassName() {
-        if (className == null) {
-            className = classDeclaration.getFirstChild(ApexGrammarRuleKey.COMMON_IDENTIFIER);
-        }
-        return className;
+        return astNode.getFirstAncestor(ApexGrammarRuleKey.TYPE_DECLARATION)
+                .getFirstChild(ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION);
     }
 }
