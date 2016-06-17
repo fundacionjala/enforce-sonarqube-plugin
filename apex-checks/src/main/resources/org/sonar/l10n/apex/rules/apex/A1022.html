@@ -8,13 +8,9 @@ TestMethods should be declared only in test classes to maintain the code more or
 </p>
 
 <h2>Noncompliant Code Example</h2>
-<p>
+<pre>
 public with sharing SomeClass {
 ...
 public testMethod void someTestMethod() {...} // this isn't a test class, so it shouldn't have a test method
 }
-</p>
-<pre>
-class MyClass:
-	...
 </pre>
