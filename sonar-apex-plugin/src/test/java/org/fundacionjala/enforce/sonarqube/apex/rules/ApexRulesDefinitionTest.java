@@ -1,42 +1,33 @@
 /*
- * The MIT License
- *
- * Copyright 2016 Fundacion Jala.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) Fundacion Jala. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
 package org.fundacionjala.enforce.sonarqube.apex.rules;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
+import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.check.Rule;
+import org.sonar.squidbridge.api.CodeVisitor;
 
-import org.fundacionjala.enforce.sonarqube.apex.checks.CheckList;
-
+import static org.fest.assertions.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class ApexRulesDefinitionTest {
 
+    private ApexRulesDefinition rulesDefinition;
+
+    @Before
+    public void setUp() {
+        rulesDefinition = new ApexRulesDefinition();
+    }
+
     @Test
     public void test() {
-        ApexRulesDefinition rulesDefinition = new ApexRulesDefinition();
+        rulesDefinition = new ApexRulesDefinition();
         RulesDefinition.Context context = new RulesDefinition.Context();
         rulesDefinition.define(context);
         RulesDefinition.Repository repository = context.repository("apex");
@@ -45,4 +36,49 @@ public class ApexRulesDefinitionTest {
         assertThat(repository.language(), equalTo("apex"));
         assertThat(repository.rules().size(), is(CheckList.getChecks().size()));
     }
+
+    @Test
+    public void testInvalidChecks() throws Exception {
+        RulesDefinition.Context context = new RulesDefinition.Context();
+        RulesDefinition.NewRepository newRepository = context.createRepository("test", "java");
+        newRepository.createRule("cardinality");
+        newRepository.createRule("A1005");
+        try {
+            rulesDefinition.newRule(CheckWithNoAnnotation.class, newRepository);
+        } catch (IllegalArgumentException illegaArgumentException) {
+            assertThat(illegaArgumentException)
+                    .hasMessage(String.format("No Rule annotation was found on class %s", CheckWithNoAnnotation.class.getName()));
+        }
+
+        try {
+            rulesDefinition.newRule(EmptyRuleKey.class, newRepository);
+        } catch (IllegalArgumentException illegaArgumentException) {
+            assertThat(illegaArgumentException)
+                    .hasMessage(String.format("No key is defined in Rule annotation of class %s", EmptyRuleKey.class.getName()));
+        }
+
+        try {
+            rulesDefinition.newRule(UnregisteredRule.class, newRepository);
+        } catch (IllegalStateException illegalStateException) {
+            assertThat(illegalStateException)
+                    .hasMessage(String.format("No rule was created for class %s in test", UnregisteredRule.class.getName()));
+        }
+        rulesDefinition.newRule(CorrectRule.class, newRepository);
+    }
+
+    private class CheckWithNoAnnotation implements CodeVisitor {
+    }
+
+    @Rule(key = "")
+    private class EmptyRuleKey implements CodeVisitor {
+    }
+
+    @Rule(key = "A1001")
+    private class UnregisteredRule implements CodeVisitor {
+    }
+
+    @Rule(key = "A1005")
+    private class CorrectRule implements CodeVisitor {
+    }
+
 }

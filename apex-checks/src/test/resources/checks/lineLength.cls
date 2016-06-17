@@ -1,9 +1,9 @@
 public       with       sharing         class               DraftArticle    extends AbstractArticle {
 
 
-                    public           int          MyMethod                       () { 
-                        int     number = 1902;
-                            return number;
+                    public           integer          MyMethod                       () { 
+                        integer     someNumber = 1902;
+                            return someNumber;
                     }
 }
 
