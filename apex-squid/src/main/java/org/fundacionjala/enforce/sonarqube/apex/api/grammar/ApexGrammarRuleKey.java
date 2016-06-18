@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar;
 
 import org.sonar.sslr.grammar.GrammarRuleKey;
@@ -105,6 +104,8 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     PRIMARY_PREFIX,
     PRIMARY_SUFFIX,
     PROPERTY_DECLARATION,
+    RECOVERED_MEMBER,
+    RECOVERED_STATEMENT,
     REFERENCE_TYPE,
     RELATIONAL_EXPRESSION,
     RESULT_TYPE,

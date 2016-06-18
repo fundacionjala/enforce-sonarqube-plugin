@@ -1,0 +1,13 @@
+{
+    "title": "A testMethod should not be declared or implemented in a class that isn't a test",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "7min"
+    },
+    "sqaleSubCharacteristic": "MODULARITY",
+    "tags": [
+        "confusing"
+    ],
+    "defaultSeverity": "Major"
+}

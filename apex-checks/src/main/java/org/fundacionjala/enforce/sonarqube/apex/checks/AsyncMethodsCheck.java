@@ -2,18 +2,12 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import java.util.List;
@@ -22,14 +16,7 @@ import java.util.List;
  * Checks that no "loop" block of code calls an async method, which have the
  * "@future" annotation.
  */
-@Rule(
-        key = AsyncMethodsCheck.CHECK_KEY,
-        priority = Priority.INFO,
-        tags = Tags.OBSOLETE
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.SYNCHRONIZATION_RELIABILITY)
-@SqaleConstantRemediation("5min")
-@ActivatedByDefault
+@Rule(key = AsyncMethodsCheck.CHECK_KEY)
 public class AsyncMethodsCheck extends SquidCheck<Grammar> {
 
     /**
@@ -41,7 +28,7 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
      * Value of the annotation future, which this check looks for.
      */
     private final String FUTURE = "future";
-    
+
     /**
      * The list of method declarations within the class.
      */
@@ -81,7 +68,7 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
                         if (methodIsAsync(astNode, methodName)) {
                             String message = ChecksBundle.getStringFromBundle("AsyncMethodsCheckMessage");
                             getContext().createLineViolation(this,
-                                    message, method, 
+                                    message, method,
                                     methodIdentifier.getTokenOriginalValue());
                         }
                     }
@@ -89,9 +76,11 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
             }
         }
     }
-    
+
     /**
-     * Determines if a method is Async by looking for the "@future" amongst it's annotations.
+     * Determines if a method is Async by looking for the "@future" amongst it's
+     * annotations.
+     *
      * @param astNode the node of the loop statement.
      * @param methodName the name of the method.
      * @return True if the method has the "@future" annotation.
@@ -119,13 +108,16 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
         }
         return false;
     }
-    
+
     /**
-     * Performs a lazy loading of the list of method declarations within the class.
-     * @param ancestor The ancestor node that "contains" the method declarations.
+     * Performs a lazy loading of the list of method declarations within the
+     * class.
+     *
+     * @param ancestor The ancestor node that "contains" the method
+     * declarations.
      */
     private void loadMethods(AstNode ancestor) {
-        if(methods == null) {
+        if (methods == null) {
             methods = ancestor.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
         }
     }

@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
@@ -11,6 +10,8 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
 
+import static com.sonar.sslr.api.GenericTokenType.EOF;
+
 /**
  * This class contains constructors for Declaration rules and its sub rules.
  *
@@ -18,10 +19,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 public class Declaration {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
+        typeDeclaration(grammarBuilder);
         typeClass(grammarBuilder);
         extendsList(grammarBuilder);
         implementsList(grammarBuilder);
-        typeDeclaration(grammarBuilder);
         methodName(grammarBuilder);
         propertyDeclaration(grammarBuilder);
         accessor(grammarBuilder);
@@ -56,6 +57,7 @@ public class Declaration {
                         CLASS_OR_INTERFACE_DECLARATION,
                         ENUM_DECLARATION)
         );
+
     }
 
     /**
@@ -337,8 +339,15 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void classOrInterfaceBody(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(RECOVERED_MEMBER).is(
+                grammarBuilder.anyTokenButNot(
+                        grammarBuilder.firstOf(
+                                CLASS_OR_INTERFACE_MEMBER, RBRACE, EOF))
+        );
         grammarBuilder.rule(CLASS_OR_INTERFACE_BODY).is(
-                grammarBuilder.zeroOrMore(CLASS_OR_INTERFACE_MEMBER)
+                grammarBuilder.zeroOrMore(
+                        grammarBuilder.firstOf(CLASS_OR_INTERFACE_MEMBER, RECOVERED_MEMBER)
+                )
         );
     }
 
@@ -420,16 +429,20 @@ public class Declaration {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void classOrInterfaceMember(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(CLASS_OR_INTERFACE_MEMBER).is(grammarBuilder.firstOf(INITIALIZER,
-                grammarBuilder.sequence(MODIFIERS,
-                        grammarBuilder.firstOf(METHOD_DECLARATION,
-                                PROPERTY_DECLARATION,
-                                CLASS_OR_INTERFACE_DECLARATION,
-                                ENUM_DECLARATION,
-                                CONSTRUCTOR_DECLARATION,
-                                FIELD_DECLARATION
-                        ))
-        )
+        grammarBuilder.rule(CLASS_OR_INTERFACE_MEMBER).is(
+                grammarBuilder.firstOf(
+                        INITIALIZER,
+                        grammarBuilder.sequence(
+                                MODIFIERS,
+                                grammarBuilder.firstOf(METHOD_DECLARATION,
+                                        PROPERTY_DECLARATION,
+                                        CLASS_OR_INTERFACE_DECLARATION,
+                                        ENUM_DECLARATION,
+                                        CONSTRUCTOR_DECLARATION,
+                                        FIELD_DECLARATION
+                                )
+                        )
+                )
         );
     }
 

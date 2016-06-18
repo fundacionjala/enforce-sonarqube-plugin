@@ -2,33 +2,19 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import com.sonar.sslr.api.AstNode;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
-import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 import java.util.List;
 
 /**
  * Verifies if a class contains test methods.
  */
-@Rule(
-        key = TestMethodCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        tags = Tags.CONVENTION
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
-@SqaleConstantRemediation("6min")
-@ActivatedByDefault
+@Rule(key = TestMethodCheck.CHECK_KEY)
 public class TestMethodCheck extends AnnotationMethodCheck {
 
     /**
@@ -60,7 +46,7 @@ public class TestMethodCheck extends AnnotationMethodCheck {
         AstNode modifierNode = null;
         if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION)) {
             modifierNode = astNode.getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
-        } 
+        }
         if (!isAnnotation(modifierNode, IS_TEST)) {
             List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
             methods.stream().forEach((method) -> {

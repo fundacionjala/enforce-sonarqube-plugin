@@ -2,36 +2,23 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
+import java.util.List;
+
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
-import org.fundacionjala.enforce.sonarqube.apex.checks.Tags;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squidbridge.annotations.ActivatedByDefault;
-import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.sonar.squidbridge.checks.SquidCheck;
 
-import java.util.List;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
 
 import static org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck.IS_TEST;
 
-@Rule(
-        key = SeeAllDataTestCheck.CHECK_KEY,
-        priority = Priority.MAJOR,
-        tags = Tags.SECURITY
-)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.DATA_RELIABILITY)
-@SqaleConstantRemediation("1min")
-@ActivatedByDefault
+@Rule(key = SeeAllDataTestCheck.CHECK_KEY)
 public class SeeAllDataTestCheck extends SquidCheck<Grammar> {
 
     /**
@@ -43,12 +30,12 @@ public class SeeAllDataTestCheck extends SquidCheck<Grammar> {
      * Stores a message template.
      */
     private final String MESSAGE = ChecksBundle.getStringFromBundle("SeeAllDataCheckMessage");
-    
+
     /**
      * Keyword of the seeAllData parameter.
      */
     private final String SEE_ALL_DATA = "SEEALLDATA";
-    
+
     /**
      * Second keyword, value "true" assigned to "seeAllData".
      */
@@ -82,19 +69,21 @@ public class SeeAllDataTestCheck extends SquidCheck<Grammar> {
                             ApexGrammarRuleKey.ASSIGNMENT_OPERATOR).getPreviousSibling();
                     AstNode nextSibling = assignment.getFirstAncestor(
                             ApexGrammarRuleKey.ASSIGNMENT_OPERATOR).getNextSibling();
-                    if(previousSibling.getTokenValue().equals(SEE_ALL_DATA) &&
-                            nextSibling.getTokenValue().equals(TRUE)){
+                    if (previousSibling.getTokenValue().equals(SEE_ALL_DATA)
+                            && nextSibling.getTokenValue().equals(TRUE)) {
                         getContext().createLineViolation(this,
-                        MESSAGE, testAnnotation, identifier.getTokenOriginalValue());
+                                MESSAGE, testAnnotation, identifier.getTokenOriginalValue());
                     }
                 }
             }
         }
     }
-    
+
     /**
      * Gets the node that contains the "@isTest" annotation.
-     * @param astNode The class declaration node whose modifiers contain the annotation.
+     *
+     * @param astNode The class declaration node whose modifiers contain the
+     * annotation.
      * @return The node of the "@isTest" annotation.
      */
     private AstNode getTestAnnotation(AstNode astNode) {
