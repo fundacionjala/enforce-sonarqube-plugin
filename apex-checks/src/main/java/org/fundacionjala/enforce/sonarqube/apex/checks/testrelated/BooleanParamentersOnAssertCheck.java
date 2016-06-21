@@ -25,26 +25,38 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.utils.MethodChecksUtils.hasAssertion;
 
+/**
+ * Verifies that there is a boolean variable in an assert method.
+ */
 @Rule(key = BooleanParamentersOnAssertCheck.CHECK_KEY)
 public class BooleanParamentersOnAssertCheck extends SquidCheck<Grammar> {
 
+    /**
+     * This is the code identifier for this check, used by sonarqube.
+     */
     public static final String CHECK_KEY = "A1015";
+    
     private static final String SYSTEM_ASSERT = "System.assert";
 
+    /**
+     * This check is subscribed to a method declaration grammar rule.
+     */
     @Override
     public void init() {
         subscribeTo(METHOD_DECLARATION);
     }
 
+    /**
+     * Verifies if the given node met the rule, in case it does not it creates 
+     * the error
+     * @param astNode the node to be analyzed.
+     */
     @Override
     public void visitNode(AstNode astNode) {
         List<AstNode> statements = astNode.getDescendants(STATEMENT);
         for (AstNode statement : statements) {
-
             boolean hasAssertion = hasAssertion(statement.getDescendants(NAME), SYSTEM_ASSERT);
-
             if (hasAssertion && !hasBooleanVariable(astNode)) {
-
                 getContext().createLineViolation(this,
                         ChecksBundle.getStringFromBundle("AssertBooleanVariableMessage"),
                         astNode, astNode.getFirstChild(METHOD_IDENTIFIER).getTokenOriginalValue());
@@ -67,13 +79,10 @@ public class BooleanParamentersOnAssertCheck extends SquidCheck<Grammar> {
         String expectedNodeName = arguments.getFirst().getTokenOriginalValue();
         AstNode classOrInterfaceBodyNode = methodDeclarationNode
                 .getParent().getParent();
-
         boolean hasBooleanVariableField = isBooleanVariable(expectedNodeName,
                 classOrInterfaceBodyNode.getDescendants(FIELD_DECLARATION));
-        
         boolean hasBooleanVariableLocal = isBooleanVariable(expectedNodeName,
                 methodDeclarationNode.getDescendants(LOCAL_VARIABLE_DECLARATION));
-                
         return hasBooleanVariableField || hasBooleanVariableLocal;
     }
 

@@ -11,7 +11,7 @@ import com.sonar.sslr.api.AstNode;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.MODIFIERS;
 
 /**
- * Performs some operations on methods used by some checks for methods. 
+ * Responsible to perform some searches for some checks that works on methods. 
  */
 public class MethodChecksUtils {
 
@@ -41,7 +41,7 @@ public class MethodChecksUtils {
     }
 
     /**
-     * Method that search for testMethod keyword in a method given a node.
+     * Method that searches for testMethod keyword in a method given a node.
      *
      * @param astNode parent node for method.
      * @return a boolean value, returns true if there is a testMethod keyword or
