@@ -27,9 +27,9 @@ public with sharing class ComplexClass
 			{
 				MetadataService.MetadataPort service = MetadataServiceExamples.createService();		
 				List<MetadataService.ListMetadataQuery> queries = new List<MetadataService.ListMetadataQuery>();		
-				MetadataService.ListMetadataQuery query = new MetadataService.ListMetadataQuery();
-				query.type_x = node;
-				queries.add(query);		
+				MetadataService.ListMetadataQuery firstQuery = new MetadataService.ListMetadataQuery();
+				firstQuery.type_x = node;
+				queries.add(firstQuery);		
 				MetadataService.FileProperties[] fileProperties = service.listMetadata(queries, METADATA_API_VERSION);
 				
 				if(fileProperties!=null) {

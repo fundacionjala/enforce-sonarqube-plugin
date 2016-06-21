@@ -25,8 +25,6 @@ public class ApexGrammarPrimaryPrefixTest extends ApexRuleTest {
                 .matches("1")
                 .matches("true")
                 .matches("false")
-//                TODO: uncomment this when the old rules are deleted and it should work
-//                .matches("this")
                 .matches("'something'")
                 .matches("someIdentifier")
                 .matches("a.b.c")
@@ -39,7 +37,9 @@ public class ApexGrammarPrimaryPrefixTest extends ApexRuleTest {
                 .matches("(4-3*x-y+--+-z-2)")
                 .matches("(null)")
                 .matches("(x = z = 3-5)")
-                .matches("(x ? y : z)");
+                .matches("(x ? y : z)")
+                .matches("[SELECT dato FROM table1 LIMIT 5000]")
+                .matches("'SELECT dato FROM table1 LIMIT 5000'");
     }
 
     @Test

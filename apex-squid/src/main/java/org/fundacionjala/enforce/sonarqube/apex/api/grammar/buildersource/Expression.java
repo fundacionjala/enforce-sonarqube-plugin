@@ -18,10 +18,10 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 public class Expression {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
-        argumentsPI(grammarBuilder);
+        arguments(grammarBuilder);
         argumentsList(grammarBuilder);
         brackets(grammarBuilder);
-        expressionPi(grammarBuilder);
+        expression(grammarBuilder);
         assignmentOperator(grammarBuilder);
         conditionalExpression(grammarBuilder);
         conditionalOrExpression(grammarBuilder);
@@ -58,7 +58,7 @@ public class Expression {
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void argumentsPI(LexerfulGrammarBuilder grammarBuilder) {
+    private static void arguments(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ARGUMENTS).is(
                 LPAREN,
                 grammarBuilder.optional(ARGUMENTS_LIST),
@@ -87,7 +87,7 @@ public class Expression {
         grammarBuilder.rule(BRACKETS).is(LBRACKET, RBRACKET);
     }
 
-    public static void expressionPi(LexerfulGrammarBuilder grammarBuilder) {
+    public static void expression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(EXPRESSION).is(CONDITIONAL_EXPRESSION,
                 grammarBuilder.optional(grammarBuilder.sequence(ASSIGNMENT_OPERATOR, EXPRESSION))
         );
@@ -289,7 +289,8 @@ public class Expression {
                                 NAME
                         ),
                         grammarBuilder.sequence(LPAREN, EXPRESSION, RPAREN),
-                        ALLOCATION_EXPRESSION
+                        ALLOCATION_EXPRESSION,
+                        grammarBuilder.sequence(LBRACKET, QUERY_EXPRESSION, RBRACKET)
                 )
         );
     }
