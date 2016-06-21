@@ -4,7 +4,9 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.soql.SoqlLimitCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertLiteralBooleanCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertMessageCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.SeeAllDataTestCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestMethodInTestClassCheck;
@@ -14,7 +16,6 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.unofficial.*;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertMessageCheck;
 
 /**
  * Builds a list of custom checks.
@@ -68,6 +69,7 @@ public class CheckList {
                 SeeAllDataTestCheck.class,
                 AssertLiteralBooleanCheck.class,
                 TestMethodsParametersCheck.class,
-                AssertMessageCheck.class);
+                AssertMessageCheck.class,
+                SoqlLimitCheck.class);
     }
 }

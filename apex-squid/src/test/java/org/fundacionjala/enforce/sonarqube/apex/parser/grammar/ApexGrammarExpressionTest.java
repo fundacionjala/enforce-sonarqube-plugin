@@ -25,9 +25,6 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("1")
                 .matches("a")
                 .matches("someIdentifier")
-                //                TODO: uncomment this when the old rules are deleted and it should work
-                //                .matches("this")
-                //                .matches("super")
                 .matches("null")
                 .matches("1009")
                 //with assignmentOperators
@@ -36,8 +33,6 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("counter += 4")
                 //with conditional expression
                 .matches("thisValue ? 0 : 1")
-                //                TODO: uncomment this when the old rules are deleted and it should work
-                //                .matches("x = somethingTrue ? this : null")
                 .matches("y += question ? 1 : 10")
                 //with AND and OR expressions
                 .matches("a || b")
@@ -48,7 +43,10 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("var += a instanceof b ^ c && d instanceof SomeClass || f != null == 0")
                 .matches("var = x != null ? a&b&c||y : z|y||x")
                 .matches("x = new SomeType()")
-                .matches("x = new SomeType(p1, null, p2, 0)");
+                .matches("x = new SomeType(p1, null, p2, 0)")
+                .matches("accts = [SELECT Name, Phone FROM Account]")
+                .matches("myquery = 'SELECT Name, Phone FROM Account'")
+                .matches("var = Database.query('SELECT dato FROM table1 LIMIT 5000')");
     }
 
     @Test
