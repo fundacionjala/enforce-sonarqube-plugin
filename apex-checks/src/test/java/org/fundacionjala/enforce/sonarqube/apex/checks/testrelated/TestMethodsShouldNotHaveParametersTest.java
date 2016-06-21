@@ -42,7 +42,7 @@ public class TestMethodsShouldNotHaveParametersTest {
         File file = new File("src/test/resources/checks/testsClassAssertions.cls");
         SourceFile sourceFile = ApexAstScanner.scanFile(file, check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .next().atLine(74).withMessage("Test method in line 74 has parameters, test methods should not have parameters.");
+                .next().atLine(78).withMessage("Test method in line 78 has parameters, test methods should not have parameters.");
     }
 
 }

@@ -25,11 +25,11 @@ public class TestAssertionsAndTestMethodKeywordCheckTest {
         SourceFile sourceFile = ApexAstScanner.scanFile(file, check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next()
-                .atLine(3)
-                .withMessage("Test method at line 3 should have at least one assertion.")
+                .atLine(7)
+                .withMessage("Test method at line 7 should have at least one assertion.")
                 .next()
-                .atLine(54)
-                .withMessage("Test method in line 54 must have testMethod keyword.")
+                .atLine(58)
+                .withMessage("Test method in line 58 must have testMethod keyword.")
                 .noMore();
     }
 }

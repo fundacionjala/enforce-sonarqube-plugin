@@ -1,5 +1,9 @@
 @isTest
 public class sampleTestMethod {
+
+    private String someString;
+    private boolean anotherBooleanValue;
+
     public static testMethod void testSampleMethod() {
         List<Account> accounts = new List<Account>{};
         for(Integer i = 0; i < 200; i++){
@@ -79,29 +83,40 @@ public class sampleTestMethod {
         System.assertEquals(1 , variable);
     }
 
-    public static testMethod void testMethodWithNoBooleanValueOnAssert() {
+    public static testMethod void testMethodWithBooleanLocalVariableOnAssert() {
         integer variable = 0;
         test.startTest();
         variable = 1;
         test.stopTest();
-        integer variable = new Integer();
+        boolean isBoolean = true;
         string message = 'error';
-        System.assert(variable, message);
+        System.assert(isBoolean, message);
+    }
+    
+    public static testMethod void testMethodWithBooleanFieldVariableOnAssert() {
+        integer variable = 0;
+        test.startTest();
+        variable = 1;
+        test.stopTest();
+        string message = 'error';
+        System.assert(anotherBooleanValue, message);
     }
 
-    public static testMethod void testMethodWithExpressionValueOnAssert() {
+    public static testMethod void testMethodWithNoBooleanVariableOnAssert() {
         integer variable = 0;
         test.startTest();
         variable = 1;
         test.stopTest();
-        System.assert(4-2/5);
+        integer someInteger = 2;
+        string message = 'error';
+        System.assert(someInteger, message);
     }
- 
-   public static testMethod void testMethodWithBooleanValueOnAssert() {
+
+    public static testMethod void testMethodWithoutExpressionValueOnAssert() {
         integer variable = 0;
         test.startTest();
         variable = 1;
         test.stopTest();
-        System.assert(variable == 1);
+        System.assert(4-2/5, '');
     }
 }

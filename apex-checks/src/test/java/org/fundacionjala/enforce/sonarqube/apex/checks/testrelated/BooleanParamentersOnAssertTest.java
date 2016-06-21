@@ -1,61 +1,131 @@
 /*
- * The MIT License
- *
- * Copyright 2016 Fundacion Jala.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) Fundacion Jala. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
-import com.sonar.sslr.api.AstNode;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner;
+import org.junit.Before;
 import org.junit.Test;
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
+import com.sonar.sslr.api.AstNode;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BooleanParamentersOnAssertTest {
 
     private BooleanParamentersOnAssertCheck check;
 
+    @Before
+    public void setUp() {
+        check = new BooleanParamentersOnAssertCheck();
+    }
+    
     @Test
     public void testBooleanParametersOnAssert() {
         File file = new File("src/test/resources/checks/testsClassAssertions.cls");
-        check = new BooleanParamentersOnAssertCheck();
         SourceFile sourceFile = ApexAstScanner.scanFile(file, check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .next().atLine(82).withMessage("Method testMethodWithNoBooleanValueOnAssert"
-                + "has a wrong System.assert parameter, it should be a boolean one")
-                .next().atLine(90).withMessage("Method testMethodWithExpressionValueOnAssert"
-                + "has a wrong System.assert parameter, it should be a boolean one")
+                .next().atLine(105).withMessage("Method testMethodWithNoBooleanVariableOnAssert "
+                + "has a wrong System.assert parameter, it should be a boolean one.")
+                .next().atLine(115).withMessage("Method testMethodWithoutExpressionValueOnAssert "
+                + "has a wrong System.assert parameter, it should be a boolean one.")
                 .noMore();
     }
 
     @Test
-    public void testHasBooleanParameters() {
-        AstNode primarySuffix = mock(AstNode.class);
-        List<AstNode> primarySuffixes = new LinkedList<>();
-        primarySuffixes.add(primarySuffix);
-    }
+    public void testHasBooleanVariableInFied() {
+        AstNode typeNode = mock(AstNode.class);
+        when(typeNode.getTokenOriginalValue()).thenReturn("boolean");
+        AstNode variableDeclarator = mock(AstNode.class);
+        when(variableDeclarator.getTokenOriginalValue()).thenReturn("sampleVariable");
+        
+        AstNode firstFieldDeclaration = mock(AstNode.class);
+        when(firstFieldDeclaration.getFirstChild(eq(TYPE)))
+                .thenReturn(typeNode);
+        when(firstFieldDeclaration.getFirstChild(eq(VARIABLE_DECLARATOR)))
+                .thenReturn(variableDeclarator);
+        AstNode secondFieldDeclaration = mock(AstNode.class);
+        AstNode thirdFieldDeclaration = mock(AstNode.class);
+        
+        List<AstNode> fieldDeclarations = new LinkedList<>();
+        fieldDeclarations.add(firstFieldDeclaration);
+        fieldDeclarations.add(secondFieldDeclaration);
+        fieldDeclarations.add(thirdFieldDeclaration);
+        
+        AstNode classOrInterfaceBody = mock(AstNode.class);
+        when(classOrInterfaceBody.getDescendants(eq(FIELD_DECLARATION)))
+                .thenReturn(fieldDeclarations);
+        
+        AstNode classOrInterfaceMembernode = mock(AstNode.class);
+        when(classOrInterfaceMembernode.getParent()).thenReturn(classOrInterfaceBody);
+        
+        AstNode methodDeclarationNode = mock(AstNode.class);
+        when(methodDeclarationNode.getParent()).thenReturn(classOrInterfaceMembernode);
+        
+        AstNode firstArgument = mock(AstNode.class);
+        when(firstArgument.getTokenOriginalValue()).thenReturn("sampleVariable");
+        AstNode secondArgument = mock(AstNode.class);
 
+        List<AstNode> argumentsList = new LinkedList<>();
+        argumentsList.add(firstArgument);
+        argumentsList.add(secondArgument);
+        
+        when(methodDeclarationNode.getDescendants(eq(ARGUMENTS_LIST)))
+                .thenReturn(argumentsList);
+        
+        assertTrue(check.hasBooleanVariable(methodDeclarationNode));
+    }
+    
+    @Test
+    public void testIsBooleanValueEmptyDeclarationsList() {
+        assertFalse(check.isBooleanVariable("", new LinkedList<>()));
+    }
+    
+    @Test
+    public void testIsBooleanValue() {
+        AstNode firstDeclarationFirstChildVariableDeclarator = mock(AstNode.class);
+        when(firstDeclarationFirstChildVariableDeclarator.getTokenOriginalValue())
+                .thenReturn("notWantedVariable");
+        AstNode secondDeclarationFirstChildVariableDeclarator = mock(AstNode.class);
+        when(secondDeclarationFirstChildVariableDeclarator.getTokenOriginalValue())
+                .thenReturn("wantedVariable");
+        
+        AstNode firstDeclarationFirstChildType = mock(AstNode.class);
+        when(firstDeclarationFirstChildType.getTokenOriginalValue()).thenReturn("boolean");
+        
+        AstNode secondDeclarationFirstChildType = mock(AstNode.class);
+        when(secondDeclarationFirstChildType.getTokenOriginalValue()).thenReturn("boolean");
+        
+        AstNode firstDeclaration = mock(AstNode.class);
+        when(firstDeclaration.getFirstChild(eq(TYPE)))
+                .thenReturn(firstDeclarationFirstChildType);
+        when(firstDeclaration.getFirstChild(eq(VARIABLE_DECLARATOR)))
+                .thenReturn(firstDeclarationFirstChildVariableDeclarator);
+        
+        AstNode secondDeclaration = mock(AstNode.class);
+        when(secondDeclaration.getFirstChild(eq(TYPE)))
+                .thenReturn(secondDeclarationFirstChildType);
+        when(secondDeclaration.getFirstChild(eq(VARIABLE_DECLARATOR)))
+                .thenReturn(secondDeclarationFirstChildVariableDeclarator);
+        
+        List<AstNode> declarations = new LinkedList<>();
+        declarations.add(firstDeclaration);
+        declarations.add(secondDeclaration);
+        
+        assertTrue(check.isBooleanVariable("wantedVariable", declarations));
+    }
 }

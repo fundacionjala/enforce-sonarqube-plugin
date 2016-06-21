@@ -1,0 +1,43 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+    Assertions should have boolean variables only.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+
+<pre>
+@isTest
+public class sampleClass() {
+    public static testMethod void method () {
+        ...
+        system.assert(3 + 2, "message");
+    }
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+@isTest
+public class sampleClass() {
+    public static testMethod void method () {
+        ...
+        boolean booleanValue = otherClass.booleanMethod();
+        system.assert(booleanValue, "message");
+    }
+}
+
+@isTest
+public class sampleClass() {
+    boolean booleanValue;
+    public static testMethod void method () {
+        booleanValue = otherClass.booleanMethod();
+        ...
+        system.assert(booleanValue, "message");
+    }
+}
+</pre>

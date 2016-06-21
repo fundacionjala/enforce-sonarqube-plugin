@@ -1,42 +1,34 @@
 /*
- * The MIT License
- *
- * Copyright 2016 Fundacion Jala.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) Fundacion Jala. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
+import java.util.LinkedList;
 import java.util.List;
-import org.sonar.sslr.ast.AstSelect;
+
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
+import org.sonar.check.Rule;
 import org.sonar.squidbridge.checks.SquidCheck;
 
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
+
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS_LIST;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LOCAL_VARIABLE_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_DECLARATION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.METHOD_IDENTIFIER;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
 import static org.fundacionjala.enforce.sonarqube.apex.utils.MethodChecksUtils.hasAssertion;
 
+@Rule(key = BooleanParamentersOnAssertCheck.CHECK_KEY)
 public class BooleanParamentersOnAssertCheck extends SquidCheck<Grammar> {
 
+    public static final String CHECK_KEY = "A1015";
     private static final String SYSTEM_ASSERT = "System.assert";
 
     @Override
@@ -48,22 +40,53 @@ public class BooleanParamentersOnAssertCheck extends SquidCheck<Grammar> {
     public void visitNode(AstNode astNode) {
         List<AstNode> statements = astNode.getDescendants(STATEMENT);
         for (AstNode statement : statements) {
+
             boolean hasAssertion = hasAssertion(statement.getDescendants(NAME), SYSTEM_ASSERT);
-            if (hasAssertion && !hasBooleanVariable(statement)) {
 
+            if (hasAssertion && !hasBooleanVariable(astNode)) {
+
+                getContext().createLineViolation(this,
+                        ChecksBundle.getStringFromBundle("AssertBooleanVariableMessage"),
+                        astNode, astNode.getFirstChild(METHOD_IDENTIFIER).getTokenOriginalValue());
             }
         }
     }
 
-    boolean hasBooleanVariable(AstNode statement) {
-        AstSelect arguments = statement.select().descendants(ARGUMENTS_LIST);
-       
-        for (AstNode currentNode : arguments) {
-            if (currentNode.getTokenOriginalValue().matches("")) {
+    /**
+     * Looks for a boolean value in the same class.
+     *
+     * @param methodDeclarationNode node to start the search for a boolean
+     * declaration.
+     * @return a boolean value, true if there is a boolean declaration in the
+     * same class with the same variable name false if there isn't a boolean
+     * declaration.
+     */
+    boolean hasBooleanVariable(AstNode methodDeclarationNode) {
+        LinkedList<AstNode> arguments = new LinkedList<>();
+        arguments.addAll(methodDeclarationNode.getDescendants(ARGUMENTS_LIST));
+        String expectedNodeName = arguments.getFirst().getTokenOriginalValue();
+        AstNode classOrInterfaceBodyNode = methodDeclarationNode
+                .getParent().getParent();
+
+        boolean hasBooleanVariableField = isBooleanVariable(expectedNodeName,
+                classOrInterfaceBodyNode.getDescendants(FIELD_DECLARATION));
+        
+        boolean hasBooleanVariableLocal = isBooleanVariable(expectedNodeName,
+                methodDeclarationNode.getDescendants(LOCAL_VARIABLE_DECLARATION));
                 
-            }
-        }
-        return false;
+        return hasBooleanVariableField || hasBooleanVariableLocal;
     }
 
+    /**
+     * Analyzes if one of the given variables is boolean or not.
+     *
+     * @param variableName name of the variable to find.
+     * @param declarations the list of variables to analyze.
+     * @return returns a boolean value if the list of variables contains a
+     * variable with the same name wanted.
+     */
+    boolean isBooleanVariable(String variableName, List<AstNode> declarations) {
+        return declarations.stream().anyMatch((field) -> (field.getFirstChild(TYPE).getTokenOriginalValue().matches("(?i)boolean")
+                && variableName.equals(field.getFirstChild(VARIABLE_DECLARATOR).getTokenOriginalValue())));
+    }
 }
