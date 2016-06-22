@@ -1,6 +1,6 @@
 public with sharing class ADDR_Validator_Batch implements Database.Batchable<sObject>, Database.AllowsCallouts {
 
-    private String query;
+    private String firstQuery;
     
     public ADDR_Validator_Batch(Boolean skipPreviouslyVerified) {
     	Addr_Verification_Settings__c avs = UTIL_CustomSettingsFacade.getAddressVerificationSettings();
@@ -9,17 +9,17 @@ public with sharing class ADDR_Validator_Batch implements Database.Batchable<sOb
             update avs;
         }
         
-        query = 'select id, name, MailingStreet__c, MailingStreet2__c, Formula_MailingStreetAddress__c, MailingCity__c, MailingState__c, MailingPostalCode__c, MailingCountry__c, API_Response__c ' + 
+        firstQuery = 'select id, name, MailingStreet__c, MailingStreet2__c, Formula_MailingStreetAddress__c, MailingCity__c, MailingState__c, MailingPostalCode__c, MailingCountry__c, API_Response__c ' + 
             ' from Address__c where ' +
             '(MailingCountry__c = null or MailingCountry__c in (\'US\', \'USA\', \'United States\', \'United States of America\')) ' +
             'and (MailingStreet__c != null or MailingPostalCode__c != null or (MailingCity__c != null and MailingState__c != null))';
          
         if (skipPreviouslyVerified)
-            query += ' and Verified__c != true';
+            firstQuery += ' and Verified__c != true';
     }
     
     public Database.QueryLocator start(Database.BatchableContext bc) {
-        return Database.getQueryLocator(query);
+        return Database.getQueryLocator(firstQuery);
     }
 
     public void execute(Database.BatchableContext bc, list<Address__c> scope) {

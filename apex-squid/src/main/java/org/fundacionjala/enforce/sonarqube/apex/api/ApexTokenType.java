@@ -16,7 +16,9 @@ public enum ApexTokenType implements TokenType {
     NEW_LINE,
     STRING,
     NUMERIC,
-    HEXADECIMAL;
+    HEXADECIMAL,
+    LETTER,
+    DIGIT;
 
     @Override
     public String getName() {

@@ -1,0 +1,13 @@
+{
+    "title": "SOQL statements should always have a LIMIT defined.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "2min"
+    },
+    "sqaleSubCharacteristic": "SYNCHRONIZATION_RELIABILITY",
+    "tags": [
+        "unpredictable"
+    ],
+    "defaultSeverity": "Major"
+}

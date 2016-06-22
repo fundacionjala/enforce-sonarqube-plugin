@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.api;
 
 import com.sonar.sslr.api.AstNode;
@@ -71,7 +70,6 @@ public enum ApexKeyword implements TokenType {
     ITERATOR("iterator"),
     JOIN("join"),
     LAST("last"),
-    LIMIT("limit"),
     LIST("list"),
     LOOP("loop"),
     MAP("map"),
@@ -123,7 +121,37 @@ public enum ApexKeyword implements TokenType {
     WHEN("when"),
     WHILE("while"),
     WITH("with"),
-    WITHOUT("without");
+    WITHOUT("without"),
+    /**
+     * SOQL ANNOTATIONS.
+     */
+    //Select Notations
+    SELECT("SELECT"),
+    COUNT("COUNT"),
+    //From Notations
+    FROM("FROM"),
+    AS("AS"),
+    USING("USING"),//Pending to implement
+    //Where Notations
+    WHERE("WHERE"),
+    NOT_SOQL("NOT"),
+    AND_SOQL("AND"),
+    OR_SOQL("OR"),
+    IN("IN"),
+    INCLUDES("includes"),
+    EXCLUDES("excludes"),
+    LIKE("LIKE"),
+    //Limit Notations
+    LIMIT("limit"),
+    //Order Notations
+    ORDER("ORDER"),
+    BY("BY"),
+    ASC("ASC"),
+    DES("DESC"),
+    NULLS("NULLS"),
+    //Group Notations
+    ROLLUP("ROLLUP"),
+    CUBE("CUBE");
 
     /**
      * Save the value with enums.
