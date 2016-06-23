@@ -172,7 +172,7 @@ public class MostUsed {
     private static void block(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(RECOVERED_STATEMENT).is(
                 grammarBuilder.anyTokenButNot(
-                        grammarBuilder.firstOf(BLOCK_STATEMENT, RBRACE, EOF, SEMICOLON))
+                        grammarBuilder.firstOf(BLOCK_STATEMENT, RBRACE, EOF, RBRACKET, SEMICOLON))
         );
         grammarBuilder.rule(BLOCK).is(
                 LBRACE,

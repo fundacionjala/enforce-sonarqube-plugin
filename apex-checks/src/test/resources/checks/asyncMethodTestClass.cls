@@ -1,6 +1,6 @@
 public with sharing class AsyncMethodClass {
 
-    public void myMethod () { 
+    public void myMethod () {
         while(y < x)  {
             if(y < 0) {
                 execNonAsyncMethod();

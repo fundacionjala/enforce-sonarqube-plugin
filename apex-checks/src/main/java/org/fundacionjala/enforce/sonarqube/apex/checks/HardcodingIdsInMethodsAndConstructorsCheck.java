@@ -38,10 +38,9 @@ public class HardcodingIdsInMethodsAndConstructorsCheck extends SquidCheck<Gramm
         List<AstNode> hardCodedLines = lookFor(astNode);
         if (!hardCodedLines.isEmpty()) {
             hardCodedLines.stream().forEach((hardCodedNode) -> {
-                int hardCodedLineIndex = hardCodedNode.getTokenLine();
                 String hardCodedValue = hardCodedNode.getTokenOriginalValue();
                 getContext().createLineViolation(this, String.format(MESSAGE,
-                        hardCodedLineIndex, hardCodedValue), hardCodedLineIndex);
+                        hardCodedValue), hardCodedNode);
             });
         }
     }

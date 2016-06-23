@@ -64,15 +64,17 @@ public class AssertMessageCheck extends SquidCheck<Grammar> {
             for (AstNode suffix : suffixes) {
                 AstNode primaryExpression = suffix.getParent();
                 AstNode name = primaryExpression.getFirstDescendant(ApexGrammarRuleKey.NAME);
-                AstNode first = name.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
-                AstNode last = name.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
-                if (first != null && last != null
-                        && first.getTokenValue().equals(SYSTEM)
-                        && last.getTokenValue().matches(ASSERT_REGEX)) {
-                    List<AstNode> arguments = primaryExpression.getFirstDescendant(ApexGrammarRuleKey.ARGUMENTS_LIST).getChildren();
-                    if (arguments.size() <= VALUE_OF_ONE || !hasMessage(arguments)) {
-                        getContext().createLineViolation(this,
-                                MESSAGE, primaryExpression, astNode.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue());
+                if (name != null) {
+                    AstNode first = name.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
+                    AstNode last = name.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
+                    if (first != null && last != null
+                            && first.getTokenValue().equals(SYSTEM)
+                            && last.getTokenValue().matches(ASSERT_REGEX)) {
+                        List<AstNode> arguments = primaryExpression.getFirstDescendant(ApexGrammarRuleKey.ARGUMENTS_LIST).getChildren();
+                        if (arguments.size() <= VALUE_OF_ONE || !hasMessage(arguments)) {
+                            getContext().createLineViolation(this,
+                                    MESSAGE, primaryExpression, astNode.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue());
+                        }
                     }
                 }
             }

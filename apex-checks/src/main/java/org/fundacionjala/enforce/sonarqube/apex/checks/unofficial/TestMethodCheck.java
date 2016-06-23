@@ -46,7 +46,6 @@ public class TestMethodCheck extends AnnotationMethodCheck {
         AstNode modifierNode = null;
         if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION)) {
             modifierNode = astNode.getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
-        }
         if (!isAnnotation(modifierNode, IS_TEST)) {
             List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
             methods.stream().forEach((method) -> {
@@ -56,6 +55,7 @@ public class TestMethodCheck extends AnnotationMethodCheck {
                     getContext().createLineViolation(this, methodMessage(method), method);
                 }
             });
+        }
         }
     }
 
