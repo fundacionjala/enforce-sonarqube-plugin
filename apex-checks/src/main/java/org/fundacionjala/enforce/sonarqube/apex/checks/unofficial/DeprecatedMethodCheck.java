@@ -7,6 +7,7 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 import com.sonar.sslr.api.AstNode;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 import org.sonar.check.Rule;
 
 /**
@@ -47,13 +48,17 @@ public class DeprecatedMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode parent = astNode.getParent();
-        AstNode modifiersNode = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
-        AstNode blockNode = astNode.getFirstDescendant(ApexGrammarRuleKey.BLOCK);
-        if (isDeprecated(modifiersNode) && !isEmptyBlock(blockNode)) {
-            AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER);
-            getContext().createLineViolation(this, String.format(MESSAGE,
-                    method.getTokenOriginalValue()), method);
+        try {
+            AstNode parent = astNode.getParent();
+            AstNode modifiersNode = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
+            AstNode blockNode = astNode.getFirstDescendant(ApexGrammarRuleKey.BLOCK);
+            if (isDeprecated(modifiersNode) && !isEmptyBlock(blockNode)) {
+                AstNode method = astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER);
+                getContext().createLineViolation(this, String.format(MESSAGE,
+                        method.getTokenOriginalValue()), method);
+            }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 

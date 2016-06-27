@@ -56,7 +56,6 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
                         List<AstNode> arguments = expression.getDescendants(ApexGrammarRuleKey.ARGUMENTS);
                         for (AstNode argument : arguments) {
                             AstNode prefix = argument.getPreviousAstNode();
-                            prefix.getFirstChild(ApexGrammarRuleKey.TYPE_DECLARATION).getTokenOriginalValue();
                             AstNode method = prefix.getFirstDescendant(ApexGrammarRuleKey.NAME,
                                     ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
                                     ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS);

@@ -10,6 +10,7 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.sonar.check.Rule;
 
 import java.util.List;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 
 /**
  * Verifies if a class contains test methods.
@@ -43,19 +44,23 @@ public class TestMethodCheck extends AnnotationMethodCheck {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode modifierNode = null;
-        if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION)) {
-            modifierNode = astNode.getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
-        if (!isAnnotation(modifierNode, IS_TEST)) {
-            List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
-            methods.stream().forEach((method) -> {
-                AstNode parent = method.getParent();
-                AstNode firstChild = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
-                if (isTest(firstChild)) {
-                    getContext().createLineViolation(this, methodMessage(method), method);
+        try {
+            AstNode modifierNode = null;
+            if (astNode.hasParent(ApexGrammarRuleKey.TYPE_DECLARATION)) {
+                modifierNode = astNode.getParent().getFirstChild(ApexGrammarRuleKey.MODIFIERS);
+                if (!isAnnotation(modifierNode, IS_TEST)) {
+                    List<AstNode> methods = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
+                    methods.stream().forEach((method) -> {
+                        AstNode parent = method.getParent();
+                        AstNode firstChild = parent.getFirstDescendant(ApexGrammarRuleKey.MODIFIERS);
+                        if (isTest(firstChild)) {
+                            getContext().createLineViolation(this, methodMessage(method), method);
+                        }
+                    });
                 }
-            });
-        }
+            }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 
