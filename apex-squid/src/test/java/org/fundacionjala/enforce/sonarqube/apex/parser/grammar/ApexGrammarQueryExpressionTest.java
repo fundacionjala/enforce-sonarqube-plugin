@@ -439,4 +439,31 @@ public class ApexGrammarQueryExpressionTest extends ApexRuleTest {
                         + "FROM Account WHERE industry = 'media' "
                         + "GROUP BY CUBEBillingPostalCode) LIMIT 1250");
     }
+    
+    @Test
+    public void positiveRules_Colon() {
+        assertThat(parser)
+                .matches("SELECT Name "
+                        + "FROM Account WHERE industry = :media ")
+                .matches("SELECT Name "
+                        + "FROM Account WHERE industry = :obj.var.media ")
+                .matches("SELECT Name "
+                        + "FROM Account WHERE industry = :media AND year = 2016 AND country = :countryId "
+                        + "GROUP BY CUBE (BillingPostalCode,Id) LIMIT 1250");
+    }
+
+    @Test
+    public void negativeRules_Colon() {
+        assertThat(parser)
+                .notMatches("SELECT Name "
+                        + "FROM Account WHERE industry = :3 ")
+                .notMatches("SELECT Name "
+                        + "FROM Account WHERE industry  : id ")
+                .notMatches("SELECT Name "
+                        + "FROM Account WHERE industry = : ")
+                .notMatches("SELECT Name "
+                        + "FROM Account WHERE industry = :3 ")
+                .notMatches("SELECT Name "
+                        + "FROM Account WHERE industry = id :  ");
+    }
 }
