@@ -46,7 +46,9 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("x = new SomeType(p1, null, p2, 0)")
                 .matches("accts = [SELECT Name, Phone FROM Account]")
                 .matches("myquery = 'SELECT Name, Phone FROM Account'")
-                .matches("var = Database.query('SELECT dato FROM table1 LIMIT 5000')");
+                .matches("var = Database.query('SELECT dato FROM table1 LIMIT 5000')")
+//                .matches("campaign = [select id, name from campaign where id = :campaign.id]")
+                .matches("campaign = [select id, name from campaign]");
     }
 
     @Test

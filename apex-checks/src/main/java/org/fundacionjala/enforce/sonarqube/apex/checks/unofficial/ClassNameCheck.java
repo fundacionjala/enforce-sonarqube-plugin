@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import com.sonar.sslr.api.AstNode;
@@ -14,6 +13,7 @@ import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import java.util.regex.Pattern;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 
 /**
  * Verification of the name of the class.
@@ -30,7 +30,7 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
      * The structure must have the name of the method.
      */
     private static final String DEFAULT = "^[A-Z_][a-zA-Z0-9]+$";
-    
+
     private static final String MESSAGE = ChecksBundle.getStringFromBundle("ClassNameCheckMessage");
 
     @RuleProperty(
@@ -63,10 +63,14 @@ public class ClassNameCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        String className = astNode.getFirstDescendant(ApexGrammarRuleKey.COMMON_IDENTIFIER).getTokenOriginalValue();
-        if (!pattern.matcher(className).matches()) {
-            getContext().createLineViolation(this,
-                    MESSAGE, astNode, className, format);
+        try {
+            String className = astNode.getFirstDescendant(ApexGrammarRuleKey.COMMON_IDENTIFIER).getTokenOriginalValue();
+            if (!pattern.matcher(className).matches()) {
+                getContext().createLineViolation(this,
+                        MESSAGE, astNode, className, format);
+            }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 }

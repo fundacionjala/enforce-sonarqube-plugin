@@ -51,7 +51,6 @@ public class CheckList {
     public static List<Class> getChecks() {
         return ImmutableList.<Class>of(
                 ErrorRecoveryCheck.class,
-                AssertMethodCheck.class,
                 ClassNameCheck.class,
                 DeprecatedMethodCheck.class,
                 DmlInConstructorCheck.class,

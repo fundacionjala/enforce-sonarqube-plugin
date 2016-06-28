@@ -4,6 +4,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
+
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,13 +14,9 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import org.junit.Test;
-import org.junit.Before;
 
-import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
-
-import static org.sonar.sslr.tests.Assertions.assertThat;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.APEX_GRAMMAR;
+import static org.sonar.sslr.tests.Assertions.assertThat;
 
 public class ApexGrammarTest extends ApexRuleTest {
 

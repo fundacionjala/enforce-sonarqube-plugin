@@ -14,6 +14,7 @@ import org.sonar.squidbridge.checks.SquidCheck;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 
 /**
  * Verifies that only the proper classes are tagged as tests.
@@ -56,19 +57,23 @@ public class TestClassCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode identifier = astNode.getFirstDescendant(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
-                ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
-        if (hasTestAnnotation(astNode)) {
-            if (astNode.is(ApexGrammarRuleKey.ENUM_DECLARATION)
-                    || astNode.getFirstDescendant(ApexGrammarRuleKey.TYPE_CLASS).hasDirectChildren(ApexKeyword.INTERFACE)) {
+        try {
+            AstNode identifier = astNode.getFirstDescendant(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                    ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
+            if (hasTestAnnotation(astNode)) {
+                if (astNode.is(ApexGrammarRuleKey.ENUM_DECLARATION)
+                        || astNode.getFirstDescendant(ApexGrammarRuleKey.TYPE_CLASS).hasDirectChildren(ApexKeyword.INTERFACE)) {
+                    getContext().createLineViolation(this,
+                            ANNOTATION_MESSAGE,
+                            astNode, identifier.getTokenOriginalValue());
+                }
+            } else if (identifier.getTokenValue().contains(TEST)) {
                 getContext().createLineViolation(this,
-                        ANNOTATION_MESSAGE,
+                        NAME_MESSAGE,
                         astNode, identifier.getTokenOriginalValue());
             }
-        } else if (identifier.getTokenValue().contains(TEST)) {
-            getContext().createLineViolation(this,
-                    NAME_MESSAGE,
-                    astNode, identifier.getTokenOriginalValue());
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 
