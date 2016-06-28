@@ -14,6 +14,7 @@ import org.sonar.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import java.util.List;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 
 /**
  * Verifies that tests methods are only declared in test classes.
@@ -43,21 +44,25 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode classDeclaration = getClassDeclaration(astNode);
-        if (!TestClassCheck.hasTestAnnotation(classDeclaration)) {
-            AstNode member = astNode.getParent();
-            List<AstNode> modifiers = member.getFirstChild(ApexGrammarRuleKey.MODIFIERS).getChildren();
-            for (AstNode modifier : modifiers) {
-                if (modifier.is(ApexKeyword.TESTMETHOD)) {
-                    AstNode methodName = astNode.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER)
-                            .getFirstChild(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
-                                    ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
-                    getContext().createLineViolation(this,
-                            ChecksBundle.getStringFromBundle("TestMethodsCheckMessage"),
-                            astNode, methodName.getTokenOriginalValue(), 
-                            classDeclaration.getFirstChild(ApexGrammarRuleKey.COMMON_IDENTIFIER).getTokenOriginalValue());
+        try {
+            AstNode classDeclaration = getClassDeclaration(astNode);
+            if (!TestClassCheck.hasTestAnnotation(classDeclaration)) {
+                AstNode member = astNode.getParent();
+                List<AstNode> modifiers = member.getFirstChild(ApexGrammarRuleKey.MODIFIERS).getChildren();
+                for (AstNode modifier : modifiers) {
+                    if (modifier.is(ApexKeyword.TESTMETHOD)) {
+                        AstNode methodName = astNode.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER)
+                                .getFirstChild(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                        ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
+                        getContext().createLineViolation(this,
+                                ChecksBundle.getStringFromBundle("TestMethodsCheckMessage"),
+                                astNode, methodName.getTokenOriginalValue(),
+                                classDeclaration.getFirstChild(ApexGrammarRuleKey.COMMON_IDENTIFIER).getTokenOriginalValue());
+                    }
                 }
             }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 

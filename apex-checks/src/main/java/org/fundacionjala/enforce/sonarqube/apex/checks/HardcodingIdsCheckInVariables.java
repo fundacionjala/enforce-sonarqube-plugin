@@ -40,6 +40,7 @@ public class HardcodingIdsCheckInVariables extends SquidCheck<Grammar> {
 
     @Override
     public void visitNode(AstNode astNode) {
+        try {
         AstNode astParent = astNode.getParent();
         List<AstNode> typeChildren = astParent.getChildren(TYPE);
         typeChildren.stream()
@@ -50,6 +51,9 @@ public class HardcodingIdsCheckInVariables extends SquidCheck<Grammar> {
                     checkValue(astNode.getChildren(VARIABLE_INITIALIZER));
                     _item.getName();
                 });
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
+        }
     }
 
     /**

@@ -5,12 +5,13 @@
 package org.fundacionjala.enforce.sonarqube.apex.checks.soql;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
-import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 
 @Rule(key = SoqlLimitCheck.CHECK_KEY)
 public class SoqlLimitCheck extends SquidCheck<Grammar> {
@@ -38,8 +39,12 @@ public class SoqlLimitCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (!astNode.hasDescendant(ApexGrammarRuleKey.LIMIT_SENTENCE)) {
-            getContext().createLineViolation(this, MESSAGE, astNode);
+        try {
+            if (!astNode.hasDescendant(ApexGrammarRuleKey.LIMIT_SENTENCE)) {
+                getContext().createLineViolation(this, MESSAGE, astNode);
+            }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 }

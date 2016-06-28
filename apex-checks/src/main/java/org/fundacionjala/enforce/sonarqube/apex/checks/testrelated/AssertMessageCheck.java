@@ -13,6 +13,7 @@ import org.sonar.squidbridge.checks.SquidCheck;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 
 @Rule(key = AssertMessageCheck.CHECK_KEY)
 public class AssertMessageCheck extends SquidCheck<Grammar> {
@@ -59,23 +60,29 @@ public class AssertMessageCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.hasDescendant(ApexGrammarRuleKey.PRIMARY_SUFFIX)) {
-            List<AstNode> suffixes = astNode.getDescendants(ApexGrammarRuleKey.PRIMARY_SUFFIX);
-            for (AstNode suffix : suffixes) {
-                AstNode primaryExpression = suffix.getParent();
-                AstNode name = primaryExpression.getFirstDescendant(ApexGrammarRuleKey.NAME);
-                AstNode first = name.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
-                AstNode last = name.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
-                if (first != null && last != null
-                        && first.getTokenValue().equals(SYSTEM)
-                        && last.getTokenValue().matches(ASSERT_REGEX)) {
-                    List<AstNode> arguments = primaryExpression.getFirstDescendant(ApexGrammarRuleKey.ARGUMENTS_LIST).getChildren();
-                    if (arguments.size() <= VALUE_OF_ONE || !hasMessage(arguments)) {
-                        getContext().createLineViolation(this,
-                                MESSAGE, primaryExpression, astNode.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue());
+        try {
+            if (astNode.hasDescendant(ApexGrammarRuleKey.PRIMARY_SUFFIX)) {
+                List<AstNode> suffixes = astNode.getDescendants(ApexGrammarRuleKey.PRIMARY_SUFFIX);
+                for (AstNode suffix : suffixes) {
+                    AstNode primaryExpression = suffix.getParent();
+                    AstNode name = primaryExpression.getFirstDescendant(ApexGrammarRuleKey.NAME);
+                    if (name != null) {
+                        AstNode first = name.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
+                        AstNode last = name.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER);
+                        if (first != null && last != null
+                                && first.getTokenValue().equals(SYSTEM)
+                                && last.getTokenValue().matches(ASSERT_REGEX)) {
+                            List<AstNode> arguments = primaryExpression.getFirstDescendant(ApexGrammarRuleKey.ARGUMENTS_LIST).getChildren();
+                            if (arguments.size() <= VALUE_OF_ONE || !hasMessage(arguments)) {
+                                getContext().createLineViolation(this,
+                                        MESSAGE, primaryExpression, astNode.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue());
+                            }
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 
