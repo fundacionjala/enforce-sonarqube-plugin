@@ -30,11 +30,6 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
     private final String FUTURE = "future";
 
     /**
-     * The list of method declarations within the class.
-     */
-    private List<AstNode> methods;
-
-    /**
      * The variables are initialized and subscribe the base rule.
      */
     @Override
@@ -52,28 +47,35 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.hasDescendant(ApexGrammarRuleKey.STATEMENT_EXPRESSION)) {
-            List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.STATEMENT_EXPRESSION);
-            for (AstNode expression : expressions) {
-                if (expression.hasDescendant(ApexGrammarRuleKey.PRIMARY_SUFFIX)
-                        && expression.hasDescendant(ApexGrammarRuleKey.ARGUMENTS)) {
-                    List<AstNode> arguments = expression.getDescendants(ApexGrammarRuleKey.ARGUMENTS);
-                    for (AstNode argument : arguments) {
-                        AstNode prefix = argument.getPreviousAstNode();
-                        AstNode method = prefix.getFirstDescendant(ApexGrammarRuleKey.NAME,
-                                ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS);
-                        AstNode methodIdentifier = method.hasDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER)
-                                ? method.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER) : method;
-                        String methodName = methodIdentifier.getTokenValue();
-                        if (methodIsAsync(astNode, methodName)) {
-                            String message = ChecksBundle.getStringFromBundle("AsyncMethodsCheckMessage");
-                            getContext().createLineViolation(this,
-                                    message, method,
-                                    methodIdentifier.getTokenOriginalValue());
+        try {
+            if (astNode.hasDescendant(ApexGrammarRuleKey.STATEMENT_EXPRESSION)) {
+                List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.STATEMENT_EXPRESSION);
+                for (AstNode expression : expressions) {
+                    if (expression.hasDescendant(ApexGrammarRuleKey.PRIMARY_SUFFIX)
+                            && expression.hasDescendant(ApexGrammarRuleKey.ARGUMENTS)) {
+                        List<AstNode> arguments = expression.getDescendants(ApexGrammarRuleKey.ARGUMENTS);
+                        for (AstNode argument : arguments) {
+                            AstNode prefix = argument.getPreviousAstNode();
+                            AstNode method = prefix.getFirstDescendant(ApexGrammarRuleKey.NAME,
+                                    ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                    ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS);
+                            if (method != null) {
+                                AstNode methodIdentifier = method.hasDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER)
+                                        ? method.getLastChild(ApexGrammarRuleKey.METHOD_IDENTIFIER) : method;
+                                String methodName = methodIdentifier.getTokenValue();
+                                if (methodIsAsync(astNode, methodName)) {
+                                    String message = ChecksBundle.getStringFromBundle("AsyncMethodsCheckMessage");
+                                    getContext().createLineViolation(this,
+                                            message, method,
+                                            methodIdentifier.getTokenOriginalValue());
+                                }
+                            }
                         }
                     }
                 }
             }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 
@@ -87,7 +89,7 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
      */
     private boolean methodIsAsync(AstNode astNode, String methodName) {
         AstNode firstAncestor = astNode.getFirstAncestor(ApexGrammarRuleKey.TYPE_DECLARATION);
-        loadMethods(firstAncestor);
+        List<AstNode> methods = firstAncestor.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
         if (!methods.isEmpty()) {
             for (AstNode method : methods) {
                 String name = method.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenValue();
@@ -107,18 +109,5 @@ public class AsyncMethodsCheck extends SquidCheck<Grammar> {
             }
         }
         return false;
-    }
-
-    /**
-     * Performs a lazy loading of the list of method declarations within the
-     * class.
-     *
-     * @param ancestor The ancestor node that "contains" the method
-     * declarations.
-     */
-    private void loadMethods(AstNode ancestor) {
-        if (methods == null) {
-            methods = ancestor.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
-        }
     }
 }

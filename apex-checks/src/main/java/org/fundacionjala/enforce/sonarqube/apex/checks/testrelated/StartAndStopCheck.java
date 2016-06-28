@@ -2,7 +2,6 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks.testrelated;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 
 /**
  * Verifies that only testStart and testStop are only used once in a testMethod.
@@ -27,7 +27,7 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
     public static final String CHECK_KEY = "A1027";
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("StartAndStopCheckMessage");
-    
+
     /**
      * Keyword for the first part of the expression.
      */
@@ -42,7 +42,7 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
      * One of the Keywords for the second part of the expression.
      */
     private final String STOP = "STOPTEST";
-    
+
     /**
      * Maximum of allowed instances of the specified method calls.
      */
@@ -64,28 +64,34 @@ public class StartAndStopCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        int startCalls = 0;
-        int stopCalls = 0;
-        List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.PRIMARY_EXPRESSION);
-        for (AstNode expression : expressions) {
-            if (isTestMethodCall(expression, START)) {
-                startCalls++;
+        try {
+            int startCalls = 0;
+            int stopCalls = 0;
+            List<AstNode> expressions = astNode.getDescendants(ApexGrammarRuleKey.PRIMARY_EXPRESSION);
+            for (AstNode expression : expressions) {
+                if (isTestMethodCall(expression, START)) {
+                    startCalls++;
+                }
+                if (isTestMethodCall(expression, STOP)) {
+                    stopCalls++;
+                }
+                if (startCalls > MAX_ALLOWED_INSTANCES || stopCalls > MAX_ALLOWED_INSTANCES) {
+                    getContext().createLineViolation(this,
+                            MESSAGE, astNode,
+                            astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue());
+                    return;
+                }
             }
-            if (isTestMethodCall(expression, STOP)) {
-                stopCalls++;
-            }
-            if (startCalls > MAX_ALLOWED_INSTANCES || stopCalls > MAX_ALLOWED_INSTANCES) {
-                getContext().createLineViolation(this,
-                        MESSAGE, astNode, 
-                        astNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue());
-                return;
-            }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
-    
+
     /**
-     * Verifies if the expression is a sequence of test.startTest or test.stopTest
-     * @param expression 
+     * Verifies if the expression is a sequence of test.startTest or
+     * test.stopTest
+     *
+     * @param expression
      * @param keyword
      * @return true if the expression is the right sequence
      */

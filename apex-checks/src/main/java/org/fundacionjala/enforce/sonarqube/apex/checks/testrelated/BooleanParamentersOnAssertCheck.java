@@ -23,6 +23,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.STATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.VARIABLE_DECLARATOR;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 import static org.fundacionjala.enforce.sonarqube.apex.utils.MethodChecksUtils.hasAssertion;
 
 /**
@@ -35,7 +36,7 @@ public class BooleanParamentersOnAssertCheck extends SquidCheck<Grammar> {
      * This is the code identifier for this check, used by sonarqube.
      */
     public static final String CHECK_KEY = "A1015";
-    
+
     private static final String SYSTEM_ASSERT = "System.assert";
 
     /**
@@ -47,20 +48,25 @@ public class BooleanParamentersOnAssertCheck extends SquidCheck<Grammar> {
     }
 
     /**
-     * Verifies if the given node met the rule, in case it does not it creates 
+     * Verifies if the given node met the rule, in case it does not it creates
      * the error
+     *
      * @param astNode the node to be analyzed.
      */
     @Override
     public void visitNode(AstNode astNode) {
-        List<AstNode> statements = astNode.getDescendants(STATEMENT);
-        for (AstNode statement : statements) {
-            boolean hasAssertion = hasAssertion(statement.getDescendants(NAME), SYSTEM_ASSERT);
-            if (hasAssertion && !hasBooleanVariable(astNode)) {
-                getContext().createLineViolation(this,
-                        ChecksBundle.getStringFromBundle("AssertBooleanVariableMessage"),
-                        astNode, astNode.getFirstChild(METHOD_IDENTIFIER).getTokenOriginalValue());
+        try {
+            List<AstNode> statements = astNode.getDescendants(STATEMENT);
+            for (AstNode statement : statements) {
+                boolean hasAssertion = hasAssertion(statement.getDescendants(NAME), SYSTEM_ASSERT);
+                if (hasAssertion && !hasBooleanVariable(astNode)) {
+                    getContext().createLineViolation(this,
+                            ChecksBundle.getStringFromBundle("AssertBooleanVariableMessage"),
+                            astNode, astNode.getFirstChild(METHOD_IDENTIFIER).getTokenOriginalValue());
+                }
             }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 

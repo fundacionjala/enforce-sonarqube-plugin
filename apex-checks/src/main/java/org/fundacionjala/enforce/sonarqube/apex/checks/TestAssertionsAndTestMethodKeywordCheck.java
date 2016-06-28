@@ -35,11 +35,13 @@ public class TestAssertionsAndTestMethodKeywordCheck extends SquidCheck<Grammar>
         boolean hasAssertion = hasAssertion(nameNodes, SYSTEM_ASSERT_PATTERN);
         if (hasTestMethodKeyword && !hasAssertion) {
             getContext().createLineViolation(this,
-                    String.format(ChecksBundle.getStringFromBundle("AssertionError"), astNode.getTokenLine()), astNode);
+                    String.format(ChecksBundle.getStringFromBundle("AssertionError"),
+                            astNode.getFirstDescendant(METHOD_IDENTIFIER).getTokenOriginalValue()), astNode);
         }
         if (!hasTestMethodKeyword && hasAssertion) {
             getContext().createLineViolation(this,
-                    String.format(ChecksBundle.getStringFromBundle("TestMethodKeywordError"), astNode.getTokenLine()), astNode);
+                    String.format(ChecksBundle.getStringFromBundle("TestMethodKeywordError"),
+                            astNode.getFirstDescendant(METHOD_IDENTIFIER).getTokenOriginalValue()), astNode);
         }
     }
 }

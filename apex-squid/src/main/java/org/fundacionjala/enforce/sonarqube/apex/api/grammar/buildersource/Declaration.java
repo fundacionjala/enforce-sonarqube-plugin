@@ -342,7 +342,7 @@ public class Declaration {
         grammarBuilder.rule(RECOVERED_MEMBER).is(
                 grammarBuilder.anyTokenButNot(
                         grammarBuilder.firstOf(
-                                CLASS_OR_INTERFACE_MEMBER, RBRACE, EOF))
+                                CLASS_OR_INTERFACE_MEMBER, RBRACE, RBRACKET, EOF))
         );
         grammarBuilder.rule(CLASS_OR_INTERFACE_BODY).is(
                 grammarBuilder.zeroOrMore(

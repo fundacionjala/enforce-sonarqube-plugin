@@ -15,6 +15,7 @@ import org.sonar.squidbridge.checks.SquidCheck;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 
 import static org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.TestClassCheck.IS_TEST;
 
@@ -57,25 +58,29 @@ public class SeeAllDataTestCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        AstNode identifier = astNode.getFirstDescendant(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
-                ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
-        if (astNode.getFirstDescendant(ApexGrammarRuleKey.TYPE_CLASS).hasDirectChildren(ApexKeyword.CLASS)) {
-            AstNode testAnnotation = getTestAnnotation(astNode);
-            if (testAnnotation != null && testAnnotation.hasDirectChildren(ApexGrammarRuleKey.EXPRESSION)) {
-                AstNode expression = testAnnotation.getFirstDescendant(ApexGrammarRuleKey.EXPRESSION);
-                List<AstNode> assignments = expression.getDescendants(ApexPunctuator.ASSIGN);
-                for (AstNode assignment : assignments) {
-                    AstNode previousSibling = assignment.getFirstAncestor(
-                            ApexGrammarRuleKey.ASSIGNMENT_OPERATOR).getPreviousSibling();
-                    AstNode nextSibling = assignment.getFirstAncestor(
-                            ApexGrammarRuleKey.ASSIGNMENT_OPERATOR).getNextSibling();
-                    if (previousSibling.getTokenValue().equals(SEE_ALL_DATA)
-                            && nextSibling.getTokenValue().equals(TRUE)) {
-                        getContext().createLineViolation(this,
-                                MESSAGE, testAnnotation, identifier.getTokenOriginalValue());
+        try {
+            AstNode identifier = astNode.getFirstDescendant(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                    ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
+            if (astNode.getFirstDescendant(ApexGrammarRuleKey.TYPE_CLASS).hasDirectChildren(ApexKeyword.CLASS)) {
+                AstNode testAnnotation = getTestAnnotation(astNode);
+                if (testAnnotation != null && testAnnotation.hasDirectChildren(ApexGrammarRuleKey.EXPRESSION)) {
+                    AstNode expression = testAnnotation.getFirstDescendant(ApexGrammarRuleKey.EXPRESSION);
+                    List<AstNode> assignments = expression.getDescendants(ApexPunctuator.ASSIGN);
+                    for (AstNode assignment : assignments) {
+                        AstNode previousSibling = assignment.getFirstAncestor(
+                                ApexGrammarRuleKey.ASSIGNMENT_OPERATOR).getPreviousSibling();
+                        AstNode nextSibling = assignment.getFirstAncestor(
+                                ApexGrammarRuleKey.ASSIGNMENT_OPERATOR).getNextSibling();
+                        if (previousSibling.getTokenValue().equals(SEE_ALL_DATA)
+                                && nextSibling.getTokenValue().equals(TRUE)) {
+                            getContext().createLineViolation(this,
+                                    MESSAGE, testAnnotation, identifier.getTokenOriginalValue());
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 

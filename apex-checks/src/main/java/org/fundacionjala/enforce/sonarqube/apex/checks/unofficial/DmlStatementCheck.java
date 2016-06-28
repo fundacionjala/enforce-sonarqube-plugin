@@ -2,12 +2,12 @@
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-
 package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
+import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 public class DmlStatementCheck extends SquidCheck<Grammar> {
@@ -38,9 +38,13 @@ public class DmlStatementCheck extends SquidCheck<Grammar> {
      */
     @Override
     public void visitNode(AstNode astNode) {
-        if (astNode.hasDescendant(ApexGrammarRuleKey.DML_OPERATIONS)) {
-            getContext().createLineViolation(this, String.format(message,
-                    astNode.getFirstDescendant(ApexGrammarRuleKey.DML_OPERATIONS).getTokenOriginalValue()), astNode);
+        try {
+            if (astNode.hasDescendant(ApexGrammarRuleKey.DML_OPERATIONS)) {
+                getContext().createLineViolation(this, String.format(message,
+                        astNode.getFirstDescendant(ApexGrammarRuleKey.DML_OPERATIONS).getTokenOriginalValue()), astNode);
+            }
+        } catch (Exception e) {
+            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
 }
