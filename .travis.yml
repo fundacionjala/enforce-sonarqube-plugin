@@ -9,7 +9,7 @@ notifications:
     - Dan.Canqui@jalasoft.com
     - Fernando.Hurtado@jalasoft.com
 script: "mvn test"
-script: "mvn package"
+script: "mvn package -Dbuild.number=$TRAVIS_BUILD_NUMBER"
 deploy:
     provider: bintray
     file: "descriptor.json"
