@@ -67,6 +67,9 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WITH_SENTENCE;
 
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COLON;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SOQL_EXTERNAL_VARIABLE;
 
 /**
  * This class contains constructors for SOQL rules and its sub rules.
@@ -264,7 +267,12 @@ public class SOQLExpressions {
                 OPERATORS,
                 grammarBuilder.firstOf(
                         STRING,
-                        NUMERIC));
+                        NUMERIC,
+                        SOQL_EXTERNAL_VARIABLE));
+
+        grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
+                COLON,
+                NAME);
     }
 
     /**
