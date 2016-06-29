@@ -29,14 +29,14 @@ The plug-in enables analysis of Apex source code with SonarQube.
         ![starting SonarQube server](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/starting-sonarQube.png)
 
 ###### Note: These steps must be performed only once after plugin is installed in sonnarqube.
-             3.1 Log in as administrator: generally initial credentials are admin admin.
+             3.1 Log in as administrator: use admin as login and admin as password.
 ![sonar login](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/sonar-login.png)
 
              3.2 go to Rules tab.
 ![rules tab](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/rules-tab.png)
 
              3.3 select Apex in languages in the left panel.
-![select apex language](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/select-    apex-language.png)
+![select apex language](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/select-apex-language.png)
 
              3.4 then click on Bulk Change.
 
@@ -63,7 +63,7 @@ The plug-in enables analysis of Apex source code with SonarQube.
 
       > **sonar.sources**: this "dot" indicates to sonnar scanner to scan all files from the current level of directories, this is, all files that have an extension ".cls". This extension is defined by plugin scanner.
 
-2. Run sonar-runner command from the project root dir.
+2. Run **sonar-runner** command from the project root dir.
 
 3. Follow the link provided at the end of the analysis to browse your project's quality in SonarQube UI.
 ![project analysis result](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/project-in-sonarqube-ui.png)
