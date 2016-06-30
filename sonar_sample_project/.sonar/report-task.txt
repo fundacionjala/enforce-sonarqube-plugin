@@ -1,0 +1,5 @@
+projectKey=SFDC.sampleProjecy
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/SFDC.sampleProjecy
+ceTaskId=AVWiPD4InZtoD0qGDEXp
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVWiPD4InZtoD0qGDEXp
