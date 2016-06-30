@@ -119,7 +119,7 @@ public class Type {
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(DOT,
                                 grammarBuilder.firstOf(
-                                        ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                        ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS,
                                         SPECIAL_KEYWORDS_AS_IDENTIFIER))
                 ));
     }

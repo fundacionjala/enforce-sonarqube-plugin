@@ -24,7 +24,10 @@ public class ApexGrammarTryStatementTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("try{} catch(Object exceptionObject){}")
                 .matches("try{} catch(Object exceptionObject){} catch(Object anotherException){}")
-                .matches("try{} catch(Object exceptionObject){} finally {}");
+                .matches("try{} catch(Object exceptionObject){} finally {}")
+                .matches("try{} catch(System.exception e){}")
+                .matches("try{delete new List<Account>{account}} catch(System.Exception e) {result = true}")
+                .matches("try{delete new List<Account>{account}} catch(Exception e) {result = true}");
     }
 
     @Test
@@ -33,6 +36,7 @@ public class ApexGrammarTryStatementTest extends ApexRuleTest {
                 .notMatches("try{}{}")
                 .notMatches("try{} catch{}")
                 .notMatches("try catch")
-                .notMatches("try {} catch(){finally{}}");
+                .notMatches("try {} catch(){finally{}}")
+                .notMatches("try{delete new List<Account>{account}} catch(Exception.exception e) {result = true}");
     }
 }

@@ -27,6 +27,8 @@ public class ApexGrammarFormalParameterTest extends ApexRuleTest {
                 .matches("CALCULAtor calc")
                 .matches("CLassName classname")
                 .matches("Integer integer")
-                .matches("Object object");
+                .matches("Object object")
+                .matches("System.exception e")
+                .matches("exception e");
     }
 }
