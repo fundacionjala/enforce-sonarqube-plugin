@@ -29,6 +29,7 @@ public class ApexGrammarMethodDeclarationTest extends ApexRuleTest {
                 .matches("floatn isMethod(integer a, final integer b, integer c){}")
                 .matches("void isMethod();")
                 .matches("bool isMethod(integer x, final bool y);")
-                .matches("bool IsMethod(){integer myVariable = 3;}");
+                .matches("bool IsMethod(){integer myVariable = 3;}")
+                .matches("void Switch();");
     }
 }

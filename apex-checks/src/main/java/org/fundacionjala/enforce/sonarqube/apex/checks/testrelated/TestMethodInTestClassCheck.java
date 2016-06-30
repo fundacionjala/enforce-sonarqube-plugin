@@ -53,6 +53,7 @@ public class TestMethodInTestClassCheck extends SquidCheck<Grammar> {
                     if (modifier.is(ApexKeyword.TESTMETHOD)) {
                         AstNode methodName = astNode.getFirstChild(ApexGrammarRuleKey.METHOD_IDENTIFIER)
                                 .getFirstChild(ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                                        ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS,
                                         ApexGrammarRuleKey.SPECIAL_KEYWORDS_AS_IDENTIFIER);
                         getContext().createLineViolation(this,
                                 ChecksBundle.getStringFromBundle("TestMethodsCheckMessage"),

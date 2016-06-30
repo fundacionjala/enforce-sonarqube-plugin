@@ -48,7 +48,8 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("myquery = 'SELECT Name, Phone FROM Account'")
                 .matches("var = Database.query('SELECT dato FROM table1 LIMIT 5000')")
 //                .matches("campaign = [select id, name from campaign where id = :campaign.id]")
-                .matches("campaign = [select id, name from campaign]");
+                .matches("campaign = [select id, name from campaign]")
+                .matches("(trigger.isBefore && trigger.isUpdate)");
     }
 
     @Test
