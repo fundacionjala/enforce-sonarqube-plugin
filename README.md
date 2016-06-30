@@ -2,7 +2,7 @@
 
 # Note: The current version is a functional prototype of a Apex plugin for SonarQube.
 The prototype has support for a subset of Apex language grammar, that means there might be errors during analysis of Apex classes.
-The support for (triggers and SOQL ) is in progress.
+The support for more SFDC components is in progress.
 
 # Enforce Sonarqube Plugin
 ## Description
@@ -15,35 +15,35 @@ The plug-in enables analysis of Apex source code with SonarQube.
    * [Download](http://www.sonarqube.org/downloads/) and unzip the SonarQube distribution (let's say in "C:\sonarqube" for windows or "/etc/sonarqube/" for linux)
   
 2. Install [SonarQube scanner](https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.6.1.zip) and configure sonar-runner as an enviroment variable
-   * For linux use go to /etc/profile file, and add at the end of the file this code 
+   * For linux use, go to /etc/profile file, and add at the end of the file this code 
 
                export SONAR_RUNNER_HOME=.../sonar-scanner-2.5.1
                export PATH=$PATH:$SONAR_RUNNER_HOME/bin.
 
-   * For windows use [these](http://www.computerhope.com/issues/ch000549.htm) steps using sonar scanner path and its bin folder as well.
+   * For windows use, follow [these](http://www.computerhope.com/issues/ch000549.htm) steps using sonar scanner path and its bin folder as well
 
-3. Install Apex Plug-in: to do this copy and paste plugin apex-plugin.jar [from here](https://bintray.com/fundacionjala/enforce/enforce-sonar-plugin/view) into "../sonarqube/extensions/plugins".
+3. Install Apex Plug-in; To do this, download the plugin file (apex-plugin.jar) from [here](https://bintray.com/fundacionjala/enforce/enforce-sonar-plugin/view), then copy and paste into "../sonarqube/extensions/plugins" folder.
    
  * Start the SonarQube server:
 
         ![starting SonarQube server](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/starting-sonarQube.png)
 
 ###### Note: These steps must be performed only once after plugin is installed in sonnarqube.
-             3.1 Log in as administrator: use admin as login and admin as password.
+             3.1 Log in as administrator
 ![sonar login](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/sonar-login.png)
 
-             3.2 go to Rules tab.
+             3.2 Go to Rules tab
 ![rules tab](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/rules-tab.png)
 
-             3.3 select Apex in languages in the left panel.
+             3.3 Select Apex in languages in the left panel.
 ![select apex language](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/select-apex-language.png)
 
-             3.4 then click on Bulk Change.
+             3.4 Then click on Bulk Change option
 
-             3.5 click on activate in.
+             3.5 Click on activate in option
 ![select Bulk Change](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/select-bulk-change.png)
 
-             3.6 write Apex and click on apply. 
+             3.6 Enter Apex and click on apply
 ![write apex](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/write-the-languaje.png)
 
 ###Scanning projects.
@@ -65,7 +65,7 @@ The plug-in enables analysis of Apex source code with SonarQube.
 
 2. Run **sonar-runner** command from the project root dir.
 
-3. Follow the link provided at the end of the analysis to browse your project's quality in SonarQube UI.
+3. Follow the provided link at the end of the analysis output to browse your project's quality in SonarQube
 ![project analysis result](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/gh-pages/img/project-in-sonarqube-ui.png)
 
 ---
