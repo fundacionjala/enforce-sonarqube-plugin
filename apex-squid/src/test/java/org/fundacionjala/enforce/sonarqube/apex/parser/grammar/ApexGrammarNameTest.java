@@ -24,14 +24,7 @@ public class ApexGrammarNameTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("anyName.anyMethodIdentifier")
                 .matches("allowedKeyword")
-                .matches("method.anotherOne.otherMethod");
-    }
-
-    @Test
-    public void invalidName() {
-        assertThat(parser)
-                //reserved keywords
-                .notMatches("upsert.upsert")
-                .notMatches("insert.upsert");
+                .matches("method.anotherOne.otherMethod")
+                .matches("trigger.isBefore");
     }
 }

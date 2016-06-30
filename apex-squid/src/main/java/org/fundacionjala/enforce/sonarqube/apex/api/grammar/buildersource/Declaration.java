@@ -106,6 +106,7 @@ public class Declaration {
     private static void methodName(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(METHOD_IDENTIFIER).is(
                 grammarBuilder.firstOf(
+                        ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS,
                         ALLOWED_KEYWORDS_AS_IDENTIFIER,
                         SPECIAL_KEYWORDS_AS_IDENTIFIER));
     }
