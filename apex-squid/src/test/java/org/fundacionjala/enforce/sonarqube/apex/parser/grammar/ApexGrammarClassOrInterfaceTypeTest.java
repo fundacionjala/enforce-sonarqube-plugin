@@ -26,7 +26,8 @@ public class ApexGrammarClassOrInterfaceTypeTest extends ApexRuleTest {
                 .matches("string")
                 .matches("SomeClassType")
                 .matches("Aclass.Another.SomeClassType")
-                .matches("someothertype");
+                .matches("someothertype")
+                .matches("System.exception");
     }
     
     @Test
