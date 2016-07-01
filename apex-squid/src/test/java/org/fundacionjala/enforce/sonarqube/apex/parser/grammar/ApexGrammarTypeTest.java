@@ -28,7 +28,8 @@ public class ApexGrammarTypeTest extends ApexRuleTest {
                 .matches("someothertype")
                 .matches("list<something>")
                 .matches("set<SomeClass>")
-                .matches("map<SomeKeyClass, SomeValueclass>");
+                .matches("map<SomeKeyClass, SomeValueclass>")
+                .matches("exception");
     }
 
     @Test

@@ -15,3 +15,5 @@ deploy:
     file: "descriptor.json"
     user: $BINTRAY_USER_NAME
     key: $BINTRAY_API_KEY
+    on:
+     branch: develop
