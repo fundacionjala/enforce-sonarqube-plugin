@@ -27,7 +27,7 @@ public class HarcodingIdsCheckTest {
     
     @Test
     public void testHardcodedIdsInVariables() {
-        String filePath = "src/test/resources/checks/harcodedIdsInVariables.cls";
+        String filePath = "src/test/resources/checks/hardcodedIdsInVariables.cls";
         scanFilesWithCheck(filePath, new HardcodingIdsCheckInVariables());
 
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
