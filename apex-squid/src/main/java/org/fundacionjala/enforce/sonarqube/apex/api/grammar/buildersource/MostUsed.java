@@ -64,7 +64,9 @@ public class MostUsed {
                         LAST,
                         CATEGORY,
                         NETWORK,
-                        ITERATOR));
+                        ITERATOR,
+                        COUNT,
+                        ORDER));
     }
 
     /**
@@ -112,6 +114,7 @@ public class MostUsed {
                         CHAR,
                         COLLECT,
                         CONST,
+                        COUNT,
                         DEFAULT,
                         END,
                         EXIT,
@@ -160,7 +163,8 @@ public class MostUsed {
                         UNDELETE,
                         UPDATE,
                         UPSERT,
-                        ITERATOR
+                        ITERATOR,
+                        ORDER
                 ));
     }
 
