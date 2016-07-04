@@ -118,6 +118,7 @@ public enum ApexKeyword implements TokenType {
     VIRTUAL("virtual"),
     VOID("void"),
     VOLATILE("volatile"),
+    WEBSERVICE("webservice"),
     WHEN("when"),
     WHILE("while"),
     WITH("with"),

@@ -42,6 +42,7 @@ public class Type {
                         VIRTUAL,
                         OVERRIDE,
                         TESTMETHOD,
+                        WEBSERVICE,
                         ANNOTATION))
         );
     }

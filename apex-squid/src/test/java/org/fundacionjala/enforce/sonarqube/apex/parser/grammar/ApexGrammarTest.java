@@ -4,7 +4,6 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
-
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -129,6 +128,10 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "\n"
                         + "    public with sharing interface anInterface implements otherInterface {\n"
                         + "\n"
+                        + "Integer count = 0;\n"
+                        + "WebService String StagingFacilityType;\n"
+                        + "String whereFiltersStmt = SecurityUtil.EscapeSingleQuotes(params.get('whereStmtFilters'));\n"
+                        + "static testMethod void DateFilterValidationTemplate(){}"
                         + "        protected void aMethod(AType var1, OtherType var2, integer var3);\n"
                         + "    }\n"
                         + "\n"
@@ -196,7 +199,7 @@ public class ApexGrammarTest extends ApexRuleTest {
                 StandardCharsets.UTF_8);
         assertThat(parser).matches(fileToString);
     }
-    
+
     @Test
     public void recoveryDeclarationTest() {
         assertThat(parser)

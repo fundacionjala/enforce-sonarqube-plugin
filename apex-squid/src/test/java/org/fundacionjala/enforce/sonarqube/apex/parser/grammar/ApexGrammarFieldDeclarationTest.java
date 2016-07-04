@@ -27,6 +27,9 @@ public class ApexGrammarFieldDeclarationTest extends ApexRuleTest {
                 .matches("Boolean isActive = true;")
                 .matches("integer addition = 0;")
                 .matches("ClassType transient;")
+                .matches("Integer count = 0;")
+                .matches("Integer order = 0;")
+                .matches("Product2 product_01 = new Product2();")
                 .matches("Iterator iterator = iteratorParameter;");
     }
 

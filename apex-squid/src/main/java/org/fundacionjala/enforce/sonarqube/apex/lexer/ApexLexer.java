@@ -26,7 +26,7 @@ public class ApexLexer {
     /**
      * Stores a pattern to identify a keyword.
      */
-    private static final String IDENTIFIER_PATTERN = "(_{0,2}[a-zA-Z][a-zA-Z0-9]*)+";
+    private static final String IDENTIFIER_PATTERN = "(_{0,2}[a-zA-Z][_a-zA-Z0-9]*)+";
 
     /**
      * Stores a pattern to identify a String.
