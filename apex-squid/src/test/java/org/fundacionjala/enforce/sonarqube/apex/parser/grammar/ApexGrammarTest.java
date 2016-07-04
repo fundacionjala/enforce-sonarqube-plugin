@@ -130,6 +130,7 @@ public class ApexGrammarTest extends ApexRuleTest {
                         + "\n"
                         + "Integer count = 0;\n"
                         + "WebService String StagingFacilityType;\n"
+                        + "public static String EscapeSingleQuotes(Iterator<String> iteratorToEscape){}\n"
                         + "String whereFiltersStmt = SecurityUtil.EscapeSingleQuotes(params.get('whereStmtFilters'));\n"
                         + "static testMethod void DateFilterValidationTemplate(){}"
                         + "        protected void aMethod(AType var1, OtherType var2, integer var3);\n"
