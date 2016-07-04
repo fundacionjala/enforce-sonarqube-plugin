@@ -15,7 +15,7 @@ import org.sonar.squidbridge.checks.SquidCheck;
 
 import com.sonar.sslr.api.Grammar;
 
-public class HarcodingIdsCheckTest {
+public class HardcodingIdsCheckTest {
 
     private static final String FIRST_VARIABLE_ERROR = "Variable \"firsRecordId\" contains hard-coded id value.";
     private static final String SECOND_VARIABLE_ERROR = "Variable \"recordId\" contains hard-coded id value.";
