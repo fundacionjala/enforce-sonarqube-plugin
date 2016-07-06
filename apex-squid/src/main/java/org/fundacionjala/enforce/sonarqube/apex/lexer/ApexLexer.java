@@ -33,15 +33,26 @@ public class ApexLexer {
      */
     private static final String STRING_PATTERN = "'([^'\\\\]*+(\\\\[\\s\\S])?+)*+'";
 
+    private static final String DECIMAL_EXPONENT_NUMBER = "(?:[Ee][+-]?+[0-9]++)";
+    private static final String HEXADECIMAL_EXPONENT_NUMBER = "(?:[Pp][+-]?+[0-9]++)";
     /**
      * Stores an numeric pattern.
      */
-    private static final String NUMERIC_PATTERN = "(0([0-7]*)?|\\d\\d*([eE][+-]?\\d+)?)[lL|fF|dD]?";
+    private static final String INTEGER_LITERAL_PATTERN = "(?:(0[Xx]\\p{XDigit}+|[1-9](\\d)*|0([0-7]*))([lL]?))";
     
     /**
+     * 
      * Stores an hexadecimal pattern.
      */
-    private static final String HEXADECIMAL_PATTERN = "[Xx]((\\p{XDigit}+[.]?)?\\p{XDigit}+)([pP][+-]?\\d+)?[lL|fF|dD]?";
+    
+    private static final String DECIMAL_FLOATING_POINT_LITERAL_PATTERN = "(?:\\d+\\.(\\d)*("+DECIMAL_EXPONENT_NUMBER+")?([fFdD])?"
+            + "|"+"\\.(\\d)+("+DECIMAL_EXPONENT_NUMBER+")?([FfdD])?"
+            + "|"+"([\\d])+"+DECIMAL_EXPONENT_NUMBER+"([fFdD])?"
+            + "|"+"([\\d])+("+DECIMAL_EXPONENT_NUMBER+")?[fFdD])";
+    
+    private static final String HEXADECIMAL_FLOATING_POINT_LITERAL_PATTERN = "(?:0[Xx]\\p{XDigit}+\\.?"+HEXADECIMAL_EXPONENT_NUMBER+"([fFdD])?"
+            + "|0[Xx]\\p{XDigit}*\\.\\p{XDigit}+"+HEXADECIMAL_EXPONENT_NUMBER+"([fFdD])?)";
+
     
     private static final String SINGLE_LINE_PATTERN = "//[^\\n\\r]*+";
     
@@ -70,9 +81,10 @@ public class ApexLexer {
                 .withFailIfNoChannelToConsumeOneCharacter(Boolean.TRUE)
                 .withChannel(commentRegexp(SINGLE_LINE_PATTERN))
                 .withChannel(commentRegexp(MULTI_LINE_PATTERN))
-                .withChannel(regexp(ApexTokenType.NUMERIC, NUMERIC_PATTERN))
+                .withChannel(regexp(ApexTokenType.DECIMAL_FLOATING_POINT_LITERAL, DECIMAL_FLOATING_POINT_LITERAL_PATTERN))
+                .withChannel(regexp(ApexTokenType.HEXADECIMAL_FLOATING_POINT_LITERAL, HEXADECIMAL_FLOATING_POINT_LITERAL_PATTERN))
+                .withChannel(regexp(ApexTokenType.INTEGER_LITERAL, INTEGER_LITERAL_PATTERN))
                 .withChannel(regexp(ApexTokenType.STRING, STRING_PATTERN))
-                .withChannel(regexp(ApexTokenType.HEXADECIMAL, HEXADECIMAL_PATTERN))
                 .withChannel(new IdentifierAndKeywordChannel(IDENTIFIER_PATTERN,
                         Boolean.FALSE, ApexKeyword.values()))
                 .withChannel(new PunctuatorChannel(ApexPunctuator.values()))

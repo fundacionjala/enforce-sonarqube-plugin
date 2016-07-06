@@ -76,7 +76,7 @@ public class ApexLexerTest {
         assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
         assertThat(tokens, hasOriginalToken("number"));
         assertThat(tokens, hasToken(",", ApexPunctuator.COMMA));
-        assertThat(tokens, hasToken("2", ApexTokenType.NUMERIC));
+        assertThat(tokens, hasToken("2", ApexTokenType.INTEGER_LITERAL));
         assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
         assertThat(tokens, hasToken(";", ApexPunctuator.SEMICOLON));
         assertThat(tokens, hasToken("}", ApexPunctuator.RBRACE));

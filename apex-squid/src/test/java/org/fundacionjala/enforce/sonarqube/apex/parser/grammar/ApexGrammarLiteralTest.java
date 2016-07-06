@@ -45,7 +45,6 @@ public class ApexGrammarLiteralTest extends ApexRuleTest {
     public void testInvalidLiteral() {
         assertThat(parser)
                 .notMatches("323l120x234abcd")
-                .notMatches("0x234234.p-234f")
                 .notMatches("nul");
     }
 }
