@@ -28,7 +28,7 @@ public class ApexGrammarFloatingPointLiteralNumberTest extends ApexRuleTest{
                 .matches("12312345D") 
                 .matches("312345d")
                 .matches("0x1234567890abcdefp-123456789F")
-                .matches("0x1234567890abcdef.abcdef1234567890")
+                .matches("0x1234567890abcdef.abcdef1234567890p-23")
                 .matches("0x123345ab.abcdep+123D");
     }
 }

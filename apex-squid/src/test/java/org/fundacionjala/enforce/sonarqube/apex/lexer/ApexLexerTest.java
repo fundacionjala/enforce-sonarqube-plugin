@@ -76,7 +76,7 @@ public class ApexLexerTest {
         assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
         assertThat(tokens, hasOriginalToken("number"));
         assertThat(tokens, hasToken(",", ApexPunctuator.COMMA));
-        assertThat(tokens, hasToken("2", ApexTokenType.NUMERIC));
+        assertThat(tokens, hasToken("2", ApexTokenType.INTEGER_LITERAL));
         assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
         assertThat(tokens, hasToken(";", ApexPunctuator.SEMICOLON));
         assertThat(tokens, hasToken("}", ApexPunctuator.RBRACE));
@@ -106,5 +106,26 @@ public class ApexLexerTest {
         assertThat(tokens, hasToken("=", ApexPunctuator.ASSIGN));
         assertThat(tokens, hasToken("\'value\'", ApexTokenType.STRING));
         assertThat(tokens, hasToken(";", ApexPunctuator.SEMICOLON));
+    }
+    
+    @Test
+    public void testVerifiesTokensAreCorrectlyIdentified() {
+        file = new File("src/test/resources/lexer/HexIssueSolved.cls");
+        tokens = lexer.lex(file);
+        assertThat(tokens, hasOriginalToken("public"));
+        assertThat(tokens, hasOriginalToken("void"));
+        assertThat(tokens, hasOriginalToken("method"));
+        assertThat(tokens, hasToken("(", ApexPunctuator.LPAREN));
+        assertThat(tokens, hasOriginalToken("int"));
+        assertThat(tokens, hasOriginalToken("number"));
+        assertThat(tokens, hasToken(")", ApexPunctuator.RPAREN));
+        assertThat(tokens, hasToken("{", ApexPunctuator.LBRACE));
+        assertThat(tokens, hasOriginalToken("XAxis"));
+        assertThat(tokens, hasToken(".", ApexPunctuator.DOT));
+        assertThat(tokens, hasOriginalToken("Title"));
+        assertThat(tokens, hasToken("=", ApexPunctuator.ASSIGN));
+        assertThat(tokens, hasOriginalToken("'Status'"));
+        assertThat(tokens, hasToken(";", ApexPunctuator.SEMICOLON));
+        assertThat(tokens, hasToken("}", ApexPunctuator.RBRACE));
     }
 }

@@ -25,16 +25,11 @@ public class MostUsed {
         specialKeywordsAsIdentifier(grammarBuilder);
         block(grammarBuilder);
         name(grammarBuilder);
-        decimalLiteral(grammarBuilder);
-        hexLiteral(grammarBuilder);
-        octalLiteral(grammarBuilder);
         integerLiteralNumber(grammarBuilder);
         stringLiteralString(grammarBuilder);
         booleanLiteral(grammarBuilder);
         nullLiteral(grammarBuilder);
         literal(grammarBuilder);
-        decimalFloatingPointLiteral(grammarBuilder);
-        hexadecimalFloatingPointLiteral(grammarBuilder);
         floatingPointLiteralNumber(grammarBuilder);
         allowedKeywordsAsIdentifierForMethods(grammarBuilder);
         commonIdentifier(grammarBuilder);
@@ -202,51 +197,13 @@ public class MostUsed {
     }
 
     /**
-     * Defines decimal literal rule.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void decimalLiteral(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(DECIMAL_LITERAL).is(
-                NUMERIC
-        );
-    }
-
-    /**
-     * Defines rule for hexadecimal literal.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void hexLiteral(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(HEX_LITERAL).is(
-                NUMERIC,
-                HEXADECIMAL
-        );
-    }
-
-    /**
-     * Defines rule for octal literal.
-     *
-     * @param grammarBuilder ApexGrammarBuilder parameter.
-     */
-    private static void octalLiteral(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(OCTAL_LITERAL).is(
-                NUMERIC
-        );
-    }
-
-    /**
      * Defines rule for integer literal number.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void integerLiteralNumber(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(INTEGER_LITERAL_NUMBER).is(
-                grammarBuilder.firstOf(
-                        HEX_LITERAL,
-                        OCTAL_LITERAL,
-                        DECIMAL_LITERAL
-                )
+                INTEGER_LITERAL
         );
     }
 
@@ -304,35 +261,11 @@ public class MostUsed {
         );
     }
 
-    private static void decimalFloatingPointLiteral(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(DECIMAL_FLOATING_POINT_LITERAL).is(
-                grammarBuilder.firstOf(
-                        grammarBuilder.sequence(
-                                grammarBuilder.oneOrMore(NUMERIC),
-                                DOT,
-                                NUMERIC
-                        ),
-                        grammarBuilder.sequence(
-                                DOT,
-                                grammarBuilder.oneOrMore(NUMERIC)
-                        ),
-                        NUMERIC)
-        );
-    }
-
-    private static void hexadecimalFloatingPointLiteral(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(HEXADECIMAL_FLOATING_POINT_LITERAL).is(
-                NUMERIC,
-                HEXADECIMAL
-        );
-    }
-
     private static void floatingPointLiteralNumber(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FLOATING_POINT_LITERAL_NUMBER).is(
                 grammarBuilder.firstOf(
-                        HEXADECIMAL_FLOATING_POINT_LITERAL,
-                        DECIMAL_FLOATING_POINT_LITERAL
-                )
+                        DECIMAL_FLOATING_POINT_LITERAL,
+                        HEXADECIMAL_FLOATING_POINT_LITERAL)
         );
     }
 

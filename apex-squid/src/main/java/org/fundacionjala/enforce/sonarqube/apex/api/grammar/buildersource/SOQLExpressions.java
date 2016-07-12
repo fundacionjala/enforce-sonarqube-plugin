@@ -32,6 +32,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SELECT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHERE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COLON;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GEQUT;
@@ -42,7 +43,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.UNDERSCORE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.NUMERIC;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.INTEGER_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALIASSTATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_SOQL_EXPRESSION;
@@ -55,6 +56,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GROUP_BY_SENTENCE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GROUP_BY_TYPES;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LIMIT_SENTENCE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME_CHAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.OPERATORS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ORDER_BY_SENTENCE;
@@ -62,14 +64,12 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.QUERY_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SELECT_SENTENCE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SOQL_EXTERNAL_VARIABLE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SOQL_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHERE_SENTENCE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WITH_SENTENCE;
 
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COLON;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SOQL_EXTERNAL_VARIABLE;
 
 /**
  * This class contains constructors for SOQL rules and its sub rules.
@@ -267,7 +267,7 @@ public class SOQLExpressions {
                 OPERATORS,
                 grammarBuilder.firstOf(
                         STRING,
-                        NUMERIC,
+                        INTEGER_LITERAL,
                         SOQL_EXTERNAL_VARIABLE));
 
         grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
@@ -340,8 +340,8 @@ public class SOQLExpressions {
     private static void limitSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(LIMIT_SENTENCE).is(
                 LIMIT,
-                NUMERIC,
-                grammarBuilder.optional(OFFSET, NUMERIC)
+                INTEGER_LITERAL,
+                grammarBuilder.optional(OFFSET, INTEGER_LITERAL)
         );
     }
 

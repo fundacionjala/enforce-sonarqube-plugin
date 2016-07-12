@@ -25,6 +25,7 @@ public class ApexGrammarNameTest extends ApexRuleTest {
                 .matches("anyName.anyMethodIdentifier")
                 .matches("allowedKeyword")
                 .matches("method.anotherOne.otherMethod")
-                .matches("trigger.isBefore");
+                .matches("trigger.isBefore")
+                .matches("ChartSettingBars.XAxis");
     }
 }

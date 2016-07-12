@@ -15,8 +15,9 @@ public enum ApexTokenType implements TokenType {
 
     NEW_LINE,
     STRING,
-    NUMERIC,
-    HEXADECIMAL,
+    INTEGER_LITERAL,
+    DECIMAL_FLOATING_POINT_LITERAL,
+    HEXADECIMAL_FLOATING_POINT_LITERAL,
     LETTER,
     DIGIT;
 
