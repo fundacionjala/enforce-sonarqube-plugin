@@ -28,6 +28,7 @@ public class SoqlLimitCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/soqlLimit.cls"), check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(4).withMessage("Define the LIMIT for this SOQL statement.")
+                .next().atLine(5).withMessage("Define the LIMIT for this SOQL statement.")
                 .noMore();
     }
 }
