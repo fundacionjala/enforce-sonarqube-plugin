@@ -1,0 +1,43 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+The "@Test" annotation is used to indicate when a class represents a test class, so it should be used only for classes (not enums or interfaces) and said class should be either public or private.
+
+Also, if a class is named with the word "test" it suggests this is a test class, so it should either have the @isTest annotation or be renamed. 
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+private class MyTest {     _// missing annotation @isTest._
+}
+@isTest
+class MyTest {    // missing modifier access.
+}
+
+@isTest
+public enum MyTest { //@isTest annotation should not be used for enums.
+}
+
+@isTest
+public interface MyTest { //@isTest annotation should not be used for interfaces.
+}
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+@isTest
+private class MyTest {
+...
+}
+
+@isTest
+public class MyTest  {
+&nbsp;&nbsp;&nbsp;&nbsp;public void testMyTest() {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}
+</pre>

@@ -1,0 +1,4 @@
+@SomeOtherAnnotation
+public class SomeClassTest {
+	
+}

@@ -1,7 +1,7 @@
 public with sharing class DraftArticle extends AbstractArticle {
 
-    public int myMethod () { 
-        while(true){
+    public integer myMethod () { 
+        while(trueExpression){
            a++; 
         }
         

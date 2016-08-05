@@ -1,0 +1,27 @@
+{
+        "package": {
+                "name": "enforce-sonar-plugin",
+                "repo": "enforce",
+                "subject": "fundacionjala",
+                "desc": "A plugin for sonar to analyze apex code",
+                "issue_tracker_url" : "https://github.com/fundacionjala/enforce-sonarqube-plugin/issues",
+                "vcs_url": "https://github.com/fundacionjala/enforce-sonarqube-plugin",
+                "licenses": ["MIT"],
+                "labels": ["salesforce", "apex", "sonarqube"],
+                "public_download_numbers": false,
+                "public_stats": false
+        },
+        "version": {
+                "name": "1.0.0",
+                "desc": "beta release",
+                "released": "2016-06-27",
+                "gpgSign": false
+        },
+        "files": 
+                 [{"includePattern": "sonar-apex-plugin/target/(apex-plugin-1.0b[1-9]*.jar)", "uploadPattern": "$1",
+                 "matrixParams": {
+                     "override": 1 }
+                  } 
+          ],
+          "publish": true
+}

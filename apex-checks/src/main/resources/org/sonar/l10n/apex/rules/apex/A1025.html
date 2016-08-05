@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<p>
+Using assert with a literal boolean value is a bad practice because it gives false positive tests and doesn't provide any value to the application.
+</p>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+@isTest
+public static testMethod void someTestMethod {
+...
+System.assert(TRUE); //or
+System.assert(false);
+}
+</pre>
