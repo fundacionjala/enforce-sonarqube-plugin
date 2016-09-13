@@ -6,7 +6,6 @@
 package org.fundacionjala.sonarqube.apex;
 
 import org.fundacionjala.sonarqube.apex.api.Apex;
-import org.fundacionjala.sonarqube.apex.api.ApexScanner;
 import org.sonar.api.Plugin;
 
 public class ApexPlugin implements Plugin {
@@ -28,7 +27,7 @@ public class ApexPlugin implements Plugin {
         context.addExtensions(
                 Apex.class,
                 ApexSquidSensor.class,
-                ApexScanner.class
+                SonarComponents.class
         );
     }
 

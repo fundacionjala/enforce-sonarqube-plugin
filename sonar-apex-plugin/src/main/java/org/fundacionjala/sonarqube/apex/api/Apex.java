@@ -13,7 +13,7 @@ public final class Apex extends AbstractLanguage {
     public static final String NAME = "Apex";
     public static final String KEY = "Apex";
 
-    public static final String[] DEFAULT_FILE_SUFFIXES = {"cls"};
+    public static final String[] DEFAULT_FILE_SUFFIXES = {".cls"};
 
     private Settings settings;
 
