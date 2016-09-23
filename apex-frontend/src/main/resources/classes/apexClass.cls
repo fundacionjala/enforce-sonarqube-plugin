@@ -1,1 +1,1 @@
-public void something();
+public

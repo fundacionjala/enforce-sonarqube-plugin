@@ -3,6 +3,7 @@ package org.fundacionjala.sonarqube.parser;
 import com.sonar.sslr.api.GenericTokenType;
 import org.apache.commons.lang.ArrayUtils;
 import org.fundacionjala.sonarqube.api.ApexKeyword;
+import org.fundacionjala.sonarqube.treeimplementation.ClassTreeImpl;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
@@ -10,11 +11,13 @@ import java.util.Arrays;
 
 public enum ApexLexer implements GrammarRuleKey{
 
+    CLASS_DECLARATION,
     COMPILATION_UNIT,
     MODIFIERS,
     SPACING,
     KEYWORD,
     TYPE_DECLARATION,
+    MOCK_RULE,
     EOF;
 
     public static LexerlessGrammarBuilder  createGrammarBuilder() {

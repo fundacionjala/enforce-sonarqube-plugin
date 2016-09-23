@@ -34,7 +34,9 @@ public interface Tree {
 
         TOKEN(SyntaxToken.class),
 
-        TRIVIA(SyntaxTrivia.class);
+        TRIVIA(SyntaxTrivia.class),
+
+        CLASS_OR_INTERFACE(ClassTree.class);
 
         final Class<? extends Tree> associatedInterface;
 
