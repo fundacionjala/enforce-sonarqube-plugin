@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface CompilationUnitTree extends Tree {
 
-    List<TypeDeclarationTree> typeDeclarations();
+    List<Tree> types();
 
     SyntaxToken eofToken();
 

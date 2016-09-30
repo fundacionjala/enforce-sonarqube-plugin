@@ -4,6 +4,9 @@ import org.sonar.sslr.grammar.GrammarRuleKey;
 
 public enum ApexKeyword implements GrammarRuleKey{
 
+    WITH("with"),
+    WITHOUT("without"),
+    SHARING("sharing"),
     ABSTRACT("abstract"),
     CLASS("class"),
     FINAL("final"),
@@ -13,7 +16,33 @@ public enum ApexKeyword implements GrammarRuleKey{
     PROTECTED("protected"),
     PUBLIC("public"),
     STATIC("static"),
-    TRANSIENT("transient");
+    TRANSIENT("transient"),
+    RETURNING("returning"),
+    SEARCH("search"),
+    STAT("stat"),
+    CONVERTCURRENCY("convertcurrency"),
+    SAVEPOINT("savepoint"),
+    TOLABEL("tolabel"),
+    GET("get"),
+    AFTER("after"),
+    BEFORE("before"),
+    FIRST("first"),
+    LAST("last"),
+    CATEGORY("category"),
+    NETWORK("network"),
+    ITERATOR("iterator"),
+    OFFSET("offset"),
+    DATA("data"),
+    GROUP("group"),
+    LIMIT("limit"),
+    EXTENDS("extends"),
+    IMPLEMENTS("implements"),
+    IF("if"),
+    ELSE("else"),
+    VOID("void"),
+    THIS("this"),
+    SUPER("super"),
+    NEW("new");
 
     private final String value;
 

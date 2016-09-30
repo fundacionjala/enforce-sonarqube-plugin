@@ -44,6 +44,12 @@
             <artifactId>sslr-core</artifactId>
             <version>1.21</version>
         </dependency>
+        <dependency>
+            <groupId>org.sonarsource.sslr</groupId>
+            <artifactId>sslr-testing-harness</artifactId>
+            <version>1.21</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

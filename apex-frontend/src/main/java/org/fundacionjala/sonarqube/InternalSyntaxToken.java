@@ -66,6 +66,14 @@ public class InternalSyntaxToken extends ApexTree implements SyntaxToken {
 
     }
 
+    public boolean isLeaf() {
+        return true;
+    }
+
+    public boolean isEOF() {
+        return isEOF;
+    }
+
     @Override
     public Tree parent() {
         return null;
@@ -73,12 +81,12 @@ public class InternalSyntaxToken extends ApexTree implements SyntaxToken {
 
     @Override
     public SyntaxToken firstToken() {
-        return null;
+        return this;
     }
 
     @Override
     public SyntaxToken lastToken() {
-        return null;
+        return this;
     }
 
     @Override

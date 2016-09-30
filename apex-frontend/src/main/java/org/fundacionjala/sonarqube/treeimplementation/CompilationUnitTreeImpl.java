@@ -1,6 +1,5 @@
 package org.fundacionjala.sonarqube.treeimplementation;
 
-
 import com.google.common.collect.Iterables;
 import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.parser.TreeVisitor;
@@ -48,19 +47,4 @@ public class CompilationUnitTreeImpl extends ApexTree implements CompilationUnit
         return eofToken;
     }
 
-    public List<TypeDeclarationTree> typeDeclarations() {
-        return null;
-    }
-
-    public Tree parent() {
-        return null;
-    }
-
-    public SyntaxToken firstToken() {
-        return null;
-    }
-
-    public SyntaxToken lastToken() {
-        return null;
-    }
 }

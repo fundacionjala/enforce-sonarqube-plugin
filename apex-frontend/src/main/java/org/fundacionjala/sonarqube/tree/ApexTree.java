@@ -1,5 +1,7 @@
 package org.fundacionjala.sonarqube.tree;
 
+import com.sonar.sslr.api.typed.Optional;
+import org.fundacionjala.sonarqube.api.ApexKeyword;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import javax.annotation.Nullable;

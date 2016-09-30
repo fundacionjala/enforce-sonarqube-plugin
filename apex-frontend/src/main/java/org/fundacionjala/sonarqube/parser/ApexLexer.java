@@ -1,9 +1,11 @@
 package org.fundacionjala.sonarqube.parser;
 
+import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.ANY_CHAR;
+import static org.fundacionjala.sonarqube.api.ApexPunctuator.*;
+
 import com.sonar.sslr.api.GenericTokenType;
 import org.apache.commons.lang.ArrayUtils;
 import org.fundacionjala.sonarqube.api.ApexKeyword;
-import org.fundacionjala.sonarqube.treeimplementation.ClassTreeImpl;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
@@ -11,14 +13,39 @@ import java.util.Arrays;
 
 public enum ApexLexer implements GrammarRuleKey{
 
-    CLASS_DECLARATION,
+    ALLOWED_KEYWORDS_AS_IDENTIFIER,
     COMPILATION_UNIT,
-    MODIFIERS,
-    SPACING,
-    KEYWORD,
     TYPE_DECLARATION,
-    MOCK_RULE,
-    EOF;
+    CLASS_BODY,
+    MODIFIERS,
+    CLASS_DECLARATION,
+    SPACING,
+    SPECIAL_KEYWORDS_AS_IDENTIFIER,
+    KEYWORD,
+    IDENTIFIER,
+    EOF,
+    EXTENDS_DECLARATION,
+    CLASS_OR_INTERFACE_TYPE,
+    IMPLEMENTS_DECLARATION,
+    MEMBER_DECLARATION,
+    BLOCK, BLOCK_STATEMENTS,
+    BLOCK_STATMENT,
+    STATEMENT,
+    EMPTY_STATEMENT,
+    IF_STATEMENT,
+    EXPRESSION_STATEMENT,
+    EXPRESSION,
+    ASSIGNMENT_EXPRESSION,
+    CONDITIONAL_EXPRESSION,
+    PRIMARY,
+    PAR_EXPRESSION,
+    SELECTOR,
+    FORMAL_PARAMETERS,
+    TYPE_PARAMETERS,
+    TYPE,
+    IDENTIFIER_OR_METHOD_INVOCATION,
+    TYPE_ARGUMENTS,
+    ARGUMENTS, NEW_EXPRESSION, FORMAL_PARAMETERS_DECLS_REST, FORMAL_PARAMETER_DECLS, VARIABLE_DECLARATOR_ID;
 
     public static LexerlessGrammarBuilder  createGrammarBuilder() {
         LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
@@ -38,7 +65,13 @@ public enum ApexLexer implements GrammarRuleKey{
     }
 
     private static void punctuators(LexerlessGrammarBuilder b) {
-
+        punctuator(b, LBRACE, "{");
+        punctuator(b, RBRACE, "}");
+        punctuator(b, DOT, ".");
+        punctuator(b, COMMA, ",");
+        punctuator(b, SEMICOLON, ";");
+        punctuator(b, LPAREN, "(");
+        punctuator(b, RPAREN, ")");
     }
 
     private static void keywords(LexerlessGrammarBuilder b) {
@@ -63,6 +96,11 @@ public enum ApexLexer implements GrammarRuleKey{
                         b.skippedTrivia(whitespace(b))));
 
         b.rule(EOF).is(b.token(GenericTokenType.EOF, b.endOfInput()));
+        b.rule(IDENTIFIER).is(
+                b.nextNot(KEYWORD),
+                apexIdentifier(b),
+                SPACING
+        );
     }
 
     private static Object whitespace(LexerlessGrammarBuilder b) {
@@ -75,5 +113,9 @@ public enum ApexLexer implements GrammarRuleKey{
 
     private static Object multilineComment(LexerlessGrammarBuilder b) {
         return b.regexp("/\\*[\\s\\S]*?\\*\\/");
+    }
+
+    private static Object apexIdentifier(LexerlessGrammarBuilder b) {
+        return b.regexp("\\p{Alpha}(\\p{Alpha}|\\p{Digit}|\\_)*");
     }
 }
