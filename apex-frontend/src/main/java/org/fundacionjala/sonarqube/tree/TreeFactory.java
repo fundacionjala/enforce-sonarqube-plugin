@@ -56,9 +56,6 @@ public class TreeFactory {
         if (extendsDeclaration.isPresent()) {
             partial.completeSuperclass(extendsDeclaration.get());
         }
-      /*  if(implementsDeclaration.isPresent()) {
-
-        }*/
         return partial;
     }
 
@@ -267,7 +264,6 @@ public class TreeFactory {
 
             partial.add(0, variableTree);
 
-            // store the comma as endToken for the variable
             variableTree.setEndToken(comma);
 
             return partial;
@@ -320,14 +316,4 @@ public class TreeFactory {
         return new BlockTreeImpl(openBrace, blockStatements, closeBrace);
     }
 
-/*    public <T extends Tree> T defineClassOrInterfaceType(InternalSyntaxToken token, Optional<List<Tuple<InternalSyntaxToken, InternalSyntaxToken>>> listOptional) {
-        ClassOrInterfaceTypeTreeImpl result;
-        if(listOptional.isPresent()) {
-            for(Tuple<InternalSyntaxToken, InternalSyntaxToken> rest : listOptional.get()) {
-                InternalSyntaxToken dotToken = rest.getFirstElement();
-                result = new ClassOrInterfaceTypeTreeImpl(token,)
-            }
-        }
-        return (T) result;
-    }*/
 }

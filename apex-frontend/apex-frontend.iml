@@ -11,6 +11,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.sonarsource.sslr:sslr-testing-harness:1.21" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.sonarsource.sslr:sslr-toolkit:1.21" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.sonarsource.sslr:sslr-xpath:1.21" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-all:1.1" level="project" />
     <orderEntry type="module" module-name="apex-checks" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.sonarsource.sonarqube:sonar-plugin-api:6.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.woodstox:woodstox-core-lgpl:4.4.0" level="project" />

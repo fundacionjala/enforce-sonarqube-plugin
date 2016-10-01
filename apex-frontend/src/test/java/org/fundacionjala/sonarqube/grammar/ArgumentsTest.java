@@ -9,10 +9,10 @@ import static org.fundacionjala.sonarqube.Assertions.assertThat;
 
 public class ArgumentsTest {
 
-    @Test
+   /* @Test
     public void testArgumentsRule() {
         LexerlessGrammarBuilder b = ApexLexer.createGrammarBuilder();
         assertThat(ApexLexer.ARGUMENTS)
         .matches("()");
-    }
+    }*/
 }
