@@ -12,6 +12,7 @@ import org.fundacionjala.sonarqube.tree.ApexNodeBuilder;
 import org.fundacionjala.sonarqube.tree.ApexTree;
 import org.fundacionjala.sonarqube.tree.Tree;
 import org.fundacionjala.sonarqube.tree.TreeFactory;
+import org.fundacionjala.sonarqube.treeimplementation.FormalParametersListTreeImpl;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import org.sonar.sslr.tests.ParsingResultComparisonFailure;
@@ -47,6 +48,9 @@ public class Assertions {
             ApexTree tree = (ApexTree) actual.parse(input);
             InternalSyntaxToken syntaxToken = (InternalSyntaxToken) tree.lastToken();
             //FIXME ugly hack to get closing parenthesis of formal parameter list
+            if(tree instanceof FormalParametersListTreeImpl && ((FormalParametersListTreeImpl) tree).closeParenToken() != null) {
+                syntaxToken = ((FormalParametersListTreeImpl) tree).closeParenToken();
+            }
             if (syntaxToken == null || (!syntaxToken.isEOF() && (syntaxToken.column()+syntaxToken.text().length() != input.length()))) {
                 if (syntaxToken == null)  {
                     throw new RecognitionException(0, "Did not match till EOF : Last syntax token cannot be found");

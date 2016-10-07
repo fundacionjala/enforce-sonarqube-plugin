@@ -1,18 +1,19 @@
 package org.fundacionjala.sonarqube.grammar;
 
-import org.fundacionjala.sonarqube.parser.ApexGrammar;
 import org.fundacionjala.sonarqube.parser.ApexLexer;
 import org.junit.Test;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
 import static org.fundacionjala.sonarqube.Assertions.assertThat;
 
-public class ArgumentsTest {
+public class IfStatementTest {
 
     @Test
-    public void testArgumentsRule() {
+    public void testIfStatementCorrect() {
         LexerlessGrammarBuilder b = ApexLexer.createGrammarBuilder();
-        assertThat(b, ApexLexer.ARGUMENTS)
-        .matches("(someArgument, anotherArgument)");
+        assertThat(b, ApexLexer.IF_STATEMENT)
+              .matches("if(value == value){}")
+              .matches("if(number && number){}else{}");
     }
+
 }

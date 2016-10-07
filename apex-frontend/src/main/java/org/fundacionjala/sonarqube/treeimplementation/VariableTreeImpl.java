@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
 import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
-import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -15,6 +14,7 @@ import java.util.Collections;
 public class VariableTreeImpl extends ApexTree implements VariableTree {
 
     private ModifiersTree modifiers;
+    private InternalSyntaxToken finalToken;
     private TypeTree type;
     private InternalSyntaxToken simpleName;
     @Nullable
@@ -27,10 +27,10 @@ public class VariableTreeImpl extends ApexTree implements VariableTree {
     // Syntax tree holders
     private boolean vararg = false;
 
-    public VariableTreeImpl(IdentifierTreeImpl simpleName) {
+    public VariableTreeImpl(InternalSyntaxToken simpleName) {
         super(Kind.VARIABLE);
         this.modifiers = ModifiersTreeImpl.emptyModifiers();
-        this.simpleName = simpleName();
+        this.simpleName = simpleName;
         this.initializer = null;
 
     }
@@ -54,14 +54,14 @@ public class VariableTreeImpl extends ApexTree implements VariableTree {
         return this;
     }
 
-    public VariableTreeImpl completeModifiers(ModifiersTreeImpl modifiers) {
-        this.modifiers = modifiers;
+    public VariableTreeImpl completeFinalToken(InternalSyntaxToken finalToken) {
+        this.finalToken = finalToken;
 
         return this;
     }
 
-    public VariableTreeImpl completeModifiersAndType(ModifiersTreeImpl modifiers, TypeTree type) {
-        return completeModifiers(modifiers).
+    public VariableTreeImpl completeFinalKeywordAndType(InternalSyntaxToken finalToken, TypeTree type) {
+        return completeFinalToken(finalToken).
                 completeType(type);
     }
 

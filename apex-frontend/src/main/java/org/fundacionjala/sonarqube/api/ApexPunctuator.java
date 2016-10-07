@@ -24,7 +24,16 @@ public enum ApexPunctuator implements GrammarRuleKey{
     SREQU(">>="),
     BSREQU(">>>="),
     LPOINT("<"),
-    RPOINT(">");
+    RPOINT(">"),
+    QUERY("?"),
+    COLON(":"),
+    OROR("||"),
+    ANDAND("&&"),
+    EQUAL("=="),
+    NOTEQUAL("!="),
+    STAR("*"),
+    DIV("/"),
+    AND("&");
 
     private final String value;
     ApexPunctuator(String word) {this.value = word;}

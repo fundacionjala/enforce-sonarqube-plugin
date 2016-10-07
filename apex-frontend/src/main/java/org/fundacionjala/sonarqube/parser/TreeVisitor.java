@@ -33,6 +33,12 @@ public interface TreeVisitor {
 
     void visitIfStatement(IfStatementTreeImpl ifStatementTree);
 
+    void visitMethod(MethodTreeImpl methodTree);
+
+    void visitConditionalExpression(ConditionalExpressionTreeImpl conditionalExpressionTree);
+
+    void visitBinaryExpression(BinaryExpressionTreeImpl binaryExpressionTree);
+
 
 
     /*void visitClassOrInterfaceType(ClassOrInterfaceTypeTreeImpl classOrInterfaceTypeTree);*/

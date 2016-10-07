@@ -70,7 +70,24 @@ public interface Tree {
         EXPRESSION_STATEMENT(ExpressionStatementTree.class),
 
         TYPE(SimpleTypeTreeImpl.class),
-        IF_STATEMENT(IfStatementTree.class);
+
+        IF_STATEMENT(IfStatementTree.class),
+
+        CONDITIONAL_EXPRESSION(ConditionalExpressionTree.class),
+
+        MULTIPLY(BinaryExpressionTree.class),
+
+        DIVIDE(BinaryExpressionTree.class),
+
+        EQUAL_TO(BinaryExpressionTree.class),
+
+        NOT_EQUAL_TO(BinaryExpressionTree.class),
+
+        AND(BinaryExpressionTree.class),
+
+        CONDITIONAL_AND(BinaryExpressionTree.class),
+
+        CONDITIONAL_OR(BinaryExpressionTree.class);
 
         final Class<? extends Tree> associatedInterface;
 

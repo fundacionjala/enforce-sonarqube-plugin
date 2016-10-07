@@ -12,7 +12,18 @@ public class CompilationUnitTest {
     public void testCompilationUnit() {
         LexerlessGrammarBuilder b = ApexLexer.createGrammarBuilder();
         assertThat(ApexLexer.COMPILATION_UNIT)
-                .matches("public class something_123 extends anotherClass{}")
-                .matches("public with sharing class something_223 {}");
+                .matches("public class something_123 extends anotherClass{" +
+                        "    private static string method1(){}" +
+                        "}")
+                .matches("public with sharing class something_223 {" +
+                        "    public string method2(){" +
+                        "        if(number != number){" +
+                        "        }" +
+                        "    }" +
+                        "}")
+                .matches("public with sharing class somethingSimple{" +
+                        "    public static string methodOther(){" +
+                        "    } " +
+                        "}");
     }
 }

@@ -16,11 +16,17 @@ public class BlockTreeImpl extends ApexTree implements BlockTree{
     private final List<StatementTree> body;
     private final InternalSyntaxToken closeBraceToken;
 
-    public BlockTreeImpl(InternalSyntaxToken openBraceToken, List<StatementTree> body, InternalSyntaxToken closeBraceToken) {
-        this(Kind.BLOCK, openBraceToken, body, closeBraceToken);
+    public BlockTreeImpl(InternalSyntaxToken openBraceToken,
+                         List<StatementTree> body,
+                         InternalSyntaxToken closeBraceToken) {
+        this(Kind.BLOCK, openBraceToken,
+                body,
+                closeBraceToken);
     }
 
-    public BlockTreeImpl(Kind kind, InternalSyntaxToken openBraceToken, List<StatementTree> body, InternalSyntaxToken closeBraceToken) {
+    public BlockTreeImpl(Kind kind, InternalSyntaxToken openBraceToken,
+                         List<StatementTree> body,
+                         InternalSyntaxToken closeBraceToken) {
         super(kind);
 
         this.kind = kind;
@@ -58,7 +64,7 @@ public class BlockTreeImpl extends ApexTree implements BlockTree{
     public Iterable<Tree> children() {
         return Iterables.concat(
                 Collections.singletonList(openBraceToken),
-                body,
+                /*body,*/
                 Collections.singletonList(closeBraceToken));
     }
 }

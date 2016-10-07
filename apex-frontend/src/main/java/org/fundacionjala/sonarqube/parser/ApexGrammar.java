@@ -3,13 +3,11 @@ package org.fundacionjala.sonarqube.parser;
 import com.sonar.sslr.api.typed.GrammarBuilder;
 import com.sonar.sslr.api.typed.Optional;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.Tuple;
 import org.fundacionjala.sonarqube.api.ApexKeyword;
 import org.fundacionjala.sonarqube.api.ApexPunctuator;
 import org.fundacionjala.sonarqube.tree.*;
 import org.fundacionjala.sonarqube.treeimplementation.*;
 
-import java.beans.Expression;
 import java.util.List;
 
 public class ApexGrammar {
@@ -43,6 +41,7 @@ public class ApexGrammar {
                                 b.token(ApexKeyword.TRANSIENT))));
     }
 
+    //Compilation Unit
     public CompilationUnitTreeImpl COMPILATION_UNIT() {
         return b.<CompilationUnitTreeImpl>nonterminal(ApexLexer.COMPILATION_UNIT)
                 .is(
@@ -130,20 +129,234 @@ public class ApexGrammar {
                         b.token(ApexKeyword.LIMIT)
                 ));
     }
+    // end of Compilation Unit
 
     public ClassTreeImpl CLASS_BODY() {
         return b.<ClassTreeImpl>nonterminal(ApexLexer.CLASS_BODY)
                 .is(
                   f.newClassBody(
-                    b.token(ApexPunctuator.LBRACE),
-                    b.zeroOrMore(CLASS_MEMBER()),
-                    b.token(ApexPunctuator.RBRACE)));
+                          b.token(ApexPunctuator.LBRACE),
+                          b.oneOrMore(CLASS_OR_INTERFACE_MEMBER()),
+                          b.token(ApexPunctuator.RBRACE)));
     }
 
-    public ApexTree CLASS_MEMBER() {
+    public ApexTree CLASS_OR_INTERFACE_MEMBER() {
         return b.<ApexTree>nonterminal(ApexLexer.MEMBER_DECLARATION)
                 .is(
-                    f.newEmptyMember(b.token(ApexPunctuator.SEMICOLON))
+                    b.firstOf(
+                            f.completeMember(
+                                    MODIFIERS(),
+                                    METHOD_DECLARATION()
+                            ),
+                            f.newEmptyMember(b.token(ApexPunctuator.SEMICOLON))));
+    }
+
+    public MethodTreeImpl METHOD_DECLARATION() {
+        return b.<MethodTreeImpl>nonterminal()
+                .is(
+                   f.newMethod(
+                           TYPE(),
+                           b.token(ApexLexer.IDENTIFIER),
+                           FORMAL_PARAMETERS(),
+                           BLOCK()));
+    }
+
+    public BlockTreeImpl BLOCK() {
+        return b.<BlockTreeImpl>nonterminal(ApexLexer.BLOCK)
+                .is(f.block(b.token(ApexPunctuator.LBRACE), BLOCK_STATEMENTS(), b.token(ApexPunctuator.RBRACE)));
+    }
+
+    public BlockStatementListTreeImpl BLOCK_STATEMENTS() {
+        return b.<BlockStatementListTreeImpl>nonterminal(ApexLexer.BLOCK_STATEMENTS)
+                .is(f.blockStatements(b.zeroOrMore(BLOCK_STATEMENT())));
+    }
+
+    public BlockStatementListTreeImpl BLOCK_STATEMENT() {
+        return b.<BlockStatementListTreeImpl>nonterminal(ApexLexer.BLOCK_STATEMENT)
+                .is(
+                  f.wrapInBlockStatements(STATEMENT()));
+    }
+
+    public StatementTree STATEMENT() {
+        return b.<StatementTree>nonterminal(ApexLexer.STATEMENT)
+           .is(
+              b.firstOf(
+                      BLOCK(),
+                      IF_STATEMENT(),
+                      EMPTY_STATEMENT(),
+                      EXPRESSION_STATEMENT()));
+    }
+
+    public ExpressionStatementTreeImpl EXPRESSION_STATEMENT() {
+        return b.<ExpressionStatementTreeImpl>nonterminal(ApexLexer.EXPRESSION_STATEMENT)
+                .is(f.expressionStatement(EXPRESSION(), b.token(ApexPunctuator.SEMICOLON)));
+    }
+
+    public IfStatementTreeImpl IF_STATEMENT() {
+        return b.<IfStatementTreeImpl>nonterminal(ApexLexer.IF_STATEMENT)
+                .is(
+                        f.completeIf(
+                                b.token(ApexKeyword.IF),
+                                b.token(ApexPunctuator.LPAREN),
+                                EXPRESSION(),
+                                b.token(ApexPunctuator.RPAREN),
+                                STATEMENT(),
+                                b.optional(
+                                        f.newIfWithElse(b.token(ApexKeyword.ELSE), STATEMENT()))));
+    }
+
+    public EmptyStatementTreeImpl EMPTY_STATEMENT() {
+        return b.<EmptyStatementTreeImpl>nonterminal(ApexLexer.EMPTY_STATEMENT)
+                .is(f.emptyStatement(b.token(ApexPunctuator.SEMICOLON)));
+    }
+
+    public ExpressionTree EXPRESSION() {
+        return b.<ExpressionTree>nonterminal(ApexLexer.EXPRESSION)
+                .is(CONDITIONAL_EXPRESSION());
+    }
+
+    public ExpressionTree CONDITIONAL_EXPRESSION() {
+        return b.<ExpressionTree>nonterminal(ApexLexer.CONDITIONAL_EXPRESSION)
+                .is(
+                  f.completeTernaryExpression(
+                    CONDITIONAL_OR_EXPRESSION(),
+                    b.optional(
+                    f.newTernaryExpression(
+                      b.token(ApexPunctuator.QUERY),
+                      EXPRESSION(),
+                      b.token(ApexPunctuator.COLON),
+                      EXPRESSION()))));
+    }
+
+    public ExpressionTree CONDITIONAL_OR_EXPRESSION() {
+        return b.<ExpressionTree>nonterminal(ApexLexer.CONDITIONAL_OR_EXPRESSION)
+                .is(
+                 f.binaryExpression10(
+                   CONDITIONAL_AND_EXPRESSION(),
+                   b.zeroOrMore(
+                     f.newOperatorAndOperand10(
+                     b.token(ApexPunctuator.OROR),
+                     CONDITIONAL_AND_EXPRESSION()))));
+    }
+
+    public ExpressionTree CONDITIONAL_AND_EXPRESSION() {
+        return b.<ExpressionTree>nonterminal(ApexLexer.CONDITIONAL_AND_EXPRESSION)
+                .is(
+                  f.binaryExpression9(
+                    EQUALITY_EXPRESSION(),
+                    b.zeroOrMore(
+                      f.newOperatorAndOperand9(
+                        b.token(ApexPunctuator.ANDAND),
+                        EQUALITY_EXPRESSION()))));
+    }
+
+    public ExpressionTree EQUALITY_EXPRESSION() {
+        return b.<ExpressionTree>nonterminal(ApexLexer.EQUALITY_EXPRESSION)
+                .is(
+                   f.binaryExpression5(
+                     PRIMARY_EXPRESSION(),
+                     b.zeroOrMore(
+                       f.newOperatorAndOperand5(
+                         b.firstOf(
+                           b.token(ApexPunctuator.EQUAL),
+                           b.token(ApexPunctuator.NOTEQUAL)),
+                         PRIMARY_EXPRESSION()))));
+    }
+
+    public ExpressionTree PRIMARY_EXPRESSION() {
+        return b.<ExpressionTree>nonterminal(ApexLexer.PRIMARY_EXPRESSION)
+                .is(
+                    f.applySelectors1(
+                    PRIMARY_PREFIX(),
+                    b.zeroOrMore(
+                           PRIMARY_SUFFIX()
+                    ))
                 );
     }
+
+    public ExpressionTree PRIMARY_PREFIX() {
+        return b.<ExpressionTree>nonterminal(ApexLexer.PRIMARY_PREFIX)
+                .is(
+                    IDENTIFIER_OR_METHOD_INVOCATION());
+    }
+
+    public TreeFactory.Tuple<Optional<InternalSyntaxToken>, ExpressionTree> PRIMARY_SUFFIX() {
+        return b.<TreeFactory.Tuple<Optional<InternalSyntaxToken>, ExpressionTree>>nonterminal(ApexLexer.PRIMARY_SUFFIX)
+                .is(
+                  f.completeMemberSelectOrMethodSelector(b.token(ApexPunctuator.DOT), IDENTIFIER_OR_METHOD_INVOCATION()));
+    }
+
+    public ExpressionTree IDENTIFIER_OR_METHOD_INVOCATION() {
+        return b.<ExpressionTree>nonterminal(ApexLexer.IDENTIFIER_OR_METHOD_INVOCATION)
+                .is(
+                   f.newIdentifierOrMethodInvocation(
+                     b.firstOf(
+                       b.token(ApexLexer.IDENTIFIER),
+                       b.token(ApexKeyword.THIS),
+                       b.token(ApexKeyword.SUPER)),
+                     b.optional(ARGUMENTS())));
+    }
+
+    public ArgumentListTreeImpl ARGUMENTS() {
+        return b.<ArgumentListTreeImpl>nonterminal(ApexLexer.ARGUMENTS)
+                .is(
+                  f.completeArguments(
+                    b.token(ApexPunctuator.LPAREN),
+                    b.optional(
+                    f.newArguments(
+                      EXPRESSION(),
+                      b.zeroOrMore(f.newTuple20(b.token(ApexPunctuator.COMMA), EXPRESSION())))),
+                    b.token(ApexPunctuator.RPAREN)));
+    }
+
+//Formal Parameters
+    public FormalParametersListTreeImpl FORMAL_PARAMETERS() {
+        return b.<FormalParametersListTreeImpl>nonterminal(ApexLexer.FORMAL_PARAMETERS)
+                .is(
+                   f.completeParenFormalParameters(
+                           b.token(ApexPunctuator.LPAREN),
+                           b.optional(FORMAL_PARAMETERS_DECLS()),
+                           b.token(ApexPunctuator.RPAREN)));
+    }
+
+    public FormalParametersListTreeImpl FORMAL_PARAMETERS_DECLS() {
+        return b.<FormalParametersListTreeImpl>nonterminal(ApexLexer.FORMAL_PARAMETER)
+                .is(
+                        f.completeFormalParametersDecls(
+                                b.optional(b.token(ApexKeyword.FINAL)),
+                                TYPE(),
+                                FORMAL_PARAMETERS_DECLS_REST()));
+    }
+
+    public FormalParametersListTreeImpl FORMAL_PARAMETERS_DECLS_REST() {
+        return b.<FormalParametersListTreeImpl>nonterminal(ApexLexer.FORMAL_PARAMETERS_DECLS_REST)
+                .is(
+                   f.prependNewFormalParameter(
+                           VARIABLE_DECLARATOR_ID(),
+                           b.optional(f.newTuple18(b.token(ApexPunctuator.COMMA), FORMAL_PARAMETERS_DECLS()))));
+    }
+
+    public VariableTreeImpl VARIABLE_DECLARATOR_ID() {
+        return b.<VariableTreeImpl>nonterminal(ApexLexer.VARIABLE_DECLARATOR_ID)
+                .is(
+                        f.newVariableDeclaratorId(
+                                b.token(ApexLexer.IDENTIFIER)));
+    }
+//End formal parameters
+
+    public TypeTree TYPE() {
+        return b.<TypeTree>nonterminal(ApexLexer.TYPE)
+                .is(
+                  f.newType(
+                    b.firstOf(
+                      b.token(ApexLexer.ALLOWED_KEYWORDS_AS_IDENTIFIER),
+                      b.token(ApexLexer.SPECIAL_KEYWORDS_AS_IDENTIFIER)),
+                    b.zeroOrMore(
+                      f.newTuple1(
+                        b.token(ApexPunctuator.DOT),
+                        b.firstOf(
+                          b.token(ApexLexer.ALLOWED_KEYWORDS_AS_IDENTIFIER),
+                          b.token(ApexLexer.SPECIAL_KEYWORDS_AS_IDENTIFIER))))));
+    }
+
 }

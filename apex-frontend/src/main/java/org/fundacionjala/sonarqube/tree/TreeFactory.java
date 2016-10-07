@@ -5,8 +5,8 @@ import com.google.common.collect.Lists;
 import com.sonar.sslr.api.typed.Optional;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
 import org.fundacionjala.sonarqube.KindMaps;
-import org.fundacionjala.sonarqube.Tuple;
 import org.fundacionjala.sonarqube.api.ApexKeyword;
+import org.fundacionjala.sonarqube.api.ApexPunctuator;
 import org.fundacionjala.sonarqube.treeimplementation.*;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class TreeFactory {
     }
 
     public ClassTreeImpl newClassBody(InternalSyntaxToken openBraceToken,
-                                      Optional<List<ApexTree>> members,
+                                      List<ApexTree> members,
                                       InternalSyntaxToken closeBraceToken){
         return newClassBody(Tree.Kind.CLASS_OR_INTERFACE,openBraceToken, members, closeBraceToken);
     }
@@ -101,13 +101,13 @@ public class TreeFactory {
     }
 
     private static ClassTreeImpl newClassBody(Tree.Kind kind, InternalSyntaxToken openBrace,
-                                              Optional<List<ApexTree>> members, InternalSyntaxToken closeBrace) {
+                                              List<ApexTree> members, InternalSyntaxToken closeBrace) {
         ImmutableList.Builder<Tree> builder = ImmutableList.builder();
-        if (members.isPresent()) {
-            for (ApexTree member : members.get()) {
+        /*if (members.isPresent()) {*/
+            for (ApexTree member : members) {
                 builder.add(member);
             }
-        }
+        /*}*/
         return new ClassTreeImpl(kind, openBrace, builder.build(), closeBrace);
     }
 
@@ -122,10 +122,10 @@ public class TreeFactory {
         return new EmptyStatementTreeImpl(semicolonToken);
     }
 
-    public MethodTreeImpl newMethod(SyntaxToken type, InternalSyntaxToken identifier,
+    public MethodTreeImpl newMethod(TypeTree type, InternalSyntaxToken identifier,
                                     FormalParametersListTreeImpl parameters,
-                                    ApexTree blockOrSemicolon) {
-        return newMethodOrConstructor(Optional.of(type), identifier, parameters, blockOrSemicolon);
+                                    ApexTree block) {
+        return newMethodOrConstructor(Optional.of(type), identifier, parameters, block);
     }
 
     public ParenthesizedTreeImpl parenthesizedExpression(InternalSyntaxToken leftParen, ExpressionTree expression, InternalSyntaxToken rightParen) {
@@ -151,38 +151,25 @@ public class TreeFactory {
     }
 
     private static MethodTreeImpl newMethodOrConstructor(
-            Optional<SyntaxToken> type, InternalSyntaxToken identifierToken, FormalParametersListTreeImpl parameters,
-            ApexTree blockOrSemicolon) {
+            Optional<TypeTree> type, InternalSyntaxToken methodName,
+            FormalParametersListTreeImpl parameters,
+            ApexTree block) {
 
-        /*IdentifierTreeImpl identifier = new IdentifierTreeImpl(identifierToken);*/
-        SyntaxToken actualType;
+        TypeTree actualType;
         if(type.isPresent()) {
             actualType = type.get();
         } else {
             actualType = null;
         }
-        BlockTreeImpl block = null;
-        InternalSyntaxToken semicolonToken = null;
-        if (blockOrSemicolon.is(Tree.Kind.BLOCK)) {
-            block = (BlockTreeImpl) blockOrSemicolon;
-        } else {
-            semicolonToken = (InternalSyntaxToken) blockOrSemicolon;
-        }
-
-        return new MethodTreeImpl(
-                actualType,
-                identifierToken,
-                parameters,
-                block,
-                semicolonToken);
+        return new MethodTreeImpl(actualType, methodName, parameters, (BlockTreeImpl) block);
     }
 
     public ArgumentListTreeImpl completeArguments(InternalSyntaxToken openParenthesisToken,
-                                                  /*Optional<ArgumentListTreeImpl> expressions,*/
+                                                  Optional<ArgumentListTreeImpl> expressions,
                                                   InternalSyntaxToken closeParenthesisToken) {
-         /*expressions.isPresent() ?
-                expressions.get().complete(openParenthesisToken, closeParenthesisToken) :*/
-         return       new ArgumentListTreeImpl(openParenthesisToken, closeParenthesisToken);
+         return expressions.isPresent() ?
+                expressions.get().complete(openParenthesisToken, closeParenthesisToken) :
+                new ArgumentListTreeImpl(openParenthesisToken, closeParenthesisToken);
     }
 
     public ExpressionTree newIdentifierOrMethodInvocation(InternalSyntaxToken identifier
@@ -244,43 +231,46 @@ public class TreeFactory {
         return new ExpressionStatementTreeImpl(expression, semicolonToken);
     }
 
-    public FormalParametersListTreeImpl completeParenFormalParameters(InternalSyntaxToken openParenToken, Optional<FormalParametersListTreeImpl> partial,
+    public FormalParametersListTreeImpl completeParenFormalParameters(InternalSyntaxToken openParenToken,
+                                                                      Optional<FormalParametersListTreeImpl> partial,
                                                                       InternalSyntaxToken closeParenToken) {
 
         return partial.isPresent() ?
                 partial.get().complete(openParenToken, closeParenToken) :
-                new FormalParametersListTreeImpl(openParenToken, closeParenToken);
+                 new FormalParametersListTreeImpl(openParenToken, closeParenToken);
     }
 
     public VariableTreeImpl newVariableDeclaratorId(InternalSyntaxToken identifier) {
-            IdentifierTreeImpl identifierImpl = new IdentifierTreeImpl(identifier);
-            return new VariableTreeImpl(identifierImpl);
+            return new VariableTreeImpl(identifier);
     }
 
-    public FormalParametersListTreeImpl prependNewFormalParameter(VariableTreeImpl variableTree, Optional<Tuple<InternalSyntaxToken, FormalParametersListTreeImpl>> others) {
-        if (others.isPresent()) {
-            InternalSyntaxToken comma = others.get().getFirstElement();
-            FormalParametersListTreeImpl partial = others.get().getSecondElement();
+    public FormalParametersListTreeImpl prependNewFormalParameter(VariableTreeImpl variable, Optional<Tuple<InternalSyntaxToken, FormalParametersListTreeImpl>> otherParameters) {
+        if (otherParameters.isPresent()) {
+            InternalSyntaxToken comma = otherParameters.get().getFirstElement();
+            FormalParametersListTreeImpl partial = otherParameters.get().getSecondElement();
 
-            partial.add(0, variableTree);
+            partial.add(0, variable);
 
-            variableTree.setEndToken(comma);
+            variable.setEndToken(comma);
 
             return partial;
         } else {
-            return new FormalParametersListTreeImpl(variableTree);
+            return new FormalParametersListTreeImpl(variable);
         }
     }
 
-    public FormalParametersListTreeImpl completeTypeFormalParameters(ModifiersTreeImpl modifiers, TypeTree type, FormalParametersListTreeImpl partial) {
+    public FormalParametersListTreeImpl completeFormalParametersDecls(Optional<InternalSyntaxToken> finalToken, TypeTree type, FormalParametersListTreeImpl partial) {
         VariableTreeImpl variable = partial.get(0);
 
-        variable.completeModifiersAndType(modifiers, type);
+        if(finalToken.isPresent()) {
+            variable.completeFinalKeywordAndType(finalToken.get(), type);
+        }
 
         return partial;
     }
 
-    public SimpleTypeTreeImpl newType(InternalSyntaxToken identifier) {
+    public SimpleTypeTreeImpl newType(InternalSyntaxToken identifier,
+                                      Optional<List<Tuple<InternalSyntaxToken, InternalSyntaxToken>>> types) {
         return new SimpleTypeTreeImpl(identifier);
     }
 
@@ -288,7 +278,9 @@ public class TreeFactory {
         return new IfStatementTreeImpl(elseToken, elseStatement);
     }
 
-    public IfStatementTreeImpl completeIf(InternalSyntaxToken ifToken, InternalSyntaxToken openParen, ExpressionTree condition, InternalSyntaxToken closeParen, StatementTree statement, Optional<IfStatementTreeImpl> elseClause) {
+    public IfStatementTreeImpl completeIf(InternalSyntaxToken ifToken, InternalSyntaxToken openParen,
+                                          ExpressionTree condition,
+                                          InternalSyntaxToken closeParen, StatementTree statement, Optional<IfStatementTreeImpl> elseClause) {
         if (elseClause.isPresent()) {
            return elseClause.get().complete(ifToken, openParen, condition, closeParen, statement);
         } else {
@@ -312,8 +304,216 @@ public class TreeFactory {
         return new BlockStatementListTreeImpl(builder.build());
     }
 
-    public BlockTreeImpl block(InternalSyntaxToken openBrace, BlockStatementListTreeImpl blockStatements, InternalSyntaxToken closeBrace) {
-        return new BlockTreeImpl(openBrace, blockStatements, closeBrace);
+    public BlockTreeImpl block(InternalSyntaxToken openBrace,
+                               BlockStatementListTreeImpl blockStatements,
+                               InternalSyntaxToken closeBrace) {
+        return new BlockTreeImpl(openBrace,
+                blockStatements,
+                closeBrace);
     }
+
+    public ConditionalExpressionTreeImpl newTernaryExpression(InternalSyntaxToken queryToken, ExpressionTree trueExpression, InternalSyntaxToken colonToken, ExpressionTree falseExpression) {
+        return new ConditionalExpressionTreeImpl(queryToken, trueExpression, colonToken, falseExpression);
+    }
+
+    public ArgumentListTreeImpl newArguments(ExpressionTree expression, Optional<List<Tuple<InternalSyntaxToken, ExpressionTree>>> moreArgs) {
+        ImmutableList.Builder<ExpressionTree> expressions = ImmutableList.builder();
+        expressions.add(expression);
+        ImmutableList.Builder<SyntaxToken> separators = ImmutableList.builder();
+        if (moreArgs.isPresent()) {
+            for (Tuple<InternalSyntaxToken, ExpressionTree> rest : moreArgs.get()) {
+                separators.add(rest.getFirstElement());
+                expressions.add(rest.getSecondElement());
+            }
+        }
+
+        return new ArgumentListTreeImpl(expressions.build(), separators.build());
+    }
+
+    public OperatorAndOperand newOperatorAndOperand5(InternalSyntaxToken operator, ExpressionTree operand) {
+        return newOperatorAndOperand(operator, operand);
+    }
+
+    private OperatorAndOperand newOperatorAndOperand(InternalSyntaxToken operator, ExpressionTree operand) {
+        return new OperatorAndOperand(operator, operand);
+    }
+
+    public ExpressionTree binaryExpression5(ExpressionTree expression, Optional<List<OperatorAndOperand>> operatorAndOperands) {
+        return binaryExpression(expression, operatorAndOperands);
+    }
+
+    public OperatorAndOperand newOperatorAndOperand9(InternalSyntaxToken operator, ExpressionTree operand) {
+        return newOperatorAndOperand(operator, operand);
+    }
+
+    public ExpressionTree binaryExpression9(ExpressionTree expression, Optional<List<OperatorAndOperand>> operatorAndOperands) {
+        return binaryExpression(expression, operatorAndOperands);
+    }
+
+    private ExpressionTree binaryExpression(ExpressionTree expression, Optional<List<OperatorAndOperand>> operatorAndOperands) {
+        if(!operatorAndOperands.isPresent()) {
+            return expression;
+        }
+        ExpressionTree result = expression;
+        for (OperatorAndOperand operatorAndOperand : operatorAndOperands.get()) {
+            result = new BinaryExpressionTreeImpl(
+                    kindMaps.getBinaryOperator((ApexPunctuator) operatorAndOperand.operator().getGrammarRuleKey()),
+                    result,
+                    operatorAndOperand.operator(),
+                    operatorAndOperand.operand());
+        }
+        return result;
+    }
+
+    public OperatorAndOperand newOperatorAndOperand10(InternalSyntaxToken operator, ExpressionTree operand) {
+        return newOperatorAndOperand(operator, operand);
+    }
+
+    public ExpressionTree binaryExpression10(ExpressionTree expression, Optional<List<OperatorAndOperand>> operatorAndOperands) {
+        return binaryExpression(expression, operatorAndOperands);
+    }
+
+    public ExpressionTree completeTernaryExpression(ExpressionTree expression, Optional<ConditionalExpressionTreeImpl> partial) {
+        return partial.isPresent() ?
+                partial.get().complete(expression) :
+                expression;
+    }
+
+    // Helpers
+
+    public static class Tuple<T, U> {
+        private final T firstElement;
+        private final U secondElement;
+
+        public Tuple(T firstElement, U secondElement) {
+            this.firstElement = firstElement;
+            this.secondElement = secondElement;
+        }
+
+        public T getFirstElement() {
+            return firstElement;
+        }
+
+        public U getSecondElement() {
+            return secondElement;
+        }
+    }
+
+    private static <T, U> Tuple<T, U> newTuple(T first, U second) {
+        return new Tuple<>(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple1(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple2(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple3(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple4(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple5(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple6(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple7(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple8(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple9(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple10(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple11(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple12(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple14(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple16(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple17(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple18(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple19(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple20(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple21(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple22(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple23(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple24(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple25(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple26(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple27(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple28(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newTuple29(T first, U second) {
+        return newTuple(first, second);
+    }
+
+    public <T, U> Tuple<T, U> newAnnotatedDimension(T first, U second) {
+        return newTuple(first, second);
+    }
+
 
 }

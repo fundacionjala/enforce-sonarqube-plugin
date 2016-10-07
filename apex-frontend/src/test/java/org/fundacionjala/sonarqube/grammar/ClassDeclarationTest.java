@@ -13,8 +13,10 @@ public class ClassDeclarationTest {
     public void testClassDeclarationGooResult(){
         LexerlessGrammarBuilder b = ApexLexer.createGrammarBuilder();
         assertThat(b, ApexLexer.CLASS_DECLARATION)
-        .matches("class SomeIdentifier {}")
-        .matches("class Alphanumeric_123_identitifier{}")
-        .matches("class someClass_123 extends anotherClass {}");
+        .matches("class SomeIdentifier { public string method(){}}")
+        .matches("class Alphanumeric_123_identitifier{ private integer integerMethod(){}}")
+        .matches("class someClass_123 extends anotherClass {" +
+                "public string someMethod(){}" +
+                "}");
     }
 }

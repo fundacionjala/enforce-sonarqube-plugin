@@ -77,4 +77,19 @@ public class BaseTreeVisitor implements TreeVisitor{
     public void visitIfStatement(IfStatementTreeImpl ifStatementTree) {
 
     }
+
+    @Override
+    public void visitMethod(MethodTreeImpl methodTree) {
+
+    }
+
+    @Override
+    public void visitConditionalExpression(ConditionalExpressionTreeImpl conditionalExpressionTree) {
+
+    }
+
+    @Override
+    public void visitBinaryExpression(BinaryExpressionTreeImpl binaryExpressionTree) {
+
+    }
 }

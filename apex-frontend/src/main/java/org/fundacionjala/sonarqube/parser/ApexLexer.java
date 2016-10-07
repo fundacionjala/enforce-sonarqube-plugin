@@ -39,13 +39,17 @@ public enum ApexLexer implements GrammarRuleKey{
     CONDITIONAL_EXPRESSION,
     PRIMARY,
     PAR_EXPRESSION,
-    SELECTOR,
+    PRIMARY_SUFFIX,
     FORMAL_PARAMETERS,
     TYPE_PARAMETERS,
     TYPE,
     IDENTIFIER_OR_METHOD_INVOCATION,
     TYPE_ARGUMENTS,
-    ARGUMENTS, NEW_EXPRESSION, FORMAL_PARAMETERS_DECLS_REST, FORMAL_PARAMETER_DECLS, VARIABLE_DECLARATOR_ID;
+    ARGUMENTS,
+    NEW_EXPRESSION,
+    FORMAL_PARAMETERS_DECLS_REST,
+    FORMAL_PARAMETER,
+    VARIABLE_DECLARATOR_ID, BLOCK_STATEMENT, CONDITIONAL_OR_EXPRESSION, CONDITIONAL_AND_EXPRESSION, EQUALITY_EXPRESSION, PRIMARY_EXPRESSION, PRIMARY_PREFIX;
 
     public static LexerlessGrammarBuilder  createGrammarBuilder() {
         LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();
@@ -69,9 +73,16 @@ public enum ApexLexer implements GrammarRuleKey{
         punctuator(b, RBRACE, "}");
         punctuator(b, DOT, ".");
         punctuator(b, COMMA, ",");
+        punctuator(b, COLON, ":");
         punctuator(b, SEMICOLON, ";");
+        punctuator(b, EQUAL, "==");
+        punctuator(b, NOTEQUAL, "!=");
+        punctuator(b, QUERY, "?");
+        punctuator(b, OROR, "||");
         punctuator(b, LPAREN, "(");
         punctuator(b, RPAREN, ")");
+        punctuator(b, AND, "&", b.nextNot(b.firstOf("=", "&")));
+        punctuator(b, ANDAND, "&&");
     }
 
     private static void keywords(LexerlessGrammarBuilder b) {

@@ -8,87 +8,41 @@ import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class MethodTreeImpl extends ApexTree implements MethodTree{
 
-
     private ModifiersTree modifiers;
-    private TypeParameters typeParameters;
-    @Nullable
-    private InternalSyntaxToken returnType;
+    private TypeTree returnType;
     private InternalSyntaxToken simpleName;
     private final SyntaxToken openParenToken;
     private final FormalParametersListTreeImpl parameters;
     private final SyntaxToken closeParenToken;
-    @Nullable
     private final BlockTree block;
-    @Nullable
-    private SyntaxToken semicolonToken;
-    @Nullable
-    private final SyntaxToken throwsToken;
-    /*private final ListTree<TypeTree> throwsClauses;*/
-/*    private final SyntaxToken defaultToken;
-    private final ExpressionTree defaultValue;*/
 
-    public MethodTreeImpl(SyntaxToken returnType, InternalSyntaxToken simpleName,
-                          FormalParametersListTreeImpl parameters,
-                          BlockTree block,
-                          SyntaxToken semicolon) {
+    public MethodTreeImpl(
+            TypeTree returnType,
+            InternalSyntaxToken simpleName,
+            FormalParametersListTreeImpl parameters,
+            BlockTree block) {
+
         super(Kind.METHOD);
-        this.typeParameters = new TypeParameterListTreeImpl();
-        this.parameters = parameters;
+        this.returnType = returnType;
+        this.modifiers = null;
+        this.simpleName = Preconditions.checkNotNull(simpleName);
+        this.parameters = Preconditions.checkNotNull(parameters);
         this.openParenToken = parameters.openParenToken();
         this.closeParenToken = parameters.closeParenToken();
-        this.block = null;
-        this.throwsToken = null;
-    }
-
-    public MethodTreeImpl complete(InternalSyntaxToken returnType, InternalSyntaxToken simpleName, SyntaxToken semicolonToken) {
-        Preconditions.checkState(this.simpleName == null);
-        this.returnType = returnType;
-        this.simpleName = simpleName;
-        this.semicolonToken = semicolonToken;
-
-        return this;
-    }
-
-    public MethodTreeImpl completeWithTypeParameters(TypeParameterListTreeImpl typeParameters) {
-        this.typeParameters = typeParameters;
-        return this;
+        this.block = block;
     }
 
     public MethodTreeImpl completeWithModifiers(ModifiersTreeImpl modifiers) {
         Preconditions.checkState(this.modifiers == null);
         this.modifiers = modifiers;
+
         return this;
-    }
-
-    @Override
-    protected Iterable<Tree> children() {
-        ImmutableList.Builder<Tree> iteratorBuilder = ImmutableList.builder();
-        iteratorBuilder.add(modifiers, typeParameters);
-        if (returnType != null) {
-            iteratorBuilder.add(returnType);
-        }
-        iteratorBuilder.add(simpleName, openParenToken);
-        iteratorBuilder.addAll(parameters.iterator());
-        iteratorBuilder.add(closeParenToken);
-        if (throwsToken != null) {
-            iteratorBuilder.add(throwsToken);
-        }
-        //Posible error with default tokens.
-        if (block != null) {
-            iteratorBuilder.add(block);
-        } else {
-            iteratorBuilder.add(semicolonToken);
-        }
-        return iteratorBuilder.build();
-    }
-
-    @Override
-    public void accept(TreeVisitor visitor) {
-
     }
 
     @Override
@@ -101,8 +55,9 @@ public class MethodTreeImpl extends ApexTree implements MethodTree{
         return modifiers;
     }
 
+    @Nullable
     @Override
-    public InternalSyntaxToken returnType() {
+    public TypeTree returnType() {
         return returnType;
     }
 
@@ -110,4 +65,50 @@ public class MethodTreeImpl extends ApexTree implements MethodTree{
     public InternalSyntaxToken simpleName() {
         return simpleName;
     }
+
+    @Override
+    public SyntaxToken openParenToken() {
+        return openParenToken;
+    }
+
+    @Override
+    public List<VariableTree> parameters() {
+        return (List) parameters;
+    }
+
+    @Override
+    public SyntaxToken closeParenToken() {
+        return closeParenToken;
+    }
+
+
+    @Nullable
+    @Override
+    public BlockTree block() {
+        return block;
+    }
+
+    @Override
+    public void accept(TreeVisitor visitor) {
+        visitor.visitMethod(this);
+    }
+
+    @Override
+    public int getLine() {
+        return parameters.openParenToken().getLine();
+    }
+
+    @Override
+    public Iterable<Tree> children() {
+        ImmutableList.Builder<Tree> iteratorBuilder = ImmutableList.builder();
+        if (returnType != null) {
+            iteratorBuilder.add(returnType);
+        }
+        iteratorBuilder.add(simpleName, openParenToken);
+        iteratorBuilder.addAll(parameters.iterator());
+        iteratorBuilder.add(closeParenToken);
+        iteratorBuilder.add(block);
+        return iteratorBuilder.build();
+    }
+
 }
