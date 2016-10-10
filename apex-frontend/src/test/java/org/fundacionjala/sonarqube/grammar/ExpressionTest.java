@@ -13,7 +13,9 @@ public class ExpressionTest {
                 .matches("something ? someResult : anotherResult")
                 .matches("something || something")
                 .matches("something && something")
-                .matches("variable.isValid() == booleanVariable");
+                .matches("variable.isValid() == booleanVariable")
+                .matches("this(argument1, argument2, argument3)")
+                .matches("this.this");
     }
 
 }

@@ -22,11 +22,6 @@ public final class Apex extends AbstractLanguage {
         this.settings = settings;
     }
 
-    /**
-     * For example ["jav", "java"].
-     * If empty, then all files in source directories are considered as sources.
-     */
-
     public String[] getFileSuffixes() {
         String[] suffixes = filterEmptyStrings(settings.getStringArray(ApexPlugin.FILE_SUFFIXES_KEY));
         return suffixes.length == 0 ? DEFAULT_FILE_SUFFIXES : suffixes;

@@ -6,7 +6,7 @@ public class ThereMustbe____aclass_always123 extends anotherClass{
     }
 
     public integer calculate(integer addition, int takeAway, Display display) {
-        if (adition == takeAway) {
+        if (addition == takeAway) {
             display.invokeSomeMethod();
         } else {
 

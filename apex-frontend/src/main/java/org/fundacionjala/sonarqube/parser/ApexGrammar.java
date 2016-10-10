@@ -262,7 +262,7 @@ public class ApexGrammar {
                            b.token(ApexPunctuator.NOTEQUAL)),
                          PRIMARY_EXPRESSION()))));
     }
-
+    //fix this according apex grammar
     public ExpressionTree PRIMARY_EXPRESSION() {
         return b.<ExpressionTree>nonterminal(ApexLexer.PRIMARY_EXPRESSION)
                 .is(

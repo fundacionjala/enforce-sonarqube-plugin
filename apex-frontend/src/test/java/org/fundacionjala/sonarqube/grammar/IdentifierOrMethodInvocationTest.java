@@ -10,7 +10,9 @@ public class IdentifierOrMethodInvocationTest {
     @Test
     public void testIdentifierOrMethodInvocation() {
         assertThat(ApexLexer.IDENTIFIER_OR_METHOD_INVOCATION)
-                .matches("anIdentifier(andItsArguments, andItsOtherArguments)");
+                .matches("anIdentifier(andItsArguments, andItsOtherArguments)")
+                .matches("this()")
+                .matches("super");
     }
 
 

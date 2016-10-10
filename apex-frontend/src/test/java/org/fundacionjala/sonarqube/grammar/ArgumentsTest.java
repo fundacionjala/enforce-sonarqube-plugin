@@ -13,6 +13,8 @@ public class ArgumentsTest {
     public void testArgumentsRule() {
         LexerlessGrammarBuilder b = ApexLexer.createGrammarBuilder();
         assertThat(b, ApexLexer.ARGUMENTS)
-        .matches("(someArgument, anotherArgument)");
+        .matches("(someArgument, anotherArgument)")
+        .matches("(expression)")
+        .matches("()");
     }
 }
