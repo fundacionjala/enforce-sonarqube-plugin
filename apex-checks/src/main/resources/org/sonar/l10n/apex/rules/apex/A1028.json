@@ -1,0 +1,13 @@
+{
+    "title": "Catch blocks shouldn't be empty.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "2min"
+    },
+    "sqaleSubCharacteristic": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Major"
+}

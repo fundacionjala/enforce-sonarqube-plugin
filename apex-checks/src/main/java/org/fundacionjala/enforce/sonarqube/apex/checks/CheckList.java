@@ -69,6 +69,7 @@ public class CheckList {
                 AssertLiteralBooleanCheck.class,
                 TestMethodsParametersCheck.class,
                 AssertMessageCheck.class,
-                SoqlLimitCheck.class);
+                SoqlLimitCheck.class,
+                EmptyCatchCheck.class);
     }
 }
