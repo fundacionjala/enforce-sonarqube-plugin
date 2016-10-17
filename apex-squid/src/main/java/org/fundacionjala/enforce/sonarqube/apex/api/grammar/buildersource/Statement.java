@@ -33,6 +33,7 @@ public class Statement {
         forLoop(grammarBuilder);
         forStatement(grammarBuilder);
         tryStatement(grammarBuilder);
+        catchStatement(grammarBuilder);
         dmlOperation(grammarBuilder);
         dmlUpsert(grammarBuilder);
         dmlMerge(grammarBuilder);
@@ -249,6 +250,16 @@ public class Statement {
                 )
         );
     }
+    
+    private static void catchStatement(LexerfulGrammarBuilder grammarBuilder){
+    	grammarBuilder.rule(CATCH_STATEMENT).is(
+    			CATCH,
+    			LPAREN,
+    			FORMAL_PARAMETER,
+    			RPAREN,
+    			BLOCK
+		);
+    }
 
     /**
      * Defines the try statement rule.
@@ -260,11 +271,7 @@ public class Statement {
                 TRY,
                 BLOCK,
                 grammarBuilder.oneOrMore(
-                        CATCH,
-                        LPAREN,
-                        FORMAL_PARAMETER,
-                        RPAREN,
-                        BLOCK
+                		CATCH_STATEMENT
                 ),
                 grammarBuilder.optional(
                         FINALLY,
