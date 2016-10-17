@@ -43,7 +43,6 @@ public class MostUsed {
     private static void allowedKeywordsAsIdentifier(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ALLOWED_KEYWORDS_AS_IDENTIFIER).is(
                 grammarBuilder.firstOf(
-                        CASE,
                         IDENTIFIER,
                         TRANSIENT,
                         RETURNING,
