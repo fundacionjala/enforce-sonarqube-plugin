@@ -25,7 +25,7 @@ public class Apex extends AbstractLanguage {
     /**
      * Stores an array of the Apex's suffixes.
      */
-    public static final String[] DEFAULT_FILE_SUFFIXES = {"cls"};
+    public static final String[] DEFAULT_FILE_SUFFIXES = {"cls", "trigger"};
 
     /**
      * Stores the Apex name.
