@@ -48,8 +48,13 @@ public class Declaration {
         localVariableDeclaration(grammarBuilder);
         classOrInterfaceMember(grammarBuilder);
         classOrInterfaceBody(grammarBuilder);
+        triggerDeclaration(grammarBuilder);
+        triggerTargetDeclaration(grammarBuilder);
+        triggerEventsList(grammarBuilder);
+        triggerEventDelaration(grammarBuilder);
     }
 
+    
     private static void typeDeclaration(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(TYPE_DECLARATION).is(
                 MODIFIERS,
@@ -57,7 +62,76 @@ public class Declaration {
                         CLASS_OR_INTERFACE_DECLARATION,
                         ENUM_DECLARATION)
         );
-
+    }
+    
+    /**
+     * Grammar is created to identify a trigger
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void triggerDeclaration(LexerfulGrammarBuilder grammarBuilder){
+    	grammarBuilder.rule(TRIGGER_DECLARATION).is(
+    			TRIGGER,
+    			COMMON_IDENTIFIER,
+    			TRIGGER_TARGET_DECLARATION,
+    			TRIGGER_EVENTS_LIST,
+    			BLOCK
+		);
+    }
+    
+    /**
+     * Grammar is created to identify the target object of a trigger
+     * declaration
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void triggerTargetDeclaration(LexerfulGrammarBuilder grammarBuilder){
+    	grammarBuilder.rule(TRIGGER_TARGET_DECLARATION).is(
+    			ON,
+    			TYPE
+		);
+    }
+    
+    /**
+     * Grammar is created to identify the list of events for which the trigger
+     * fires
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void triggerEventsList(LexerfulGrammarBuilder grammarBuilder){
+    	grammarBuilder.rule(TRIGGER_EVENTS_LIST).is(
+    			LPAREN,
+    			TRIGGER_EVENT_DECLARATION,
+    			grammarBuilder.zeroOrMore(COMMA, TRIGGER_EVENT_DECLARATION),
+    			RPAREN
+		);
+    }
+    
+    /**
+     * Grammar is created to a single event for which the trigger fires
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void triggerEventDelaration(LexerfulGrammarBuilder grammarBuilder){
+    	grammarBuilder.rule(TRIGGER_EVENT_DECLARATION).is(
+    			grammarBuilder.firstOf(
+    					grammarBuilder.sequence(
+    							grammarBuilder.firstOf(
+    									BEFORE,
+    									AFTER
+								),
+    							grammarBuilder.firstOf(
+    									INSERT,
+    									UPDATE,
+    									DELETE
+								)
+						),
+    					grammarBuilder.sequence(
+    							AFTER,
+    							UNDELETE
+						)
+				)
+		);
     }
 
     /**

@@ -27,7 +27,7 @@ public class ApexTest {
     public void testApexProperties() {
         assertThat(apexLanguage.getKey(), is("apex"));
         assertThat(apexLanguage.getName(), is("Apex"));
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls", "trigger"}));
     }
 
     @Test
@@ -38,6 +38,6 @@ public class ApexTest {
         Settings settings = new Settings();
         settings.addProperties(props);
 
-        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls"}));
+        assertThat(apexLanguage.getFileSuffixes(), is(new String[]{"cls", "trigger"}));
     }
 }
