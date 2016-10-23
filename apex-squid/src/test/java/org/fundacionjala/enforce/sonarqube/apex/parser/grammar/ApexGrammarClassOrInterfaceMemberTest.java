@@ -40,7 +40,9 @@ public class ApexGrammarClassOrInterfaceMemberTest extends ApexRuleTest {
                 //a property
                 .matches("private string Prop {private get; set;}")
                 .matches("@someAnnotation\n"
-                        + "public global static void aMethodWithLoops(list<integer> collection) {}");
+                        + "public global static void aMethodWithLoops(list<integer> collection) {}")
+                //case return type and param
+                .matches("private Case caseReturnMethod(Case c){}");
     }
     
     @Test

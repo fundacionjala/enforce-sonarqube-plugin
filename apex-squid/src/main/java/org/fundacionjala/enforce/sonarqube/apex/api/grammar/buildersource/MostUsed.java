@@ -61,7 +61,8 @@ public class MostUsed {
                         NETWORK,
                         ITERATOR,
                         COUNT,
-                        ORDER));
+                        ORDER,
+                        CASE));
     }
 
     /**
