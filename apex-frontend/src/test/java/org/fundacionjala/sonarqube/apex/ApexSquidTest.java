@@ -54,13 +54,13 @@ public class ApexSquidTest {
     //TODO: Delete this test after checks implementation.
     @Test
     public void testSimulatedCheck() {
-        List<TreeVisitor> visitors = Lists.newArrayList();
+       /* List<TreeVisitor> visitors = Lists.newArrayList();
         visitors.add(new MethodInvocationCheck());
         apexSquid.scanFiles(filesToScan, visitors);
         List<Issue> uniqueIssue = BaseTreeVisitorCheck.getIssues();
         if (!uniqueIssue.isEmpty()) {
             String message = uniqueIssue.get(0).getMessage();
             assertEquals(message, "There is a literal return from methodInvocation.");
-        }
+        }*/
     }
 }

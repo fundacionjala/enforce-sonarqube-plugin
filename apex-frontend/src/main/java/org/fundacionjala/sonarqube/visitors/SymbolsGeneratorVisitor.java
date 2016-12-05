@@ -45,21 +45,25 @@ public class SymbolsGeneratorVisitor extends BaseTreeVisitor {
 
         } else {
             enterScope(tree);
-            List<Tree> children = Lists.newArrayList(((BlockTreeImpl) tree).children());
-            int index = 0;
-            while (index < children.size()) {
-                Tree currentTree = children.get(index);
-                if (!currentTree.is(Tree.Kind.VARIABLE) && !((VariableTreeImpl) currentTree).simpleName().simpleName().matches(RETURN)) {
+            List<StatementTree> bodyBlock = tree.body();
+            if (!bodyBlock.isEmpty()) {
+                int index = 0;
+                boolean hasReturnKeywork = false;
+                while (!hasReturnKeywork && index < bodyBlock.size()) {
+                    Tree currentTree = bodyBlock.get(index);
+                    if (currentTree.is(Tree.Kind.VARIABLE) && ((VariableTreeImpl) currentTree).simpleName().simpleName().matches(RETURN)) {
+                        hasReturnKeywork = true;
+                    }
                     index++;
                 }
-            }
-            Tree returnValue = children.get(index++);
-            if (returnValue.is(Tree.Kind.EXPRESSION_STATEMENT) &&
-                    ((ExpressionStatementTreeImpl) returnValue).expression().is(Tree.Kind.IDENTIFIER)
-                    && ((IdentifierTree) ((ExpressionStatementTreeImpl) returnValue).expression()).simpleName().matches(BOOLEAN_REGEX)) {
-                String returnValueName = ((IdentifierTree) ((ExpressionStatementTreeImpl) returnValue).expression()).simpleName();
-                //TODO: retrieve parent from block tree and use it to get to method tree and add this return value as variable or something.
-                List<Symbol> methods = ((SymbolModelImpl) symbolModel).getSymbols(Symbol.Kind.METHOD);
+                Tree returnValue = bodyBlock.get(index++);
+                if (returnValue.is(Tree.Kind.EXPRESSION_STATEMENT) &&
+                        ((ExpressionStatementTreeImpl) returnValue).expression().is(Tree.Kind.IDENTIFIER)
+                        && ((IdentifierTree) ((ExpressionStatementTreeImpl) returnValue).expression()).simpleName().matches(BOOLEAN_REGEX)) {
+                    String returnValueName = ((IdentifierTree) ((ExpressionStatementTreeImpl) returnValue).expression()).simpleName();
+                    //TODO: retrieve parent from block tree and use it to get to method tree and add this return value as variable or something.
+                    List<Symbol> methods = ((SymbolModelImpl) symbolModel).getSymbols(Symbol.Kind.METHOD);
+                }
             }
             super.visitBlock(tree);
             leaveScope();
