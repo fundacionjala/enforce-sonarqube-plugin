@@ -2,11 +2,11 @@ package org.fundacionjala.sonarqube.treeimplementation;
 
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
 import org.fundacionjala.sonarqube.api.ApexPunctuator;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.ApexTree;
 import org.fundacionjala.sonarqube.tree.ClassOrInterfaceTypeTree;
 import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.tree.Tree;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import javax.annotation.Nullable;
 
@@ -39,14 +39,8 @@ public class ClassOrInterfaceTypeTreeImpl extends ApexTree implements ClassOrInt
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
 
-    }
-
-    @Nullable
-    @Override
-    public Tree parent() {
-        return null;
     }
 
     @Override

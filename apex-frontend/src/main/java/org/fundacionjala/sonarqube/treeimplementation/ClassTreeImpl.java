@@ -2,8 +2,9 @@ package org.fundacionjala.sonarqube.treeimplementation;
 
 import com.google.common.collect.Iterables;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
+import org.fundacionjala.sonarqube.semantic.Symbol;
 import org.fundacionjala.sonarqube.tree.*;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -11,25 +12,18 @@ import java.util.List;
 
 public class ClassTreeImpl extends ApexTree implements ClassTree{
     private final Kind kind;
-    @Nullable
     private final SyntaxToken openBraceToken;
     private final List<Tree> members;
-    private SyntaxToken withOrWithougToken;
-    @Nullable
+    private SyntaxToken withOrWithoutToken;
     private final SyntaxToken closeBraceToken;
     private ModifiersTree modifiers;
-    private SyntaxToken atToken;
     private SyntaxToken declarationKeyword;
-    private InternalSyntaxToken simpleName;
+    private IdentifierTree simpleName;
     private TypeParameters typeParameters;
-    @Nullable
     private SyntaxToken extendsKeyword;
-    @Nullable
     private InternalSyntaxToken superClass;
-    @Nullable
-    private SyntaxToken implementsKeyword;
-    private ListTree<TypeTree> superInterfaces;
     private InternalSyntaxToken sharingToken;
+    private Symbol.Kind symbol = Symbol.Kind.CLASS;
 
     public ClassTreeImpl(Kind kind, SyntaxToken openBraceToken, List<Tree> members, SyntaxToken closeBraceToken) {
         super(kind);
@@ -41,11 +35,8 @@ public class ClassTreeImpl extends ApexTree implements ClassTree{
         this.modifiers = ModifiersTreeImpl.emptyModifiers();
     }
 
-    //Delete this constructor when members will being implemented
-
-
     public ClassTreeImpl completeSharingRules(List<InternalSyntaxToken> sharingRules) {
-        this.withOrWithougToken = sharingRules.iterator().next();
+        this.withOrWithoutToken = sharingRules.iterator().next();
         this.sharingToken = sharingRules.iterator().next();
         return this;
     }
@@ -55,8 +46,8 @@ public class ClassTreeImpl extends ApexTree implements ClassTree{
         return this;
     }
 
-    public ClassTreeImpl completeIdentifier(NamingKeywordsTree identifier) {
-        this.simpleName = identifier.idendifier();
+    public ClassTreeImpl completeIdentifier(IdentifierTree identifier) {
+        this.simpleName = identifier;
         return this;
     }
 
@@ -65,18 +56,6 @@ public class ClassTreeImpl extends ApexTree implements ClassTree{
         this.superClass = extensions.iterator().next();
         return this;
     }
-/*
-
-    public ClassTreeImpl completeInterfaces(SyntaxToken keyword, QualifiedIdentifierListTreeImpl interfaces) {
-        if (is(Kind.INTERFACE)) {
-            extendsKeyword = keyword;
-        } else {
-            implementsKeyword = keyword;
-        }
-        this.superInterfaces = interfaces;
-        return this;
-    }
-*/
 
     public ClassTreeImpl completeDeclarationKeyword(SyntaxToken declarationKeyword) {
         this.declarationKeyword = declarationKeyword;
@@ -90,31 +69,20 @@ public class ClassTreeImpl extends ApexTree implements ClassTree{
 
    @Nullable
     @Override
-    public InternalSyntaxToken simpleName() {
+    public IdentifierTree simpleName() {
         return simpleName;
     }
 
-/*    @Override
+    @Override
     public TypeParameters typeParameters() {
-        return typeParameters;
+        return null;
     }
-*/
+
     @Override
     public ModifiersTree modifiers() {
         return modifiers;
     }
-/*
-    @Nullable
-    @Override
-    public TypeTree superClass() {
-        return superClass;
-    }
 
-    @Override
-    public ListTree<TypeTree> superInterfaces() {
-        return superInterfaces;
-    }
-*/
     @Nullable
     @Override
     public SyntaxToken openBraceToken() {
@@ -132,6 +100,11 @@ public class ClassTreeImpl extends ApexTree implements ClassTree{
         return closeBraceToken;
     }
 
+    @Override
+    public Symbol.Kind symbol() {
+        return symbol;
+    }
+
     @Nullable
     @Override
     public SyntaxToken declarationKeyword() {
@@ -139,7 +112,7 @@ public class ClassTreeImpl extends ApexTree implements ClassTree{
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitClass(this);
     }
 
@@ -148,27 +121,21 @@ public class ClassTreeImpl extends ApexTree implements ClassTree{
         if (simpleName == null) {
             return super.getLine();
         }
-        return simpleName.getLine();
+        return ((IdentifierTreeImpl)simpleName).getLine();
     }
 
     @Override
     public Iterable<Tree> children() {
         return Iterables.concat(
                 Collections.singletonList(modifiers),
-                addIfNotNull(atToken),
-                addIfNotNull(withOrWithougToken),
-                addIfNotNull(sharingToken),
+                addIfNotNull(withOrWithoutToken),
                 addIfNotNull(declarationKeyword),
                 addIfNotNull(simpleName),
                 Collections.singletonList(typeParameters),
                 addIfNotNull(extendsKeyword),
                 addIfNotNull(superClass),
-                addIfNotNull(implementsKeyword),
-                Collections.singletonList(superInterfaces),
                 addIfNotNull(openBraceToken),
-/*
                 members,
-*/
                 addIfNotNull(closeBraceToken)
         );
     }

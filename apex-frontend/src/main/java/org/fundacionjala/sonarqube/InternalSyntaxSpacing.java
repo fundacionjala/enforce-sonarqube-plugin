@@ -1,8 +1,8 @@
 package org.fundacionjala.sonarqube;
 
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.ApexTree;
 import org.fundacionjala.sonarqube.tree.Tree;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 public class InternalSyntaxSpacing extends ApexTree{
     private final int start;
@@ -31,7 +31,7 @@ public class InternalSyntaxSpacing extends ApexTree{
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         // Do nothing at the moment. Spacings are dropped anyway.
     }
 

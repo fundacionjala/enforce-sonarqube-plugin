@@ -3,8 +3,9 @@ package org.fundacionjala.sonarqube.treeimplementation;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
+import org.fundacionjala.sonarqube.semantic.Symbol;
 import org.fundacionjala.sonarqube.tree.*;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -15,6 +16,7 @@ public class MethodInvocationTreeImpl extends ApexTree implements MethodInvocati
     private final Arguments arguments;
     @Nullable
     private TypeArguments typeArguments;
+    private Symbol.Kind symbol = Symbol.Kind.UNKNOWN;
 
     public MethodInvocationTreeImpl(ExpressionTree methodSelect, ArgumentListTreeImpl arguments) {
         super(Kind.METHOD_INVOCATION);
@@ -57,7 +59,12 @@ public class MethodInvocationTreeImpl extends ApexTree implements MethodInvocati
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public Symbol.Kind symbol() {
+        return symbol;
+    }
+
+    @Override
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitMethodInvocation(this);
     }
 
@@ -69,7 +76,7 @@ public class MethodInvocationTreeImpl extends ApexTree implements MethodInvocati
     }
 
     @Override
-    public Type symbolType() {
+    public TypeTree symbolType() {
         return null;
     }
 }

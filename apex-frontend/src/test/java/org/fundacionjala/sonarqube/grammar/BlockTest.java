@@ -22,7 +22,8 @@ public class BlockTest {
         .matches("{" +
                 "if(value && value){}" +
                 "}")
-        .matches("{if(expression != anotherExpression){}else{}}");
+        .matches("{if(expression != anotherExpression){}else{}}")
+        .matches("{return true;}");
     }
 
 

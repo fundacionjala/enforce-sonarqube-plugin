@@ -2,21 +2,17 @@ package org.fundacionjala.sonarqube.treeimplementation;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.ApexLexer;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class MethodTreeImpl extends ApexTree implements MethodTree{
+public class MethodTreeImpl extends ApexTree implements MethodTree {
 
     private ModifiersTree modifiers;
     private TypeTree returnType;
-    private InternalSyntaxToken simpleName;
+    private IdentifierTree simpleName;
     private final SyntaxToken openParenToken;
     private final FormalParametersListTreeImpl parameters;
     private final SyntaxToken closeParenToken;
@@ -24,7 +20,7 @@ public class MethodTreeImpl extends ApexTree implements MethodTree{
 
     public MethodTreeImpl(
             TypeTree returnType,
-            InternalSyntaxToken simpleName,
+            IdentifierTree simpleName,
             FormalParametersListTreeImpl parameters,
             BlockTree block) {
 
@@ -62,7 +58,7 @@ public class MethodTreeImpl extends ApexTree implements MethodTree{
     }
 
     @Override
-    public InternalSyntaxToken simpleName() {
+    public IdentifierTree simpleName() {
         return simpleName;
     }
 
@@ -89,7 +85,7 @@ public class MethodTreeImpl extends ApexTree implements MethodTree{
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitMethod(this);
     }
 

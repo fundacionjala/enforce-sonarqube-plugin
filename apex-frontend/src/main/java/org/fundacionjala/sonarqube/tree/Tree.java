@@ -1,7 +1,7 @@
 package org.fundacionjala.sonarqube.tree;
 
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.treeimplementation.SimpleTypeTreeImpl;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import javax.annotation.Nullable;
@@ -10,10 +10,7 @@ public interface Tree {
 
     boolean is(Kind... kinds);
 
-    void accept(TreeVisitor visitor);
-
-    @Nullable
-    Tree parent();
+    void accept(BaseTreeVisitor visitor);
 
     @Nullable
     SyntaxToken firstToken();
@@ -42,8 +39,6 @@ public interface Tree {
         NAMING_KEYWORDS(NamingKeywordsTree.class),
 
         CLASS_OR_INTERFACE_TYPE(ClassOrInterfaceTypeTree.class),
-
-        INTERFACE(ClassTree.class),
 
         VARIABLE(VariableTree.class),
 
@@ -87,8 +82,15 @@ public interface Tree {
 
         CONDITIONAL_AND(BinaryExpressionTree.class),
 
-        CONDITIONAL_OR(BinaryExpressionTree.class);
+        CONDITIONAL_OR(BinaryExpressionTree.class),
 
+        BINDING_IDENTIFIER(IdentifierTree.class),
+
+        CLASS_DECLARATION(ClassTree.class),
+
+        IDENTIFIER_REFERENCE(IdentifierTree.class),
+
+        THIS(IdentifierTree.class);
         final Class<? extends Tree> associatedInterface;
 
         Kind(Class<? extends Tree> associatedInterface) { this.associatedInterface = associatedInterface; }

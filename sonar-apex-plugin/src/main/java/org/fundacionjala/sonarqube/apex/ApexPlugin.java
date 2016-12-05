@@ -16,8 +16,6 @@ public class ApexPlugin implements Plugin {
     /**
      * This method is executed at runtime when:
      * <ul>
-     * <li>Web Server starts</li>
-     * <li>Compute Engine starts</li>
      * <li>Scanner starts</li>
      * </ul>
      *

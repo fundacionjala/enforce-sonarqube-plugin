@@ -2,7 +2,8 @@ package org.fundacionjala.sonarqube;
 
 import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.tree.SyntaxTrivia;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
+import org.fundacionjala.sonarqube.visitors.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.ApexTree;
 import org.fundacionjala.sonarqube.tree.Tree;
 import org.sonar.sslr.grammar.GrammarRuleKey;
@@ -16,6 +17,8 @@ public class InternalSyntaxToken extends ApexTree implements SyntaxToken {
     private int endIndex;
     private final int line;
     private final int column;
+    private int endLine;
+    private int endColumn;
     private final String value;
     private final boolean isEOF;
 
@@ -28,6 +31,7 @@ public class InternalSyntaxToken extends ApexTree implements SyntaxToken {
         this.startIndex = internalSyntaxToken.startIndex;
         this.endIndex = internalSyntaxToken.endIndex;
         this.isEOF = internalSyntaxToken.isEOF;
+        calculateEndOffsets();
     }
 
     public InternalSyntaxToken(int line, int column, String value, List<SyntaxTrivia> trivias, int startIndex, int endIndex, boolean isEOF) {
@@ -39,6 +43,16 @@ public class InternalSyntaxToken extends ApexTree implements SyntaxToken {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
         this.isEOF = isEOF;
+    }
+
+    private void calculateEndOffsets() {
+        String[] lines = value.split("\r\n|\n|\r", -1);
+        endColumn = column + value.length();
+        endLine = line + lines.length - 1;
+
+        if (endLine != line) {
+            endColumn = lines[lines.length - 1].length();
+        }
     }
 
     @Override
@@ -62,8 +76,17 @@ public class InternalSyntaxToken extends ApexTree implements SyntaxToken {
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public int endLine() {
+        return endLine;
+    }
 
+    @Override
+    public int endColumn() {
+        return endColumn;
+    }
+    @Override
+    public void accept(BaseTreeVisitor visitor) {
+        visitor.visitToken(this);
     }
 
     public boolean isLeaf() {
@@ -72,11 +95,6 @@ public class InternalSyntaxToken extends ApexTree implements SyntaxToken {
 
     public boolean isEOF() {
         return isEOF;
-    }
-
-    @Override
-    public Tree parent() {
-        return null;
     }
 
     @Override

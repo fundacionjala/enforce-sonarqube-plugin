@@ -8,6 +8,6 @@ public interface TypeDeclarationTree extends Tree {
 
     List<ClassOrInterfaceDeclarationTree> classOrInterfaceDeclaration();
 
-    List<Type> enumDeclaration();
+    List<TypeTree> enumDeclaration();
 
 }

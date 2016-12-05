@@ -1,7 +1,5 @@
 package org.fundacionjala.sonarqube.tree;
 
-import com.sonar.sslr.api.typed.Optional;
-import org.fundacionjala.sonarqube.api.ApexKeyword;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import javax.annotation.Nullable;
@@ -9,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ApexTree implements Tree{
-
-    private Tree parent;
 
     protected GrammarRuleKey grammarRuleKey;
 
@@ -64,15 +60,6 @@ public abstract class ApexTree implements Tree{
         return false;
     }
 
-    @Override
-    public Tree parent() {
-        return parent;
-    }
-
-    public void setParent(Tree parent) {
-        this.parent = parent;
-    }
-
     protected abstract Iterable<Tree> children();
 
     public List<Tree> getChildren() {
@@ -88,7 +75,6 @@ public abstract class ApexTree implements Tree{
         return children;
     }
 
-
     public boolean isLeaf() {
         return false;
     }
@@ -96,4 +82,6 @@ public abstract class ApexTree implements Tree{
     public GrammarRuleKey getGrammarRuleKey() {
         return grammarRuleKey;
     }
+
+
 }

@@ -1,8 +1,5 @@
 package org.fundacionjala.sonarqube.parser;
 
-import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.ANY_CHAR;
-import static org.fundacionjala.sonarqube.api.ApexPunctuator.*;
-
 import com.sonar.sslr.api.GenericTokenType;
 import org.apache.commons.lang.ArrayUtils;
 import org.fundacionjala.sonarqube.api.ApexKeyword;
@@ -10,6 +7,8 @@ import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
 import java.util.Arrays;
+
+import static org.fundacionjala.sonarqube.api.ApexPunctuator.*;
 
 public enum ApexLexer implements GrammarRuleKey{
 
@@ -25,20 +24,14 @@ public enum ApexLexer implements GrammarRuleKey{
     IDENTIFIER,
     EOF,
     EXTENDS_DECLARATION,
-    CLASS_OR_INTERFACE_TYPE,
-    IMPLEMENTS_DECLARATION,
     MEMBER_DECLARATION,
     BLOCK, BLOCK_STATEMENTS,
-    BLOCK_STATMENT,
     STATEMENT,
     EMPTY_STATEMENT,
     IF_STATEMENT,
     EXPRESSION_STATEMENT,
     EXPRESSION,
-    ASSIGNMENT_EXPRESSION,
     CONDITIONAL_EXPRESSION,
-    PRIMARY,
-    PAR_EXPRESSION,
     PRIMARY_SUFFIX,
     FORMAL_PARAMETERS,
     TYPE_PARAMETERS,
@@ -46,10 +39,16 @@ public enum ApexLexer implements GrammarRuleKey{
     IDENTIFIER_OR_METHOD_INVOCATION,
     TYPE_ARGUMENTS,
     ARGUMENTS,
-    NEW_EXPRESSION,
     FORMAL_PARAMETERS_DECLS_REST,
     FORMAL_PARAMETER,
-    VARIABLE_DECLARATOR_ID, BLOCK_STATEMENT, CONDITIONAL_OR_EXPRESSION, CONDITIONAL_AND_EXPRESSION, EQUALITY_EXPRESSION, PRIMARY_EXPRESSION, PRIMARY_PREFIX;
+    VARIABLE_DECLARATOR_ID,
+    BLOCK_STATEMENT,
+    CONDITIONAL_OR_EXPRESSION,
+    CONDITIONAL_AND_EXPRESSION,
+    EQUALITY_EXPRESSION,
+    PRIMARY_EXPRESSION,
+    PRIMARY_PREFIX,
+    LOCAL_VARIABLE_DECLARATION;
 
     public static LexerlessGrammarBuilder  createGrammarBuilder() {
         LexerlessGrammarBuilder b = LexerlessGrammarBuilder.create();

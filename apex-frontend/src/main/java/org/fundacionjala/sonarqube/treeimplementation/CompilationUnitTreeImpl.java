@@ -1,12 +1,11 @@
 package org.fundacionjala.sonarqube.treeimplementation;
 
 import com.google.common.collect.Iterables;
-import org.fundacionjala.sonarqube.tree.SyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.ApexTree;
 import org.fundacionjala.sonarqube.tree.CompilationUnitTree;
+import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.tree.Tree;
-import org.fundacionjala.sonarqube.tree.TypeDeclarationTree;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +31,7 @@ public class CompilationUnitTreeImpl extends ApexTree implements CompilationUnit
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitCompilationUnit(this);
     }
 

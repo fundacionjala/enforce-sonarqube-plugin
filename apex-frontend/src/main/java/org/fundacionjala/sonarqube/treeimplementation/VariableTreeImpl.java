@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -16,7 +16,7 @@ public class VariableTreeImpl extends ApexTree implements VariableTree {
     private ModifiersTree modifiers;
     private InternalSyntaxToken finalToken;
     private TypeTree type;
-    private InternalSyntaxToken simpleName;
+    private IdentifierTree simpleName;
     @Nullable
     private SyntaxToken equalToken;
     @Nullable
@@ -27,7 +27,7 @@ public class VariableTreeImpl extends ApexTree implements VariableTree {
     // Syntax tree holders
     private boolean vararg = false;
 
-    public VariableTreeImpl(InternalSyntaxToken simpleName) {
+    public VariableTreeImpl(IdentifierTreeImpl simpleName) {
         super(Kind.VARIABLE);
         this.modifiers = ModifiersTreeImpl.emptyModifiers();
         this.simpleName = simpleName;
@@ -35,46 +35,19 @@ public class VariableTreeImpl extends ApexTree implements VariableTree {
 
     }
 
-    public VariableTreeImpl(InternalSyntaxToken equalToken, ExpressionTree initializer) {
-        super(Kind.VARIABLE);
-        this.equalToken = equalToken;
-        this.initializer = initializer;
-    }
-
-    public VariableTreeImpl(Kind kind, ModifiersTree modifiers, InternalSyntaxToken simpleName, @Nullable ExpressionTree initializer) {
-        super(kind);
-        this.modifiers = Preconditions.checkNotNull(modifiers);
-        this.simpleName = Preconditions.checkNotNull(simpleName);
-        this.initializer = initializer;
-    }
-
     public VariableTreeImpl completeType(TypeTree type) {
-        TypeTree actualType = type;
-        this.type = actualType;
+        this.type = type;
         return this;
     }
 
-    public VariableTreeImpl completeFinalToken(InternalSyntaxToken finalToken) {
-        this.finalToken = finalToken;
-
-        return this;
-    }
-
-    public VariableTreeImpl completeFinalKeywordAndType(InternalSyntaxToken finalToken, TypeTree type) {
-        return completeFinalToken(finalToken).
+    public VariableTreeImpl completeFinalKeywordAndType(InternalSyntaxToken finalKeyword, TypeTree type) {
+        return completeFinalKeyword(finalKeyword).
                 completeType(type);
     }
 
-    public VariableTreeImpl completeTypeAndInitializer(TypeTree type, InternalSyntaxToken equalToken, ExpressionTree initializer) {
-        this.initializer = initializer;
-        this.equalToken = equalToken;
-
-        return completeType(type);
-    }
-
-
-    public boolean isVararg() {
-        return vararg;
+    public VariableTreeImpl completeFinalKeyword(InternalSyntaxToken finalKeyword) {
+        this.finalToken = finalKeyword;
+        return this;
     }
 
     @Override
@@ -93,7 +66,7 @@ public class VariableTreeImpl extends ApexTree implements VariableTree {
     }
 
     @Override
-    public InternalSyntaxToken simpleName() {
+    public IdentifierTree simpleName() {
         return simpleName;
     }
 
@@ -103,19 +76,14 @@ public class VariableTreeImpl extends ApexTree implements VariableTree {
         return initializer;
     }
 
-    @CheckForNull
-    public SyntaxToken equalToken() {
-        return equalToken;
-    }
-
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitVariable(this);
     }
 
     @Override
     public int getLine() {
-        return simpleName().getLine();
+        return ((IdentifierTreeImpl)simpleName()).getLine();
     }
 
     @Override

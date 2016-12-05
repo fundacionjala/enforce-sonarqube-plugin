@@ -3,10 +3,10 @@ package org.fundacionjala.sonarqube.treeimplementation;
 import com.google.common.collect.Iterables;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
 import org.fundacionjala.sonarqube.parser.ApexLexer;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.tree.Tree;
 import org.fundacionjala.sonarqube.tree.TypeArguments;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +32,7 @@ public class TypeArgumentListTreeImpl extends ListTreeImpl<Tree> implements Type
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitTypeArguments(this);
     }
 

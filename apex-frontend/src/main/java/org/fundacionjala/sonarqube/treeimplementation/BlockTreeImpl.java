@@ -3,9 +3,8 @@ package org.fundacionjala.sonarqube.treeimplementation;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +55,7 @@ public class BlockTreeImpl extends ApexTree implements BlockTree{
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitBlock(this);
     }
 
@@ -64,7 +63,7 @@ public class BlockTreeImpl extends ApexTree implements BlockTree{
     public Iterable<Tree> children() {
         return Iterables.concat(
                 Collections.singletonList(openBraceToken),
-                /*body,*/
+                body,
                 Collections.singletonList(closeBraceToken));
     }
 }

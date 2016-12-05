@@ -1,4 +1,4 @@
-public class ThereMustbe____aclass_always123 extends anotherClass{
+public class ApexClass_0 extends anotherClass{
     public static string method1() {
         if(value != anotherValue) {
         } else {
@@ -6,10 +6,11 @@ public class ThereMustbe____aclass_always123 extends anotherClass{
     }
 
     public integer calculate(integer addition, int takeAway, Display display) {
-        if (addition == takeAway) {
-            display.invokeSomeMethod();
+        if (true == display.invokeSomeMethod()) {
+            takeAway.isAlwaysAvailable();
         } else {
-
+            ApexClass_0.method1();
         }
+        assertTrue(display.isInvisible());
     }
 }

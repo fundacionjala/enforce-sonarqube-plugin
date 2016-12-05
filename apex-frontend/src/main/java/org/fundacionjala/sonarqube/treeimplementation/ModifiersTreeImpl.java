@@ -2,10 +2,10 @@ package org.fundacionjala.sonarqube.treeimplementation;
 
 import com.google.common.collect.ImmutableList;
 import org.fundacionjala.sonarqube.parser.ApexLexer;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.ModifierKeywordTree;
 import org.fundacionjala.sonarqube.tree.ModifierTree;
 import org.fundacionjala.sonarqube.tree.ModifiersTree;
+import org.fundacionjala.sonarqube.visitors.TreeVisitor;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class ModifiersTreeImpl extends ListTreeImpl<ModifierTree> implements Mod
         super(ApexLexer.MODIFIERS, apexTrees);
         ImmutableList.Builder<ModifierKeywordTree> modifierBuilder = ImmutableList.builder();
         for (ModifierTree modifierTree : this) {
-                modifierBuilder.add((ModifierKeywordTree) modifierTree);
+            modifierBuilder.add((ModifierKeywordTree) modifierTree);
         }
         this.modifiers = modifierBuilder.build();
     }

@@ -3,16 +3,16 @@ package org.fundacionjala.sonarqube.treeimplementation;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import org.fundacionjala.sonarqube.tree.SyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.ApexTree;
 import org.fundacionjala.sonarqube.tree.ListTree;
+import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.tree.Tree;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import java.util.*;
 
-import static org.fundacionjala.sonarqube.tree.Tree.Kind.*;
+import static org.fundacionjala.sonarqube.tree.Tree.Kind.LIST;
 
 public abstract class ListTreeImpl<T extends Tree> extends ApexTree implements ListTree<T> {
 
@@ -37,7 +37,7 @@ public abstract class ListTreeImpl<T extends Tree> extends ApexTree implements L
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         for (T t : list) {
             t.accept(visitor);
         }

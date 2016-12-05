@@ -1,17 +1,13 @@
 package org.fundacionjala.sonarqube.treeimplementation;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
-public class MemberSelectExpressionTreeImpl extends ApexTree implements MemberSelectExpressionTree{
+public class MemberSelectExpressionTreeImpl extends ApexTree implements MemberSelectExpressionTree {
 
     private ExpressionTree expression;
 
@@ -35,10 +31,7 @@ public class MemberSelectExpressionTreeImpl extends ApexTree implements MemberSe
 
     public MemberSelectExpressionTreeImpl completeWithExpression(ExpressionTree expression) {
         Preconditions.checkState(this.expression == null);
-        ExpressionTree result = expression;
-
-        this.expression = result;
-
+        this.expression = expression;
         return this;
     }
 
@@ -63,7 +56,7 @@ public class MemberSelectExpressionTreeImpl extends ApexTree implements MemberSe
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitMemberSelectExpression(this);
     }
 
@@ -77,7 +70,12 @@ public class MemberSelectExpressionTreeImpl extends ApexTree implements MemberSe
     }
 
     @Override
-    public Type symbolType() {
+    public TypeTree symbolType() {
+        return null;
+    }
+
+    @Override
+    public String name() {
         return null;
     }
 }

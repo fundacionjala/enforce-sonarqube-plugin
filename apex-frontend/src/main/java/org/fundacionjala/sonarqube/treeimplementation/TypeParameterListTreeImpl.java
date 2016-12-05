@@ -4,11 +4,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
 import org.fundacionjala.sonarqube.parser.ApexLexer;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.tree.Tree;
 import org.fundacionjala.sonarqube.tree.TypeParameterTree;
 import org.fundacionjala.sonarqube.tree.TypeParameters;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -47,7 +47,7 @@ public class TypeParameterListTreeImpl extends ListTreeImpl<TypeParameterTree> i
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitTypeParameters(this);
     }
 

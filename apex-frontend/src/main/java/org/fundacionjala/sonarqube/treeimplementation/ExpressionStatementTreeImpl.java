@@ -3,8 +3,8 @@ package org.fundacionjala.sonarqube.treeimplementation;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -38,7 +38,7 @@ public class ExpressionStatementTreeImpl extends ApexTree implements ExpressionS
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitExpressionStatement(this);
     }
 

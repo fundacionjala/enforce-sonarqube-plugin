@@ -1,7 +1,5 @@
 package org.fundacionjala.sonarqube.tree;
 
-import org.fundacionjala.sonarqube.InternalSyntaxToken;
-
 import javax.annotation.Nullable;
 
 public interface VariableTree extends StatementTree{
@@ -10,7 +8,7 @@ public interface VariableTree extends StatementTree{
 
     TypeTree type();
 
-    InternalSyntaxToken simpleName();
+    IdentifierTree simpleName();
 
     @Nullable
     ExpressionTree initializer();

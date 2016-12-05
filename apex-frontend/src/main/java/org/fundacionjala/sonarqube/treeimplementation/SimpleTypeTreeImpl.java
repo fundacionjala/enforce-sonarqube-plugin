@@ -2,16 +2,14 @@ package org.fundacionjala.sonarqube.treeimplementation;
 
 import com.google.common.collect.Iterables;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.ApexLexer;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.ApexTree;
 import org.fundacionjala.sonarqube.tree.Tree;
-import org.fundacionjala.sonarqube.tree.Type;
 import org.fundacionjala.sonarqube.tree.TypeTree;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import java.util.Collections;
 
-public class SimpleTypeTreeImpl extends ApexTree implements TypeTree{
+public class SimpleTypeTreeImpl extends ApexTree implements TypeTree {
 
     InternalSyntaxToken identifier;
 
@@ -30,7 +28,7 @@ public class SimpleTypeTreeImpl extends ApexTree implements TypeTree{
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitSimpleType(this);
     }
 
@@ -40,7 +38,7 @@ public class SimpleTypeTreeImpl extends ApexTree implements TypeTree{
     }
 
     @Override
-    public Type symbolType() {
-        return null;
+    public String name() {
+        return identifier.text();
     }
 }

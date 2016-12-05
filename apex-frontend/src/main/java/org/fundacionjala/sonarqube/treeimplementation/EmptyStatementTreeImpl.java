@@ -1,11 +1,11 @@
 package org.fundacionjala.sonarqube.treeimplementation;
 
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.ApexTree;
 import org.fundacionjala.sonarqube.tree.EmptyStatementTree;
 import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.tree.Tree;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import java.util.Collections;
 
@@ -23,7 +23,7 @@ public class EmptyStatementTreeImpl extends ApexTree implements EmptyStatementTr
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitEmptyStatement(this);
     }
 

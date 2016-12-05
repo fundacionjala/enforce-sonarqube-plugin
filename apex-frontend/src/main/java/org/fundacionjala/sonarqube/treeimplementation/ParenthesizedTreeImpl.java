@@ -3,8 +3,8 @@ package org.fundacionjala.sonarqube.treeimplementation;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 public class ParenthesizedTreeImpl extends ApexTree implements ParenthesizedTree {
 
@@ -48,7 +48,7 @@ public class ParenthesizedTreeImpl extends ApexTree implements ParenthesizedTree
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitParenthesized(this);
     }
 
@@ -61,7 +61,7 @@ public class ParenthesizedTreeImpl extends ApexTree implements ParenthesizedTree
     }
 
     @Override
-    public Type symbolType() {
+    public TypeTree symbolType() {
         return null;
     }
 }

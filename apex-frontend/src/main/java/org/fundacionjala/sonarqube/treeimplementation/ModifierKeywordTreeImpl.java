@@ -1,9 +1,9 @@
 package org.fundacionjala.sonarqube.treeimplementation;
 
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.tree.SyntaxToken;
 import org.fundacionjala.sonarqube.tree.Modifier;
 import org.fundacionjala.sonarqube.tree.ModifierKeywordTree;
+import org.fundacionjala.sonarqube.tree.SyntaxToken;
 
 public class ModifierKeywordTreeImpl extends InternalSyntaxToken implements ModifierKeywordTree {
 

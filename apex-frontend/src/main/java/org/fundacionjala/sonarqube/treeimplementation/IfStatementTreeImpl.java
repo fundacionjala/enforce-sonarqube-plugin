@@ -4,15 +4,12 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
 
-/**
- * Created by kevin_titichoca on 30-09-16.
- */
 public class IfStatementTreeImpl extends ApexTree implements IfStatementTree {
 
     private InternalSyntaxToken ifKeyword;
@@ -99,7 +96,7 @@ public class IfStatementTreeImpl extends ApexTree implements IfStatementTree {
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitIfStatement(this);
     }
 

@@ -1,8 +1,5 @@
 package org.fundacionjala.sonarqube.tree;
 
-import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.ApexLexer;
-
 import java.util.List;
 
 public interface MethodTree extends Tree{
@@ -11,7 +8,7 @@ public interface MethodTree extends Tree{
 
     TypeTree returnType();
 
-    InternalSyntaxToken simpleName();
+    IdentifierTree simpleName();
 
     SyntaxToken openParenToken();
 

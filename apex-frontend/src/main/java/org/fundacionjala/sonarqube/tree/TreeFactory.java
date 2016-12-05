@@ -20,9 +20,7 @@ public class TreeFactory {
             InternalSyntaxToken eof) {
 
         ImmutableList.Builder<Tree> types = ImmutableList.builder();
-        for (Tree child : typeDeclarations) {
-            types.add(child);
-        }
+        typeDeclarations.forEach(types::add);
         return new CompilationUnitTreeImpl(types.build(), eof);
     }
 
@@ -46,13 +44,12 @@ public class TreeFactory {
                                              InternalSyntaxToken token,
                                              NamingKeywordsTreeImpl namingKeywordsTree,
                                              Optional<List<InternalSyntaxToken>> extendsDeclaration,
-                                             /*Optional<List<InternalSyntaxToken>> implementsDeclaration,*/
                                              ClassTreeImpl partial) {
-        if(sharingRules.isPresent()) {
+        if (sharingRules.isPresent()) {
             partial.completeSharingRules(sharingRules.get());
         }
         partial.completeDeclarationKeyword(token);
-        partial.completeIdentifier(namingKeywordsTree);
+        partial.completeIdentifier(new IdentifierTreeImpl(namingKeywordsTree.idendifier()));
         if (extendsDeclaration.isPresent()) {
             partial.completeSuperclass(extendsDeclaration.get());
         }
@@ -61,8 +58,8 @@ public class TreeFactory {
 
     public ClassTreeImpl newClassBody(InternalSyntaxToken openBraceToken,
                                       List<ApexTree> members,
-                                      InternalSyntaxToken closeBraceToken){
-        return newClassBody(Tree.Kind.CLASS_OR_INTERFACE,openBraceToken, members, closeBraceToken);
+                                      InternalSyntaxToken closeBraceToken) {
+        return newClassBody(Tree.Kind.CLASS_OR_INTERFACE, openBraceToken, members, closeBraceToken);
     }
 
     public NamingKeywordsTreeImpl namingKeywords(InternalSyntaxToken namingToken) {
@@ -77,25 +74,6 @@ public class TreeFactory {
         return Lists.newArrayList(extendsToken, extension);
     }
 
-    public List<InternalSyntaxToken> defineImplementsDeclaration(InternalSyntaxToken implementsKeyword, List<InternalSyntaxToken> arguments) {
-        List<InternalSyntaxToken> partial = Lists.newArrayList();
-        partial.add(implementsKeyword);
-        partial.add(arguments.iterator().next());
-        while(arguments.iterator().hasNext()) {
-            partial.add(arguments.iterator().next());
-        }
-        return partial;
-    }
-
-    public List<InternalSyntaxToken> defineImplementsArguments(InternalSyntaxToken firstImplementation, Optional<List
-            <Tuple<InternalSyntaxToken,InternalSyntaxToken>>> otherImplementations) {
-        List<InternalSyntaxToken> result = Lists.newArrayList(firstImplementation);
-        if(otherImplementations.isPresent()) {
-
-        }
-        return result;
-    }
-
     public Tuple<InternalSyntaxToken, InternalSyntaxToken> defineImplementations(InternalSyntaxToken comma, InternalSyntaxToken otherImplementation) {
         return new Tuple<>(comma, otherImplementation);
     }
@@ -103,17 +81,15 @@ public class TreeFactory {
     private static ClassTreeImpl newClassBody(Tree.Kind kind, InternalSyntaxToken openBrace,
                                               List<ApexTree> members, InternalSyntaxToken closeBrace) {
         ImmutableList.Builder<Tree> builder = ImmutableList.builder();
-        /*if (members.isPresent()) {*/
-            for (ApexTree member : members) {
-                builder.add(member);
-            }
-        /*}*/
+        for (ApexTree member : members) {
+            builder.add(member);
+        }
         return new ClassTreeImpl(kind, openBrace, builder.build(), closeBrace);
     }
 
     public ApexTree completeMember(ModifiersTreeImpl modifiers, ApexTree partial) {
-        if(partial instanceof MethodTreeImpl) {
-            ((MethodTreeImpl)partial).completeWithModifiers(modifiers);
+        if (partial instanceof MethodTreeImpl) {
+            ((MethodTreeImpl) partial).completeWithModifiers(modifiers);
         }
         return partial;
     }
@@ -128,59 +104,35 @@ public class TreeFactory {
         return newMethodOrConstructor(Optional.of(type), identifier, parameters, block);
     }
 
-    public ParenthesizedTreeImpl parenthesizedExpression(InternalSyntaxToken leftParen, ExpressionTree expression, InternalSyntaxToken rightParen) {
-        return new ParenthesizedTreeImpl(leftParen, expression, rightParen);
-    }
-
-    public Tuple<Optional<InternalSyntaxToken>, ExpressionTree> completeMemberSelectorOMethodSelector(InternalSyntaxToken dotToken,ExpressionTree partial){
-        return new Tuple(Optional.of(dotToken), partial);
-    }
-
-    public ArgumentListTreeImpl newArguments1(ExpressionTree expression, Optional<List<Tuple>> otherExpressions) {
-        ImmutableList.Builder<ExpressionTree> expressions = ImmutableList.builder();
-        expressions.add(expression);
-        ImmutableList.Builder<SyntaxToken> separators = ImmutableList.builder();
-        if (otherExpressions.isPresent()) {
-            for (Tuple<InternalSyntaxToken, ExpressionTree> rest : otherExpressions.get()) {
-                separators.add(rest.getFirstElement());
-                expressions.add(rest.getSecondElement());
-            }
-        }
-
-        return new ArgumentListTreeImpl(expressions.build(), separators.build());
-    }
-
     private static MethodTreeImpl newMethodOrConstructor(
             Optional<TypeTree> type, InternalSyntaxToken methodName,
             FormalParametersListTreeImpl parameters,
             ApexTree block) {
-
+        IdentifierTreeImpl identifier = new IdentifierTreeImpl(methodName);
         TypeTree actualType;
-        if(type.isPresent()) {
+        if (type.isPresent()) {
             actualType = type.get();
         } else {
             actualType = null;
         }
-        return new MethodTreeImpl(actualType, methodName, parameters, (BlockTreeImpl) block);
+        return new MethodTreeImpl(actualType, identifier, parameters, (BlockTreeImpl) block);
     }
 
     public ArgumentListTreeImpl completeArguments(InternalSyntaxToken openParenthesisToken,
                                                   Optional<ArgumentListTreeImpl> expressions,
                                                   InternalSyntaxToken closeParenthesisToken) {
-         return expressions.isPresent() ?
+        return expressions.isPresent() ?
                 expressions.get().complete(openParenthesisToken, closeParenthesisToken) :
                 new ArgumentListTreeImpl(openParenthesisToken, closeParenthesisToken);
     }
 
     public ExpressionTree newIdentifierOrMethodInvocation(InternalSyntaxToken identifier
-            , Optional<ArgumentListTreeImpl> arguments
-    ) {
-            ExpressionTree result = new IdentifierTreeImpl(identifier) {
-            };
-            if (arguments.isPresent()) {
-                result = new MethodInvocationTreeImpl(result, arguments.get());
-            }
-            return result;
+            , Optional<ArgumentListTreeImpl> arguments) {
+        ExpressionTree result = new IdentifierTreeImpl(identifier);
+        if (arguments.isPresent()) {
+            result = new MethodInvocationTreeImpl(result, arguments.get());
+        }
+        return result;
     }
 
     public Tuple<Optional<InternalSyntaxToken>, ExpressionTree> completeMemberSelectOrMethodSelector(InternalSyntaxToken dotToken, ExpressionTree partial) {
@@ -234,14 +186,13 @@ public class TreeFactory {
     public FormalParametersListTreeImpl completeParenFormalParameters(InternalSyntaxToken openParenToken,
                                                                       Optional<FormalParametersListTreeImpl> partial,
                                                                       InternalSyntaxToken closeParenToken) {
-
-        return partial.isPresent() ?
-                partial.get().complete(openParenToken, closeParenToken) :
-                 new FormalParametersListTreeImpl(openParenToken, closeParenToken);
+        return partial.isPresent()
+                ? partial.get().complete(openParenToken, closeParenToken)
+                : new FormalParametersListTreeImpl(openParenToken, closeParenToken);
     }
 
     public VariableTreeImpl newVariableDeclaratorId(InternalSyntaxToken identifier) {
-            return new VariableTreeImpl(identifier);
+        return new VariableTreeImpl(new IdentifierTreeImpl(identifier));
     }
 
     public FormalParametersListTreeImpl prependNewFormalParameter(VariableTreeImpl variable, Optional<Tuple<InternalSyntaxToken, FormalParametersListTreeImpl>> otherParameters) {
@@ -262,8 +213,10 @@ public class TreeFactory {
     public FormalParametersListTreeImpl completeFormalParametersDecls(Optional<InternalSyntaxToken> finalToken, TypeTree type, FormalParametersListTreeImpl partial) {
         VariableTreeImpl variable = partial.get(0);
 
-        if(finalToken.isPresent()) {
+        if (finalToken.isPresent()) {
             variable.completeFinalKeywordAndType(finalToken.get(), type);
+        } else {
+            variable.completeType(type);
         }
 
         return partial;
@@ -282,9 +235,9 @@ public class TreeFactory {
                                           ExpressionTree condition,
                                           InternalSyntaxToken closeParen, StatementTree statement, Optional<IfStatementTreeImpl> elseClause) {
         if (elseClause.isPresent()) {
-           return elseClause.get().complete(ifToken, openParen, condition, closeParen, statement);
+            return elseClause.get().complete(ifToken, openParen, condition, closeParen, statement);
         } else {
-           return new IfStatementTreeImpl(ifToken, openParen, condition, closeParen, statement);
+            return new IfStatementTreeImpl(ifToken, openParen, condition, closeParen, statement);
         }
     }
 
@@ -304,6 +257,7 @@ public class TreeFactory {
         return new BlockStatementListTreeImpl(builder.build());
     }
 
+    //TODO: blockStatements should be zero or more.
     public BlockTreeImpl block(InternalSyntaxToken openBrace,
                                BlockStatementListTreeImpl blockStatements,
                                InternalSyntaxToken closeBrace) {
@@ -351,7 +305,7 @@ public class TreeFactory {
     }
 
     private ExpressionTree binaryExpression(ExpressionTree expression, Optional<List<OperatorAndOperand>> operatorAndOperands) {
-        if(!operatorAndOperands.isPresent()) {
+        if (!operatorAndOperands.isPresent()) {
             return expression;
         }
         ExpressionTree result = expression;
@@ -379,7 +333,7 @@ public class TreeFactory {
                 expression;
     }
 
-    // Helpers
+    //region Helpers
 
     public static class Tuple<T, U> {
         private final T firstElement;
@@ -407,67 +361,7 @@ public class TreeFactory {
         return newTuple(first, second);
     }
 
-    public <T, U> Tuple<T, U> newTuple2(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple3(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple4(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple5(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple6(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple7(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple8(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple9(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple10(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple11(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple12(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple14(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple16(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple17(T first, U second) {
-        return newTuple(first, second);
-    }
-
     public <T, U> Tuple<T, U> newTuple18(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple19(T first, U second) {
         return newTuple(first, second);
     }
 
@@ -475,45 +369,6 @@ public class TreeFactory {
         return newTuple(first, second);
     }
 
-    public <T, U> Tuple<T, U> newTuple21(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple22(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple23(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple24(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple25(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple26(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple27(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple28(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newTuple29(T first, U second) {
-        return newTuple(first, second);
-    }
-
-    public <T, U> Tuple<T, U> newAnnotatedDimension(T first, U second) {
-        return newTuple(first, second);
-    }
-
+    //endregion
 
 }

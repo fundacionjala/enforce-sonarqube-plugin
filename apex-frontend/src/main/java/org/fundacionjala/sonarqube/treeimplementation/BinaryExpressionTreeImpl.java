@@ -3,8 +3,8 @@ package org.fundacionjala.sonarqube.treeimplementation;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.fundacionjala.sonarqube.InternalSyntaxToken;
-import org.fundacionjala.sonarqube.parser.TreeVisitor;
 import org.fundacionjala.sonarqube.tree.*;
+import org.fundacionjala.sonarqube.visitors.BaseTreeVisitor;
 
 public class BinaryExpressionTreeImpl extends ApexTree implements BinaryExpressionTree {
 
@@ -43,7 +43,7 @@ public class BinaryExpressionTreeImpl extends ApexTree implements BinaryExpressi
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(BaseTreeVisitor visitor) {
         visitor.visitBinaryExpression(this);
     }
 
@@ -56,7 +56,7 @@ public class BinaryExpressionTreeImpl extends ApexTree implements BinaryExpressi
     }
 
     @Override
-    public Type symbolType() {
+    public TypeTree symbolType() {
         return null;
     }
 }
