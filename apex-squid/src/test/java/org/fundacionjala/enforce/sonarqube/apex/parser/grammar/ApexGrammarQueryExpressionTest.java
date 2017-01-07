@@ -466,4 +466,15 @@ public class ApexGrammarQueryExpressionTest extends ApexRuleTest {
                 .notMatches("SELECT Name "
                         + "FROM Account WHERE industry = id :  ");
     }
+    
+    /**
+     * Test sObject names that are also keywords
+     */
+    
+    @Test
+    public void positiveRules_KeywordsInQuery(){
+    	assertThat(parser)
+    		.matches("select Id from Case")
+    		.matches("SELECT id,Subject,Description,Target_Group_HF__c,Type,Sub_Type__c FROM Case WHERE id=:caseID");
+    }
 }
