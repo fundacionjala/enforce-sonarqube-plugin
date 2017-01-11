@@ -113,6 +113,10 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     STATEMENT_EXPRESSION,
     STRING_LITERAL_STRING,
     THROW_STATEMENT,
+    TRIGGER_DECLARATION,
+    TRIGGER_EVENTS_LIST,
+    TRIGGER_EVENT_DECLARATION,
+    TRIGGER_TARGET_DECLARATION,
     TRY_STATEMENT,
     TYPE,
     TYPE_CLASS,
@@ -127,6 +131,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
      * SOQL Keys
      * 
      */
+    ALLOWED_KEYWORDS_AS_SOBJECT_NAME,
     SOQL_NAME,
     SOQL_EXTERNAL_VARIABLE,
     NAME_CHAR,

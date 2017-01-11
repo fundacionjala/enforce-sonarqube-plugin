@@ -80,6 +80,7 @@ public enum ApexKeyword implements TokenType {
     NUMBER("number"),
     OF("of"),
     OFFSET("offset"),
+    ON("on"),
     OUTER("outer"),
     OVERRIDE("override"),
     PACKAGE("package"),

@@ -11,6 +11,7 @@ import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
 import com.sonar.sslr.api.Grammar;
 
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TRIGGER_DECLARATION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.APEX_GRAMMAR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.TYPE_DECLARATION;
 import static com.sonar.sslr.api.GenericTokenType.EOF;
@@ -47,7 +48,11 @@ public class ApexGrammar {
         
         SOQLExpressions.create(grammarBuilder);
 
-        grammarBuilder.rule(APEX_GRAMMAR).is(TYPE_DECLARATION, EOF);
+        grammarBuilder.rule(APEX_GRAMMAR).is(
+        		grammarBuilder.firstOf(
+        				TYPE_DECLARATION, 
+        				TRIGGER_DECLARATION),
+        		EOF);
 
         grammarBuilder.setRootRule(APEX_GRAMMAR);
         return grammarBuilder.build();

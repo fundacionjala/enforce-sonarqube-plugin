@@ -21,6 +21,7 @@ import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 public class MostUsed {
 
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
+    	allowedKeywordsAsSObjectName(grammarBuilder);
         allowedKeywordsAsIdentifier(grammarBuilder);
         specialKeywordsAsIdentifier(grammarBuilder);
         block(grammarBuilder);
@@ -33,6 +34,12 @@ public class MostUsed {
         floatingPointLiteralNumber(grammarBuilder);
         allowedKeywordsAsIdentifierForMethods(grammarBuilder);
         commonIdentifier(grammarBuilder);
+    }
+    
+    private static void allowedKeywordsAsSObjectName(LexerfulGrammarBuilder grammarBuilder){
+    	grammarBuilder.rule(ALLOWED_KEYWORDS_AS_SOBJECT_NAME).is(
+    		CASE
+		);
     }
 
     /**
