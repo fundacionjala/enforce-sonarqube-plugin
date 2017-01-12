@@ -131,6 +131,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
      * SOQL Keys
      * 
      */
+    ALLOWED_KEYWORDS_AS_SOBJECT_NAME,
     SOQL_NAME,
     SOQL_EXTERNAL_VARIABLE,
     NAME_CHAR,

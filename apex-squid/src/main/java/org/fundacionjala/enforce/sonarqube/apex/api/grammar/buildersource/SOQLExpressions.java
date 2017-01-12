@@ -10,6 +10,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AND_SOQL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ASC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BY;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CASE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.COUNT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CUBE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DES;
@@ -46,6 +47,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.UNDERS
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.INTEGER_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALIASSTATEMENT;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_SOBJECT_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_SOQL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_SOQL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COUNT_EXPR;
@@ -122,7 +124,7 @@ public class SOQLExpressions {
      */
     private static void soqlName(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SOQL_NAME).is(
-                IDENTIFIER,
+                grammarBuilder.firstOf(IDENTIFIER, ALLOWED_KEYWORDS_AS_SOBJECT_NAME),
                 grammarBuilder.zeroOrMore(NAME_CHAR));
     }
 
