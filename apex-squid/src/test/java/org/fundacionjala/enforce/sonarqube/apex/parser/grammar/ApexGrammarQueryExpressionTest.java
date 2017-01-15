@@ -449,7 +449,10 @@ public class ApexGrammarQueryExpressionTest extends ApexRuleTest {
                         + "FROM Account WHERE industry = :obj.var.media ")
                 .matches("SELECT Name "
                         + "FROM Account WHERE industry = :media AND year = 2016 AND country = :countryId "
-                        + "GROUP BY CUBE (BillingPostalCode,Id) LIMIT 1250");
+                        + "GROUP BY CUBE (BillingPostalCode,Id) LIMIT 1250")
+                .matches("SELECT Id, Name from Case2 WHERE Id in :someMap.keySet()")
+                .matches("SELECT Id, Name from Case WHERE Id in :method(other.keySet())")
+                .matches("select id, name, someOther from Account where name in :functionCall())");
     }
 
     @Test

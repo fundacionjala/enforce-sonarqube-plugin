@@ -10,7 +10,6 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AND_SOQL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ASC;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BY;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CASE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.COUNT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CUBE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DES;
@@ -49,6 +48,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALIASSTATEMENT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_SOBJECT_NAME;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_SOQL_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ARGUMENTS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_SOQL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COUNT_EXPR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD;
@@ -91,6 +91,7 @@ public class SOQLExpressions {
         withSentence(grammarBuilder);
         whereSentence(grammarBuilder);
         fieldExpression(grammarBuilder);
+        soqlExternalVariable(grammarBuilder);
         simpleExpression(grammarBuilder);
         filteringExpressions(grammarBuilder);
         operatorToComparisson(grammarBuilder);
@@ -271,10 +272,13 @@ public class SOQLExpressions {
                         STRING,
                         INTEGER_LITERAL,
                         SOQL_EXTERNAL_VARIABLE));
-
-        grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
+    }
+    
+    private static void soqlExternalVariable(LexerfulGrammarBuilder grammarBuilder){
+    	grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
-                NAME);
+                NAME
+                ,grammarBuilder.optional(ARGUMENTS));
     }
 
     /**
@@ -289,11 +293,11 @@ public class SOQLExpressions {
                 grammarBuilder.firstOf(
                         IN,
                         INCLUDES,
-                        EXCLUDES),
-                LPAREN,
-                grammarBuilder.firstOf(SOQL_NAME, QUERY_EXPRESSION),
-                grammarBuilder.zeroOrMore(COMMA, SOQL_NAME),
-                RPAREN
+                        EXCLUDES)
+                ,grammarBuilder.optional(LPAREN)
+                ,grammarBuilder.firstOf(SOQL_NAME, QUERY_EXPRESSION, SOQL_EXTERNAL_VARIABLE)
+                ,grammarBuilder.zeroOrMore(COMMA, SOQL_NAME)
+                ,grammarBuilder.optional(RPAREN)
         );
     }
 
