@@ -24,6 +24,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LAST;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIKE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIMIT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NOT_SOQL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULLS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OFFSET;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ORDER;
@@ -270,7 +271,8 @@ public class SOQLExpressions {
                 grammarBuilder.firstOf(
                         STRING,
                         INTEGER_LITERAL,
-                        SOQL_EXTERNAL_VARIABLE));
+                        SOQL_EXTERNAL_VARIABLE,
+                        NULL));
 
         grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
