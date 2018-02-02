@@ -1,9 +1,9 @@
 {
-    "title": "The maximum number of parameters in method/constructor is 5",
+    "title": "Methods/Constructors should not have many parameters.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",
-        "constantCost": "10min"
+        "constantCost": "15min"
     },
     "sqaleSubCharacteristic": "READABILITY",
     "tags": [
