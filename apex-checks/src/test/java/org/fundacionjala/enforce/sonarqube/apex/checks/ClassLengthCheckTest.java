@@ -35,7 +35,7 @@ public class ClassLengthCheckTest {
         
         // For Class
         chkMsgVerify = chkMsgVerify.next();
-        chkMsgVerify.atLine(2).withMessage("The maximum number of statements in class is: 500.");
+        chkMsgVerify.atLine(2).withMessage("The maximum number of statements in class is: "+classLengthCheck.DEFAULT_CLASS_LENGTH);
         
     }
 }

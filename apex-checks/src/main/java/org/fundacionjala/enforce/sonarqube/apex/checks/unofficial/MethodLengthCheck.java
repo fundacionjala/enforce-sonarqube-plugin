@@ -32,16 +32,9 @@ public class MethodLengthCheck extends SquidCheck<Grammar> {
     /**
      * The structure must have the name of the method.
      */
-    private final String DEFAULT = "50";
-
-    /**
-     * Stores the format for the rule.
-     */
-    public String format = DEFAULT;
+    public static final Integer DEFAULT_METHOD_LENGTH = 80;
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("MethodLengthCheckMessage");
-
-    
 
     /**
      * The variables are initialized and subscribe the base rule.
@@ -80,12 +73,9 @@ public class MethodLengthCheck extends SquidCheck<Grammar> {
 		if (astNodes.get(astIdex).getName().equals("RBRACE")){
 			rBraceLineNumber = astNodes.get(astIdex).getTokenLine();
 		}
-		
-
-		if((rBraceLineNumber - lBraceLineNumber) > 50){
-			getContext().createLineViolation(this,
-	                    MESSAGE, methodDeclarationNode, 50);
+        
+        if((rBraceLineNumber - lBraceLineNumber) > DEFAULT_METHOD_LENGTH){
+			getContext().createLineViolation(this, MESSAGE, methodDeclarationNode, DEFAULT_METHOD_LENGTH.toString());
 		}
-    	
     }
 }

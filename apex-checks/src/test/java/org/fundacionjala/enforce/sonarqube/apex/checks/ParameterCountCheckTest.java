@@ -32,14 +32,13 @@ public class ParameterCountCheckTest {
     	parameterCountCheck = new ParameterCountCheck();
         sourceFile = scanFile(new File("src/test/resources/checks/clazzError.cls"), parameterCountCheck);
         CheckMessagesVerifier chkMsgVerify = CheckMessagesVerifier.verify(sourceFile.getCheckMessages());
-        //System.out.println(sourceFile.getCheckMessages());
         
         // For Method
         chkMsgVerify = chkMsgVerify.next();
-        chkMsgVerify.atLine(26).withMessage("The maximum number of parameters in method/constructor is: 5.");
+        chkMsgVerify.atLine(26).withMessage("The maximum number of parameters in method/constructor is: "+parameterCountCheck.DEFAULT_PARAM_COUNT);
         
         // For Constructor
         chkMsgVerify = chkMsgVerify.next();
-        chkMsgVerify.atLine(30).withMessage("The maximum number of parameters in method/constructor is: 5.");
+        chkMsgVerify.atLine(30).withMessage("The maximum number of parameters in method/constructor is: "+parameterCountCheck.DEFAULT_PARAM_COUNT);
     }
 }

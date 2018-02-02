@@ -29,16 +29,9 @@ public class ClassLengthCheck extends SquidCheck<Grammar> {
     /**
      * The structure must have the name of the method.
      */
-    private final String DEFAULT = "500";
-
-    /**
-     * Stores the format for the rule.
-     */
-    public String format = DEFAULT;
+    public final Integer DEFAULT_CLASS_LENGTH = 600;
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("ClassLengthCheckMessage");
-
-    
 
     /**
      * The variables are initialized and subscribe the base rule.
@@ -65,12 +58,8 @@ public class ClassLengthCheck extends SquidCheck<Grammar> {
     }
     
     private void LookForClassLength(AstNode classDeclarationNode) {
-    	System.out.println("classDeclarationNode: "+ classDeclarationNode);
-    	System.out.println("classDeclarationNode.getNextSibling(): "+ classDeclarationNode.getNextSibling());
-    	System.out.println("classDeclarationNode.getNextSibling().getTokenLine(): "+ classDeclarationNode.getNextSibling().getTokenLine());
-    	if(classDeclarationNode.getNextSibling().getTokenLine() > 500){
-	        getContext().createLineViolation(this,
-                    MESSAGE, classDeclarationNode, 500);
+    	if(classDeclarationNode.getNextSibling().getTokenLine() > DEFAULT_CLASS_LENGTH){
+	        getContext().createLineViolation(this, MESSAGE, classDeclarationNode, DEFAULT_CLASS_LENGTH.toString());
         }
         
     }
