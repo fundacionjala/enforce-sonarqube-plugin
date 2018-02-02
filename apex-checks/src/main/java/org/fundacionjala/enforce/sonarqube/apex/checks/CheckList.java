@@ -70,6 +70,9 @@ public class CheckList {
                 TestMethodsParametersCheck.class,
                 AssertMessageCheck.class,
                 SoqlLimitCheck.class,
-                EmptyCatchCheck.class);
+                EmptyCatchCheck.class,
+                ClassLengthCheck.class,
+                MethodLengthCheck.class,
+                ParameterCountCheck.class);
     }
 }
