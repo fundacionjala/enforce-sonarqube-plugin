@@ -35,10 +35,10 @@ public class ParameterCountCheckTest {
         
         // For Method
         chkMsgVerify = chkMsgVerify.next();
-        chkMsgVerify.atLine(26).withMessage("The maximum number of parameters in method/constructor is: "+parameterCountCheck.DEFAULT_PARAM_COUNT);
+        chkMsgVerify.atLine(26).withMessage("The maximum number of parameters in method/constructor is: "+parameterCountCheck.DEFAULT_PARAM_COUNT+".");
         
         // For Constructor
         chkMsgVerify = chkMsgVerify.next();
-        chkMsgVerify.atLine(30).withMessage("The maximum number of parameters in method/constructor is: "+parameterCountCheck.DEFAULT_PARAM_COUNT);
+        chkMsgVerify.atLine(30).withMessage("The maximum number of parameters in method/constructor is: "+parameterCountCheck.DEFAULT_PARAM_COUNT+".");
     }
 }

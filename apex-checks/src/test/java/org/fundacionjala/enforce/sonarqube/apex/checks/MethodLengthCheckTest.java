@@ -33,7 +33,7 @@ public class MethodLengthCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/ClassLengthError.cls"), methodLengthCheck);
         CheckMessagesVerifier chkMsgVerify = CheckMessagesVerifier.verify(sourceFile.getCheckMessages());
         
-        chkMsgVerify.next().withMessage("The maximum number of statements in method is: "+ methodLengthCheck.DEFAULT_METHOD_LENGTH);
+        chkMsgVerify.next().withMessage("The maximum number of statements in method is: "+ methodLengthCheck.DEFAULT_METHOD_LENGTH+".");
         
     }
 }
