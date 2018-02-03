@@ -22,6 +22,14 @@ public with sharing class someDraftArticle extends AbstractArticle {
     public deleteArticle(){
             DELETE newAcct;
     }
+    
+    public integer deleteArticle(integer arg1, integer arg2, integer arg3, integer arg4, integer arg5, integer arg6){
+            return null
+    }
+    
+    public someDraftArticle(integer arg1, integer arg2, integer arg3, integer arg4, integer arg5, integer arg6){
+    	
+    }
 }
 
 

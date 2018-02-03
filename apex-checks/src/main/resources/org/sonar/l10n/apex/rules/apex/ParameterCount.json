@@ -1,0 +1,13 @@
+{
+    "title": "Methods/Constructors should not have many parameters.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "15min"
+    },
+    "sqaleSubCharacteristic": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Major"
+}

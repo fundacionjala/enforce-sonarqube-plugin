@@ -1,0 +1,13 @@
+{
+    "title": "Class should not have too many lines",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "10min"
+    },
+    "sqaleSubCharacteristic": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Minor"
+}

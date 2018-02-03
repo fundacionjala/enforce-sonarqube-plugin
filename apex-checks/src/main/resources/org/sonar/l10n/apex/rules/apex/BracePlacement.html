@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+<h2>Noncompliant Code Example</h2>
+<p>Brace placement should be correct</p>
+
+<pre>
+void someMethod() { }// violation
+    
+void someMethod() 
+{ }		// violation
+
+void someMethod() // violation
+{ 
+}		
+
+</pre>
+
+<h2>Compliant Solution</h2>
+
+<pre>
+void someMethod() {
+
+}
+</pre>
