@@ -38,7 +38,7 @@ public class MethodLengthCheckTest {
     }
     
     @Test
-    public void testErrorMethodLength() throws Exception {
+    public void testErrorMethodLengthWithSOQL() throws Exception {
     	methodLengthCheck = new MethodLengthCheck();
         sourceFile = scanFile(new File("src/test/resources/checks/WebToCaseController.cls"), methodLengthCheck);
         CheckMessagesVerifier chkMsgVerify = CheckMessagesVerifier.verify(sourceFile.getCheckMessages());
