@@ -25,7 +25,7 @@ public class MethodLengthCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/clazzCorrect.cls"), methodLengthCheck);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .noMore();
-    }
+    }*/
 
     @Test
     public void testErrorMethodLength() throws Exception {
@@ -35,7 +35,7 @@ public class MethodLengthCheckTest {
         
         chkMsgVerify.next().withMessage("The maximum number of statements in method is: "+ methodLengthCheck.DEFAULT_METHOD_LENGTH+".");
         
-    }*/
+    }
     
     @Test
     public void testErrorMethodLength() throws Exception {
