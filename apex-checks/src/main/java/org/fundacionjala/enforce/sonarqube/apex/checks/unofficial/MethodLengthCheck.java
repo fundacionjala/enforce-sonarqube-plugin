@@ -42,7 +42,7 @@ public class MethodLengthCheck extends SquidCheck<Grammar> {
     
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
+        subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION, ApexGrammarRuleKey.QUERY_EXPRESSION);
     }
 
     /**
@@ -65,6 +65,7 @@ public class MethodLengthCheck extends SquidCheck<Grammar> {
     	int lBraceLineNumber = 0;
     	int rBraceLineNumber = 0;
     	int astIdex = 0;
+    	
     	
     	if (astNodes.get(astIdex).getName().equals("LBRACE")){
 			lBraceLineNumber = astNodes.get(astIdex).getTokenLine();
