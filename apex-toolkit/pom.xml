@@ -7,6 +7,12 @@
             <artifactId>sslr-toolkit</artifactId>
             <version>1.20</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-simple</artifactId>
+            <version>1.6.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <parent>
         <groupId>org.fundacionjala.enforce.sonarqube</groupId>
