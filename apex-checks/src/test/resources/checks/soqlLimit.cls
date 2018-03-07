@@ -21,9 +21,9 @@ public class SomeClass {
         list<String> pageSectionName = new list<String>();
         Boolean formSubmitted = false;
         if(accId <> null) {
-            for(Account acc : [select Name, Id, AccountNumber
-                                    from Account
-                                    where Id = :accId]) {
+            for(Account acc : [SELECT Name, Id, AccountNumber
+                                    FROM Account
+                                    WHERE Id = :accId]) {
                 selectedAccount = acc;
             }
         }
@@ -32,7 +32,7 @@ public class SomeClass {
 
     public void populateAccount(){
 
-        list<AssignmentRule> lstAR = [select id from AssignmentRule where SobjectType = 'Case' and Active = true limit 1];
+        list<AssignmentRule> lstAR = [SELECT id FROM AssignmentRule WHERE SobjectType = 'Case' AND Active = true LIMIT 1];
 
     }
 }
