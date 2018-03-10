@@ -37,7 +37,7 @@ public class MethodLengthCheckTest {
         
     }
     
-    @Test
+   /* @Test
     public void testErrorMethodLengthWithSOQL() throws Exception {
     	methodLengthCheck = new MethodLengthCheck();
         sourceFile = scanFile(new File("src/test/resources/checks/WebToCaseController.cls"), methodLengthCheck);
@@ -45,6 +45,6 @@ public class MethodLengthCheckTest {
         
         //chkMsgVerify.next().withMessage("The maximum number of statements in method is: "+ methodLengthCheck.DEFAULT_METHOD_LENGTH+".");
         
-    }
+    }*/
 }
 
