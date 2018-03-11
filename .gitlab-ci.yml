@@ -6,7 +6,7 @@ stages:
   - deploy
 
 variables:
-  JAR_LOCATION: "sonar-apex-plugin/target/"
+  JAR_LOCATION: "sonar-apex-plugin/target/*.jar"
   CODE_COVERAGE: "coverage"
 
 build_jar:
@@ -33,6 +33,8 @@ sonarqube_publish:
     - sonar-scanner
       -Dsonar.host.url=https://sonar.appirio.com
       -Dsonar.login=$SONAR_LOGIN
+      -Dsonar.projectKey=$CI_PROJECT_PATH_SLUG
+      -Dsonar.links.scm=$CI_PROJECT_URL
       -Dsonar.projectVersion=$CI_PIPELINE_ID
       -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
       -Dsonar.gitlab.max_blocker_issues_gate=5
