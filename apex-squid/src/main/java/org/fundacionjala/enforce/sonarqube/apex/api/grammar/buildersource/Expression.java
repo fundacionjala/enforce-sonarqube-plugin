@@ -173,7 +173,7 @@ public class Expression {
                 INSTANCE_OF_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
-                                grammarBuilder.firstOf(EQUALS, NOTEQUALS),
+                                grammarBuilder.firstOf(EQUALS, NOTEQUALS, CLS_NOTEQUALS),
                                 INSTANCE_OF_EXPRESSION))
         );
     }

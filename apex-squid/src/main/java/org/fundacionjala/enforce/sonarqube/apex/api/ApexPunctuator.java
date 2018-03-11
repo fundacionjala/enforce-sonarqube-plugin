@@ -35,7 +35,7 @@ public enum ApexPunctuator implements TokenType {
     NOT("!"),
     EQUALS("=="),
     NOTEQUALS("!="),
-    
+    CLS_NOTEQUALS("<>"),
     /**
      * OPERATORS.
      */

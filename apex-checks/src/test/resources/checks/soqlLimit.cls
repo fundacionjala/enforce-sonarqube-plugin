@@ -23,7 +23,7 @@ public class SomeClass {
 
     public void populateAccount(){
 
-        list<AssignmentRule> lstAR = [SELECT id FROM AssignmentRule WHERE SobjectType = 'Case' AND Active = true LIMIT 1];
+        list<AssignmentRule> lstAR = [SELECT id FROM AssignmentRule WHERE SobjectType = 'Case' AND Active = 'true' LIMIT 1];
 
     }
 }
