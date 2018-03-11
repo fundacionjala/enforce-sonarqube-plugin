@@ -42,6 +42,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LEQUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.CLS_NOTEQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.UNDERSCORE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.INTEGER_LITERAL;
@@ -53,6 +54,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COUNT_EXPR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NOTEQUAL_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FILTERING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FROM_SENTENCE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GROUP_BY_SENTENCE;
@@ -253,10 +255,12 @@ public class SOQLExpressions {
                         LT,
                         LEQUT,
                         LIKE,
-                        NOTEQUALS
+                        NOTEQUALS,
+                        CLS_NOTEQUALS,
+                        IN
                 ));
     }
-
+    
     /**
      * It is responsible for setting the rule for FIELD expression in where
      * sentence.
@@ -266,6 +270,7 @@ public class SOQLExpressions {
     private static void fieldExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_EXPRESSION).is(
                 SOQL_NAME,
+                grammarBuilder.optional(NOT_SOQL),
                 OPERATORS,
                 grammarBuilder.firstOf(
                         STRING,

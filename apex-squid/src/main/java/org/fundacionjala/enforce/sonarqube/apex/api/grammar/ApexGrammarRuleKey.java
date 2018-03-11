@@ -157,6 +157,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     OR_SOQL_EXPRESSION,
     FILTERING_EXPRESSION,
     FIELD_EXPRESSION,
+    NOTEQUAL_EXPRESSION,
     LIKE_EXPRESSION,
     //Limit Notations
     LIMIT_SENTENCE,
