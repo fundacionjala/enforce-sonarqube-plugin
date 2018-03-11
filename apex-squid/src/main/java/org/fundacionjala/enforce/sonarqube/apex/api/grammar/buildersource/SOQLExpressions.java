@@ -275,7 +275,8 @@ public class SOQLExpressions {
                 grammarBuilder.firstOf(
                         STRING,
                         INTEGER_LITERAL,
-                        SOQL_EXTERNAL_VARIABLE));
+                        SOQL_EXTERNAL_VARIABLE,
+                        BOOLEAN_LITERAL));
 
         grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
