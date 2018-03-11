@@ -9,12 +9,12 @@ variables:
   JAR_LOCATION: "sonar-apex-plugin/target/*.jar"
   CODE_COVERAGE: "coverage"
 
-.build_jar:
+build_jar:
   stage: build
   script:
     - mvn package -Dbuild.number=$CI_PIPELINE_ID
   cache:
-    key: $CI_COMMIT_REF_SLUG
+    key: $CI_PIPELINE_ID
     paths:
     - apex-checks/target/
     - apex-squid/target/
@@ -45,7 +45,7 @@ sonarqube_publish:
       -Dsonar.gitlab.max_blocker_issues_gate=5
       -Dsonar.gitlab.max_critical_issues_gate=5
   cache:
-    key: $CI_COMMIT_REF_SLUG
+    key: $CI_PIPELINE_ID
     paths:
     - apex-checks/target/
     - apex-squid/target/
