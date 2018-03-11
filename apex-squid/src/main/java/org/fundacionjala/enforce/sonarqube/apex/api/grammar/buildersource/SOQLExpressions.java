@@ -42,6 +42,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LEQUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.CLS_NOTEQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.UNDERSCORE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.INTEGER_LITERAL;
@@ -53,6 +54,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRu
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COUNT_EXPR;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_EXPRESSION;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BOOLEAN_LITERAL;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FILTERING_EXPRESSION;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FROM_SENTENCE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GROUP_BY_SENTENCE;
@@ -253,24 +255,29 @@ public class SOQLExpressions {
                         LT,
                         LEQUT,
                         LIKE,
-                        NOTEQUALS
+                        NOTEQUALS,
+                        CLS_NOTEQUALS,
+                        IN
                 ));
     }
-
+    
     /**
      * It is responsible for setting the rule for FIELD expression in where
-     * sentence.
+     * sentence. 
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void fieldExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_EXPRESSION).is(
                 SOQL_NAME,
+                grammarBuilder.optional(NOT_SOQL),
                 OPERATORS,
                 grammarBuilder.firstOf(
                         STRING,
                         INTEGER_LITERAL,
-                        SOQL_EXTERNAL_VARIABLE));
+                        SOQL_EXTERNAL_VARIABLE,
+                        BOOLEAN_LITERAL,
+                        SOQL_NAME));
 
         grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
@@ -342,7 +349,8 @@ public class SOQLExpressions {
     private static void limitSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(LIMIT_SENTENCE).is(
                 LIMIT,
-                INTEGER_LITERAL,
+                grammarBuilder.optional(COLON),
+                grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL),
                 grammarBuilder.optional(OFFSET, INTEGER_LITERAL)
         );
     }
