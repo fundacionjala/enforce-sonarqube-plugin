@@ -42,6 +42,7 @@ import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LEQUT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.CLS_NOTEQUALS;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.UNDERSCORE;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.INTEGER_LITERAL;
@@ -253,7 +254,8 @@ public class SOQLExpressions {
                         LT,
                         LEQUT,
                         LIKE,
-                        NOTEQUALS
+                        NOTEQUALS,
+                        CLS_NOTEQUALS
                 ));
     }
 

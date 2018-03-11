@@ -35,9 +35,9 @@ public class SoqlLimitCheckTest {
                 //.noMore();*/
     }
     
-    /*@Test
+    @Test
     public void testStartAndStopClass_1() throws Exception {
     	System.out.println("test");
         sourceFile = scanFile(new File("src/test/resources/checks/WebToCaseController.cls"), check);
-    }*/
+    }
 }
