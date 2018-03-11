@@ -38,7 +38,7 @@ sonarqube_publish:
       -Dsonar.projectKey=$CI_PROJECT_PATH_SLUG
       -Dsonar.links.scm=$CI_PROJECT_URL
       -Dsonar.projectVersion=$CI_PIPELINE_ID
-      -Dsonar.java.binaries=apex-checks/target/apex-check-1.0b2574.jar
+      -Dsonar.java.binaries=$CI_PROJECT_DIR/apex-checks/target/,$CI_PROJECT_DIR/apex-squid/target/,$CI_PROJECT_DIR/apex-toolkit/target/,$CI_PROJECT_DIR/sonar-apex-plugin/target/
       -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
       -Dsonar.gitlab.max_blocker_issues_gate=5
       -Dsonar.gitlab.max_critical_issues_gate=5
