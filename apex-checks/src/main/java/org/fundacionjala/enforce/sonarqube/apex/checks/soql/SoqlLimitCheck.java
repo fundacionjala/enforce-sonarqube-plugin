@@ -28,8 +28,7 @@ public class SoqlLimitCheck extends SquidCheck<Grammar> {
 
     @Override
     public void init() {
-    	System.out.println("in Class Init Method");
-        subscribeTo(ApexGrammarRuleKey.QUERY_EXPRESSION, ApexGrammarRuleKey.STRING_LITERAL_STRING);
+    	subscribeTo(ApexGrammarRuleKey.QUERY_EXPRESSION, ApexGrammarRuleKey.STRING_LITERAL_STRING);
     }
 
     /**
@@ -41,8 +40,7 @@ public class SoqlLimitCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
         try {
-        	System.out.println("in VisitNode Method");
-            AstNode nodeToCheck = astNode;
+        	AstNode nodeToCheck = astNode;
             if(SoqlParser.isStringQuery(astNode)){
                 AstNode parsedQuery = SoqlParser.parseQuery(astNode);
                 if(parsedQuery != null) {

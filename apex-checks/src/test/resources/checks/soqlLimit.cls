@@ -1,35 +1,31 @@
-public without sharing class WebToCaseController {
-
-    //Constructor
-    public WebToCaseController() {
-        string accId = Apexpages.currentPage().getParameters().get('accId');
-        //String policyNumber = Apexpages.currentPage().getParameters().get('POLICY');
+public class SomeClass {
+	
+	public static void cMethod(){
+        string accId = '1234';
         Document doc = new Document();
-        list<Document>(); attachedDocList = new list<Document>();
+        list<Document>() attachedDocList = new list<Document>();
         DateTime CURRENT_DATE_TIME = system.now().format('ddMMyyyy hh:mm:ss a');
-        //wrapperMap = new map<String, list<FormWrapper>>();
-
-        //intialiseWrapperMap();
+        
+        populateAccount();
 
         list<SelectOption> requestTypeOptions = new list<SelectOption>();
         list<String> pageSectionName = new list<String>();
         Boolean formSubmitted = false;
-        /*if(accId <> null) {
-            for(Account acc : [select Name, Id, AccountNumber
-                                    from Account
-                                    where Id = :accId]) {
+        if(accId <> null) {
+            for(Account acc : [SELECT Name, Id, AccountNumber
+                                    FROM Account
+                                    WHERE Id = :accId]) {
                 selectedAccount = acc;
             }
-        }*/
+        }
         
     }
 
-    // If Policy is not created, Create it using page action
-    /*public void populateAccount(){
+    public void populateAccount(){
 
-        list<AssignmentRule> lstAR = [select id from AssignmentRule where SobjectType = 'Case' and Active = true limit 1];
+        list<AssignmentRule> lstAR = [SELECT id FROM AssignmentRule WHERE SobjectType = 'Case' AND Active = 'true' LIMIT 1];
 
-    }*/
+    }
+}
 
-
- }
+    

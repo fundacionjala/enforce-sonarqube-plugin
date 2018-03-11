@@ -55,6 +55,7 @@ public without sharing class WebToCaseFormController {
                 selectedAccount = acc;
             }
         }
+
     }
 
     //Constructor
@@ -203,7 +204,7 @@ public without sharing class WebToCaseFormController {
             // checking if field is required to be filled in form
             boolean isRequired = String.valueOf(setting.get(validApiName)) == REQUIRED;
             // checking if field need to show on form with selected request type.
-            boolean showField = String.valueOf(setting.get(validApiName)) != DO_NOT_SHOW;
+            boolean showField = String.valueOf(setting.get(validApiName)) <> DO_NOT_SHOW
             // for attachment section checking if attachment is required to submit case.
             if(setting.Page_Section_Name__c == PAGE_SECTION_ATTACHMENT && setting.get(validApiName) <> 'Yes') {
                 showField = false;
@@ -381,7 +382,8 @@ public without sharing class WebToCaseFormController {
         //newPolicyCase.CaseNumber = String.valueOf((Math.floor(Math.random() * (99999 - 999)) + 999));
         newPolicyCase.Origin = CASE_ORIGIN;
         newPolicyCase.SuppliedName = webName;
-        if(caseSuppliedEmail != null && caseSuppliedEmail != ''){
+
+        if(caseSuppliedEmail <> null && caseSuppliedEmail <> ''){
             newPolicyCase.SuppliedEmail = caseSuppliedEmail;
         }
 
@@ -409,9 +411,11 @@ public without sharing class WebToCaseFormController {
             newAttachments.add(a);
         }
         String policyDescLikeStr = selectedAccount.AccountNumber + ' - %';
+
+        string temp_UserId = Userinfo.getUserId();
         for(Document relatedDoc : [select id from Document
                                      where ID NOT IN : attachedDocList AND
-                                     FolderId = :Userinfo.getUserId()
+                                     FolderId = :temp_UserId
                                      AND Description like :policyDescLikeStr]) {
                 attachedDocList.add(relatedDoc);
         }
@@ -447,7 +451,8 @@ public without sharing class WebToCaseFormController {
 
     // Prepare list of fields to display on page based on selected Request Type
     public void getFieldList(){
-        if(selectedRequestType != null && selectedRequestType != '' && selectedRequestType != '---None---'){
+
+        if(selectedRequestType <> null && selectedRequestType <> '' && selectedRequestType <> '---None---'){
             populateFieldMapping();
             displayField = true;
             displaySubmitButton = true;
@@ -494,7 +499,9 @@ public without sharing class WebToCaseFormController {
         System.debug('==documentId-> ' + documentId);
         String docPostFixStr = selectedAccount.AccountNumber + ' - ' + CURRENT_DATE_TIME;
         System.debug('====docPostFixStr===' + docPostFixStr);
-        attachedDocList = [select Id, name from Document where folderId = :userinfo.getUserId() AND Description = :docPostFixStr];
+
+        string temp_UserId = Userinfo.getUserId();
+        attachedDocList = [select Id, name from Document where folderId = :temp_UserId AND Description = :docPostFixStr];
     }
 
     // display list of attachment
@@ -502,7 +509,9 @@ public without sharing class WebToCaseFormController {
         System.debug('==documentId-> ' + documentId);
         String docPostFixStr = selectedAccount.AccountNumber + ' - ' + CURRENT_DATE_TIME;
         System.debug('====docPostFixStr===' + docPostFixStr);
-        attachedDocList = [select Id, name from Document where folderId = :userinfo.getUserId() AND Description = :docPostFixStr];
+
+        string temp_UserId = Userinfo.getUserId();
+        attachedDocList = [select Id, name from Document where folderId = :temp_UserId AND Description = :docPostFixStr];
     }
 
     // Insertion of documents when add attachment get called
