@@ -9,7 +9,7 @@ variables:
   JAR_LOCATION: "sonar-apex-plugin/target/*.jar"
   CODE_COVERAGE: "coverage"
 
-build_jar:
+.build_jar:
   stage: build
   script:
     - mvn package -Dbuild.number=$CI_PIPELINE_ID
@@ -30,13 +30,15 @@ build_jar:
 sonarqube_publish:
   stage: quality_scan
   script:
+    - ls apex-checks/target
+    - ls $CI_PROJECT_DIR/apex-checks
     - sonar-scanner
       -Dsonar.host.url=https://sonar.appirio.com
       -Dsonar.login=$SONAR_LOGIN
       -Dsonar.projectKey=$CI_PROJECT_PATH_SLUG
       -Dsonar.links.scm=$CI_PROJECT_URL
       -Dsonar.projectVersion=$CI_PIPELINE_ID
-      -Dsonar.java.binaries=apex-checks/target/*.jar,apex-squid/target/*.jar,apex-toolkit/target/*.jar,sonar-apex-plugin/target/*.jar
+      -Dsonar.java.binaries=$CI_PROJECT_DIR/apex-checks/target/*.jar,$CI_PROJECT_DIR/apex-squid/target/*.jar,$CI_PROJECT_DIR/apex-toolkit/target/*.jar,$CI_PROJECT_DIR/sonar-apex-plugin/target/*.jar
       -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
       -Dsonar.gitlab.max_blocker_issues_gate=5
       -Dsonar.gitlab.max_critical_issues_gate=5
