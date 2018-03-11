@@ -1,0 +1,55 @@
+image: appirio/dx-appirio:latest
+
+stages:
+  - build
+  - quality_scan
+  - deploy
+
+variables:
+  JAR_LOCATION: "sonar-apex-plugin/target/"
+  CODE_COVERAGE: "coverage"
+
+build_jar:
+  stage: build
+  script:
+    - mvn package -Dbuild.number=$CI_PIPELINE_ID
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - apex-checks/target/
+      - apex-squid/target/
+      - apex-toolkit/target/
+      - sonar-apex-plugin/target/
+  artifacts:
+    name: "CI_COMMIT_REF_NAME/$CI_JOB_ID"
+    paths:
+      - $JAR_LOCATION
+    when: on_success
+    expire_in: 1 week
+
+sonarqube_publish:
+  stage: quality_scan
+  script:
+    - sonar-scanner
+      -Dsonar.host.url=https://sonar.appirio.com
+      -Dsonar.login=$SONAR_LOGIN
+      -Dsonar.projectVersion=$CI_PIPELINE_ID
+      -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
+      -Dsonar.gitlab.max_blocker_issues_gate=5
+      -Dsonar.gitlab.max_critical_issues_gate=5
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - apex-checks/target/
+      - apex-squid/target/
+      - apex-toolkit/target/
+      - sonar-apex-plugin/target/
+
+.deploy:
+  stage: deploy
+  script:
+    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+    - npm publish
+  only:
+    - /v([0-9]+\.){2}[0-9]+/
+    - tags
