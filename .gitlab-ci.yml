@@ -15,11 +15,7 @@ build_jar:
     - mvn package -Dbuild.number=$CI_PIPELINE_ID
   cache:
     key: $CI_COMMIT_REF_SLUG
-    paths:
-      - apex-checks/target/
-      - apex-squid/target/
-      - apex-toolkit/target/
-      - sonar-apex-plugin/target/
+    paths: *build_paths
   artifacts:
     name: "CI_COMMIT_REF_NAME/$CI_JOB_ID"
     paths:
@@ -36,16 +32,13 @@ sonarqube_publish:
       -Dsonar.projectKey=$CI_PROJECT_PATH_SLUG
       -Dsonar.links.scm=$CI_PROJECT_URL
       -Dsonar.projectVersion=$CI_PIPELINE_ID
+      -Dsonar.java.binaries=apex-checks/target/*.jar,apex-squid/target/*.jar,apex-toolkit/target/*.jar,sonar-apex-plugin/target/*.jar
       -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
       -Dsonar.gitlab.max_blocker_issues_gate=5
       -Dsonar.gitlab.max_critical_issues_gate=5
   cache:
     key: $CI_COMMIT_REF_SLUG
-    paths:
-      - apex-checks/target/
-      - apex-squid/target/
-      - apex-toolkit/target/
-      - sonar-apex-plugin/target/
+    paths: *build_paths
 
 .deploy:
   stage: deploy
@@ -55,3 +48,10 @@ sonarqube_publish:
   only:
     - /v([0-9]+\.){2}[0-9]+/
     - tags
+
+.build_folders:
+  paths: &build_paths
+    - apex-checks/target/
+    - apex-squid/target/
+    - apex-toolkit/target/
+    - sonar-apex-plugin/target/
