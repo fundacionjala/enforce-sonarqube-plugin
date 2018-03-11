@@ -49,9 +49,12 @@ public without sharing class WebToCaseFormController {
         pageSectionName = new list<String>();
         formSubmitted = false;
         if(accId <> null) {
-            
+            for(Account acc : [select Name, Id, AccountNumber
+                                    from Account
+                                    where Id = :accId]) {
+                selectedAccount = acc;
+            }
         }
-
     }
 
     //Constructor
