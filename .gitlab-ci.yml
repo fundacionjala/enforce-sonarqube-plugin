@@ -1,4 +1,4 @@
-image: appirio/dx-appirio:latest
+image: appirio/dx-java:latest
 
 stages:
   - build
