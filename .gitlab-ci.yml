@@ -39,6 +39,8 @@ sonarqube_publish:
       -Dsonar.links.scm=$CI_PROJECT_URL
       -Dsonar.projectVersion=$CI_PIPELINE_ID
       -Dsonar.java.binaries=$CI_PROJECT_DIR/apex-checks/target/,$CI_PROJECT_DIR/apex-squid/target/,$CI_PROJECT_DIR/apex-toolkit/target/,$CI_PROJECT_DIR/sonar-apex-plugin/target/
+      -Dsonar.junit.reportPaths=$CI_PROJECT_DIR/apex-checks/target/surefire-reports,$CI_PROJECT_DIR/apex-squid/target/surefire-reports,$CI_PROJECT_DIR/sonar-apex-plugin/target/surefire-reports
+      -Dsonar.jacoco.reportPaths=$CI_PROJECT_DIR/apex-checks/target/jacoco.exec,$CI_PROJECT_DIR/apex-squid/target/jacoco.exec,$CI_PROJECT_DIR/sonar-apex-plugin/target/jacoco.exec
       -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
       -Dsonar.gitlab.max_blocker_issues_gate=5
       -Dsonar.gitlab.max_critical_issues_gate=5
