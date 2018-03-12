@@ -67,9 +67,7 @@ update_plugin:
     - echo "========> Publishing the new plugin"
     - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $JAR_LOCATION $SONAR_SERVER_USER@$SONAR_SERVER_IP:$SONAR_PLUGIN_LOCATION
     - echo "========> Restarting the server"
-    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP
-    - sudo ./sonar-ctl.sh status
-    - exit
+    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh status'
   artifacts:
     name: $CI_PIPELINE_ID/backup
     paths:
@@ -88,9 +86,7 @@ restore_plugin_from_backup:
     - echo "========> Writing backup plugin to server"
     - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $BACKUP_LOCATION $SONAR_SERVER_USER@$SONAR_SERVER_IP:$SONAR_PLUGIN_LOCATION
     - echo "========> Restarting the server"
-    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP
-    - sudo ./sonar-ctl.sh status
-    - exit
+    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh status'
   dependencies:
     - update_plugin
 
