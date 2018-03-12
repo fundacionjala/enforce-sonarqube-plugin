@@ -10,7 +10,7 @@ variables:
   JAR_LOCATION: "sonar-apex-plugin/target/*.jar"
   CODE_COVERAGE: "coverage"
 
-build_jar:
+.build_jar:
   stage: build
   script:
     - mvn package -Dbuild.number=$CI_PIPELINE_ID
@@ -28,7 +28,7 @@ build_jar:
     when: on_success
     expire_in: 1 week
 
-sonarqube_publish:
+.sonarqube_publish:
   stage: quality_scan
   script:
     - ls apex-checks/target
@@ -58,6 +58,7 @@ deploy:
   when: manual
   script:
     - echo "$SONAR_SERVER_KEY" > sonar.key
+    - chmod 600 sonar.key
     - echo "Backing up the existing plugin"
     - scp -i sonar.key $SONAR_SERVER_USER@$SONAR_SERVER_IP:sonar-plugins/apex-plugin.jar apex-plugin-backup.jar
   artifacts:
