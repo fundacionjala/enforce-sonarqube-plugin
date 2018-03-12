@@ -8,6 +8,7 @@ stages:
 
 variables:
   JAR_LOCATION: "sonar-apex-plugin/target/*.jar"
+  BACKUP_LOCATION: "apex-plugin-backup.jar"
   CODE_COVERAGE: "coverage"
 
 .build_jar:
@@ -53,7 +54,7 @@ variables:
     - apex-toolkit/target/
     - sonar-apex-plugin/target/
 
-deploy:
+deploy_plugin:
   stage: deploy
   when: manual
   script:
@@ -61,28 +62,22 @@ deploy:
     - echo "$SONAR_SERVER_KEY" > sonar.key
     - chmod 600 sonar.key
     - echo "Backing up the existing plugin"
-    - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP:sonar-plugins/apex-plugin.jar apex-plugin-backup.jar
+    - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP:sonar-plugins/apex-plugin.jar $BACKUP_LOCATION
   artifacts:
     name: $CI_PIPELINE_ID/backup
     paths:
-      - apex-plugin-backup.jar
+      - $BACKUP_LOCATION
     when: on_success
     expire_in: 1 week
-  cache:
-    key: $CI_PIPELINE_ID
-    paths:
-      - apex-plugin-backup.jar
 
 restore_plugin_from_backup:
   stage: rollback
   when: manual
   script:
-    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-    - npm publish
-  cache:
-    key: $CI_PIPELINE_ID
-    paths:
-      - apex-plugin-backup.jar
+    - ls $JAR_LOCATION
+    - ls $BACKUP_LOCATION
+  dependencies:
+    - deploy_plugin
 
 .build_folders: &cache_builds
   cache:
