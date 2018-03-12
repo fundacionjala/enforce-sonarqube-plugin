@@ -4,6 +4,7 @@ stages:
   - build
   - quality_scan
   - deploy
+  - rollback
 
 variables:
   JAR_LOCATION: "sonar-apex-plugin/target/*.jar"
@@ -52,14 +53,34 @@ sonarqube_publish:
     - apex-toolkit/target/
     - sonar-apex-plugin/target/
 
-.deploy:
+deploy:
   stage: deploy
+  when: manual
+  script:
+    - echo "$SONAR_SERVER_KEY" > sonar.key
+    - echo "Backing up the existing plugin"
+    - scp -i sonar.key $SONAR_SERVER_USER@$SONAR_SERVER_IP:sonar-plugins/apex-plugin.jar apex-plugin-backup.jar
+  artifacts:
+    name: $CI_PIPELINE_ID/backup
+    paths:
+      - apex-plugin-backup.jar
+    when: on_success
+    expire_in: 1 week
+  cache:
+    key: $CI_PIPELINE_ID
+    paths:
+      - apex-plugin-backup.jar
+
+restore_plugin_from_backup:
+  stage: rollback
+  when: manual
   script:
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
     - npm publish
-  only:
-    - /v([0-9]+\.){2}[0-9]+/
-    - tags
+  cache:
+    key: $CI_PIPELINE_ID
+    paths:
+      - apex-plugin-backup.jar
 
 .build_folders: &cache_builds
   cache:
