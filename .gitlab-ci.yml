@@ -57,12 +57,11 @@ deploy:
   stage: deploy
   when: manual
   script:
-    - find / -iname "known_hosts" 2> /dev/null
-    - echo "$HOST_KEY" >> ~/.ssh/known_hosts
+    - echo "$HOST_KEY" >> known_hosts
     - echo "$SONAR_SERVER_KEY" > sonar.key
     - chmod 600 sonar.key
     - echo "Backing up the existing plugin"
-    - scp -i sonar.key $SONAR_SERVER_USER@$SONAR_SERVER_IP:sonar-plugins/apex-plugin.jar apex-plugin-backup.jar
+    - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP:sonar-plugins/apex-plugin.jar apex-plugin-backup.jar
   artifacts:
     name: $CI_PIPELINE_ID/backup
     paths:
