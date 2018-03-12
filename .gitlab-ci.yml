@@ -74,7 +74,6 @@ restore_plugin_from_backup:
   stage: rollback
   when: manual
   script:
-    - ls $JAR_LOCATION
     - ls $BACKUP_LOCATION
   dependencies:
     - update_plugin
