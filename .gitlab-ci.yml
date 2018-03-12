@@ -57,6 +57,7 @@ deploy:
   stage: deploy
   when: manual
   script:
+    - find / -iname "known_hosts" 2> /dev/null
     - echo "$HOST_KEY" >> ~/.ssh/known_hosts
     - echo "$SONAR_SERVER_KEY" > sonar.key
     - chmod 600 sonar.key
