@@ -11,7 +11,7 @@ variables:
   BACKUP_LOCATION: "apex-plugin-backup.jar"
   CODE_COVERAGE: "coverage"
 
-.build_jar:
+build_jar:
   stage: build
   script:
     - mvn package -Dbuild.number=$CI_PIPELINE_ID
@@ -54,7 +54,7 @@ variables:
     - apex-toolkit/target/
     - sonar-apex-plugin/target/
 
-deploy_plugin:
+update_plugin:
   stage: deploy
   when: manual
   script:
