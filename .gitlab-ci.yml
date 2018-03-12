@@ -77,7 +77,7 @@ restore_plugin_from_backup:
     - ls $JAR_LOCATION
     - ls $BACKUP_LOCATION
   dependencies:
-    - deploy_plugin
+    - update_plugin
 
 .build_folders: &cache_builds
   cache:
