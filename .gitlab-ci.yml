@@ -19,10 +19,10 @@ build_new_plugin:
   cache:
     key: $CI_PIPELINE_ID
     paths:
-    - apex-checks/target/
-    - apex-squid/target/
-    - apex-toolkit/target/
-    - sonar-apex-plugin/target/
+      - apex-checks/target/
+      - apex-squid/target/
+      - apex-toolkit/target/
+      - sonar-apex-plugin/target/
   artifacts:
     name: "CI_COMMIT_REF_NAME/$CI_JOB_ID"
     paths:
@@ -33,8 +33,6 @@ build_new_plugin:
 sonarqube_publish:
   stage: quality_scan
   script:
-    - ls apex-checks/target
-    - ls $CI_PROJECT_DIR/apex-checks
     - sonar-scanner
       -Dsonar.host.url=https://sonar.appirio.com
       -Dsonar.login=$SONAR_LOGIN
@@ -50,10 +48,10 @@ sonarqube_publish:
   cache:
     key: $CI_PIPELINE_ID
     paths:
-    - apex-checks/target/
-    - apex-squid/target/
-    - apex-toolkit/target/
-    - sonar-apex-plugin/target/
+      - apex-checks/target/
+      - apex-squid/target/
+      - apex-toolkit/target/
+      - sonar-apex-plugin/target/
 
 backup_and_update:
   stage: deploy
@@ -70,7 +68,7 @@ backup_and_update:
     - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $JAR_LOCATION $SONAR_SERVER_USER@$SONAR_SERVER_IP:$SONAR_PLUGIN_LOCATION
     - echo "========"
     - echo "Restarting the server"
-    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh restart &>/dev/null &'
+    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh restart && exit'
   artifacts:
     name: $CI_PIPELINE_ID/backup
     paths:
@@ -91,7 +89,7 @@ restore_plugin_from_backup:
     - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $BACKUP_LOCATION $SONAR_SERVER_USER@$SONAR_SERVER_IP:$SONAR_PLUGIN_LOCATION
     - echo "========"
     - echo "Restarting the server"
-    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh restart &>/dev/null &'
+    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh restart && exit'
   dependencies:
     - backup_and_update
 
