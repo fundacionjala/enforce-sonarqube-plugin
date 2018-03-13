@@ -1,5 +1,5 @@
 {
-    "title": "It's recommendable to pass a failure message when using an assertion.",
+    "title": "It is recommended to pass a failure message when using an assertion.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

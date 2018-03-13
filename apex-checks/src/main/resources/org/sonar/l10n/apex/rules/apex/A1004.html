@@ -4,7 +4,7 @@
   -->
 
 <p>
-    The DML statement, can not be inside a for loop
+ Putting a DML statement inside a for loop is a performance problem since it can send more DML requests than necessary. Instead, create a list containing all of the records you want to query and include them all in a single DML statement.
 </p>
 
 <h2>Noncompliant Code Example</h2>

@@ -1,5 +1,5 @@
 {
-    "title": "Catch blocks shouldn't be empty.",
+    "title": "Catch blocks should not be empty.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",
