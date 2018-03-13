@@ -1,5 +1,5 @@
 {
-    "title": "assertions shold evaluate boolean variables",
+    "title": "Assertions should evaluate boolean variables.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

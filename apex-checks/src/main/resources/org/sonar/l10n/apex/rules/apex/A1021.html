@@ -4,14 +4,13 @@
   -->
 
 <p>
-The "@Test" annotation is used to indicate when a class represents a test class, so it should be used only for classes (not enums or interfaces) and said class should be either public or private.
-
-Also, if a class is named with the word "test" it suggests this is a test class, so it should either have the @isTest annotation or be renamed. 
+The "@Test" annotation is used to indicate when a class represents a test class, so it should be used only for classes (not enums or interfaces) and test classes should be either public or private.
+Classes named with the word "test" should have the @isTest annotation or be renamed to exclude the word "test". 
 </p>
 
 <h2>Noncompliant Code Example</h2>
 <pre>
-private class MyTest {     _// missing annotation @isTest._
+private class MyTest {     // missing annotation @isTest.
 }
 @isTest
 class MyTest {    // missing modifier access.
