@@ -12,7 +12,7 @@ variables:
   CODE_COVERAGE: "coverage"
   SONAR_PLUGIN_LOCATION: "sonar-plugins/apex-plugin.jar"
 
-build_jar:
+build_new_plugin:
   stage: build
   script:
     - mvn package -Dbuild.number=$CI_PIPELINE_ID
@@ -55,7 +55,7 @@ sonarqube_publish:
     - apex-toolkit/target/
     - sonar-apex-plugin/target/
 
-update_plugin:
+backup_and_update:
   stage: deploy
   when: manual
   script:
@@ -70,7 +70,7 @@ update_plugin:
     - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $JAR_LOCATION $SONAR_SERVER_USER@$SONAR_SERVER_IP:$SONAR_PLUGIN_LOCATION
     - echo "========"
     - echo "Restarting the server"
-    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh restart'
+    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh restart &>/dev/null &'
   artifacts:
     name: $CI_PIPELINE_ID/backup
     paths:
@@ -91,9 +91,9 @@ restore_plugin_from_backup:
     - scp -i sonar.key -o "UserKnownHostsFile known_hosts" $BACKUP_LOCATION $SONAR_SERVER_USER@$SONAR_SERVER_IP:$SONAR_PLUGIN_LOCATION
     - echo "========"
     - echo "Restarting the server"
-    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh restart'
+    - ssh -i sonar.key -o "UserKnownHostsFile known_hosts" $SONAR_SERVER_USER@$SONAR_SERVER_IP 'sudo ./sonar-ctl.sh restart &>/dev/null &'
   dependencies:
-    - update_plugin
+    - backup_and_update
 
 .build_folders: &cache_builds
   cache:
