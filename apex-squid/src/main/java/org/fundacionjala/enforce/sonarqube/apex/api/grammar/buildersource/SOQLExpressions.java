@@ -255,8 +255,8 @@ public class SOQLExpressions {
                         INCLUDES,
                         EXCLUDES),
                 LPAREN,
-                grammarBuilder.firstOf(SOQL_NAME, QUERY_EXPRESSION),
-                grammarBuilder.zeroOrMore(COMMA, SOQL_NAME),
+                grammarBuilder.firstOf(SOQL_NAME, QUERY_EXPRESSION, STRING),
+                grammarBuilder.zeroOrMore(COMMA, STRING),
                 RPAREN
         );
     }
