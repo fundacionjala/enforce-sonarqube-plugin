@@ -22,6 +22,14 @@ public class SomeClass {
             }
         }
         
+        list<lead> lstLead = [SELECT LeadSource, COUNT(Name)
+								FROM Lead
+								GROUP BY LeadSource];
+								
+								
+		list<table1> lstTable1 = [SELECT field1,field2 FROM table1 AS T1 
+                        WHERE id includes (a4, b5) LIMIT 100];
+        
     }
 
     public void populateAccount(){
