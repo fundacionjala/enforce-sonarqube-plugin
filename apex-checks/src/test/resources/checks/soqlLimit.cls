@@ -14,7 +14,10 @@ public class SomeClass {
         if(accId <> null) {
             for(Account acc : [SELECT Name, Id, AccountNumber
                                     FROM Account
-                                    WHERE Id = :accId]) {
+                                    WHERE Id = :accId 
+                                    and id = '1234'
+                                    limit :rowCount
+                                    ]) {
                 selectedAccount = acc;
             }
         }
@@ -23,7 +26,7 @@ public class SomeClass {
 
     public void populateAccount(){
 
-        list<AssignmentRule> lstAR = [SELECT id FROM AssignmentRule WHERE SobjectType = 'Case' AND Active = 'true' LIMIT 1];
+        list<AssignmentRule> lstAR = [SELECT id, count(id) TOTAL, SUM(ID) TOTA1, MAX(ID) MAX1, MIN(ID) min1, AVG(ID) avg1, COUNT_DISTINCT(ID) count1  FROM AssignmentRule WHERE SobjectType = 'Case' AND Active = 'true' LIMIT 1];
 
         List<Points__c> pList = [SELECT Id,
                                     Name,
@@ -39,8 +42,12 @@ public class SomeClass {
                              
        pointsBuckets = [SELECT Id, Current_Balance__c, Owner__c, Title__c, CreatedById 
                                 FROM Points_Bucket__c 
-                                WHERE Id = :challengePointsBuckets.Points_Bucket__r.Id
+                                WHERE Id = :challengePointsBuckets[0].pointTable__r.pointTable__r.id
+                                AND Id = :challengePointsBuckets[indexNumber].pointTable__r.id
+                                AND Id = :challengePointsBuckets[indexNumber].id
                                 AND Id = :Userinfo.getUserId()
+                                AND id in :lst
+                                AND ID = :test
                                 Limit :getSOQlRows()];
 
     }

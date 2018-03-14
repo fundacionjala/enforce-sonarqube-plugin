@@ -130,6 +130,11 @@ public enum ApexKeyword implements TokenType {
     //Select Notations
     SELECT("SELECT"),
     COUNT("COUNT"),
+    SUM("SUM"),
+    AVG("AVG"),
+    MAX("MAX"),
+    MIN("MIN"),
+    COUNT_DISTINCT("COUNT_DISTINCT"),
     //From Notations
     FROM("FROM"),
     AS("AS"),

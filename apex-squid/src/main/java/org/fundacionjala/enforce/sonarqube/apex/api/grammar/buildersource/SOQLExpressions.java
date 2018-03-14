@@ -92,10 +92,10 @@ public class SOQLExpressions {
      */
     private static void selectSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SELECT_SENTENCE).is(
-                SELECT, grammarBuilder.firstOf(COUNT_EXPR, FIELD),
+                SELECT, grammarBuilder.firstOf(AGGREGATE_EXPR, FIELD),
                 grammarBuilder.zeroOrMore(
                         COMMA,
-                        grammarBuilder.firstOf(COUNT_EXPR, FIELD)),
+                        grammarBuilder.firstOf(AGGREGATE_EXPR, FIELD)),
                 grammarBuilder.zeroOrMore(COMMA, LPAREN, QUERY_EXPRESSION, RPAREN));
     }
 
@@ -105,11 +105,12 @@ public class SOQLExpressions {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void countMethod(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(COUNT_EXPR).is(
-                COUNT,
+        grammarBuilder.rule(AGGREGATE_EXPR).is(
+        		grammarBuilder.firstOf(COUNT, AVG, MAX, MIN, SUM, COUNT_DISTINCT),
                 LPAREN,
                 grammarBuilder.optional(SOQL_NAME),
-                RPAREN);
+                RPAREN,
+                grammarBuilder.optional(SOQL_NAME));
     }
 
     /**
@@ -215,9 +216,7 @@ public class SOQLExpressions {
                         STRING,
                         INTEGER_LITERAL,
                         SOQL_EXTERNAL_VARIABLE,
-                        //SOQL_EXTERNAL_METHOD,
                         BOOLEAN_LITERAL,
-                        SOQL_NAME,
                         NULL));
     }
     
@@ -233,7 +232,13 @@ public class SOQLExpressions {
     	grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
                 NAME,
-                grammarBuilder.optional(LPAREN, RPAREN));
+                grammarBuilder.optional(LPAREN, RPAREN),
+                grammarBuilder.optional(LBRACKET, grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL), RBRACKET),
+                grammarBuilder.zeroOrMore(
+                        DOT,
+                        SOQL_NAME
+                        )
+                );
     }
 
     /**
