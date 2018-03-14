@@ -352,7 +352,8 @@ public class SOQLExpressions {
                 grammarBuilder.firstOf(
                         SOQL_NAME,
                         GROUP_BY_TYPES
-                )
+                ),
+                grammarBuilder.zeroOrMore(COMMA, SOQL_NAME)
         );
     }
 

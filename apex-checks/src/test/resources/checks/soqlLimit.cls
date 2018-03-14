@@ -26,7 +26,12 @@ public class SomeClass {
 
     public void populateAccount(){
 
-        list<AssignmentRule> lstAR = [SELECT id, count(id) TOTAL, SUM(ID) TOTA1, MAX(ID) MAX1, MIN(ID) min1, AVG(ID) avg1, COUNT_DISTINCT(ID) count1  FROM AssignmentRule WHERE SobjectType = 'Case' AND Active = 'true' LIMIT 1];
+        list<AssignmentRule> lstAR = [SELECT id, count(id) TOTAL, SUM(ID) TOTA1, MAX(ID) MAX1, MIN(ID) min1, AVG(ID) avg1, COUNT_DISTINCT(ID) count1  
+        								FROM AssignmentRule 
+        								WHERE SobjectType = 'Case' AND Active = 'true'
+        								order by Challenge__r.Id ASC, Active DSC, Id 
+        								GROUP BY Challenge__r.Id, Active, Id 
+        								LIMIT 1];
 
         List<Points__c> pList = [SELECT Id,
                                     Name,
