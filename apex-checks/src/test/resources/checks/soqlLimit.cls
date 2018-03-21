@@ -76,6 +76,7 @@ public class SomeClass {
                                 AND Id = :challengePointsBuckets[indexNumber].id
                                 AND Id = :Userinfo.getUserId()
                                 AND id in :lst
+                                AND id in (SELECT ParentId from Account where id like 'A%')
                                 AND ID = :test
                                 Limit :getSOQlRows()];
 

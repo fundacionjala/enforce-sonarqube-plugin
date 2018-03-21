@@ -253,10 +253,11 @@ public class SOQLExpressions {
      */
     private static void whereSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(WHERE_SENTENCE).is(WHERE,
-        		grammarBuilder.optional(LPAREN),
+        		//grammarBuilder.optional(LPAREN),
                 SIMPLE_EXPRESSION,
-                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION),
-                grammarBuilder.optional(RPAREN));
+                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)//,
+                //grammarBuilder.optional(RPAREN)
+                );
     }
 
     /**
