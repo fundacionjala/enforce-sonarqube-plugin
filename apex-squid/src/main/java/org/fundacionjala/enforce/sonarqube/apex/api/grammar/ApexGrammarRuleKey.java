@@ -142,6 +142,9 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     //Select Notations
     SELECT_SENTENCE,
     AGGREGATE_EXPR,
+    DATE_METHOD_EXPR,
+    DATE_LITERALS_EXPR,
+    DATE_LITERALS_WITH_NUMBERS_EXPR,
     FIELD,
     //From Notations
     FROM_SENTENCE,

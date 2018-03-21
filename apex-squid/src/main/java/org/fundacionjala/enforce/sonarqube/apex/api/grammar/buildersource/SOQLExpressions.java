@@ -22,7 +22,10 @@ public class SOQLExpressions {
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         query(grammarBuilder);
         selectSentence(grammarBuilder);
-        countMethod(grammarBuilder);
+        aggregateMethod(grammarBuilder);
+        dateMethods(grammarBuilder);
+        dateLiteralsWithInteger(grammarBuilder);
+        dateLiterals(grammarBuilder);
         typeField(grammarBuilder);
         soqlName(grammarBuilder);
         nameChar(grammarBuilder);
@@ -80,8 +83,8 @@ public class SOQLExpressions {
                 FROM_SENTENCE,
                 grammarBuilder.optional(WITH_SENTENCE),
                 grammarBuilder.optional(WHERE_SENTENCE),
-                grammarBuilder.optional(ORDER_BY_SENTENCE),
                 grammarBuilder.optional(GROUP_BY_SENTENCE),
+                grammarBuilder.optional(ORDER_BY_SENTENCE),
                 grammarBuilder.optional(LIMIT_SENTENCE));
     }
 
@@ -92,25 +95,111 @@ public class SOQLExpressions {
      */
     private static void selectSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SELECT_SENTENCE).is(
-                SELECT, grammarBuilder.firstOf(AGGREGATE_EXPR, FIELD),
+                SELECT, grammarBuilder.firstOf(AGGREGATE_EXPR, FIELD, DATE_METHOD_EXPR),
                 grammarBuilder.zeroOrMore(
                         COMMA,
-                        grammarBuilder.firstOf(AGGREGATE_EXPR, FIELD)),
+                        grammarBuilder.firstOf(AGGREGATE_EXPR, FIELD, DATE_METHOD_EXPR)),
                 grammarBuilder.zeroOrMore(COMMA, LPAREN, QUERY_EXPRESSION, RPAREN));
     }
 
     /**
-     * It is responsible for setting the rule for COUNT().
+     * It is responsible for setting the rule for all type of Aggregate Methods.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void countMethod(LexerfulGrammarBuilder grammarBuilder) {
+    private static void aggregateMethod(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(AGGREGATE_EXPR).is(
         		grammarBuilder.firstOf(COUNT, AVG, MAX, MIN, SUM, COUNT_DISTINCT),
                 LPAREN,
                 grammarBuilder.optional(SOQL_NAME),
                 RPAREN,
                 grammarBuilder.optional(SOQL_NAME));
+    }
+    
+    /**
+     * It is responsible for setting the rule for All Date Methods available for SOQL Query.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void dateMethods(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DATE_METHOD_EXPR).is(
+        		grammarBuilder.firstOf(
+        				CALENDAR_MONTH, 
+        				CALENDAR_QUARTER, 
+        				CALENDAR_YEAR, 
+        				DAY_IN_MONTH, 
+        				DAY_IN_WEEK, 
+        				DAY_IN_YEAR,
+        				DAY_ONLY,
+        				FISCAL_MONTH,
+        				FISCAL_QUARTER,
+        				FISCAL_YEAR,
+        				HOUR_IN_DAY,
+        				WEEK_IN_MONTH,
+        				WEEK_IN_YEAR),
+                LPAREN,
+                grammarBuilder.optional(SOQL_NAME, STRING),
+                RPAREN,
+                grammarBuilder.optional(SOQL_NAME));
+    }
+    
+    /**
+     * It is responsible for setting the rule for All Date Literals with integer values available for SOQL Query.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void dateLiteralsWithInteger(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DATE_LITERALS_WITH_NUMBERS_EXPR).is(
+        		grammarBuilder.firstOf(
+        				NEXT_N_FISCAL_YEARS, 
+        				LAST_N_FISCAL_YEARS, 
+        				NEXT_N_FISCAL_QUARTERS, 
+        				LAST_N_FISCAL_QUARTERS, 
+        				LAST_N_DAYS, 
+        				NEXT_N_DAYS,
+        				NEXT_N_WEEKS,
+        				LAST_N_WEEKS,
+        				NEXT_N_MONTHS,
+        				LAST_N_MONTHS,
+        				NEXT_N_QUARTERS,
+        				LAST_N_QUARTERS,
+        				NEXT_N_YEARS,
+        				LAST_N_YEARS),
+                COLON,
+                grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL));
+    }
+    
+    /**
+     * It is responsible for setting the rule for All Date Literals available for SOQL Query.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void dateLiterals(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DATE_LITERALS_EXPR).is(
+        		grammarBuilder.firstOf(
+        				YESTERDAY, 
+        				TODAY, 
+        				TOMORROW, 
+        				LAST_WEEK, 
+        				THIS_WEEK, 
+        				NEXT_WEEK,
+        				LAST_MONTH,
+        				THIS_MONTH,
+        				NEXT_MONTH,
+        				THIS_QUARTER,
+        				LAST_QUARTER,
+        				NEXT_QUARTER,
+        				THIS_YEAR,
+        				LAST_YEAR,
+        				NEXT_YEAR,
+        				THIS_FISCAL_QUARTER,
+        				NEXT_FISCAL_QUARTER,
+        				LAST_FISCAL_QUARTER,
+        				LAST_90_DAYS,
+        				NEXT_90_DAYS,
+        				THIS_FISCAL_YEAR,
+        				LAST_FISCAL_YEAR,
+        				NEXT_FISCAL_YEAR));
     }
 
     /**
@@ -164,8 +253,10 @@ public class SOQLExpressions {
      */
     private static void whereSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(WHERE_SENTENCE).is(WHERE,
+        		grammarBuilder.optional(LPAREN),
                 SIMPLE_EXPRESSION,
-                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION));
+                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION),
+                grammarBuilder.optional(RPAREN));
     }
 
     /**
@@ -177,8 +268,9 @@ public class SOQLExpressions {
     private static void conditionalSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONDITIONAL_SOQL_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        AND_SOQL_EXPRESSION,
-                        OR_SOQL_EXPRESSION));
+                		AND_SOQL_EXPRESSION,
+                        OR_SOQL_EXPRESSION
+                        ));
     }
 
     /**
@@ -209,7 +301,7 @@ public class SOQLExpressions {
      */
     private static void fieldExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_EXPRESSION).is(
-                SOQL_NAME,
+        		grammarBuilder.firstOf(SOQL_NAME, DATE_METHOD_EXPR),
                 grammarBuilder.optional(NOT_SOQL),
                 OPERATORS,
                 grammarBuilder.firstOf(
@@ -217,7 +309,9 @@ public class SOQLExpressions {
                         INTEGER_LITERAL,
                         SOQL_EXTERNAL_VARIABLE,
                         BOOLEAN_LITERAL,
-                        NULL));
+                        NULL,
+                        DATE_LITERALS_EXPR,
+                        DATE_LITERALS_WITH_NUMBERS_EXPR));
     }
     
     /**
@@ -231,7 +325,7 @@ public class SOQLExpressions {
     private static void soqlExternalVariable(LexerfulGrammarBuilder grammarBuilder) {
     	grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
-                NAME,
+                grammarBuilder.firstOf(NAME, SOQL_NAME),
                 grammarBuilder.optional(LPAREN, RPAREN),
                 grammarBuilder.optional(LBRACKET, grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL), RBRACKET),
                 grammarBuilder.zeroOrMore(
@@ -271,7 +365,7 @@ public class SOQLExpressions {
     private static void simpleExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SIMPLE_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        FIELD_EXPRESSION,
+                		FIELD_EXPRESSION,
                         FILTERING_EXPRESSION
                 )
         );
@@ -285,7 +379,7 @@ public class SOQLExpressions {
      */
     private static void andSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(AND_SOQL_EXPRESSION).is(
-                AND_SOQL, SIMPLE_EXPRESSION);
+                AND_SOQL, grammarBuilder.optional(LPAREN), SIMPLE_EXPRESSION, grammarBuilder.optional(RPAREN));
     }
 
     /**
@@ -296,7 +390,7 @@ public class SOQLExpressions {
      */
     private static void orSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(OR_SOQL_EXPRESSION).is(
-                OR_SOQL, SIMPLE_EXPRESSION);
+                OR_SOQL, grammarBuilder.optional(LPAREN), SIMPLE_EXPRESSION, grammarBuilder.optional(RPAREN));
     }
 
     /**
@@ -352,9 +446,11 @@ public class SOQLExpressions {
                 GROUP, BY,
                 grammarBuilder.firstOf(
                         SOQL_NAME,
-                        GROUP_BY_TYPES
+                        GROUP_BY_TYPES,
+                        DATE_METHOD_EXPR
                 ),
-                grammarBuilder.zeroOrMore(COMMA, SOQL_NAME)
+                grammarBuilder.zeroOrMore(COMMA, SOQL_NAME,
+                		grammarBuilder.optional( DATE_METHOD_EXPR))
         );
     }
 
