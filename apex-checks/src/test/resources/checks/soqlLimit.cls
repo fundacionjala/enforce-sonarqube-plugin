@@ -32,12 +32,16 @@ public class SomeClass {
         list<lead> lstLead = [SELECT LeadSource, COUNT(Name)
 								FROM Lead
 								where title__c LIKE :key AND (city__c LIKE :key OR tags__c LIKE :key)
-								GROUP BY LeadSource];
+								GROUP BY LeadSource
+								HAVING SUM(Amount__c) >=: lastThrityDayPoint
+								];
 								
 		list<User__c> lstUser = [select Region__c 
 								from User
 								where Region__c != ''
 								Group By Region__c
+								HAVING SUM(Amount__c) >=: lastThrityDayPoint
+								
 								Order By Region__c];	
 													
 		list<table1> lstTable1 = [SELECT field1,field2 FROM table1 AS T1 
@@ -54,6 +58,8 @@ public class SomeClass {
         								WHERE SobjectType = 'Case' AND Active = 'true'
         								AND MSP1__c includes ('AAA;BBB','CCC')
         								GROUP BY Challenge__r.Id, Active, Id
+        								HAVING SUM(Amount__c) >=: lastThrityDayPoint
+        								
         								order by Challenge__r.Id ASC, Active DSC, Id  
         								LIMIT 1];
 
@@ -77,6 +83,7 @@ public class SomeClass {
                                 AND Id = :Userinfo.getUserId()
                                 AND id in :lst
                                 AND id in (SELECT ParentId from Account where id like 'A%')
+                                AND (NOT Name LIKE '%A%')
                                 AND ID = :test
                                 Limit :getSOQlRows()];
 

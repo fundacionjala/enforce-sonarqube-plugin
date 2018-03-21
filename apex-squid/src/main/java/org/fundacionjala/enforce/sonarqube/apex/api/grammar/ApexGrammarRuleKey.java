@@ -168,5 +168,6 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     ORDER_BY_SENTENCE,
     //Group Notations
     GROUP_BY_SENTENCE,
-    GROUP_BY_TYPES;
+    GROUP_BY_TYPES,
+	HAVING_SENTENCE;
 }

@@ -129,6 +129,7 @@ public enum ApexKeyword implements TokenType {
      */
     //Select Notations
     SELECT("SELECT"),
+    HAVING("HAVING"),
     COUNT("COUNT"),
     SUM("SUM"),
     AVG("AVG"),

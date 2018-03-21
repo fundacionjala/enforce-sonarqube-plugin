@@ -45,6 +45,7 @@ public class SOQLExpressions {
         groupBySentence(grammarBuilder);
         groupByTypesSentence(grammarBuilder);
         soqlExternalVariable(grammarBuilder);
+        havingSentence(grammarBuilder);
     }
 
     /**
@@ -84,6 +85,7 @@ public class SOQLExpressions {
                 grammarBuilder.optional(WITH_SENTENCE),
                 grammarBuilder.optional(WHERE_SENTENCE),
                 grammarBuilder.optional(GROUP_BY_SENTENCE),
+                grammarBuilder.optional(HAVING_SENTENCE),
                 grammarBuilder.optional(ORDER_BY_SENTENCE),
                 grammarBuilder.optional(LIMIT_SENTENCE));
     }
@@ -302,7 +304,8 @@ public class SOQLExpressions {
      */
     private static void fieldExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_EXPRESSION).is(
-        		grammarBuilder.firstOf(SOQL_NAME, DATE_METHOD_EXPR),
+        		grammarBuilder.optional(NOT_SOQL),
+        		grammarBuilder.firstOf(SOQL_NAME, DATE_METHOD_EXPR, AGGREGATE_EXPR),
                 grammarBuilder.optional(NOT_SOQL),
                 OPERATORS,
                 grammarBuilder.firstOf(
@@ -343,7 +346,7 @@ public class SOQLExpressions {
      */
     private static void filteringExpressions(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FILTERING_EXPRESSION).is(
-                SOQL_NAME,
+        		SOQL_NAME,
                 grammarBuilder.optional(NOT_SOQL),
                 grammarBuilder.firstOf(
                         IN,
@@ -468,5 +471,19 @@ public class SOQLExpressions {
                 grammarBuilder.zeroOrMore(COMMA, SOQL_NAME),
                 RPAREN
         );
+    }
+    
+    /**
+     * It is responsible for setting the rule for where sentence.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void havingSentence(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(HAVING_SENTENCE).is(HAVING,
+        		//grammarBuilder.optional(LPAREN),
+                SIMPLE_EXPRESSION,
+                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)//,
+                //grammarBuilder.optional(RPAREN)
+                );
     }
 }
