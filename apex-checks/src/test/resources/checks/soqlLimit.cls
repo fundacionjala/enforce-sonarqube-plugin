@@ -60,7 +60,7 @@ public class SomeClass {
         								GROUP BY Challenge__r.Id, Active, Id
         								HAVING SUM(Amount__c) >=: lastThrityDayPoint
         								
-        								order by Challenge__r.Id ASC, Active DSC, Id  
+        								order by Challenge__r.Id ASC, Active DSC, Id, SUM(ID) DSC  
         								LIMIT 1];
 
         List<Points__c> pList = [SELECT Id,
