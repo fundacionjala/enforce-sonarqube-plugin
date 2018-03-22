@@ -422,7 +422,10 @@ public class SOQLExpressions {
     private static void orderBySentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ORDER_BY_SENTENCE).is(
                 ORDER, BY,
-                SOQL_NAME,
+                //SOQL_NAME,
+                grammarBuilder.firstOf(
+                		SOQL_NAME,
+                		AGGREGATE_EXPR),
                 grammarBuilder.optional(
                         grammarBuilder.firstOf(ASC, DES),
                         grammarBuilder.optional(
@@ -430,7 +433,10 @@ public class SOQLExpressions {
                                 grammarBuilder.firstOf(FIRST, LAST))),
                 grammarBuilder.zeroOrMore(
                         COMMA,
-                        SOQL_NAME,
+                        //SOQL_NAME,
+                        grammarBuilder.firstOf(
+                        		SOQL_NAME,
+                        		AGGREGATE_EXPR),
                         grammarBuilder.optional(
                                 grammarBuilder.firstOf(ASC, DES),
                                 grammarBuilder.optional(
@@ -451,10 +457,16 @@ public class SOQLExpressions {
                 grammarBuilder.firstOf(
                         SOQL_NAME,
                         GROUP_BY_TYPES,
-                        DATE_METHOD_EXPR
+                        DATE_METHOD_EXPR,
+                        AGGREGATE_EXPR
                 ),
-                grammarBuilder.zeroOrMore(COMMA, SOQL_NAME,
-                		grammarBuilder.optional( DATE_METHOD_EXPR))
+                grammarBuilder.zeroOrMore(COMMA,
+                		grammarBuilder.firstOf(
+                                SOQL_NAME,
+                                GROUP_BY_TYPES,
+                                DATE_METHOD_EXPR,
+                                AGGREGATE_EXPR
+                        ))
         );
     }
 
