@@ -8,6 +8,8 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.sonar.check.Rule;
+import org.sonar.check.RuleProperty;
+
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
@@ -29,7 +31,7 @@ public class ParameterCountCheck extends SquidCheck<Grammar> {
     /**
      * The structure must have the name of the method.
      */
-    public final Integer DEFAULT_PARAM_COUNT = 5;
+    public final int DEFAULT_PARAM_COUNT = 5;
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("ParameterCountCheckMessage");
 
@@ -43,6 +45,17 @@ public class ParameterCountCheck extends SquidCheck<Grammar> {
     public void init() {
         subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION, ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION);
     }
+    
+    /*
+     * Rule Property to make configurable variable
+     */
+    @RuleProperty(
+    	    key = "max",
+    	    description = "Maximum allowed statements per function",
+    	    defaultValue = ""+DEFAULT_PARAM_COUNT)
+    	  int max = DEFAULT_PARAM_COUNT;
+    
+    
 
     /**
      * It is responsible for verifying whether the rule is met in the rule base.
@@ -60,8 +73,8 @@ public class ParameterCountCheck extends SquidCheck<Grammar> {
     }
     
     private void LookForParameterCount(AstNode methodDeclarationNode) {
-        if(methodDeclarationNode.getDescendants(ApexGrammarRuleKey.FORMAL_PARAMETER).size() > DEFAULT_PARAM_COUNT){
-	        getContext().createLineViolation(this, MESSAGE, methodDeclarationNode, DEFAULT_PARAM_COUNT.toString());
+        if(methodDeclarationNode.getDescendants(ApexGrammarRuleKey.FORMAL_PARAMETER).size() > max){
+	        getContext().createLineViolation(this, MESSAGE, methodDeclarationNode, max);
         }
         
     }
