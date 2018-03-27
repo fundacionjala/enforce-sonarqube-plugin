@@ -8,6 +8,8 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.sonar.check.Rule;
+import org.sonar.check.RuleProperty;
+
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
@@ -29,7 +31,7 @@ public class ClassLengthCheck extends SquidCheck<Grammar> {
     /**
      * The structure must have the name of the method.
      */
-    public final Integer DEFAULT_CLASS_LENGTH = 600;
+    public static final int DEFAULT_CLASS_LENGTH = 600;
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("ClassLengthCheckMessage");
 
@@ -42,6 +44,16 @@ public class ClassLengthCheck extends SquidCheck<Grammar> {
         subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_BODY);
     }
 
+    /*
+     * Rule Property to make configurable variable
+     */
+    @RuleProperty(
+    	    key = "max",
+    	    description = "Maximum allowed statements per function",
+    	    defaultValue = ""+DEFAULT_CLASS_LENGTH)
+    	  int max = DEFAULT_CLASS_LENGTH;
+    
+    
     /**
      * It is responsible for verifying whether the rule is met in the rule base.
      * In the event that the rule is not correct, create message error.
@@ -58,8 +70,8 @@ public class ClassLengthCheck extends SquidCheck<Grammar> {
     }
     
     private void LookForClassLength(AstNode classDeclarationNode) {
-    	if(classDeclarationNode.getNextSibling().getTokenLine() > DEFAULT_CLASS_LENGTH){
-	        getContext().createLineViolation(this, MESSAGE, classDeclarationNode, DEFAULT_CLASS_LENGTH.toString());
+    	if(classDeclarationNode.getNextSibling().getTokenLine() > max){
+	        getContext().createLineViolation(this, MESSAGE, classDeclarationNode, max);
         }
         
     }
