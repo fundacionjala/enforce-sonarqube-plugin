@@ -13,14 +13,14 @@ import java.io.File;
 
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
-public class SoqlFileInLoopCheckTest {
+public class SoqlInLoopCheckTest {
     
-    private SoqlFileInLoopCheck check;
+    private SoqlInLoopCheck check;
     private SourceFile sourceFile;
 
     @Before
     public void setUp() {
-        check = new SoqlFileInLoopCheck();
+        check = new SoqlInLoopCheck();
     }
     
     @Test

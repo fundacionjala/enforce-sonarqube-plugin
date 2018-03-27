@@ -4,7 +4,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
-import org.fundacionjala.enforce.sonarqube.apex.checks.soql.SoqlFileInLoopCheck;
+import org.fundacionjala.enforce.sonarqube.apex.checks.soql.SoqlInLoopCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.soql.SoqlLimitCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertLiteralBooleanCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertMessageCheck;
@@ -75,6 +75,6 @@ public class CheckList {
                 ClassLengthCheck.class,
                 MethodLengthCheck.class,
                 ParameterCountCheck.class,
-                SoqlFileInLoopCheck.class);
+                SoqlInLoopCheck.class);
     }
 }

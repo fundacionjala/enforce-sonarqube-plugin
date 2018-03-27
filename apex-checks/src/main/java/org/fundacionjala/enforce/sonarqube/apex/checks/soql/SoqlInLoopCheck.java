@@ -18,8 +18,8 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 /**
  * Verifies if a class contains test methods.
  */
-@Rule(key = SoqlFileInLoopCheck.CHECK_KEY) // standard setup
-public class SoqlFileInLoopCheck extends SquidCheck<Grammar> {
+@Rule(key = SoqlInLoopCheck.CHECK_KEY) // standard setup
+public class SoqlInLoopCheck extends SquidCheck<Grammar> {
 	/**
      * Stores the rule to subscribe.
      */
