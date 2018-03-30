@@ -33,7 +33,7 @@ public class SoqlLimitCheckTest {
 
     @Test
     public void soqlLimitError() throws Exception {
-        sourceFile = scanFile(new File("src/test/resources/checks/SoqlLimitError.cls"), check);
+        sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitError.cls"), check);
         System.out.println("sourceFile.getCheckMessages() Error: ==> "+ sourceFile.getCheckMessages());
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(8).withMessage("Define the LIMIT for this SOQL statement.")
