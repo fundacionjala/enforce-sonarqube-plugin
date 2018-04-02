@@ -4,21 +4,23 @@
   -->
 
 <p>
-SOQL statements should always have a defined LIMIT because query results can be larger than expected and most records will not be used.
+SOQL statements should not be in loops.
 </p>
 
 <h2>Noncompliant Code Example</h2>
 <pre>
 public void someMethod {
-...
-Accounts[] accs = [SELECT dato FROM table1];
+	...
+	while (true) {
+		Contact c = new Contact(Account = [SELECT Name FROM Account WHERE NumberOfEmployees > 10 LIMIT 1]);
+	}
 }
 </pre>
 
 <h2>Compliant Solution</h2>
 <pre>
 public void someMethod {
-...
-Accounts[] accs = [SELECT dato FROM table1 LIMIT 50];
+	...
+	Contact c = new Contact(Account = [SELECT Name FROM Account WHERE NumberOfEmployees > 10 LIMIT 1]);
 }
 </pre>

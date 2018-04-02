@@ -1,5 +1,5 @@
 {
-    "title": "Brace placement should be correct",
+    "title": "Brace placement should follow the standard format.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

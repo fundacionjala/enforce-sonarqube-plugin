@@ -15,13 +15,12 @@ public class ApexGrammarTriggerTest extends ApexRuleTest {
 	public void init(){
 		setRootRule(APEX_GRAMMAR);
 	}
-	
+
 	@Test
 	public void basic(){
 		AstNode astNode = parser.parse("trigger triggerName on Case(before insert){}");
-		System.out.println(AstXmlPrinter.print(astNode));
 	}
-	
+
 	@Test
 	public void iterations(){
 		assertThat(parser)

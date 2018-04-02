@@ -1,5 +1,5 @@
 {
-    "title": "\"Test.startTest()\" and \"Test.stopTest()\" should only be used once each for every test.",
+    "title": "\"Test.startTest()\" and \"Test.stopTest()\" should only be used once for each test.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",
