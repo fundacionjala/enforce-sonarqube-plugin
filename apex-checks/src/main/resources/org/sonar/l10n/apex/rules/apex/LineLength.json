@@ -1,5 +1,5 @@
 {
-    "title": "Lines should not be too long",
+    "title": "Lines should not be too long.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",
