@@ -6,7 +6,7 @@
   <p>For better readability avoid too many parameters in methods/constructors.</p>
   
   <h2>Noncompliant Code Example</h2>
-  <p>The maximum number of parameters in method/constructor is 5</p>
+  <p>The maximum number of parameters in method/constructor is 5.</p>
   
   <pre>
   void someMethod(integer arg1, integer arg2, integer arg3, integer arg4, integer arg5, integer arg6) { // violation
@@ -21,6 +21,12 @@
   <h2>Compliant Solution</h2>
   
   <pre>
-  
+        void someMethod(integer arg1) {
+        }
+
+    class SampleClass {
+        SampleClass(integer arg1) {
+        }
+    }
   </pre>
   

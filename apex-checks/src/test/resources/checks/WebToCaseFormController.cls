@@ -367,7 +367,7 @@ public without sharing class WebToCaseFormController {
         }
 
         //Fetching the assignment rules on case
-        list<AssignmentRule> lstAR = [select id from AssignmentRule where SobjectType = 'Case' and Active = 'true' limit 1]
+        list<AssignmentRule> lstAR = [select id from AssignmentRule where SobjectType = 'Case' and Active = true limit 1];
 
         Database.DMLOptions dmlOpts = new Database.DMLOptions();
         if(!lstAR.isEmpty()){
