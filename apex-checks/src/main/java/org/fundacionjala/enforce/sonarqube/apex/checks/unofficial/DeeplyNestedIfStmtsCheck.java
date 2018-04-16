@@ -11,6 +11,9 @@ import org.sonar.check.Rule;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
+import java.util.List;
+
+import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
@@ -51,26 +54,27 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
         try {
-        		int count = 0;
-        		if (astNode.is(ApexGrammarRuleKey.IF_STATEMENT)) {  	// subscribeTo latches onto the first case of the argument
-        			count = 1;										// so we will likely always increment by one
-        		}
-            while(astNode.hasDescendant(ApexGrammarRuleKey.IF_STATEMENT)) {
-        			System.out.println(astNode + ", Count: "+ count);
-            		System.out.println("Descendants: " + astNode.getDescendants(ApexGrammarRuleKey.IF_STATEMENT));
-            		if (!astNode.getPreviousAstNode().getTokenValue().equals("ELSE")){ 	// do not increment if it's an else
-            			count++;															// increment for if statement
-            		}
-            		astNode = astNode.getFirstDescendant(ApexGrammarRuleKey.IF_STATEMENT);
-            }
-            if (astNode.is(ApexGrammarRuleKey.IF_STATEMENT) && !astNode.getPreviousAstNode().getTokenValue().equals("ELSE")) {
-            		count++;
-            }
-            if (count > DEFAULT_IF_DEPTH) {
-            		getContext().createLineViolation(this, MESSAGE, astNode, DEFAULT_IF_DEPTH.toString());
-            }
+        		recursive(astNode);
         } catch (Exception e) {
             ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
+    }
+    
+	public int recursive(AstNode astNode) {
+    		int count = 1;
+    		List<AstNode> children = astNode.getChildren();
+    		System.out.println(children);
+    		for (AstNode sib : children) {
+    			System.out.println(sib.getType());
+    			if (sib.getType().equals(ApexKeyword.IF)) {
+    				if (!sib.getPreviousAstNode().getType().equals(ApexKeyword.ELSE)){ 	
+        				count += recursive(sib.getFirstDescendant(ApexGrammarRuleKey.IF_STATEMENT)) + 1;
+        			}
+            		if (count > DEFAULT_IF_DEPTH) {
+                		getContext().createLineViolation(this, MESSAGE, sib, DEFAULT_IF_DEPTH.toString());
+                }
+    			}
+    		}
+		return 0;
     }
 }
