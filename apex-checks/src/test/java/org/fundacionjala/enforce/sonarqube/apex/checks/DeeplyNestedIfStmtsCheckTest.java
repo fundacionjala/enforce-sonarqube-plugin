@@ -28,8 +28,8 @@ public class DeeplyNestedIfStmtsCheckTest {
 		System.out.println("Error");
 		sourceFile = scanFile(new File("src/test/resources/checks/nestedIfError.cls"), check);
 		CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-		//.next().atLine(8).withMessage(
-		//		"Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to 3.")
+		.next().atLine(8).withMessage(
+				"Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to 3.")
 		.noMore();
 	}
 	

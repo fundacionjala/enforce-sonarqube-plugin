@@ -62,19 +62,18 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
     
 	public int recursive(AstNode astNode) {
     		int count = 1;
-    		List<AstNode> children = astNode.getChildren();
-    		System.out.println(children);
-    		for (AstNode sib : children) {
-    			System.out.println(sib.getType());
-    			if (sib.getType().equals(ApexKeyword.IF)) {
-    				if (!sib.getPreviousAstNode().getType().equals(ApexKeyword.ELSE)){ 	
-        				count += recursive(sib.getFirstDescendant(ApexGrammarRuleKey.IF_STATEMENT)) + 1;
-        			}
-            		if (count > DEFAULT_IF_DEPTH) {
-                		getContext().createLineViolation(this, MESSAGE, sib, DEFAULT_IF_DEPTH.toString());
-                }
+    		List<AstNode> children = astNode.getChildren(ApexKeyword.IF); 	// this is getting just one child
+    		for (AstNode sib : children) {									// bad recursion
+   			if (!sib.getPreviousAstNode().equals(ApexKeyword.ELSE)){
+        			count++;
+    			}
+    			if(sib.hasDescendant(ApexGrammarRuleKey.IF_STATEMENT)) {
+    				count += recursive(sib.getFirstDescendant(ApexGrammarRuleKey.IF_STATEMENT));
+    			}
+    			if (count > DEFAULT_IF_DEPTH) {
+    				getContext().createLineViolation(this, MESSAGE, sib, DEFAULT_IF_DEPTH.toString());
     			}
     		}
-		return 0;
+		return count;
     }
 }

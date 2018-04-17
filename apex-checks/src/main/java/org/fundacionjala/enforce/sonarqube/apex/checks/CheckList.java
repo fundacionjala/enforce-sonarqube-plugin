@@ -53,6 +53,7 @@ public class CheckList {
         return ImmutableList.<Class>of(
                 ErrorRecoveryCheck.class,
                 ClassNameCheck.class,
+                DeeplyNestedIfStmtsCheck.class,
                 DeprecatedMethodCheck.class,
                 DmlInConstructorCheck.class,
                 DmlInForCheck.class,
