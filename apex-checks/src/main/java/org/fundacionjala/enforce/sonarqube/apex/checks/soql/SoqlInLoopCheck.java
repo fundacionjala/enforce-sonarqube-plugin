@@ -52,7 +52,13 @@ public class SoqlInLoopCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
     	  try {
-              if (astNode.hasDescendant(ApexGrammarRuleKey.QUERY_EXPRESSION)) {
+    		  if(astNode.getType() == ApexGrammarRuleKey.DO_STATEMENT || astNode.getType() == ApexGrammarRuleKey.WHILE_STATEMENT){
+    			  astNode = astNode.getFirstChild(ApexGrammarRuleKey.STATEMENT);
+    		  }else if(astNode.getType() == ApexGrammarRuleKey.FOR_STATEMENT && astNode.hasDirectChildren(ApexGrammarRuleKey.FOR_EACH_LOOP)){
+    			  astNode = astNode.getFirstChild(ApexGrammarRuleKey.FOR_EACH_LOOP).getFirstChild(ApexGrammarRuleKey.STATEMENT);
+    		  }
+    		  
+    		  if (astNode.getType() == ApexGrammarRuleKey.STATEMENT && astNode.hasDescendant(ApexGrammarRuleKey.QUERY_EXPRESSION)) {
                   getContext().createLineViolation(this, String.format(message,
                           astNode.getFirstDescendant(ApexGrammarRuleKey.QUERY_EXPRESSION).getTokenOriginalValue()), astNode);
               }

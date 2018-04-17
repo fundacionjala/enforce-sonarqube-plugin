@@ -21,5 +21,11 @@ public class SomeClass {
                                                 AND    Date__c = THIS_QUARTER];
             }
         }
+        
+        for(Account act : [select id, Name from Account]){
+        	if(act.Name == 'test'){
+        		act.Amount__c = 0;
+        	}
+        }
     }
 }
