@@ -19,10 +19,11 @@ public class DeeplyNestedIfStmtsCheckTest {
 	public void setup(){
 		check = new DeeplyNestedIfStmtsCheck();
 	}
-	/**
+	
+/*	*//**
 	 * Exceeds if-then limit of 3. 
 	 * @throws Exception
-	 */
+	 *//*
 	@Test
 	public void testError() throws Exception{
 		System.out.println("Error");
@@ -33,16 +34,16 @@ public class DeeplyNestedIfStmtsCheckTest {
 		.noMore();
 	}
 	
-	/**
+	*//**
 	 * Should be okay, normal/ simple if-then logic.
 	 * @throws Exception
-	 */
+	 *//*
 	@Test
 	public void testSimpleIfElse() throws Exception{
 		System.out.println("Simple");
 		sourceFile = scanFile(new File("src/test/resources/checks/simpleIfElse.cls"), check);
 		CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();	
-	}
+	}*/
 	
 	/**
 	 * Exceeds if-then limit of 3 four times.

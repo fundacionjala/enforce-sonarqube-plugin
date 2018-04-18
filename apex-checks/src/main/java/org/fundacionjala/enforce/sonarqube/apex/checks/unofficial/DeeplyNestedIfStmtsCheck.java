@@ -54,7 +54,16 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
         try {
-        		recursive(astNode);
+	        	List<AstNode> children = astNode.getChildren();
+	    		System.out.println("Current node: " + astNode);
+	    		System.out.println("Children: " + children);
+	    		System.out.println("First statement: " + astNode.getFirstChild(ApexGrammarRuleKey.STATEMENT) + "\n");
+	    		for (AstNode child : children) {
+	    			if (child.is(ApexGrammarRuleKey.STATEMENT)) {
+		    			visitNode(child);
+	    			}
+	    		}
+        		// recursive(astNode);
         } catch (Exception e) {
             ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
