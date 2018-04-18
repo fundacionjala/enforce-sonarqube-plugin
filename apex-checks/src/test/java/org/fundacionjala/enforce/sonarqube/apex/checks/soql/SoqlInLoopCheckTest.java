@@ -32,10 +32,10 @@ public class SoqlInLoopCheckTest {
 
     @Test
     public void testIncorrectSOQLLoop() throws Exception {
-    		sourceFile = scanFile(new File("src/test/resources/checks/soqlFileInLoopError.cls"), check);
-        CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                next().atLine(15).withMessage(
-                "SOQL statements should not be in loops.");
+    	sourceFile = scanFile(new File("src/test/resources/checks/soqlFileInLoopError.cls"), check);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+               .next().atLine(15).withMessage("SOQL statements should not be in loops.")
+               .next().atLine(31).withMessage("SOQL statements should not be in loops.");;
     }
     
     /**
@@ -43,7 +43,7 @@ public class SoqlInLoopCheckTest {
      */
     @Test
     public void testIncorrectNestedSOQLLoop() throws Exception {
-    		sourceFile = scanFile(new File("src/test/resources/checks/soqlFileInNestedLoopError.cls"), check);
+    	sourceFile = scanFile(new File("src/test/resources/checks/soqlFileInNestedLoopError.cls"), check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
                 next().atLine(15).withMessage(
                 "SOQL statements should not be in loops.");
@@ -54,7 +54,7 @@ public class SoqlInLoopCheckTest {
      */
     @Test
     public void testNoSOQLLoop() throws Exception {
-    		sourceFile = scanFile(new File("src/test/resources/checks/ClassLengthError.cls"), check);
+    	sourceFile = scanFile(new File("src/test/resources/checks/ClassLengthError.cls"), check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
                 noMore();
     }
@@ -64,8 +64,8 @@ public class SoqlInLoopCheckTest {
      */
     @Test
     public void testLoops() throws Exception {
-	    	sourceFile = scanFile(new File("src/test/resources/checks/justLoops.cls"), check);
-	    	CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
+        sourceFile = scanFile(new File("src/test/resources/checks/justLoops.cls"), check);
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
     }
     
     /**

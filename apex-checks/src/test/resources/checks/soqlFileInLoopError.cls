@@ -27,5 +27,9 @@ public class SomeClass {
         		act.Amount__c = 0;
         	}
         }
+        
+        for(;;) {
+	    	List<Account> accounts = [SELECT Id FROM Account];
+	  	}
     }
 }
