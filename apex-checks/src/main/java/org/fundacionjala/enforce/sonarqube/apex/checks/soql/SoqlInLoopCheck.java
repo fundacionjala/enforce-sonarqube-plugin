@@ -7,6 +7,7 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.soql;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
+import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.sonar.check.Rule;
@@ -53,9 +54,9 @@ public class SoqlInLoopCheck extends SquidCheck<Grammar> {
     public void visitNode(AstNode astNode) {
     	  try {
     		  astNode = getStatementAstNode(astNode);
-    		  if (astNode.getType() == ApexGrammarRuleKey.STATEMENT && astNode.hasDescendant(ApexGrammarRuleKey.QUERY_EXPRESSION)) {
+    		  if ((astNode.is(ApexGrammarRuleKey.STATEMENT) && astNode.hasDescendant(ApexGrammarRuleKey.QUERY_EXPRESSION))) {
                   getContext().createLineViolation(this, String.format(message,
-                          astNode.getFirstDescendant(ApexGrammarRuleKey.QUERY_EXPRESSION).getTokenOriginalValue()), astNode);
+                          astNode.getFirstDescendant(ApexGrammarRuleKey.QUERY_EXPRESSION).getTokenOriginalValue()), astNode.getFirstDescendant(ApexGrammarRuleKey.QUERY_EXPRESSION));
               }
           } catch (Exception e) {
               ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
@@ -63,11 +64,11 @@ public class SoqlInLoopCheck extends SquidCheck<Grammar> {
     }
     
     private AstNode getStatementAstNode(AstNode astNode){
-    	AstNode statementAstNode = astNode.getFirstChild(ApexGrammarRuleKey.STATEMENT);
-    	if(statementAstNode == null){
-    		statementAstNode = astNode.getLastChild(); // For this Rule, Last Child will be FOR_LOOP or FOR_EACH_LOOP
-    		statementAstNode = getStatementAstNode(statementAstNode);
-    	}
-    	return statementAstNode;
+    		AstNode statementAstNode = astNode.getFirstChild(ApexGrammarRuleKey.STATEMENT);
+	    	if(statementAstNode == null){
+	    		statementAstNode = astNode.getLastChild(); // For this Rule, Last Child will be FOR_LOOP or FOR_EACH_LOOP
+	    		statementAstNode = getStatementAstNode(statementAstNode);
+	    	}
+	    	return statementAstNode;
     }
 }

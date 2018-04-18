@@ -32,10 +32,14 @@ public class SoqlInLoopCheckTest {
 
     @Test
     public void testIncorrectSOQLLoop() throws Exception {
-    	sourceFile = scanFile(new File("src/test/resources/checks/soqlFileInLoopError.cls"), check);
+    		sourceFile = scanFile(new File("src/test/resources/checks/soqlFileInLoopError.cls"), check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-               .next().atLine(15).withMessage("SOQL statements should not be in loops.")
-               .next().atLine(31).withMessage("SOQL statements should not be in loops.");;
+               .next().atLine(4).withMessage("SOQL statements should not be in loops.")
+               .next().atLine(10).withMessage("SOQL statements should not be in loops.")
+               .next().atLine(16).withMessage("SOQL statements should not be in loops.")
+               .next().atLine(22).withMessage("SOQL statements should not be in loops.")
+               .next().atLine(28).withMessage("SOQL statements should not be in loops.")
+               .noMore();
     }
     
     /**
@@ -45,7 +49,7 @@ public class SoqlInLoopCheckTest {
     public void testIncorrectNestedSOQLLoop() throws Exception {
     	sourceFile = scanFile(new File("src/test/resources/checks/soqlFileInNestedLoopError.cls"), check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
-                next().atLine(15).withMessage(
+                next().atLine(17).withMessage(
                 "SOQL statements should not be in loops.");
     }
     
@@ -73,7 +77,17 @@ public class SoqlInLoopCheckTest {
      */
     @Test
     public void testSoqlStatement() throws Exception {
-    	sourceFile = scanFile(new File("src/test/resources/checks/justSoqlStatements.cls"), check);
-    	CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
+	    	sourceFile = scanFile(new File("src/test/resources/checks/justSoqlStatements.cls"), check);
+	    	CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
+    }
+    
+    /**
+     * For each loop and return 
+     */
+    @Test
+    public void testSoqlForEachAndReturn() throws Exception {
+    	System.out.println("Hey");
+	    	sourceFile = scanFile(new File("src/test/resources/checks/soqlForEachLoop.cls"), check);
+	    	CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
     }
 }
