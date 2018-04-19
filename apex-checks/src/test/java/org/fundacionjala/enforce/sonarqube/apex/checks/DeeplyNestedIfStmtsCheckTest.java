@@ -29,7 +29,7 @@ public class DeeplyNestedIfStmtsCheckTest {
 		sourceFile = scanFile(new File("src/test/resources/checks/nestedIfError.cls"), check);
 		CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
 		.next().atLine(7).withMessage(
-				"Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to 3.")
+				"Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
 		.noMore();
 	}
 	
@@ -53,11 +53,11 @@ public class DeeplyNestedIfStmtsCheckTest {
 		System.out.println("Messy");
 		sourceFile = scanFile(new File("src/test/resources/checks/messyIfElse.cls"), check);
 		CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-		.next().atLine(6).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to 3.")
-		.next().atLine(10).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to 3.")
-		.next().atLine(11).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to 3.")
-		.next().atLine(15).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to 3.")
-		.next().atLine(17).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to 3.")
+		.next().atLine(6).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
+		.next().atLine(10).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
+		.next().atLine(11).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
+		.next().atLine(15).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
+		.next().atLine(17).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
 		.noMore();
 	}
 	
