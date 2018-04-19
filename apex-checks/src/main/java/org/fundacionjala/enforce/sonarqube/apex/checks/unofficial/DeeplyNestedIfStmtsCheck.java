@@ -24,65 +24,69 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 @Rule(key = DeeplyNestedIfStmtsCheck.CHECK_KEY)
 public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 
-    /**
-     * It is the code of the rule for the plugin.
-     */
-    public static final String CHECK_KEY = "DeeplyNestedIfStmts";
+	/**
+	 * It is the code of the rule for the plugin.
+	 */
+	public static final String CHECK_KEY = "DeeplyNestedIfStmts";
 
-    /**
-     * The structure must have the name of the method.
-     */
-    public final Integer DEFAULT_IF_DEPTH = 3;
+	public final Integer DEFAULT_IF_DEPTH = 3;
 
-    private final String MESSAGE = ChecksBundle.getStringFromBundle("DeeplyNestedIfStmtsCheckMessage");
+	private final String MESSAGE = ChecksBundle.getStringFromBundle("DeeplyNestedIfStmtsCheckMessage");
 
-    /**
-     * The variables are initialized and subscribe the base rule.
-     */
-    
-    @Override
-    public void init() {
-        subscribeTo(ApexGrammarRuleKey.IF_STATEMENT);
-    }
+	/**
+	 * The variables are initialized and subscribe the base rule.
+	 */
+	@Override
+	public void init() {
+		subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
+	}
 
-    /**
-     * It is responsible for verifying whether the rule is met in the rule base.
-     * In the event that the rule is not correct, create message error.
-     *
-     * @param astNode It is the node that stores all the rules.
-     */
-    @Override
-    public void visitNode(AstNode astNode) {
-        try {
-	        	List<AstNode> children = astNode.getChildren();
-	    		System.out.println("Current node: " + astNode);
-	    		System.out.println("Children: " + children);
-	    		System.out.println("First statement: " + astNode.getFirstChild(ApexGrammarRuleKey.STATEMENT) + "\n");
-	    		for (AstNode child : children) {
-	    			if (child.is(ApexGrammarRuleKey.STATEMENT)) {
-		    			visitNode(child);
-	    			}
-	    		}
-        		// recursive(astNode);
-        } catch (Exception e) {
-            ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
-        }
-    }
-    
-	public int recursive(AstNode astNode) {
-    		int count = 1;
-    		List<AstNode> children = astNode.getChildren(ApexKeyword.IF); 	// this is getting just one child
-    		for (AstNode sib : children) {									// bad recursion
-   			if (!sib.getPreviousAstNode().equals(ApexKeyword.ELSE)){
-        			count++;
-    			}
-    			if(sib.hasDescendant(ApexGrammarRuleKey.IF_STATEMENT)) {
-    				count += recursive(sib.getFirstDescendant(ApexGrammarRuleKey.IF_STATEMENT));
-    			}
-    			if (count > DEFAULT_IF_DEPTH) {
-    				getContext().createLineViolation(this, MESSAGE, sib, DEFAULT_IF_DEPTH.toString());
-    			}
-    		}
+	/**
+	 * Start at the top of each method declaration.
+	 * Inspect each top level if-then statement.
+	 *
+	 * @param node starts us at the very top of the method declaration.
+	 */
+	@Override
+	public void visitNode(AstNode node) {
+		try {
+			List<AstNode> topLevelChildren = node.getFirstChild(ApexGrammarRuleKey.BLOCK).getChildren(ApexGrammarRuleKey.BLOCK_STATEMENT);		// top level of method body
+			for(AstNode child : topLevelChildren) {
+				if (child.hasDirectChildren(ApexGrammarRuleKey.STATEMENT)) {
+					child = child.getFirstChild(ApexGrammarRuleKey.STATEMENT);
+					List<AstNode> ifStatement = child.getChildren(ApexGrammarRuleKey.IF_STATEMENT);											// first level if statements that appear
+					for (AstNode moreIfs: ifStatement) {
+						recursive(moreIfs); 
+					}
+				}
+			}
+		} catch (Exception e) {
+			ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
+		}
+	}
+
+	/**
+	 * Recursively drill down from if-then condition to if-then body. 
+	 * Increment count each time there is an if-then per level.
+	 * 
+	 * @param node go from if-then condition to if-then body/ statement.
+	 * @return number of recursive calls - 1.
+	 */
+	private int recursive(AstNode node) {
+		int count = 1;																														// we start at top level so count at 1
+		if (node.hasDirectChildren(ApexGrammarRuleKey.STATEMENT)) { 																			// we drill from if-then condition to body
+			node = node.getFirstChild(ApexGrammarRuleKey.STATEMENT);
+			List<AstNode> blockAstNode = node.getFirstChild().getChildren(ApexGrammarRuleKey.BLOCK_STATEMENT);
+			for (AstNode child : blockAstNode) {
+				child = child.getFirstChild(ApexGrammarRuleKey.STATEMENT);																	// looking at if-then statement/ body
+				if (!child.getPreviousAstNode().is(ApexKeyword.ELSE) && child.hasDirectChildren(ApexGrammarRuleKey.IF_STATEMENT)){				// check to see if there other if-then
+					count += recursive(child.getFirstChild(ApexGrammarRuleKey.IF_STATEMENT)) + 1;												// in the body and recurse + 1 to count
+				}
+				if (count > DEFAULT_IF_DEPTH) {
+					getContext().createLineViolation(this, MESSAGE, child, DEFAULT_IF_DEPTH.toString());
+				}
+			}
+		}
 		return count;
-    }
+	}
 }

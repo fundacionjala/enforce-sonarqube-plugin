@@ -7,6 +7,16 @@ public class Foo {
 				if (true) {
 				}
 			}
+			if(true) {
+				if(true) {
+					if(true) {
+					}
+				}
+				if(true) {
+				}
+				if(true) {
+				}
+			}
 		}
 	}
 }

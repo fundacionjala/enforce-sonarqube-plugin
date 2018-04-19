@@ -10,5 +10,7 @@ public class Foo {
 				} 
 			} 
 		}
+		if (true){
+		}
 	}
 }
