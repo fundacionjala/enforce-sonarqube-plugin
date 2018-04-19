@@ -34,7 +34,7 @@ public class SoqlInLoopCheck extends SquidCheck<Grammar> {
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "SoqlFileInLoop"; // create new html and json files
+    public static final String CHECK_KEY = "SoqlInLoop"; // create new html and json files
 
     /**
      * The variables are initialized and subscribe the base rule.

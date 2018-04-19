@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+  <p>
+    Non-constructor methods should not have the same name as the enclosing class.
+    </p>
+    
+    <h2>Noncompliant Code Example</h2>
+    <pre>
+        public class MyClass {
+            
+            // this is OK because it is a constructor
+            public MyClass() {}
+            
+            // this is bad because it is a method
+            public void MyClass() {}
+        }
+    </pre>
