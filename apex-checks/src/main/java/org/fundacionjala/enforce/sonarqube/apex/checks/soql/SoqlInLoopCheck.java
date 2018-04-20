@@ -6,14 +6,10 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.soql;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
-
-import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.checks.SquidCheck;
-
-import java.util.List;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 
 /**

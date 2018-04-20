@@ -31,7 +31,7 @@ public class ParameterCountCheck extends SquidCheck<Grammar> {
     /**
      * The structure must have the name of the method.
      */
-    public final int DEFAULT_PARAM_COUNT = 5;
+    public static final int DEFAULT_PARAM_COUNT = 5;
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("ParameterCountCheckMessage");
 
@@ -66,13 +66,13 @@ public class ParameterCountCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
         try {
-            LookForParameterCount(astNode);
+            lookForParameterCount(astNode);
         } catch (Exception e) {
             ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
     
-    private void LookForParameterCount(AstNode methodDeclarationNode) {
+    private void lookForParameterCount(AstNode methodDeclarationNode) {
         if(methodDeclarationNode.getDescendants(ApexGrammarRuleKey.FORMAL_PARAMETER).size() > max){
 	        getContext().createLineViolation(this, MESSAGE, methodDeclarationNode, max);
         }

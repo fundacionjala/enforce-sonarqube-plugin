@@ -13,6 +13,7 @@ import java.util.List;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksBundle;
 import org.sonar.check.Rule;
+import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
@@ -20,8 +21,8 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
 /**
  * Verifies if a class contains test methods.
  */
-@Rule(key = MethodNameAsClassNameCheck.CHECK_KEY) // standard setup
-public class MethodNameAsClassNameCheck extends SquidCheck<Grammar> {
+@Rule(key = VariableCountCheck.CHECK_KEY) // standard setup
+public class VariableCountCheck extends SquidCheck<Grammar> {
 	/**
      * Stores the rule to subscribe.
      */
@@ -30,12 +31,17 @@ public class MethodNameAsClassNameCheck extends SquidCheck<Grammar> {
     /**
      * Stores a message template.
      */
-    protected String message = ChecksBundle.getStringFromBundle("MethodNameAsClassNameCheck"); // create a property with standard message ChecksResourceBundle.prop
+    protected String message = ChecksBundle.getStringFromBundle("VariableCountCheck"); // create a property with standard message ChecksResourceBundle.prop
 
     /**
      * It is the code of the rule for the plugin.
      */
-    public static final String CHECK_KEY = "MethodNameAsClassName"; // create new html and json files
+    public static final String CHECK_KEY = "VariableCount"; // create new html and json files
+
+    /**
+     * The structure must have the name of the method.
+     */
+    public static final int DEFAULT_VARIABLE_COUNT = 6;
 
     /**
      * The variables are initialized and subscribe the base rule.
@@ -44,6 +50,16 @@ public class MethodNameAsClassNameCheck extends SquidCheck<Grammar> {
     public void init() {
          subscribeTo(ApexGrammarRuleKey.CLASS_OR_INTERFACE_DECLARATION);
     }
+
+    /*
+     * Rule Property to make configurable variable
+     */
+    @RuleProperty(
+    	    key = "max",
+    	    description = "Maximum allowed variables in class.",
+    	    defaultValue = ""+DEFAULT_VARIABLE_COUNT)
+    	  int max = DEFAULT_VARIABLE_COUNT;
+    
 
     /**
      * It is responsible for verifying whether the rule is met in the rule base.
@@ -54,21 +70,18 @@ public class MethodNameAsClassNameCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
     	  try {
-    		  checkMethodNameAsClassName(astNode);
+    		  checkVariableCount(astNode);
     	  } catch (Exception e) {
               ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
           }
     }
     
-    private void checkMethodNameAsClassName(AstNode astNode){
-    	String className = astNode.getFirstDescendant(ApexGrammarRuleKey.COMMON_IDENTIFIER).getTokenOriginalValue();
-    	List<AstNode> lstAstNode = astNode.getDescendants(ApexGrammarRuleKey.METHOD_DECLARATION);
+    private void checkVariableCount(AstNode astNode){
+    	List<AstNode> lstAstNode = astNode.getDescendants(ApexGrammarRuleKey.PROPERTY_DECLARATION, ApexGrammarRuleKey.FIELD_DECLARATION);
     	
-    	for(AstNode astMethodNode : lstAstNode){
-    	
-    		if(className.equals(astMethodNode.getFirstDescendant(ApexGrammarRuleKey.METHOD_IDENTIFIER).getTokenOriginalValue()) ){
-    			getContext().createLineViolation(this, message, astMethodNode);
-    		}
-    	}
+        if(lstAstNode.size() >= max){
+        	getContext().createLineViolation(this, message, astNode, max);
+    		
+        }
     }
 }
