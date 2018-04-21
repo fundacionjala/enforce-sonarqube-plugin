@@ -1,0 +1,13 @@
+{
+    "title": "Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "15min"
+    },
+    "sqaleSubCharacteristic": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Major"
+}
