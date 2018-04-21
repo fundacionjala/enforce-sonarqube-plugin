@@ -51,7 +51,7 @@ public class ParameterCountCheck extends SquidCheck<Grammar> {
      */
     @RuleProperty(
     	    key = "max",
-    	    description = "Maximum allowed statements per function",
+    	    description = "Maximum allowed parameter in each function",
     	    defaultValue = ""+DEFAULT_PARAM_COUNT)
     	  int max = DEFAULT_PARAM_COUNT;
     
