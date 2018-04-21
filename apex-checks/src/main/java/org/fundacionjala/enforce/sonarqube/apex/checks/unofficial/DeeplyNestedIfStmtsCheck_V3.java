@@ -8,13 +8,10 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.sonar.check.Rule;
-import org.sonar.check.RuleProperty;
-
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
 import org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey;
@@ -25,14 +22,14 @@ import org.fundacionjala.enforce.sonarqube.apex.checks.ChecksLogger;
  * Verification of the name of the method in a class.
  */
 @Rule(key = DeeplyNestedIfStmtsCheck.CHECK_KEY)
-public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
+public class DeeplyNestedIfStmtsCheck_V3 extends SquidCheck<Grammar> {
 
 	/**
 	 * It is the code of the rule for the plugin.
 	 */
 	public static final String CHECK_KEY = "DeeplyNestedIfStmts";
 
-	public static final int DEFAULT_IF_DEPTH = 3;
+	public final Integer DEFAULT_IF_DEPTH = 3;
 
 	private final String MESSAGE = ChecksBundle.getStringFromBundle("DeeplyNestedIfStmtsCheckMessage");
 
@@ -43,15 +40,6 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 	public void init() {
 		subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION);
 	}
-	
-	/*
-     * Rule Property to make configurable variable
-     */
-    @RuleProperty(
-    	    key = "max",
-    	    description = "Maximum allowed nested IF statement in each method",
-    	    defaultValue = ""+DEFAULT_IF_DEPTH)
-    	  int max = DEFAULT_IF_DEPTH;
 
 	/**
 	 * Start at the top of each method declaration.
@@ -117,10 +105,10 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 				}
 			}
 		}
-		if(counter >= max){
+		if(counter >= DEFAULT_IF_DEPTH){
 			if(alreadyErrorNode != errorIfNode){
 				alreadyErrorNode = errorIfNode;
-				getContext().createLineViolation(this, MESSAGE, errorIfNode, max);
+				getContext().createLineViolation(this, MESSAGE, errorIfNode, DEFAULT_IF_DEPTH.toString());
 			}
 			counter = ifLevel;
 			ifLevel--;
