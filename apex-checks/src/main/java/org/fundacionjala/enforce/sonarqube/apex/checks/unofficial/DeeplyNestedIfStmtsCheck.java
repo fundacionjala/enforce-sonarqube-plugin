@@ -11,6 +11,7 @@ import org.sonar.check.Rule;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword;
@@ -54,10 +55,8 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 			for(AstNode child : topLevelChildren) {
 				if (child.hasDirectChildren(ApexGrammarRuleKey.STATEMENT)) {
 					child = child.getFirstChild(ApexGrammarRuleKey.STATEMENT);
-					List<AstNode> ifStatement = child.getChildren(ApexGrammarRuleKey.IF_STATEMENT);											// first level if statements that appear
-					for (AstNode moreIfs: ifStatement) {
-						recursive(moreIfs); 
-					}
+					resetParamValues();
+					recursiveMethod(child);
 				}
 			}
 		} catch (Exception e) {
@@ -65,28 +64,73 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 		}
 	}
 
+	int counter = 0;
+	int ifLevel = 0;
+	AstNode errorIfNode = null;
+	AstNode alreadyErrorNode = null;
+	
 	/**
-	 * Recursively drill down from if-then condition to if-then body. 
-	 * Increment count each time there is an if-then per level.
+	 * This method is used to reset local parameters.
 	 * 
-	 * @param node go from if-then condition to if-then body/ statement.
-	 * @return number of recursive calls - 1.
 	 */
-	private int recursive(AstNode node) {
-		int count = 1;																														// we start at top level so count at 1
-		if (node.hasDirectChildren(ApexGrammarRuleKey.STATEMENT)) { 																			// we drill from if-then condition to body
-			node = node.getFirstChild(ApexGrammarRuleKey.STATEMENT);
-			List<AstNode> blockAstNode = node.getFirstChild().getChildren(ApexGrammarRuleKey.BLOCK_STATEMENT);
-			for (AstNode child : blockAstNode) {
-				child = child.getFirstChild(ApexGrammarRuleKey.STATEMENT);																	// looking at if-then statement/ body
-				if (!child.getPreviousAstNode().is(ApexKeyword.ELSE) && child.hasDirectChildren(ApexGrammarRuleKey.IF_STATEMENT)){				// check to see if there other if-then
-					count += recursive(child.getFirstChild(ApexGrammarRuleKey.IF_STATEMENT)) + 1;												// in the body and recurse + 1 to count
-				}
-				if (count > DEFAULT_IF_DEPTH) {
-					getContext().createLineViolation(this, MESSAGE, child, DEFAULT_IF_DEPTH.toString());
+	private void resetParamValues(){
+		counter = 0;
+		ifLevel = 0;
+		errorIfNode = null;
+		alreadyErrorNode = null;
+	}
+	
+	/**
+	 * This is recursive method to get the depth of IF_STATEMENTS.
+	 * 
+	 * @param node starts us at the STATEMENT GrammarRule Key to check availability of further IF_STATEMENT.
+	 */
+	private void recursiveMethod(AstNode astNode){
+		List<AstNode> ifStatement = astNode.getChildren(ApexGrammarRuleKey.IF_STATEMENT);
+		if(ifStatement.isEmpty() && counter == ifLevel){
+			ifLevel--;
+		}
+		for (AstNode moreIfs: ifStatement) {
+			ifLevel++;
+			if(ifLevel <= counter){
+				counter = ifLevel;
+			}else{
+				counter++;
+			}
+			errorIfNode = moreIfs;
+			List<AstNode> blockAstNode = getNestedBlockStatements(moreIfs);
+			for(AstNode child : blockAstNode) {
+				if (child.hasDirectChildren(ApexGrammarRuleKey.STATEMENT)) {
+					child = child.getFirstChild(ApexGrammarRuleKey.STATEMENT);
+					recursiveMethod(child);
 				}
 			}
 		}
-		return count;
+		if(counter >= DEFAULT_IF_DEPTH){
+			if(alreadyErrorNode != errorIfNode){
+				alreadyErrorNode = errorIfNode;
+				getContext().createLineViolation(this, MESSAGE, errorIfNode, DEFAULT_IF_DEPTH.toString());
+			}
+			counter = ifLevel;
+			ifLevel--;
+		}
+		
+	}
+	
+	/**
+	 * This method is used to get all BLOCK_STATEMENT exist in current IF_STATEMENT.
+	 * 
+	 * @param node starts us at the IF_STATEMENT GrammarRule Key to get list of BLOCK_STATEMENT.
+	 */
+	private List<AstNode> getNestedBlockStatements(AstNode node){
+		List<AstNode> blockAstNode = new ArrayList<AstNode>();
+		if(node.hasDirectChildren(ApexGrammarRuleKey.STATEMENT)){
+			node = node.getFirstChild(ApexGrammarRuleKey.STATEMENT);
+			if(node.hasDirectChildren(ApexGrammarRuleKey.BLOCK)){
+				blockAstNode = node.getFirstChild(ApexGrammarRuleKey.BLOCK)
+											.getChildren(ApexGrammarRuleKey.BLOCK_STATEMENT);
+			}
+		}
+		return blockAstNode;
 	}
 }
