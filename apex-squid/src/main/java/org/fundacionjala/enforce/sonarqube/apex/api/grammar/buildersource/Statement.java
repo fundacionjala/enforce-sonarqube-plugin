@@ -197,7 +197,8 @@ public class Statement {
                 TYPE,
                 ALLOWED_KEYWORDS_AS_IDENTIFIER,
                 COLON,
-                EXPRESSION,
+                grammarBuilder.firstOf(grammarBuilder.sequence(LBRACKET, QUERY_EXPRESSION, RBRACKET), EXPRESSION),
+                //EXPRESSION,
                 RPAREN,
                 STATEMENT
         );

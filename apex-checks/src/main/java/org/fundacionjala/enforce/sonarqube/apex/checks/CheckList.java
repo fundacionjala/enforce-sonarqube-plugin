@@ -76,6 +76,8 @@ public class CheckList {
                 ClassLengthCheck.class,
                 MethodLengthCheck.class,
                 ParameterCountCheck.class,
-                SoqlInLoopCheck.class);
+                SoqlInLoopCheck.class,
+                MethodNameAsClassNameCheck.class,
+                VariableCountCheck.class);
     }
 }

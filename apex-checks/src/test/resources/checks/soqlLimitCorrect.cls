@@ -20,6 +20,14 @@ public class SomeClass {
                                     ]) {
                 selectedAccount = acc;
             }
+            
+            for(Account acc : [SELECT Name, AccountNumber
+                                    FROM Account
+                                    WHERE id = '1234'
+                                    limit 1
+                                    ]) {
+               selectedAccount = acc;
+      		}
         }
     }
 }

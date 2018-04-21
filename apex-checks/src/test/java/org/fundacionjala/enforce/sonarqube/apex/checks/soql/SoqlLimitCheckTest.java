@@ -26,15 +26,15 @@ public class SoqlLimitCheckTest {
     @Test
     public void soqlLimitCorrect() throws Exception {
         sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitCorrect.cls"), check);
-        System.out.println("sourceFile.getCheckMessages(): ==> "+ sourceFile.getCheckMessages());;
+        System.out.println("sourceFile.getCheckMessages() Correct: ==> "+ sourceFile.getCheckMessages());;
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .noMore();  // iterates through and checks if no more violations on next lines
     }
 
     @Test
     public void soqlLimitError() throws Exception {
-        sourceFile = scanFile(new File("src/test/resources/checks/SoqlLimitError.cls"), check);
-        System.out.println("sourceFile.getCheckMessages(): ==> "+ sourceFile.getCheckMessages());
+        sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitError.cls"), check);
+        System.out.println("sourceFile.getCheckMessages() Error: ==> "+ sourceFile.getCheckMessages());
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(8).withMessage("Define the LIMIT for this SOQL statement.")
                 .next().atLine(15).withMessage("Define the LIMIT for this SOQL statement.");

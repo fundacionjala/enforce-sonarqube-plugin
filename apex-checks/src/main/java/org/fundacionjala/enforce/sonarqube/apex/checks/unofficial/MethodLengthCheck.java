@@ -8,6 +8,8 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 import org.sonar.squidbridge.checks.SquidCheck;
 
 import org.sonar.check.Rule;
+import org.sonar.check.RuleProperty;
+
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
@@ -32,7 +34,7 @@ public class MethodLengthCheck extends SquidCheck<Grammar> {
     /**
      * The structure must have the name of the method.
      */
-    public static final Integer DEFAULT_METHOD_LENGTH = 80;
+    public static final int DEFAULT_METHOD_LENGTH = 80;
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("MethodLengthCheckMessage");
 
@@ -45,6 +47,16 @@ public class MethodLengthCheck extends SquidCheck<Grammar> {
         subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION, ApexGrammarRuleKey.QUERY_EXPRESSION);
     }
 
+    /*
+     * Rule Property to make configurable variable
+     */
+    @RuleProperty(
+    	    key = "max",
+    	    description = "Maximum allowed statements per function",
+    	    defaultValue = ""+DEFAULT_METHOD_LENGTH)
+    	  int max = DEFAULT_METHOD_LENGTH;
+    
+    
     /**
      * It is responsible for verifying whether the rule is met in the rule base.
      * In the event that the rule is not correct, create message error.
@@ -66,17 +78,18 @@ public class MethodLengthCheck extends SquidCheck<Grammar> {
     	int rBraceLineNumber = 0;
     	int astIdex = 0;
     	
-    	
-    	if (astNodes.get(astIdex).getName().equals("LBRACE")){
-			lBraceLineNumber = astNodes.get(astIdex).getTokenLine();
-	 	}
-    	astIdex = astNodes.size() - 1;
-		if (astNodes.get(astIdex).getName().equals("RBRACE")){
-			rBraceLineNumber = astNodes.get(astIdex).getTokenLine();
+    	if(astNodes.size() > 0){
+	    	if (astNodes.get(astIdex).getName().equals("LBRACE")){
+				lBraceLineNumber = astNodes.get(astIdex).getTokenLine();
+		 	}
+	    	astIdex = astNodes.size() - 1;
+			if (astNodes.get(astIdex).getName().equals("RBRACE")){
+				rBraceLineNumber = astNodes.get(astIdex).getTokenLine();
+			}
+		}
+        if((rBraceLineNumber - lBraceLineNumber) > max){
+			getContext().createLineViolation(this, MESSAGE, methodDeclarationNode, max);
 		}
         
-        if((rBraceLineNumber - lBraceLineNumber) > DEFAULT_METHOD_LENGTH){
-			getContext().createLineViolation(this, MESSAGE, methodDeclarationNode, DEFAULT_METHOD_LENGTH.toString());
-		}
     }
 }
