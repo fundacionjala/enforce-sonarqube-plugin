@@ -1,5 +1,5 @@
 {
-    "title": "Test methods should have assertions and testMethod keyword.",
+    "title": "Test methods should have at least one assertion and must have the testMethod keyword.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

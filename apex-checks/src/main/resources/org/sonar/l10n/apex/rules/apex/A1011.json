@@ -1,5 +1,5 @@
 {
-    "title": "ID's should not be hard-coded in methods or constructors.",
+    "title": "IDs should not be hard-coded in methods or constructors.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

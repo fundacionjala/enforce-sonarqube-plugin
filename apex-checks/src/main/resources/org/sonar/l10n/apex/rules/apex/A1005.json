@@ -1,5 +1,5 @@
 {
-    "title": "Constructor method should not have DML statement.",
+    "title": "Constructor methods should not have DML statements.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

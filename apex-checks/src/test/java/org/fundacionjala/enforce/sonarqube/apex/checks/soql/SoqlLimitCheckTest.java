@@ -24,11 +24,20 @@ public class SoqlLimitCheckTest {
     }
     
     @Test
-    public void testStartAndStopClass() throws Exception {
-        sourceFile = scanFile(new File("src/test/resources/checks/soqlLimit.cls"), check);
+    public void soqlLimitCorrect() throws Exception {
+        sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitCorrect.cls"), check);
+        System.out.println("sourceFile.getCheckMessages() Correct: ==> "+ sourceFile.getCheckMessages());;
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .next().atLine(4).withMessage("Define the LIMIT for this SOQL statement.")
-                .next().atLine(5).withMessage("Define the LIMIT for this SOQL statement.")
-                .noMore();
+                .noMore();  // iterates through and checks if no more violations on next lines
+    }
+
+    @Test
+    public void soqlLimitError() throws Exception {
+        sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitError.cls"), check);
+        System.out.println("sourceFile.getCheckMessages() Error: ==> "+ sourceFile.getCheckMessages());
+        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .next().atLine(8).withMessage("Define the LIMIT for this SOQL statement.")
+                .next().atLine(15).withMessage("Define the LIMIT for this SOQL statement.");
+        // TODO are there cases where SOQL statements don't need a limit?
     }
 }
