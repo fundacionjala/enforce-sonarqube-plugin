@@ -1,0 +1,13 @@
+{
+    "title": "Classes should not have too many fields/variables.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "20min"
+    },
+    "sqaleSubCharacteristic": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Major"
+}

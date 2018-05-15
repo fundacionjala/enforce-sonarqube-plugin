@@ -1,5 +1,5 @@
 {
-    "title": "\"for\" loop should not have DML statement.",
+    "title": "\"for\" loop should not have DML statements.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

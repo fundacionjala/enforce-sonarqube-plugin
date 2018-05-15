@@ -12,20 +12,16 @@ public class SomeClass {
         list<String> pageSectionName = new list<String>();
         Boolean formSubmitted = false;
         if(accId <> null) {
-            for(Account acc : [SELECT Name, Id, AccountNumber
-                                    FROM Account
-                                    WHERE Id = :accId]) {
-                selectedAccount = acc;
+        		while(true){
+	            for(int ii = 0; i < 10; ii++) {
+	                list<points> lstPoints123 = [SELECT SUM(Amount__c) points
+	                                                FROM   Points__c
+	                                                WHERE  User__r.Id = :user
+	                                                AND    Amount__c > 0
+	                                                AND    RecordType.Name = 'Earned Points'
+	                                                AND    Date__c = THIS_QUARTER];
+	            }
             }
         }
-        
-    }
-
-    public void populateAccount(){
-
-        list<AssignmentRule> lstAR = [SELECT id FROM AssignmentRule WHERE SobjectType = 'Case' AND Active = 'true' LIMIT 1];
-
     }
 }
-
-    

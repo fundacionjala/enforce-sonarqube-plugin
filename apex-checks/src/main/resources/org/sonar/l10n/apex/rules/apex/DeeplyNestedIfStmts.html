@@ -1,0 +1,38 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+  <p>Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain.</p>
+  
+  <h2>Noncompliant Code Example</h2>
+  <p>The maximum number of nested if-then statements is 3.</p>
+  
+  <pre>
+  public class Foo { // violation
+	public void bar(Integer x, Integer y, Integer z) {
+		if (x>y) {
+			if (y>z) {
+				if (z==x) {
+					// too deep
+				}
+			}
+		}
+	}
+  }
+  </pre>
+  
+  <h2>Compliant Solution</h2>
+  
+  <pre>
+    public class Foo { // okay
+        public void bar(Integer x, Integer y, Integer z) {
+            if (x>y) {
+                if (y>z) {
+                    // code here
+                }
+            }
+        }
+    }
+  </pre>
+  

@@ -32,7 +32,7 @@ public class ClassLengthCheckTest {
     	classLengthCheck = new ClassLengthCheck();
         sourceFile = scanFile(new File("src/test/resources/checks/ClassLengthError.cls"), classLengthCheck);
         CheckMessagesVerifier chkMsgVerify = CheckMessagesVerifier.verify(sourceFile.getCheckMessages());
-        System.out.println("chkMsgVerify: "+ sourceFile.getCheckMessages());
+        //System.out.println("chkMsgVerify: "+ sourceFile.getCheckMessages());
         // For Class
         chkMsgVerify = chkMsgVerify.next();
         chkMsgVerify.atLine(2).withMessage("The maximum number of statements in class is: "+classLengthCheck.DEFAULT_CLASS_LENGTH+".");

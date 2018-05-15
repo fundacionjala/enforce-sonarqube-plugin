@@ -1,5 +1,5 @@
 {
-    "title": "Using an assert statement with a literal boolean is a bad practice.",
+    "title": "Using an assert statement with a literal boolean is poor practice.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

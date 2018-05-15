@@ -1,5 +1,5 @@
 {
-    "title": "A testMethod should not be declared or implemented in a class that isn't a test",
+    "title": "A testMethod should not be declared or implemented in a class that is not a test.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

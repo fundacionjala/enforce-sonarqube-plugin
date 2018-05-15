@@ -1,0 +1,13 @@
+{
+    "title": "SOQL statements should not be in loops.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "2min"
+    },
+    "sqaleSubCharacteristic": "SYNCHRONIZATION_RELIABILITY",
+    "tags": [
+        "unpredictable"
+    ],
+    "defaultSeverity": "Major"
+}

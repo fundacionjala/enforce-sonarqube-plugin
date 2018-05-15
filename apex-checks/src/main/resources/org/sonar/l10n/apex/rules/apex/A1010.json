@@ -1,5 +1,5 @@
 {
-    "title": "ID's should not be hard-coded in variables.",
+    "title": "IDs should not be hard-coded in variables.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",

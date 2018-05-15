@@ -6,72 +6,10 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AND_SOQL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.AS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ASC;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.BY;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CASE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.COUNT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.CUBE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.DES;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.EXCLUDES;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FIRST;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.FROM;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.GROUP;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.IN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.INCLUDES;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LAST;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIKE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.LIMIT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NOT_SOQL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.NULLS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OFFSET;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ORDER;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.OR_SOQL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.ROLLUP;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.SELECT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WHERE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.WITH;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.ASSIGN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COLON;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.COMMA;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.DOT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GEQUT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.GT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LEQUT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LPAREN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.LT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.NOTEQUALS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.CLS_NOTEQUALS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.RPAREN;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.UNDERSCORE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.INTEGER_LITERAL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALIASSTATEMENT;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ALLOWED_KEYWORDS_AS_SOBJECT_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.AND_SOQL_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.CONDITIONAL_SOQL_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.COUNT_EXPR;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FIELD_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.BOOLEAN_LITERAL;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FILTERING_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.FROM_SENTENCE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GROUP_BY_SENTENCE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.GROUP_BY_TYPES;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.LIMIT_SENTENCE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.NAME_CHAR;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.OPERATORS;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.ORDER_BY_SENTENCE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.OR_SOQL_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.QUERY_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SELECT_SENTENCE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SIMPLE_EXPRESSION;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SOQL_EXTERNAL_VARIABLE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.SOQL_NAME;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WHERE_SENTENCE;
-import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.WITH_SENTENCE;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
 
 import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 
@@ -84,7 +22,10 @@ public class SOQLExpressions {
     public static void create(LexerfulGrammarBuilder grammarBuilder) {
         query(grammarBuilder);
         selectSentence(grammarBuilder);
-        countMethod(grammarBuilder);
+        aggregateMethod(grammarBuilder);
+        dateMethods(grammarBuilder);
+        dateLiteralsWithInteger(grammarBuilder);
+        dateLiterals(grammarBuilder);
         typeField(grammarBuilder);
         soqlName(grammarBuilder);
         nameChar(grammarBuilder);
@@ -103,6 +44,8 @@ public class SOQLExpressions {
         orderBySentence(grammarBuilder);
         groupBySentence(grammarBuilder);
         groupByTypesSentence(grammarBuilder);
+        soqlExternalVariable(grammarBuilder);
+        havingSentence(grammarBuilder);
     }
 
     /**
@@ -141,8 +84,9 @@ public class SOQLExpressions {
                 FROM_SENTENCE,
                 grammarBuilder.optional(WITH_SENTENCE),
                 grammarBuilder.optional(WHERE_SENTENCE),
-                grammarBuilder.optional(ORDER_BY_SENTENCE),
                 grammarBuilder.optional(GROUP_BY_SENTENCE),
+                grammarBuilder.optional(HAVING_SENTENCE),
+                grammarBuilder.optional(ORDER_BY_SENTENCE),
                 grammarBuilder.optional(LIMIT_SENTENCE));
     }
 
@@ -153,24 +97,111 @@ public class SOQLExpressions {
      */
     private static void selectSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SELECT_SENTENCE).is(
-                SELECT, grammarBuilder.firstOf(COUNT_EXPR, FIELD),
+                SELECT, grammarBuilder.firstOf(AGGREGATE_EXPR, FIELD, DATE_METHOD_EXPR),
                 grammarBuilder.zeroOrMore(
                         COMMA,
-                        grammarBuilder.firstOf(COUNT_EXPR, FIELD)),
+                        grammarBuilder.firstOf(AGGREGATE_EXPR, FIELD, DATE_METHOD_EXPR)),
                 grammarBuilder.zeroOrMore(COMMA, LPAREN, QUERY_EXPRESSION, RPAREN));
     }
 
     /**
-     * It is responsible for setting the rule for COUNT().
+     * It is responsible for setting the rule for all type of Aggregate Methods.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
-    private static void countMethod(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(COUNT_EXPR).is(
-                COUNT,
+    private static void aggregateMethod(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(AGGREGATE_EXPR).is(
+        		grammarBuilder.firstOf(COUNT, AVG, MAX, MIN, SUM, COUNT_DISTINCT),
                 LPAREN,
                 grammarBuilder.optional(SOQL_NAME),
-                RPAREN);
+                RPAREN,
+                grammarBuilder.optional(SOQL_NAME));
+    }
+
+    /**
+     * It is responsible for setting the rule for All Date Methods available for SOQL Query.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void dateMethods(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DATE_METHOD_EXPR).is(
+        		grammarBuilder.firstOf(
+        				CALENDAR_MONTH,
+        				CALENDAR_QUARTER,
+        				CALENDAR_YEAR,
+        				DAY_IN_MONTH,
+        				DAY_IN_WEEK,
+        				DAY_IN_YEAR,
+        				DAY_ONLY,
+        				FISCAL_MONTH,
+        				FISCAL_QUARTER,
+        				FISCAL_YEAR,
+        				HOUR_IN_DAY,
+        				WEEK_IN_MONTH,
+        				WEEK_IN_YEAR),
+                LPAREN,
+                grammarBuilder.optional(SOQL_NAME, STRING),
+                RPAREN,
+                grammarBuilder.optional(SOQL_NAME));
+    }
+
+    /**
+     * It is responsible for setting the rule for All Date Literals with integer values available for SOQL Query.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void dateLiteralsWithInteger(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DATE_LITERALS_WITH_NUMBERS_EXPR).is(
+        		grammarBuilder.firstOf(
+        				NEXT_N_FISCAL_YEARS,
+        				LAST_N_FISCAL_YEARS,
+        				NEXT_N_FISCAL_QUARTERS,
+        				LAST_N_FISCAL_QUARTERS,
+        				LAST_N_DAYS,
+        				NEXT_N_DAYS,
+        				NEXT_N_WEEKS,
+        				LAST_N_WEEKS,
+        				NEXT_N_MONTHS,
+        				LAST_N_MONTHS,
+        				NEXT_N_QUARTERS,
+        				LAST_N_QUARTERS,
+        				NEXT_N_YEARS,
+        				LAST_N_YEARS),
+                COLON,
+                grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL));
+    }
+
+    /**
+     * It is responsible for setting the rule for All Date Literals available for SOQL Query.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void dateLiterals(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(DATE_LITERALS_EXPR).is(
+        		grammarBuilder.firstOf(
+        				YESTERDAY,
+        				TODAY,
+        				TOMORROW,
+        				LAST_WEEK,
+        				THIS_WEEK,
+        				NEXT_WEEK,
+        				LAST_MONTH,
+        				THIS_MONTH,
+        				NEXT_MONTH,
+        				THIS_QUARTER,
+        				LAST_QUARTER,
+        				NEXT_QUARTER,
+        				THIS_YEAR,
+        				LAST_YEAR,
+        				NEXT_YEAR,
+        				THIS_FISCAL_QUARTER,
+        				NEXT_FISCAL_QUARTER,
+        				LAST_FISCAL_QUARTER,
+        				LAST_90_DAYS,
+        				NEXT_90_DAYS,
+        				THIS_FISCAL_YEAR,
+        				LAST_FISCAL_YEAR,
+        				NEXT_FISCAL_YEAR));
     }
 
     /**
@@ -224,8 +255,11 @@ public class SOQLExpressions {
      */
     private static void whereSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(WHERE_SENTENCE).is(WHERE,
+        		//grammarBuilder.optional(LPAREN),
                 SIMPLE_EXPRESSION,
-                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION));
+                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)//,
+                //grammarBuilder.optional(RPAREN)
+                );
     }
 
     /**
@@ -237,8 +271,9 @@ public class SOQLExpressions {
     private static void conditionalSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(CONDITIONAL_SOQL_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        AND_SOQL_EXPRESSION,
-                        OR_SOQL_EXPRESSION));
+                		AND_SOQL_EXPRESSION,
+                        OR_SOQL_EXPRESSION
+                        ));
     }
 
     /**
@@ -260,16 +295,17 @@ public class SOQLExpressions {
                         IN
                 ));
     }
-    
+
     /**
      * It is responsible for setting the rule for FIELD expression in where
-     * sentence. 
+     * sentence.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void fieldExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_EXPRESSION).is(
-                SOQL_NAME,
+        		grammarBuilder.optional(NOT_SOQL),
+        		grammarBuilder.firstOf(SOQL_NAME, DATE_METHOD_EXPR, AGGREGATE_EXPR),
                 grammarBuilder.optional(NOT_SOQL),
                 OPERATORS,
                 grammarBuilder.firstOf(
@@ -277,11 +313,30 @@ public class SOQLExpressions {
                         INTEGER_LITERAL,
                         SOQL_EXTERNAL_VARIABLE,
                         BOOLEAN_LITERAL,
-                        SOQL_NAME));
+                        NULL,
+                        DATE_LITERALS_EXPR,
+                        DATE_LITERALS_WITH_NUMBERS_EXPR));
+    }
 
-        grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
+    /**
+     * It is responsible for setting the rule for SOQL External Variable in where
+     * sentence. External Variable can be any variable, method like:
+     * Where id =:userId
+     * Where id =:getId()
+     * Where id =: userInfo.GetUserId()
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void soqlExternalVariable(LexerfulGrammarBuilder grammarBuilder) {
+    	grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
-                NAME);
+                grammarBuilder.firstOf(NAME, SOQL_NAME),
+                grammarBuilder.optional(LPAREN, RPAREN),
+                grammarBuilder.optional(LBRACKET, grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL), RBRACKET),
+                grammarBuilder.zeroOrMore(
+                        DOT,
+                        SOQL_NAME
+                        )
+                );
     }
 
     /**
@@ -291,15 +346,16 @@ public class SOQLExpressions {
      */
     private static void filteringExpressions(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FILTERING_EXPRESSION).is(
-                SOQL_NAME,
+        		SOQL_NAME,
                 grammarBuilder.optional(NOT_SOQL),
                 grammarBuilder.firstOf(
                         IN,
                         INCLUDES,
                         EXCLUDES),
                 LPAREN,
-                grammarBuilder.firstOf(SOQL_NAME, QUERY_EXPRESSION),
-                grammarBuilder.zeroOrMore(COMMA, SOQL_NAME),
+                grammarBuilder.firstOf(SOQL_NAME, QUERY_EXPRESSION, STRING),
+                grammarBuilder.zeroOrMore(COMMA,
+                		grammarBuilder.firstOf(SOQL_NAME, STRING)),
                 RPAREN
         );
     }
@@ -313,7 +369,7 @@ public class SOQLExpressions {
     private static void simpleExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SIMPLE_EXPRESSION).is(
                 grammarBuilder.firstOf(
-                        FIELD_EXPRESSION,
+                		FIELD_EXPRESSION,
                         FILTERING_EXPRESSION
                 )
         );
@@ -327,7 +383,7 @@ public class SOQLExpressions {
      */
     private static void andSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(AND_SOQL_EXPRESSION).is(
-                AND_SOQL, SIMPLE_EXPRESSION);
+                AND_SOQL, grammarBuilder.optional(LPAREN), SIMPLE_EXPRESSION, grammarBuilder.optional(RPAREN));
     }
 
     /**
@@ -338,7 +394,7 @@ public class SOQLExpressions {
      */
     private static void orSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(OR_SOQL_EXPRESSION).is(
-                OR_SOQL, SIMPLE_EXPRESSION);
+                OR_SOQL, grammarBuilder.optional(LPAREN), SIMPLE_EXPRESSION, grammarBuilder.optional(RPAREN));
     }
 
     /**
@@ -351,7 +407,10 @@ public class SOQLExpressions {
                 LIMIT,
                 grammarBuilder.optional(COLON),
                 grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL),
+                grammarBuilder.optional(LPAREN, RPAREN),
                 grammarBuilder.optional(OFFSET, INTEGER_LITERAL)
+
+
         );
     }
 
@@ -363,7 +422,10 @@ public class SOQLExpressions {
     private static void orderBySentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(ORDER_BY_SENTENCE).is(
                 ORDER, BY,
-                SOQL_NAME,
+                //SOQL_NAME,
+                grammarBuilder.firstOf(
+                		SOQL_NAME,
+                		AGGREGATE_EXPR),
                 grammarBuilder.optional(
                         grammarBuilder.firstOf(ASC, DES),
                         grammarBuilder.optional(
@@ -371,7 +433,10 @@ public class SOQLExpressions {
                                 grammarBuilder.firstOf(FIRST, LAST))),
                 grammarBuilder.zeroOrMore(
                         COMMA,
-                        SOQL_NAME,
+                        //SOQL_NAME,
+                        grammarBuilder.firstOf(
+                        		SOQL_NAME,
+                        		AGGREGATE_EXPR),
                         grammarBuilder.optional(
                                 grammarBuilder.firstOf(ASC, DES),
                                 grammarBuilder.optional(
@@ -391,8 +456,17 @@ public class SOQLExpressions {
                 GROUP, BY,
                 grammarBuilder.firstOf(
                         SOQL_NAME,
-                        GROUP_BY_TYPES
-                )
+                        GROUP_BY_TYPES,
+                        DATE_METHOD_EXPR,
+                        AGGREGATE_EXPR
+                ),
+                grammarBuilder.zeroOrMore(COMMA,
+                		grammarBuilder.firstOf(
+                                SOQL_NAME,
+                                GROUP_BY_TYPES,
+                                DATE_METHOD_EXPR,
+                                AGGREGATE_EXPR
+                        ))
         );
     }
 
@@ -409,5 +483,19 @@ public class SOQLExpressions {
                 grammarBuilder.zeroOrMore(COMMA, SOQL_NAME),
                 RPAREN
         );
+    }
+
+    /**
+     * It is responsible for setting the rule for where sentence.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void havingSentence(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(HAVING_SENTENCE).is(HAVING,
+        		//grammarBuilder.optional(LPAREN),
+                SIMPLE_EXPRESSION,
+                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)//,
+                //grammarBuilder.optional(RPAREN)
+                );
     }
 }

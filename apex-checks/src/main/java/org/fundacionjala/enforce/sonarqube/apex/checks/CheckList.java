@@ -4,6 +4,7 @@
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks;
 
+import org.fundacionjala.enforce.sonarqube.apex.checks.soql.SoqlInLoopCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.soql.SoqlLimitCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertLiteralBooleanCheck;
 import org.fundacionjala.enforce.sonarqube.apex.checks.testrelated.AssertMessageCheck;
@@ -52,6 +53,7 @@ public class CheckList {
         return ImmutableList.<Class>of(
                 ErrorRecoveryCheck.class,
                 ClassNameCheck.class,
+                DeeplyNestedIfStmtsCheck.class,
                 DeprecatedMethodCheck.class,
                 DmlInConstructorCheck.class,
                 DmlInForCheck.class,
@@ -73,6 +75,9 @@ public class CheckList {
                 EmptyCatchCheck.class,
                 ClassLengthCheck.class,
                 MethodLengthCheck.class,
-                ParameterCountCheck.class);
+                ParameterCountCheck.class,
+                SoqlInLoopCheck.class,
+                MethodNameAsClassNameCheck.class,
+                VariableCountCheck.class);
     }
 }

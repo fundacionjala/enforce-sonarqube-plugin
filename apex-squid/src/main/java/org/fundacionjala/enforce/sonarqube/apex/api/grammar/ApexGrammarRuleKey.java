@@ -141,7 +141,10 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     QUERY_EXPRESSION,
     //Select Notations
     SELECT_SENTENCE,
-    COUNT_EXPR,
+    AGGREGATE_EXPR,
+    DATE_METHOD_EXPR,
+    DATE_LITERALS_EXPR,
+    DATE_LITERALS_WITH_NUMBERS_EXPR,
     FIELD,
     //From Notations
     FROM_SENTENCE,
@@ -165,5 +168,6 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     ORDER_BY_SENTENCE,
     //Group Notations
     GROUP_BY_SENTENCE,
-    GROUP_BY_TYPES;
+    GROUP_BY_TYPES,
+	HAVING_SENTENCE;
 }

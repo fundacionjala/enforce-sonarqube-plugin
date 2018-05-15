@@ -1,0 +1,26 @@
+<!--
+  ~ Copyright (c) Fundacion Jala. All rights reserved.
+  ~ Licensed under the MIT license. See LICENSE file in the project root for full license information.
+  -->
+
+  <p>
+    Classes that have too many fields/variables can become unwieldy and could be redesigned to have fewer,possibly through grouping related fields/variables in new objects.
+  </p>
+
+  <pre>
+    public class Person {
+        // too many separate fields
+        int birthYear;
+        int birthMonth;
+        int birthDate;
+        float height;
+        float weight;
+    }
+    
+    public class Person {
+        // this is more manageable
+        Date birthDate;
+        BodyMeasurements measurements;
+    }
+    
+  </pre>
