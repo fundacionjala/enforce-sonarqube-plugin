@@ -117,7 +117,6 @@ public class SOQLExpressions {
                 RPAREN,
                 grammarBuilder.optional(SOQL_NAME));
     }
-    
     /**
      * It is responsible for setting the rule for All Date Methods available for SOQL Query.
      *
@@ -126,11 +125,11 @@ public class SOQLExpressions {
     private static void dateMethods(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DATE_METHOD_EXPR).is(
         		grammarBuilder.firstOf(
-        				CALENDAR_MONTH, 
-        				CALENDAR_QUARTER, 
-        				CALENDAR_YEAR, 
-        				DAY_IN_MONTH, 
-        				DAY_IN_WEEK, 
+        				CALENDAR_MONTH,
+        				CALENDAR_QUARTER,
+        				CALENDAR_YEAR,
+        				DAY_IN_MONTH,
+        				DAY_IN_WEEK,
         				DAY_IN_YEAR,
         				DAY_ONLY,
         				FISCAL_MONTH,
@@ -144,7 +143,6 @@ public class SOQLExpressions {
                 RPAREN,
                 grammarBuilder.optional(SOQL_NAME));
     }
-    
     /**
      * It is responsible for setting the rule for All Date Literals with integer values available for SOQL Query.
      *
@@ -153,11 +151,11 @@ public class SOQLExpressions {
     private static void dateLiteralsWithInteger(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DATE_LITERALS_WITH_NUMBERS_EXPR).is(
         		grammarBuilder.firstOf(
-        				NEXT_N_FISCAL_YEARS, 
-        				LAST_N_FISCAL_YEARS, 
-        				NEXT_N_FISCAL_QUARTERS, 
-        				LAST_N_FISCAL_QUARTERS, 
-        				LAST_N_DAYS, 
+        				NEXT_N_FISCAL_YEARS,
+        				LAST_N_FISCAL_YEARS,
+        				NEXT_N_FISCAL_QUARTERS,
+        				LAST_N_FISCAL_QUARTERS,
+        				LAST_N_DAYS,
         				NEXT_N_DAYS,
         				NEXT_N_WEEKS,
         				LAST_N_WEEKS,
@@ -170,7 +168,6 @@ public class SOQLExpressions {
                 COLON,
                 grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL));
     }
-    
     /**
      * It is responsible for setting the rule for All Date Literals available for SOQL Query.
      *
@@ -179,11 +176,11 @@ public class SOQLExpressions {
     private static void dateLiterals(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(DATE_LITERALS_EXPR).is(
         		grammarBuilder.firstOf(
-        				YESTERDAY, 
-        				TODAY, 
-        				TOMORROW, 
-        				LAST_WEEK, 
-        				THIS_WEEK, 
+        				YESTERDAY,
+        				TODAY,
+        				TOMORROW,
+        				LAST_WEEK,
+        				THIS_WEEK,
         				NEXT_WEEK,
         				LAST_MONTH,
         				THIS_MONTH,
@@ -295,10 +292,10 @@ public class SOQLExpressions {
                         IN
                 ));
     }
-    
+
     /**
      * It is responsible for setting the rule for FIELD expression in where
-     * sentence. 
+     * sentence.
      *
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
@@ -317,7 +314,6 @@ public class SOQLExpressions {
                         DATE_LITERALS_EXPR,
                         DATE_LITERALS_WITH_NUMBERS_EXPR));
     }
-    
     /**
      * It is responsible for setting the rule for SOQL External Variable in where
      * sentence. External Variable can be any variable, method like:
@@ -354,7 +350,7 @@ public class SOQLExpressions {
                         EXCLUDES),
                 LPAREN,
                 grammarBuilder.firstOf(SOQL_NAME, QUERY_EXPRESSION, STRING),
-                grammarBuilder.zeroOrMore(COMMA, 
+                grammarBuilder.zeroOrMore(COMMA,
                 		grammarBuilder.firstOf(SOQL_NAME, STRING)),
                 RPAREN
         );
@@ -409,8 +405,8 @@ public class SOQLExpressions {
                 grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL),
                 grammarBuilder.optional(LPAREN, RPAREN),
                 grammarBuilder.optional(OFFSET, INTEGER_LITERAL)
-                
-                
+
+
         );
     }
 
@@ -484,7 +480,6 @@ public class SOQLExpressions {
                 RPAREN
         );
     }
-    
     /**
      * It is responsible for setting the rule for where sentence.
      *
