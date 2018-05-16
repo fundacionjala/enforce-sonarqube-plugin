@@ -31,31 +31,31 @@ public class ParameterCountCheck extends SquidCheck<Grammar> {
     /**
      * The structure must have the name of the method.
      */
-    public final int DEFAULT_PARAM_COUNT = 5;
+    public static final int DEFAULT_PARAM_COUNT = 5;
 
     private final String MESSAGE = ChecksBundle.getStringFromBundle("ParameterCountCheckMessage");
 
-    
+
 
     /**
      * The variables are initialized and subscribe the base rule.
      */
-    
+
     @Override
     public void init() {
         subscribeTo(ApexGrammarRuleKey.METHOD_DECLARATION, ApexGrammarRuleKey.CONSTRUCTOR_DECLARATION);
     }
-    
+
     /*
      * Rule Property to make configurable variable
      */
     @RuleProperty(
     	    key = "max",
-    	    description = "Maximum allowed statements per function",
+    	    description = "Maximum allowed parameter in each function",
     	    defaultValue = ""+DEFAULT_PARAM_COUNT)
     	  int max = DEFAULT_PARAM_COUNT;
-    
-    
+
+
 
     /**
      * It is responsible for verifying whether the rule is met in the rule base.
@@ -66,16 +66,16 @@ public class ParameterCountCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
         try {
-            LookForParameterCount(astNode);
+            lookForParameterCount(astNode);
         } catch (Exception e) {
             ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
         }
     }
-    
-    private void LookForParameterCount(AstNode methodDeclarationNode) {
+
+    private void lookForParameterCount(AstNode methodDeclarationNode) {
         if(methodDeclarationNode.getDescendants(ApexGrammarRuleKey.FORMAL_PARAMETER).size() > max){
 	        getContext().createLineViolation(this, MESSAGE, methodDeclarationNode, max);
         }
-        
+
     }
 }

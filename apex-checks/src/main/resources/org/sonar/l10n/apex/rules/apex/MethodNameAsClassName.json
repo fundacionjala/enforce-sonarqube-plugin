@@ -1,0 +1,13 @@
+{
+    "title": "Non-constructor methods should not have the same name as the enclosing class.",
+    "status": "ready",
+    "remediation": {
+        "func": "Constant\/Issue",
+        "constantCost": "5min"
+    },
+    "sqaleSubCharacteristic": "READABILITY",
+    "tags": [
+        "convention"
+    ],
+    "defaultSeverity": "Minor"
+}

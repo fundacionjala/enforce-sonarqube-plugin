@@ -53,6 +53,7 @@ public class CheckList {
         return ImmutableList.<Class>of(
                 ErrorRecoveryCheck.class,
                 ClassNameCheck.class,
+                DeeplyNestedIfStmtsCheck.class,
                 DeprecatedMethodCheck.class,
                 DmlInConstructorCheck.class,
                 DmlInForCheck.class,
@@ -75,6 +76,8 @@ public class CheckList {
                 ClassLengthCheck.class,
                 MethodLengthCheck.class,
                 ParameterCountCheck.class,
-                SoqlInLoopCheck.class);
+                SoqlInLoopCheck.class,
+                MethodNameAsClassNameCheck.class,
+                VariableCountCheck.class);
     }
 }

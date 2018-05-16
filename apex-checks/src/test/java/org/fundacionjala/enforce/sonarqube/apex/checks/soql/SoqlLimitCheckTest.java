@@ -14,7 +14,7 @@ import java.io.File;
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
 public class SoqlLimitCheckTest {
-    
+
     private SoqlLimitCheck check;
     private SourceFile sourceFile;
 
@@ -22,11 +22,11 @@ public class SoqlLimitCheckTest {
     public void setUp() {
         check = new SoqlLimitCheck();
     }
-    
+
     @Test
     public void soqlLimitCorrect() throws Exception {
         sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitCorrect.cls"), check);
-        System.out.println("sourceFile.getCheckMessages() Correct: ==> "+ sourceFile.getCheckMessages());;
+        //System.out.println("sourceFile.getCheckMessages() Correct: ==> "+ sourceFile.getCheckMessages());;
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .noMore();  // iterates through and checks if no more violations on next lines
     }
@@ -34,7 +34,7 @@ public class SoqlLimitCheckTest {
     @Test
     public void soqlLimitError() throws Exception {
         sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitError.cls"), check);
-        System.out.println("sourceFile.getCheckMessages() Error: ==> "+ sourceFile.getCheckMessages());
+        //System.out.println("sourceFile.getCheckMessages() Error: ==> "+ sourceFile.getCheckMessages());
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
                 .next().atLine(8).withMessage("Define the LIMIT for this SOQL statement.")
                 .next().atLine(15).withMessage("Define the LIMIT for this SOQL statement.");
