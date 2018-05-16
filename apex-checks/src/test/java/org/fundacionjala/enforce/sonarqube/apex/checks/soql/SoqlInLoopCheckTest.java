@@ -86,7 +86,7 @@ public class SoqlInLoopCheckTest {
      */
     @Test
     public void testSoqlForEachAndReturn() throws Exception {
-    	System.out.println("Hey");
+    	//System.out.println("Hey");
 	    	sourceFile = scanFile(new File("src/test/resources/checks/soqlForEachLoop.cls"), check);
 	    	CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
     }
