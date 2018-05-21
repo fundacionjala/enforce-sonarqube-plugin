@@ -46,6 +46,7 @@ public class SOQLExpressions {
         groupByTypesSentence(grammarBuilder);
         soqlExternalVariable(grammarBuilder);
         havingSentence(grammarBuilder);
+        soqlStringSet(grammarBuilder);
     }
 
     /**
@@ -87,7 +88,8 @@ public class SOQLExpressions {
                 grammarBuilder.optional(GROUP_BY_SENTENCE),
                 grammarBuilder.optional(HAVING_SENTENCE),
                 grammarBuilder.optional(ORDER_BY_SENTENCE),
-                grammarBuilder.optional(LIMIT_SENTENCE));
+                grammarBuilder.optional(LIMIT_SENTENCE),
+        		grammarBuilder.optional(FOR, UPDATE));
     }
 
     /**
@@ -220,11 +222,9 @@ public class SOQLExpressions {
      */
     private static void fromSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FROM_SENTENCE).is(FROM,
-                SOQL_NAME, grammarBuilder.optional(ALIASSTATEMENT),
-                grammarBuilder.zeroOrMore(
-                        COMMA, SOQL_NAME,
-                        grammarBuilder.optional(ALIASSTATEMENT)
-                ));
+        		grammarBuilder.firstOf(
+                SOQL_NAME, GROUP)
+        		, grammarBuilder.optional(ALIASSTATEMENT));
     }
 
     /**
@@ -312,6 +312,7 @@ public class SOQLExpressions {
                         STRING,
                         INTEGER_LITERAL,
                         SOQL_EXTERNAL_VARIABLE,
+                        SOQL_STRING_SET,
                         BOOLEAN_LITERAL,
                         NULL,
                         DATE_LITERALS_EXPR,
@@ -330,12 +331,33 @@ public class SOQLExpressions {
     	grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
                 grammarBuilder.firstOf(NAME, SOQL_NAME),
-                grammarBuilder.optional(LPAREN, RPAREN),
+                grammarBuilder.optional(LPAREN, grammarBuilder.optional(grammarBuilder.firstOf(STRING, INTEGER_LITERAL)), RPAREN),
                 grammarBuilder.optional(LBRACKET, grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL), RBRACKET),
                 grammarBuilder.zeroOrMore(
                         DOT,
-                        SOQL_NAME
+                        SOQL_NAME,
+                        grammarBuilder.optional(LPAREN, grammarBuilder.optional(grammarBuilder.firstOf(STRING, INTEGER_LITERAL)), RPAREN)
                         )
+                );
+    }
+    
+    /**
+     * It is responsible for setting the rule for SOQL External Variable in where
+     * sentence. External Variable can be any variable, method like:
+     * Where id =:userId
+     * Where id =:getId()
+     * Where id =: userInfo.GetUserId()
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void soqlStringSet(LexerfulGrammarBuilder grammarBuilder) {
+    	grammarBuilder.rule(SOQL_STRING_SET).is(
+                COLON,
+                LPAREN,
+                grammarBuilder.zeroOrMore(
+                		grammarBuilder.optional(COMMA),
+                		STRING
+                        ),
+                RPAREN
                 );
     }
 
@@ -368,10 +390,12 @@ public class SOQLExpressions {
      */
     private static void simpleExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SIMPLE_EXPRESSION).is(
+        		grammarBuilder.optional(LPAREN),
                 grammarBuilder.firstOf(
                 		FIELD_EXPRESSION,
                         FILTERING_EXPRESSION
-                )
+                ),
+                grammarBuilder.optional(RPAREN)
         );
     }
 
