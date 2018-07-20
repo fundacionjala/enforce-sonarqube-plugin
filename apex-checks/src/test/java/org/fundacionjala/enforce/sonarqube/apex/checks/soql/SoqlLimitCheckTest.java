@@ -1,6 +1,7 @@
 /*
  * Copyright (c) Fundacion Jala. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
  */
 package org.fundacionjala.enforce.sonarqube.apex.checks.soql;
 
@@ -14,7 +15,7 @@ import java.io.File;
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
 public class SoqlLimitCheckTest {
-    
+
     private SoqlLimitCheck check;
     private SourceFile sourceFile;
 
@@ -22,7 +23,7 @@ public class SoqlLimitCheckTest {
     public void setUp() {
         check = new SoqlLimitCheck();
     }
-    
+
     @Test
     public void soqlLimitCorrect() throws Exception {
         sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitCorrect.cls"), check);

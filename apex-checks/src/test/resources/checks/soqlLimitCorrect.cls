@@ -80,6 +80,9 @@ public class SomeClass {
         list<rC_BUP__Event__c> eventsToDelete = [SELECT Id FROM rC_BUP__Event__c
                                                WHERE (rC_BUP__Batch_Upload__c IN :batchUploadsDeleteSuspendedEvent
                                                    AND rC_BUP__Event_State__c IN ('Suspend', 'Error')) limit 2];
-            
+        
+        String accToqueryID = [SELECT id, contact.accountID from CampaignMember WHERE id in (select id from Account limit 1) limit 1].contact.accountID; 
+        
+        list<Account> lst = [Select Id, Name from Account where Name in (Select name from Account where name like 'A%' limit 1) limit 1];   
     }
 }
