@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/fundacionjala/enforce-sonarqube-plugin.svg)](https://travis-ci.org/fundacionjala/enforce-sonarqube-plugin) [![license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/fundacionjala/enforce-sonarqube-plugin.svg)](https://travis-ci.org/fundacionjala/enforce-sonarqube-plugin) [![license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/fundacionjala/enforce-sonarqube-plugin/blob/master/LICENSE) [![Download](https://api.bintray.com/packages/fundacionjala/enforce/enforce-sonar-plugin/images/download.svg?version=1.0.1)](https://bintray.com/fundacionjala/enforce/enforce-sonar-plugin/1.0.1/link)
 
 # Note: Apex plugin for SonarQube current functionality.
 The plugin has support for the Apex language grammar, the current list of checks is focused mainly on test components.
