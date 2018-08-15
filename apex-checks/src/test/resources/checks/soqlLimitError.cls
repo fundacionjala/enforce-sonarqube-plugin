@@ -5,12 +5,12 @@ public class SomeClass {
     DateTime CURRENT_DATE_TIME = system.now().format('ddMMyyyy hh:mm:ss a');
         
     populateAccount();
-	list<points> lstPoints123 = [SELECT SUM(Amount__c) points
+	list<points> lstPoints123 = [SELECT SUM(Amount__c), points
                                                 FROM   Points__c
                                                 WHERE  User__r.Id = :user
                                                 AND    Amount__c > 0
                                                 AND    RecordType.Name = 'Earned Points'
-                                                AND    Date__c = THIS_QUARTER];
+                                                AND    Date__c = THIS_QUARTER Group By points];
     
     list<lead> lstLead = [SELECT LeadSource, COUNT(Name)
 								FROM Lead
