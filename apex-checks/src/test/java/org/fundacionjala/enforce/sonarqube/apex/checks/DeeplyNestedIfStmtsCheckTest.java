@@ -63,6 +63,7 @@ public class DeeplyNestedIfStmtsCheckTest {
 		.next().atLine(32).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
 		.next().atLine(36).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
 		.next().atLine(38).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
+		.next().atLine(45).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
 		.noMore();
 	}
 	
