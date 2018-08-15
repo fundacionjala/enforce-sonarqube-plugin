@@ -69,16 +69,11 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 			List<AstNode> statementChildren;
 			
 			for(AstNode bChild : blockChildren){
-				//System.out.println("bChild >>" + bChild);
 				blockStatementChildren = bChild.getChildren(ApexGrammarRuleKey.BLOCK_STATEMENT);
 				for(AstNode bsChild : blockStatementChildren){
-					//System.out.println("bsChild >>" + bsChild);
 					statementChildren = bsChild.getChildren(ApexGrammarRuleKey.STATEMENT);
-					//System.out.println("statementChildren >>" + statementChildren);
 					for(AstNode sChild : statementChildren){
-						//System.out.println("sChild >>" + sChild);
 						counter = 0;
-						//System.out.println("counter >>" + counter);
 						recursiveStatementMethod(sChild);
 					}
 				}
@@ -89,46 +84,34 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 	}
 	
 	private void recursiveStatementMethod(AstNode astStatement){
-		//System.out.println(" In recursiveStatementMethod" );
 		if(astStatement.hasDirectChildren(ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION)){
 			for(AstNode compoundStatementNode : astStatement.getChildren(ApexGrammarRuleKey.COMPOUND_STATEMENT_EXPRESSION)){
-				//System.out.println("compoundStatementNode >>" + compoundStatementNode);
 				if(!compoundStatementNode.hasDirectChildren(ApexGrammarRuleKey.BLOCK)){
-					//System.out.println("Before Continue");
 					continue;
 				}
 				for(AstNode blockNode : compoundStatementNode.getChildren(ApexGrammarRuleKey.BLOCK)){
-					//System.out.println("blockNode >>" + blockNode);
 					traverseBlockStatement(blockNode);
 				}
 			}
 		}else // If we found IfStatement then increase counter, validate against max value and set violation if required
 			if(astStatement.hasDirectChildren(ApexGrammarRuleKey.IF_STATEMENT)){ 
-			//System.out.println("Has If_Statment>>" + astStatement);
 			counter ++;
-			//System.out.println("counter++_0 >>" + counter);
 			AstNode ifStatement = astStatement.getFirstChild(ApexGrammarRuleKey.IF_STATEMENT);
 			if(counter >= max){
-				//System.out.println("counter++ >>" + counter);
 				getContext().createLineViolation(this, MESSAGE, ifStatement, max);
 				counter --;
 				return;
 			}
 			for(AstNode statementNode : ifStatement.getChildren(ApexGrammarRuleKey.STATEMENT)){
-				//System.out.println("statementNode ++ >>" + statementNode);
 				recursiveStatementMethod(statementNode);
 				counter --;
 			}
 		}else{ // If we found any statement rather then IfStatement then process further and call recursive methods to get IFStatements
-			//System.out.println("HAs Not If_Statement");
 			for(AstNode otherChildren : astStatement.getChildren()){
-				//System.out.println("otherChildren >>" + otherChildren);
 				if(otherChildren.is(ApexGrammarRuleKey.BLOCK)){
-					//System.out.println("blockNode_1 >>" + otherChildren);
 					traverseBlockStatement(otherChildren);
 				}else{
 					for(AstNode statementNode : otherChildren.getChildren(ApexGrammarRuleKey.STATEMENT)){
-						//System.out.println("statementNode_2 >>" + statementNode);
 						recursiveStatementMethod(statementNode);
 					}// end of for(AstNode statementNode....
 				} // end of else
@@ -139,9 +122,7 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 	// Method to traverse BlockStatement, used at multiple place.
 	private void traverseBlockStatement(AstNode blockNode){
 		for(AstNode blockStatementNode : blockNode.getChildren(ApexGrammarRuleKey.BLOCK_STATEMENT)){
-			//System.out.println("blockStatementNode >>" + blockStatementNode);
 			for(AstNode statementNode : blockStatementNode.getChildren(ApexGrammarRuleKey.STATEMENT)){
-				//System.out.println("statementNode >>" + statementNode);
 				recursiveStatementMethod(statementNode);
 			}
 		}
