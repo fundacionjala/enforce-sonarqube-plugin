@@ -102,7 +102,8 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 					traverseBlockStatement(blockNode);
 				}
 			}
-		}else if(astStatement.hasDirectChildren(ApexGrammarRuleKey.IF_STATEMENT)){
+		}else // If we found IfStatement then increase counter, validate against max value and set violation if required
+			if(astStatement.hasDirectChildren(ApexGrammarRuleKey.IF_STATEMENT)){ 
 			//System.out.println("Has If_Statment>>" + astStatement);
 			counter ++;
 			//System.out.println("counter++_0 >>" + counter);
@@ -118,7 +119,7 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 				recursiveStatementMethod(statementNode);
 				counter --;
 			}
-		}else{
+		}else{ // If we found any statement rather then IfStatement then process further and call recursive methods to get IFStatements
 			//System.out.println("HAs Not If_Statement");
 			for(AstNode otherChildren : astStatement.getChildren()){
 				//System.out.println("otherChildren >>" + otherChildren);
@@ -135,6 +136,7 @@ public class DeeplyNestedIfStmtsCheck extends SquidCheck<Grammar> {
 		} // end of else...
 	} //end of method
 
+	// Method to traverse BlockStatement, used at multiple place.
 	private void traverseBlockStatement(AstNode blockNode){
 		for(AstNode blockStatementNode : blockNode.getChildren(ApexGrammarRuleKey.BLOCK_STATEMENT)){
 			//System.out.println("blockStatementNode >>" + blockStatementNode);
