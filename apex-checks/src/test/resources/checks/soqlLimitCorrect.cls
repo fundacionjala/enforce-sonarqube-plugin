@@ -83,6 +83,15 @@ public class SomeClass {
         
         String accToqueryID = [SELECT id, contact.accountID from CampaignMember WHERE id in (select id from Account limit 1) limit 1].contact.accountID; 
         
-        list<Account> lst = [Select Id, Name from Account where Name in (Select name from Account where name like 'A%' limit 1) limit 1];   
+        list<Account> lst = [Select Id, Name from Account where Name in (Select name from Account where name like 'A%' limit 1) limit 1];
+        
+        list<Account> lstAc = [SELECT count() FROM Account];   
+        
+        list<points> lstPoints123 = [SELECT SUM(Amount__c) points
+                                                FROM   Points__c
+                                                WHERE  User__r.Id = :user
+                                                AND    Amount__c > 0
+                                                AND    RecordType.Name = 'Earned Points'
+                                                AND    Date__c = THIS_QUARTER];
     }
 }
