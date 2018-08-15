@@ -40,6 +40,12 @@ public class Foo {
 			}
 			if(true){
 			}
+		}else if(true){
+			if(true){
+				if(true){
+				
+				}
+			}
 		}
 	}
 }

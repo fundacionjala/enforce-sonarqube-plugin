@@ -46,6 +46,9 @@ public class SOQLExpressions {
         groupByTypesSentence(grammarBuilder);
         soqlExternalVariable(grammarBuilder);
         havingSentence(grammarBuilder);
+        whereSentenceExpression(grammarBuilder);
+        //soqlStringSet(grammarBuilder);
+        //soqlFilterExpressionSet(grammarBuilder);
     }
 
     /**
@@ -87,7 +90,9 @@ public class SOQLExpressions {
                 grammarBuilder.optional(GROUP_BY_SENTENCE),
                 grammarBuilder.optional(HAVING_SENTENCE),
                 grammarBuilder.optional(ORDER_BY_SENTENCE),
-                grammarBuilder.optional(LIMIT_SENTENCE));
+                grammarBuilder.optional(LIMIT_SENTENCE),
+        		grammarBuilder.optional(FOR, UPDATE)
+                );
     }
 
     /**
@@ -217,11 +222,9 @@ public class SOQLExpressions {
      */
     private static void fromSentence(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FROM_SENTENCE).is(FROM,
-                SOQL_NAME, grammarBuilder.optional(ALIASSTATEMENT),
-                grammarBuilder.zeroOrMore(
-                        COMMA, SOQL_NAME,
-                        grammarBuilder.optional(ALIASSTATEMENT)
-                ));
+        		grammarBuilder.firstOf(
+                SOQL_NAME, GROUP)
+        		, grammarBuilder.optional(ALIASSTATEMENT));
     }
 
     /**
@@ -251,12 +254,33 @@ public class SOQLExpressions {
      * @param grammarBuilder ApexGrammarBuilder parameter.
      */
     private static void whereSentence(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(WHERE_SENTENCE).is(WHERE,
-        		//grammarBuilder.optional(LPAREN),
-                SIMPLE_EXPRESSION,
-                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)//,
-                //grammarBuilder.optional(RPAREN)
-                );
+        grammarBuilder.rule(WHERE_SENTENCE).is(
+        		WHERE,
+        		WHERE_SENTENCE_EXPRESSION
+    		);
+    }
+    
+    /**
+     * It is responsible for setting the rule for where sentence.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void whereSentenceExpression(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(WHERE_SENTENCE_EXPRESSION).is(
+        		grammarBuilder.firstOf(
+	        		grammarBuilder.sequence(
+	    				LPAREN,
+		                SIMPLE_EXPRESSION,
+		                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION),
+		                RPAREN,
+		                grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)
+                	),
+	        		grammarBuilder.sequence(
+        				SIMPLE_EXPRESSION,
+                        grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)	
+    				)
+        		)
+    		);
     }
 
     /**
@@ -301,7 +325,7 @@ public class SOQLExpressions {
      */
     private static void fieldExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(FIELD_EXPRESSION).is(
-        		grammarBuilder.optional(NOT_SOQL),
+        		//grammarBuilder.optional(NOT_SOQL),
         		grammarBuilder.firstOf(SOQL_NAME, DATE_METHOD_EXPR, AGGREGATE_EXPR),
                 grammarBuilder.optional(NOT_SOQL),
                 OPERATORS,
@@ -326,11 +350,12 @@ public class SOQLExpressions {
     	grammarBuilder.rule(SOQL_EXTERNAL_VARIABLE).is(
                 COLON,
                 grammarBuilder.firstOf(NAME, SOQL_NAME),
-                grammarBuilder.optional(LPAREN, RPAREN),
+                grammarBuilder.optional(LPAREN, grammarBuilder.optional(grammarBuilder.firstOf(STRING, INTEGER_LITERAL)), RPAREN),
                 grammarBuilder.optional(LBRACKET, grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL), RBRACKET),
                 grammarBuilder.zeroOrMore(
                         DOT,
-                        SOQL_NAME
+                        SOQL_NAME,
+                        grammarBuilder.optional(LPAREN, grammarBuilder.optional(grammarBuilder.firstOf(STRING, INTEGER_LITERAL)), RPAREN)
                         )
                 );
     }
@@ -364,11 +389,11 @@ public class SOQLExpressions {
      */
     private static void simpleExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(SIMPLE_EXPRESSION).is(
-                grammarBuilder.firstOf(
-                		FIELD_EXPRESSION,
-                        FILTERING_EXPRESSION
-                )
-        );
+    		grammarBuilder.firstOf(
+        		FIELD_EXPRESSION,
+                FILTERING_EXPRESSION
+            )
+		);
     }
 
     /**
@@ -379,7 +404,7 @@ public class SOQLExpressions {
      */
     private static void andSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(AND_SOQL_EXPRESSION).is(
-                AND_SOQL, grammarBuilder.optional(LPAREN), SIMPLE_EXPRESSION, grammarBuilder.optional(RPAREN));
+                AND_SOQL, WHERE_SENTENCE_EXPRESSION);
     }
 
     /**
@@ -390,7 +415,7 @@ public class SOQLExpressions {
      */
     private static void orSOQLExpression(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(OR_SOQL_EXPRESSION).is(
-                OR_SOQL, grammarBuilder.optional(LPAREN), SIMPLE_EXPRESSION, grammarBuilder.optional(RPAREN));
+                OR_SOQL, WHERE_SENTENCE_EXPRESSION);
     }
 
     /**

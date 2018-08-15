@@ -23,3 +23,5 @@ hs_err_pid*
 .classpath
 .settings
 .vscode/settings.json
+.metadata
+.recommenders
