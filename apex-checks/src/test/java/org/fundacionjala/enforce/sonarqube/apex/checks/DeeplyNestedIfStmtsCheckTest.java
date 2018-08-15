@@ -23,7 +23,7 @@ public class DeeplyNestedIfStmtsCheckTest {
 	 * Exceeds if-then limit of 3. 
 	 * @throws Exception
 	 */
-	/*@Test
+	@Test
 	public void testError() throws Exception{
 		System.out.println("Error");
 		sourceFile = scanFile(new File("src/test/resources/checks/nestedIfError.cls"), check);
@@ -32,18 +32,18 @@ public class DeeplyNestedIfStmtsCheckTest {
 		.next().atLine(8).withMessage(
 				"Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
 		.noMore();
-	}*/
+	}
 	
 	/**
 	 * Should be correct if-then logic with else if conditions.
 	 * @throws Exception
 	 */
-	/*@Test
+	@Test
 	public void testSimpleIfElse() throws Exception{
 		System.out.println("Simple");
 		sourceFile = scanFile(new File("src/test/resources/checks/simpleIfElse.cls"), check);
 		CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();	
-	}*/
+	}
 	
 	/**
 	 * Exceeds if-then limit of 3 four times.
