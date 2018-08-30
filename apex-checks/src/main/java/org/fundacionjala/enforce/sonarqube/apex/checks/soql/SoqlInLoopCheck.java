@@ -21,7 +21,7 @@ public class SoqlInLoopCheck extends SquidCheck<Grammar> {
      * Stores the rule to subscribe.
      */
     protected ApexGrammarRuleKey ruleKey;
-	
+
     /**
      * Stores a message template.
      */
@@ -58,7 +58,7 @@ public class SoqlInLoopCheck extends SquidCheck<Grammar> {
               ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());
           }
     }
-    
+
     private AstNode getStatementAstNode(AstNode astNode){
     		AstNode statementAstNode = astNode.getFirstChild(ApexGrammarRuleKey.STATEMENT);
 	    	if(statementAstNode == null){

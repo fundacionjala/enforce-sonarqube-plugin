@@ -49,7 +49,15 @@ public class SoqlLimitCheck extends SquidCheck<Grammar> {
             }
 
             if (nodeToCheck.is(ApexGrammarRuleKey.QUERY_EXPRESSION) && !nodeToCheck.hasDescendant(ApexGrammarRuleKey.LIMIT_SENTENCE)) {
-                getContext().createLineViolation(this, MESSAGE, astNode);
+            	AstNode selectNode = nodeToCheck.getFirstChild(ApexGrammarRuleKey.SELECT_SENTENCE);
+            	if(selectNode.hasDescendant(ApexGrammarRuleKey.AGGREGATE_EXPR)){ 
+        			if(nodeToCheck.hasDescendant(ApexGrammarRuleKey.GROUP_BY_SENTENCE)){
+        				getContext().createLineViolation(this, MESSAGE, astNode);
+        			}
+            	}else{
+            		getContext().createLineViolation(this, MESSAGE, astNode);
+            	}
+                
             }
         } catch (Exception e) {
             ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());

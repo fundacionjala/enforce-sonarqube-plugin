@@ -14,7 +14,7 @@ import java.io.File;
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
 
 public class SoqlInLoopCheckTest {
-    
+
     private SoqlInLoopCheck check;
     private SourceFile sourceFile;
 
@@ -22,7 +22,7 @@ public class SoqlInLoopCheckTest {
     public void setUp() {
         check = new SoqlInLoopCheck();
     }
-    
+
     @Test
     public void testCorrectSOQLLoop() throws Exception {
         sourceFile = scanFile(new File("src/test/resources/checks/soqlLimitError.cls"), check);
@@ -41,7 +41,7 @@ public class SoqlInLoopCheckTest {
                .next().atLine(28).withMessage("SOQL statements should not be in loops.")
                .noMore();
     }
-    
+
     /**
      * Nested SOQL statement loop
      */
@@ -52,7 +52,7 @@ public class SoqlInLoopCheckTest {
                 next().atLine(17).withMessage(
                 "SOQL statements should not be in loops.");
     }
-    
+
     /**
      * File with no loops or SOQL statement
      */
@@ -62,7 +62,7 @@ public class SoqlInLoopCheckTest {
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).
                 noMore();
     }
-    
+
     /**
      * Just loops
      */
@@ -71,7 +71,7 @@ public class SoqlInLoopCheckTest {
         sourceFile = scanFile(new File("src/test/resources/checks/justLoops.cls"), check);
         CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
     }
-    
+
     /**
      * Just SOQL statements
      */
@@ -80,13 +80,13 @@ public class SoqlInLoopCheckTest {
 	    	sourceFile = scanFile(new File("src/test/resources/checks/justSoqlStatements.cls"), check);
 	    	CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
     }
-    
+
     /**
-     * For each loop and return 
+     * For each loop and return
      */
     @Test
     public void testSoqlForEachAndReturn() throws Exception {
-    	System.out.println("Hey");
+    	//System.out.println("Hey");
 	    	sourceFile = scanFile(new File("src/test/resources/checks/soqlForEachLoop.cls"), check);
 	    	CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
     }
