@@ -51,6 +51,11 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("campaign = [select id, name from campaign]")
                 .matches("(trigger.isBefore && trigger.isUpdate)")
                 .matches("Xaxis.Title = 'Status'")
+                .matches("opp.POC_Install_Date__c = system.today()")
+                .matches("testa.submittedDate = Date.today()")
+                .matches("qWarn.ExpirationDate = system.today() + 7")
+                .matches("m.Attachment_Added__c = isDelete ? parentIdToDate.get(a.ParentId) : system.today()")
+            	.matches("System.assertEquals(string.valueOf(system.today()), results.maxEndDate)")
                 .matches("ChartSettingBars.XAxis = new List<TemplateConfig.ChartAxis>()");
     }
 
@@ -65,4 +70,5 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .notMatches("a &&& b == c")
                 .notMatches("a =! b &| c");
     }
+    
 }
