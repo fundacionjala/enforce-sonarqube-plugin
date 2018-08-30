@@ -167,7 +167,10 @@ public class MostUsed {
                         UPDATE,
                         UPSERT,
                         ITERATOR,
-                        ORDER
+                        ORDER,
+                        TODAY,
+                        YESTERDAY,
+                        TOMORROW
                 ));
     }
 
