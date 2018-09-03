@@ -19,7 +19,7 @@ public class SomeClass {
 	                                                WHERE  User__r.Id = :user
 	                                                AND    Amount__c > 0
 	                                                AND    RecordType.Name = 'Earned Points'
-	                                                AND    Date__c = THIS_QUARTER];
+	                                                AND    Date__c = TODAY];
 	            }
             }
         }

@@ -31,6 +31,7 @@ public class ApexGrammarFieldDeclarationTest extends ApexRuleTest {
                 .matches("Integer order = 0;")
                 .matches("string name = syste.test();")
                 .matches("Product2 product_01 = new Product2();")
+                .matches("string TODAY = 'TODAY';")
                 .matches("Iterator iterator = iteratorParameter;");
     }
 
@@ -44,6 +45,7 @@ public class ApexGrammarFieldDeclarationTest extends ApexRuleTest {
     @Test
     public void ResolvePositiveParsingRules(){
     	assertThat(parser)
+    	.matches("Opportunity retVal = new Opportunity(Name = 'Some Oppty', AccountId = System.Tomorrow().test, createdDate = System.test());")
     	.matches("Opportunity retVal = new Opportunity(Name = 'Some Oppty', AccountId = System.today(), createdDate = System.test());")
     			.matches("Opportunity retVal = new test(Name = Some.Today);")
     			.matches("Asset a = new Asset(Name = 'test', AccountId = acc.Id, Array_ID__c = 'test', Purity_Version__c = 'test'," +

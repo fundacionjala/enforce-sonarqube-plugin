@@ -201,7 +201,7 @@ public enum ApexKeyword implements TokenType {
     LAST_N_QUARTERS("LAST_N_QUARTERS"),
     NEXT_N_YEARS("NEXT_N_YEARS"),
     LAST_N_YEARS("LAST_N_YEARS"),
-    
+
     //Limit Notations
     LIMIT("limit"),
     //Order Notations

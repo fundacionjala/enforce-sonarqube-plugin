@@ -7,6 +7,7 @@ package org.fundacionjala.enforce.sonarqube.apex.api.grammar.buildersource;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.*;
+//import static org.fundacionjala.enforce.sonarqube.apex.api.SOQLKeyword.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
@@ -122,7 +123,7 @@ public class SOQLExpressions {
                 RPAREN,
                 grammarBuilder.optional(SOQL_NAME));
     }
-    
+  
     /**
      * It is responsible for setting the rule for All Date Methods available for SOQL Query.
      *
@@ -149,7 +150,8 @@ public class SOQLExpressions {
                 RPAREN,
                 grammarBuilder.optional(SOQL_NAME));
     }
-    
+
+  
     /**
      * It is responsible for setting the rule for All Date Literals with integer values available for SOQL Query.
      *
@@ -175,7 +177,7 @@ public class SOQLExpressions {
                 COLON,
                 grammarBuilder.firstOf(SOQL_NAME, INTEGER_LITERAL));
     }
-    
+  
     /**
      * It is responsible for setting the rule for All Date Literals available for SOQL Query.
      *
@@ -262,7 +264,7 @@ public class SOQLExpressions {
         		WHERE_SENTENCE_EXPRESSION
     		);
     }
-    
+
     /**
      * It is responsible for setting the rule for where sentence.
      *
@@ -280,7 +282,7 @@ public class SOQLExpressions {
                 	),
 	        		grammarBuilder.sequence(
         				SIMPLE_EXPRESSION,
-                        grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)	
+                        grammarBuilder.zeroOrMore(CONDITIONAL_SOQL_EXPRESSION)
     				)
         		)
     		);
@@ -341,7 +343,7 @@ public class SOQLExpressions {
                         DATE_LITERALS_EXPR,
                         DATE_LITERALS_WITH_NUMBERS_EXPR));
     }
-    
+  
     /**
      * It is responsible for setting the rule for SOQL External Variable in where
      * sentence. External Variable can be any variable, method like:
@@ -509,7 +511,7 @@ public class SOQLExpressions {
                 RPAREN
         );
     }
-    
+  
     /**
      * It is responsible for setting the rule for where sentence.
      *

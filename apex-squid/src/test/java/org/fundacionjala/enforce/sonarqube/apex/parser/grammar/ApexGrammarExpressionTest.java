@@ -47,7 +47,7 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("accts = [SELECT Name, Phone FROM Account]")
                 .matches("myquery = 'SELECT Name, Phone FROM Account'")
                 .matches("var = Database.query('SELECT dato FROM table1 LIMIT 5000')")
-//                .matches("campaign = [select id, name from campaign where id = :campaign.id]")
+                .matches("campaign = [select id, name from campaign where id = :campaign.id]")
                 .matches("campaign = [select id, name from campaign]")
                 .matches("(trigger.isBefore && trigger.isUpdate)")
                 .matches("Xaxis.Title = 'Status'")
@@ -55,7 +55,9 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("testa.submittedDate = Date.today()")
                 .matches("qWarn.ExpirationDate = system.today() + 7")
                 .matches("m.Attachment_Added__c = isDelete ? parentIdToDate.get(a.ParentId) : system.today()")
-            	.matches("System.assertEquals(string.valueOf(system.today()), results.maxEndDate)")
+            	  .matches("System.assertEquals(string.valueOf(system.today()), results.maxEndDate)")
+                .matches("age = (Math.floor(dob.daysBetween(Date.today())/365.2425))")
+            	  .matches("closeDate = Date.today().addDays(Integer.valueOf(aorr.Duration__c))")
                 .matches("ChartSettingBars.XAxis = new List<TemplateConfig.ChartAxis>()");
     }
 
