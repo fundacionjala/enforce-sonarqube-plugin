@@ -377,7 +377,8 @@ public class Declaration {
         grammarBuilder.rule(VARIABLE_DECLARATOR).is(
                 grammarBuilder.firstOf(
                         ALLOWED_KEYWORDS_AS_IDENTIFIER,
-                        SPECIAL_KEYWORDS_AS_IDENTIFIER
+                        SPECIAL_KEYWORDS_AS_IDENTIFIER,
+                        ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS
                 ),
                 grammarBuilder.optional(
                         grammarBuilder.sequence(

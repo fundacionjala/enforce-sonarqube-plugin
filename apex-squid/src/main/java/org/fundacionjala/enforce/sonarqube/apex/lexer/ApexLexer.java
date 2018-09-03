@@ -39,25 +39,25 @@ public class ApexLexer {
      * Stores an numeric pattern.
      */
     private static final String INTEGER_LITERAL_PATTERN = "(?:(0[Xx]\\p{XDigit}+|[1-9](\\d)*|0([0-7]*))([lL]?))";
-    
+
     /**
-     * 
+     *
      * Stores an hexadecimal pattern.
      */
-    
+
     private static final String DECIMAL_FLOATING_POINT_LITERAL_PATTERN = "(?:\\d+\\.(\\d)*("+DECIMAL_EXPONENT_NUMBER+")?([fFdD])?"
             + "|"+"\\.(\\d)+("+DECIMAL_EXPONENT_NUMBER+")?([FfdD])?"
             + "|"+"([\\d])+"+DECIMAL_EXPONENT_NUMBER+"([fFdD])?"
             + "|"+"([\\d])+("+DECIMAL_EXPONENT_NUMBER+")?[fFdD])";
-    
+
     private static final String HEXADECIMAL_FLOATING_POINT_LITERAL_PATTERN = "(?:0[Xx]\\p{XDigit}+\\.?"+HEXADECIMAL_EXPONENT_NUMBER+"([fFdD])?"
             + "|0[Xx]\\p{XDigit}*\\.\\p{XDigit}+"+HEXADECIMAL_EXPONENT_NUMBER+"([fFdD])?)";
 
-    
+
     private static final String SINGLE_LINE_PATTERN = "//[^\\n\\r]*+";
-    
+
     private static final String MULTI_LINE_PATTERN = "/\\*" + ANY_CHAR + "*?\\*\\/";
-    
+
     /**
      * Stores a pattern to identify a black hole.
      */

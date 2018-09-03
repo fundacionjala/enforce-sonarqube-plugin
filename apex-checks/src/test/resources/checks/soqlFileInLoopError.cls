@@ -4,25 +4,25 @@ public class Foo {
 			List<Account> accounts = [SELECT Id FROM Account];
 		}
 	}
-
+	
 	public void test2() {
 		for(;;) {
 			List<Account> accounts = [SELECT Id FROM Account];
 		}
 	}
-
+	
 	public void test3() {
 		while(true) {
 			List<Account> accounts = [SELECT Id FROM Account];
 		}
 	}
-
+	
 	public void test4() {
 		do{
 			List<Account> accounts = [SELECT Id FROM Account];
 		}while(true) ;
 	}
-
+	
 	public void test5() {
 		do{
 			List<Account> accounts = [SELECT Id FROM Account];
