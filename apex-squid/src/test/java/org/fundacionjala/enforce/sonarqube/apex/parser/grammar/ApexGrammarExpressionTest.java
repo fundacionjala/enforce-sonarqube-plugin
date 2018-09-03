@@ -55,9 +55,9 @@ public class ApexGrammarExpressionTest extends ApexRuleTest {
                 .matches("testa.submittedDate = Date.today()")
                 .matches("qWarn.ExpirationDate = system.today() + 7")
                 .matches("m.Attachment_Added__c = isDelete ? parentIdToDate.get(a.ParentId) : system.today()")
-            	.matches("System.assertEquals(string.valueOf(system.today()), results.maxEndDate)")
-            	.matches("age = (Math.floor(dob.daysBetween(Date.today())/365.2425))")
-            	.matches("closeDate = Date.today().addDays(Integer.valueOf(aorr.Duration__c))")
+            	  .matches("System.assertEquals(string.valueOf(system.today()), results.maxEndDate)")
+                .matches("age = (Math.floor(dob.daysBetween(Date.today())/365.2425))")
+            	  .matches("closeDate = Date.today().addDays(Integer.valueOf(aorr.Duration__c))")
                 .matches("ChartSettingBars.XAxis = new List<TemplateConfig.ChartAxis>()");
     }
 

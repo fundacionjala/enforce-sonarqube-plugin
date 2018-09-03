@@ -284,6 +284,7 @@ public class Expression {
         grammarBuilder.rule(PRIMARY_PREFIX).is(grammarBuilder.firstOf(LITERAL,
                         grammarBuilder.sequence(RESULT_TYPE, DOT, CLASS),
                         NAME,
+                        grammarBuilder.sequence(STRING, DOT, DATE_LITERALS_EXPR, LPAREN, RPAREN), // Added By RA
                         grammarBuilder.sequence(
                                 grammarBuilder.firstOf(SUPER, THIS, SIMPLE_TYPE),
                                 DOT,
@@ -309,15 +310,14 @@ public class Expression {
         grammarBuilder.rule(ALLOCATION_EXPRESSION).is(NEW, grammarBuilder.firstOf(
         					grammarBuilder.sequence(
         						CLASS_OR_INTERFACE_TYPE,
-
-                                grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
-                                        grammarBuilder.sequence(
-                                        			ARGUMENTS,
-                                        			grammarBuilder.optional(LBRACE, RBRACE)
-                                                )
-                                        )
-                                ),
-        				grammarBuilder.sequence(grammarBuilder.firstOf(LIST, SET, ITERATOR),
+                    grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
+                            grammarBuilder.sequence(
+                                  ARGUMENTS,
+                                  grammarBuilder.optional(LBRACE, RBRACE)
+                                    )
+                            )
+                    ),
+        				    grammarBuilder.sequence(grammarBuilder.firstOf(LIST, SET, ITERATOR),
                                 GENERIC_TYPE,
                                 grammarBuilder.firstOf(ARGUMENTS,
                                         grammarBuilder.sequence(

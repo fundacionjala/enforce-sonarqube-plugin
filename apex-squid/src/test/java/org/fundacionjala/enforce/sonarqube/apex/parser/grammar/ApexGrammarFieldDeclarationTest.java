@@ -46,6 +46,7 @@ public class ApexGrammarFieldDeclarationTest extends ApexRuleTest {
     public void ResolvePositiveParsingRules(){
     	assertThat(parser)
     	.matches("Opportunity retVal = new Opportunity(Name = 'Some Oppty', AccountId = System.Tomorrow().test, createdDate = System.test());")
+    	.matches("Opportunity retVal = new Opportunity(Name = 'Some Oppty', AccountId = System.today(), createdDate = System.test());")
     			.matches("Opportunity retVal = new test(Name = Some.Today);")
     			.matches("Asset a = new Asset(Name = 'test', AccountId = acc.Id, Array_ID__c = 'test', Purity_Version__c = 'test'," +
     					" Status = 'Installed', Pure_Warranty_Description__c = 'test',"+

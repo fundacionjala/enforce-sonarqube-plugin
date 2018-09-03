@@ -12,9 +12,9 @@
                 "public_stats": false
         },
         "version": {
-                "name": "1.0.0",
+                "name": "1.0.1",
                 "desc": "beta release",
-                "released": "2016-06-27",
+                "released": "2018-01-01",
                 "gpgSign": false
         },
         "files": 
