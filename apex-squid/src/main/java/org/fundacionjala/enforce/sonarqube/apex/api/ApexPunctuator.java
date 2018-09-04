@@ -34,6 +34,7 @@ public enum ApexPunctuator implements TokenType {
     EXCOR("^"),
     NOT("!"),
     EQUALS("=="),
+    EQUEQUEQU("==="),
     NOTEQUALS("!="),
     CLS_NOTEQUALS("<>"),
     /**
@@ -50,7 +51,6 @@ public enum ApexPunctuator implements TokenType {
     LEQUT("<="),
     GEQUT(">="),
     MLT("<<"),
-    MGTEQU(">>="),
     
     /**
      * ASSIGNMENT OPERATORS.
