@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
+import java.io.Console;
 import java.io.File;
 
 import static org.fundacionjala.enforce.sonarqube.apex.ApexAstScanner.scanFile;
@@ -28,9 +29,8 @@ public class LineLengthCheckTest {
 
     @Test
     public void testEmptyFile() {
-        CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
-                .next().atLine(1).withMessage("The line length is greater than 80 authorized.")
-                .next().atLine(4).withMessage("The line length is greater than 80 authorized.")
+    	CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
+                .next().atLine(6).withMessage("The line length is greater than 120 authorized.")
                 .noMore();
     }
 }

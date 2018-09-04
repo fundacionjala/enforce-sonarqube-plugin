@@ -25,9 +25,7 @@ public class DeeplyNestedIfStmtsCheckTest {
 	 */
 	@Test
 	public void testError() throws Exception{
-		//System.out.println("Error");
 		sourceFile = scanFile(new File("src/test/resources/checks/nestedIfError.cls"), check);
-		//System.out.println("Error: "+sourceFile.getCheckMessages());
 		CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
 		.next().atLine(8).withMessage(
 				"Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
@@ -40,7 +38,6 @@ public class DeeplyNestedIfStmtsCheckTest {
 	 */
 	@Test
 	public void testSimpleIfElse() throws Exception{
-		//System.out.println("Simple");
 		sourceFile = scanFile(new File("src/test/resources/checks/simpleIfElse.cls"), check);
 		CheckMessagesVerifier.verify(sourceFile.getCheckMessages()).noMore();
 	}
@@ -51,9 +48,7 @@ public class DeeplyNestedIfStmtsCheckTest {
 	 */
 	@Test
 	public void testMessyIfElse() throws Exception{
-		//System.out.println("Messy");
 		sourceFile = scanFile(new File("src/test/resources/checks/messyIfElse.cls"), check);
-		//System.out.println(sourceFile.getCheckMessages());
 		CheckMessagesVerifier.verify(sourceFile.getCheckMessages())
 		.next().atLine(7).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")
 		.next().atLine(11).withMessage("Avoid creating deeply nested if-then statements since they are harder to read and error-prone to maintain, limit to "+check.DEFAULT_IF_DEPTH+".")

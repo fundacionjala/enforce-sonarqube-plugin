@@ -52,5 +52,6 @@ public class ApexGrammarFieldDeclarationTest extends ApexRuleTest {
     					" Street_Address__c = 'test street', City__c = 'San Francisco', Latitude_Longitude__latitude__s = 1, Latitude_Longitude__longitude__s =1,"+
     					" state_province__c = 'California', Postal_Code__c = '90000', Platform_PN__c='test', SE_Opportunity_Owner__c = UserInfo.getUserId(), "+
     					" Country__c = 'United States', Original_Contract_End_Date__c=Date.today(),Support_Pricing__c=spc.id);");
+    			//.matches("RecordTypeId =: Schema.Sobjecttype.Case.getRecordTypeInfosByName().get(System.Label.Case_Type1).getRecordTypeId());");
     }
 }
