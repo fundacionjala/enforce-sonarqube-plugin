@@ -29,7 +29,9 @@ public class ApexGrammarShiftExpressionTest extends ApexRuleTest {
                 .matches("a >>= b >>= c << d")
                 //with nested Additive Expressions
                 .matches("a + b - c")
-                .matches("a + b >>= c -d");
+                .matches("a + b >>= c -d")
+                .matches("(bytesBeingUsed - 1) - (n >> bytesBeingUsed)")
+                .matches("((Integer)(Math.Pow(2, shiftBits)) & pFullValue) >> shiftBits");
     }
 
     @Test

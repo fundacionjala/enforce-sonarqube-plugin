@@ -24,6 +24,7 @@ public class ApexGrammarGenericTypeTest extends ApexRuleTest {
         assertThat(parser)
                 .matches("<SomeType>")
                 .matches("<SomeType, SomeOtherType>")
+                .matches("<list<someType>>")
                 .matches("<list<set<someType>>>");
     }
 

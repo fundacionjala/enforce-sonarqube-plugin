@@ -175,7 +175,7 @@ public class Expression {
                 INSTANCE_OF_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
-                                grammarBuilder.firstOf(EQUALS, NOTEQUALS, CLS_NOTEQUALS),
+                                grammarBuilder.firstOf(EQUALS, NOTEQUALS, CLS_NOTEQUALS, EQUEQUEQU),
                                 INSTANCE_OF_EXPRESSION))
         );
     }
@@ -202,7 +202,12 @@ public class Expression {
                 ADDITIVE_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
-                                grammarBuilder.firstOf(MLT, MGTEQU),
+                                grammarBuilder.firstOf(MLT, 
+                                		GTGTEQU, 
+                                		LTLTEQU, 
+                                		GTGTGTEQU,
+                                		grammarBuilder.sequence(GT, GT),
+                                		grammarBuilder.sequence(GT, GT, GT)),
                                 ADDITIVE_EXPRESSION)
                 )
         );
