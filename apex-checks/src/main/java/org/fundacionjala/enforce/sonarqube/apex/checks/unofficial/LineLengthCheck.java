@@ -7,6 +7,7 @@ package org.fundacionjala.enforce.sonarqube.apex.checks.unofficial;
 import com.sonar.sslr.api.Grammar;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
+import org.sonar.check.RuleProperty;
 
 /**
  * This class defines the maximum number of the lines.
@@ -22,7 +23,16 @@ public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
     /**
      * Maximum number of line length.
      */
-    public static final int MAXIMAL_LINE_LENGTH = 80;
+    public static final int MAXIMAL_LINE_LENGTH = 120;
+
+    /*
+     * Rule Property to make configurable variable
+     */
+    @RuleProperty(
+    	    key = "max",
+    	    description = "Maximum allowed line length is",
+    	    defaultValue = ""+MAXIMAL_LINE_LENGTH)
+    	  int max = MAXIMAL_LINE_LENGTH;
 
     /**
      * Returns the default number line length.
@@ -31,6 +41,6 @@ public class LineLengthCheck extends AbstractLineLengthCheck<Grammar> {
      */
     @Override
     public int getMaximumLineLength() {
-        return MAXIMAL_LINE_LENGTH;
+        return max;
     }
 }

@@ -35,7 +35,7 @@ public class MostUsed {
         allowedKeywordsAsIdentifierForMethods(grammarBuilder);
         commonIdentifier(grammarBuilder);
     }
-    
+
     private static void allowedKeywordsAsSObjectName(LexerfulGrammarBuilder grammarBuilder){
     	grammarBuilder.rule(ALLOWED_KEYWORDS_AS_SOBJECT_NAME).is(
     		CASE
@@ -167,7 +167,10 @@ public class MostUsed {
                         UPDATE,
                         UPSERT,
                         ITERATOR,
-                        ORDER
+                        ORDER,
+                        DATE_METHOD_EXPR,
+                        DATE_LITERALS_WITH_NUMBERS_EXPR,
+                        DATE_LITERALS_EXPR
                 ));
     }
 

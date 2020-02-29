@@ -10,6 +10,7 @@ import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.*;
 
 /**
  * This class contains constructors for Statement rules and its sub rules.
@@ -38,6 +39,7 @@ public class Statement {
         dmlUpsert(grammarBuilder);
         dmlMerge(grammarBuilder);
         dmlOperations(grammarBuilder);
+        switchStatement(grammarBuilder);
     }
 
     /**
@@ -197,7 +199,8 @@ public class Statement {
                 TYPE,
                 ALLOWED_KEYWORDS_AS_IDENTIFIER,
                 COLON,
-                EXPRESSION,
+                grammarBuilder.firstOf(grammarBuilder.sequence(LBRACKET, QUERY_EXPRESSION, RBRACKET), EXPRESSION),
+                //EXPRESSION,
                 RPAREN,
                 STATEMENT
         );
@@ -338,6 +341,44 @@ public class Statement {
                         DML_UPSERT,
                         DML_MERGE
                 )
+        );
+    }
+    
+    /**
+     * Defines the Switch statement rule.
+     *
+     * @param grammarBuilder ApexGrammarBuilder parameter.
+     */
+    private static void switchStatement(LexerfulGrammarBuilder grammarBuilder) {
+        grammarBuilder.rule(SWITCH_STATEMENT).is(
+                SWITCH, 
+                ON,
+            	grammarBuilder.sequence(
+        			NAME,
+                    grammarBuilder.optional(LPAREN, grammarBuilder.optional(NAME), RPAREN),
+                    grammarBuilder.optional(LBRACKET, NAME, RBRACKET)
+                ),
+                LBRACE,
+                grammarBuilder.oneOrMore(
+                		WHEN,
+                		grammarBuilder.firstOf(
+            				ELSE,
+            				ALLOWED_KEYWORDS_AS_IDENTIFIER,
+            				LITERAL,
+            				grammarBuilder.sequence(MINUS, INTEGER_LITERAL)
+        				),
+                		grammarBuilder.zeroOrMore(
+            				COMMA, 
+            				grammarBuilder.firstOf(
+                				ELSE,
+                				ALLOWED_KEYWORDS_AS_IDENTIFIER,
+                				LITERAL,
+                				grammarBuilder.sequence(MINUS, INTEGER_LITERAL)
+            				)
+        				),
+                		STATEMENT
+                ),
+                RBRACE
         );
     }
 }

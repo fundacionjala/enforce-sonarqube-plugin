@@ -9,6 +9,8 @@ import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexKeyword.*;
 import static org.fundacionjala.enforce.sonarqube.apex.api.ApexPunctuator.*;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.INTEGER_LITERAL;
+import static org.fundacionjala.enforce.sonarqube.apex.api.ApexTokenType.STRING;
 import static org.fundacionjala.enforce.sonarqube.apex.api.grammar.ApexGrammarRuleKey.*;
 
 /**
@@ -173,7 +175,7 @@ public class Expression {
                 INSTANCE_OF_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
-                                grammarBuilder.firstOf(EQUALS, NOTEQUALS),
+                                grammarBuilder.firstOf(EQUALS, NOTEQUALS, CLS_NOTEQUALS, EQUEQUEQU),
                                 INSTANCE_OF_EXPRESSION))
         );
     }
@@ -200,7 +202,12 @@ public class Expression {
                 ADDITIVE_EXPRESSION,
                 grammarBuilder.zeroOrMore(
                         grammarBuilder.sequence(
-                                grammarBuilder.firstOf(MLT, MGTEQU),
+                                grammarBuilder.firstOf(MLT, 
+                                		GTGTEQU, 
+                                		LTLTEQU, 
+                                		GTGTGTEQU,
+                                		grammarBuilder.sequence(GT, GT),
+                                		grammarBuilder.sequence(GT, GT, GT)),
                                 ADDITIVE_EXPRESSION)
                 )
         );
@@ -273,8 +280,7 @@ public class Expression {
 
     public static void primarySuffix(LexerfulGrammarBuilder grammarBuilder) {
         grammarBuilder.rule(PRIMARY_SUFFIX).is(grammarBuilder.firstOf(grammarBuilder.sequence(LBRACKET, EXPRESSION, RBRACKET),
-                        grammarBuilder.sequence(DOT,
-                                ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS),
+                        grammarBuilder.sequence(DOT, ALLOWED_KEYWORDS_AS_IDENTIFIER_FOR_METHODS),
                         ARGUMENTS)
         );
     }
@@ -283,6 +289,7 @@ public class Expression {
         grammarBuilder.rule(PRIMARY_PREFIX).is(grammarBuilder.firstOf(LITERAL,
                         grammarBuilder.sequence(RESULT_TYPE, DOT, CLASS),
                         NAME,
+                        grammarBuilder.sequence(STRING, DOT, DATE_LITERALS_EXPR, LPAREN, RPAREN), // Added By RA
                         grammarBuilder.sequence(
                                 grammarBuilder.firstOf(SUPER, THIS, SIMPLE_TYPE),
                                 DOT,
@@ -305,11 +312,17 @@ public class Expression {
     }
 
     public static void allocationExpression(LexerfulGrammarBuilder grammarBuilder) {
-        grammarBuilder.rule(ALLOCATION_EXPRESSION).is(NEW, grammarBuilder.firstOf(grammarBuilder.sequence(CLASS_OR_INTERFACE_TYPE,
-                                grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
-                                        grammarBuilder.sequence(ARGUMENTS,
-                                                grammarBuilder.optional(LBRACE, RBRACE)))),
-                        grammarBuilder.sequence(grammarBuilder.firstOf(LIST, SET, ITERATOR),
+        grammarBuilder.rule(ALLOCATION_EXPRESSION).is(NEW, grammarBuilder.firstOf(
+        					grammarBuilder.sequence(
+        						CLASS_OR_INTERFACE_TYPE,
+                    grammarBuilder.firstOf(ARRAY_DIMS_AND_INITS,
+                            grammarBuilder.sequence(
+                                  ARGUMENTS,
+                                  grammarBuilder.optional(LBRACE, RBRACE)
+                                    )
+                            )
+                    ),
+        				    grammarBuilder.sequence(grammarBuilder.firstOf(LIST, SET, ITERATOR),
                                 GENERIC_TYPE,
                                 grammarBuilder.firstOf(ARGUMENTS,
                                         grammarBuilder.sequence(

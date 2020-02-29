@@ -17,3 +17,11 @@ hs_err_pid*
 # Sonar Files
 .sonar/*
 */.sonar/*
+
+# Eclipse and VS Code IDE Files
+.project
+.classpath
+.settings
+.vscode/settings.json
+.metadata
+.recommenders

@@ -112,6 +112,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     STATEMENT,
     STATEMENT_EXPRESSION,
     STRING_LITERAL_STRING,
+    SWITCH_STATEMENT,
     THROW_STATEMENT,
     TRIGGER_DECLARATION,
     TRIGGER_EVENTS_LIST,
@@ -134,6 +135,7 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     ALLOWED_KEYWORDS_AS_SOBJECT_NAME,
     SOQL_NAME,
     SOQL_EXTERNAL_VARIABLE,
+    SOQL_STRING_SET,
     NAME_CHAR,
     SOQL_EXPRESSION,
     SOQL_STATEMENT,
@@ -141,7 +143,10 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     QUERY_EXPRESSION,
     //Select Notations
     SELECT_SENTENCE,
-    COUNT_EXPR,
+    AGGREGATE_EXPR,
+    DATE_METHOD_EXPR,
+    DATE_LITERALS_EXPR,
+    DATE_LITERALS_WITH_NUMBERS_EXPR,
     FIELD,
     //From Notations
     FROM_SENTENCE,
@@ -150,13 +155,16 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     WITH_SENTENCE,
     //Where Notations
     WHERE_SENTENCE,
+    WHERE_SENTENCE_EXPRESSION,
     CONDITIONAL_SOQL_EXPRESSION,
     OPERATORS,
     SIMPLE_EXPRESSION,
     AND_SOQL_EXPRESSION,
     OR_SOQL_EXPRESSION,
     FILTERING_EXPRESSION,
+    SOQL_FILTER_EXPRESSION_SET,
     FIELD_EXPRESSION,
+    NOTEQUAL_EXPRESSION,
     LIKE_EXPRESSION,
     //Limit Notations
     LIMIT_SENTENCE,
@@ -164,5 +172,6 @@ public enum ApexGrammarRuleKey implements GrammarRuleKey {
     ORDER_BY_SENTENCE,
     //Group Notations
     GROUP_BY_SENTENCE,
-    GROUP_BY_TYPES;
+    GROUP_BY_TYPES,
+	HAVING_SENTENCE;
 }

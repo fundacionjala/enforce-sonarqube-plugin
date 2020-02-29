@@ -28,7 +28,7 @@ public class SoqlLimitCheck extends SquidCheck<Grammar> {
 
     @Override
     public void init() {
-        subscribeTo(ApexGrammarRuleKey.QUERY_EXPRESSION, ApexGrammarRuleKey.STRING_LITERAL_STRING);
+    	subscribeTo(ApexGrammarRuleKey.QUERY_EXPRESSION, ApexGrammarRuleKey.STRING_LITERAL_STRING);
     }
 
     /**
@@ -40,7 +40,7 @@ public class SoqlLimitCheck extends SquidCheck<Grammar> {
     @Override
     public void visitNode(AstNode astNode) {
         try {
-            AstNode nodeToCheck = astNode;
+        	AstNode nodeToCheck = astNode;
             if(SoqlParser.isStringQuery(astNode)){
                 AstNode parsedQuery = SoqlParser.parseQuery(astNode);
                 if(parsedQuery != null) {
@@ -49,7 +49,15 @@ public class SoqlLimitCheck extends SquidCheck<Grammar> {
             }
 
             if (nodeToCheck.is(ApexGrammarRuleKey.QUERY_EXPRESSION) && !nodeToCheck.hasDescendant(ApexGrammarRuleKey.LIMIT_SENTENCE)) {
-                getContext().createLineViolation(this, MESSAGE, astNode);
+            	AstNode selectNode = nodeToCheck.getFirstChild(ApexGrammarRuleKey.SELECT_SENTENCE);
+            	if(selectNode.hasDescendant(ApexGrammarRuleKey.AGGREGATE_EXPR)){ 
+        			if(nodeToCheck.hasDescendant(ApexGrammarRuleKey.GROUP_BY_SENTENCE)){
+        				getContext().createLineViolation(this, MESSAGE, astNode);
+        			}
+            	}else{
+            		getContext().createLineViolation(this, MESSAGE, astNode);
+            	}
+                
             }
         } catch (Exception e) {
             ChecksLogger.logCheckError(this.toString(), "visitNode", e.toString());

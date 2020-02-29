@@ -1,5 +1,5 @@
 {
-    "title": "Test methods incorrectly located.",
+    "title": "Test methods should be written in a test class.",
     "status": "ready",
     "remediation": {
         "func": "Constant\/Issue",
