@@ -5,6 +5,10 @@
 package org.fundacionjala.enforce.sonarqube.apex.parser.grammar;
 
 import org.junit.Test;
+
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.impl.ast.AstXmlPrinter;
+
 import org.junit.Before;
 
 import org.fundacionjala.enforce.sonarqube.apex.parser.ApexRuleTest;
@@ -30,6 +34,8 @@ public class ApexGrammarQueryExpressionTest extends ApexRuleTest {
                         + "(SELECT sub1 FROM tab2 LIMIT 200) "
                         + "FROM table1 LIMIT 2000")
                 .matches("SELECT field1,field2, (SELECT sub1 FROM tab2 LIMIT 2) "
+                        + "FROM table1 LIMIT 2000")
+                .matches("SELECT field1,field2, (SELECT sub1 FROM tab2 where sub1 != null LIMIT 2) "
                         + "FROM table1 LIMIT 2000");
     }
 
@@ -40,6 +46,8 @@ public class ApexGrammarQueryExpressionTest extends ApexRuleTest {
                         + "(SELECT sub1 FROM LIMIT 200) "
                         + "FROM table1 LIMIT 2000")
                 .notMatches("SELECT field1,field2, (SELECT FROM tab2 LIMIT 2) "
+                        + "FROM table1 LIMIT 2000")
+                .notMatches("SELECT field1,field2, (SELECT FROM tab2 where field1 != null LIMIT 2) "
                         + "FROM table1 LIMIT 2000");
     }
 
@@ -49,7 +57,9 @@ public class ApexGrammarQueryExpressionTest extends ApexRuleTest {
                 .matches("SELECT COUNT(Id), COUNT(CampaignId) "
                         + "FROM table1 LIMIT 2000")
                 .matches("SELECT COUNT() "
-                        + "FROM table1 LIMIT 2000");
+                        + "FROM table1 LIMIT 2000")
+                .matches("SELECT COUNT() "
+                        + "FROM table1 where nullableField != null LIMIT 2000");
     }
 
     @Test
@@ -72,7 +82,10 @@ public class ApexGrammarQueryExpressionTest extends ApexRuleTest {
                         + "FROM table1 AS T1 LIMIT 100")
                 .matches("SELECT field1,field2, "
                         + "(SELECT sub1 FROM tab2 AS T2 LIMIT 2) "
-                        + "FROM table1 AS T1 LIMIT 3000");
+                        + "FROM table1 AS T1 LIMIT 3000")
+                .matches("SELECT field1,field2, "
+                        + "(SELECT sub1 FROM tab2 AS T2 LIMIT 2) "
+                        + "FROM table1 AS T1 where field2 != null LIMIT 3000");
     }
 
     @Test
@@ -476,5 +489,31 @@ public class ApexGrammarQueryExpressionTest extends ApexRuleTest {
     	assertThat(parser)
     		.matches("select Id from Case")
     		.matches("SELECT id,Subject,Description,Target_Group_HF__c,Type,Sub_Type__c FROM Case WHERE id=:caseID");
+    }
+    
+    
+    /*
+     * This issue root cause was not allowing NULL as comparison operand
+     * Additional tests above have been augmented to test this comparison as well
+     * 
+     * https://github.com/fundacionjala/enforce-sonarqube-plugin/issues/122
+     */
+    @Test
+    public void specificTest_Issue122(){
+    	
+    	//AstNode node = parser.parse("select Id from Account where Id != null");
+    	//System.out.println(AstXmlPrinter.print(node));
+    	
+    	assertThat(parser)
+    		.matches("SELECT "
+						    + " Id , "
+						    + " Member_ID_HF__c,  "
+						    + " Name ,  "
+						    + " (SELECT ID FROM Assets WHERE Company_Number_HF__c!=null LIMIT 1)  "
+						+ " FROM Account  "
+						+ " WHERE Id = :objParentRecord.objId")
+    		.matches("select Id from Account where Id != null")
+    		.matches("select Id, (select Id from Account where Id > 0) from Account");
+    	
     }
 }
